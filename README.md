@@ -1,4 +1,4 @@
-#The Julian Rimet Prediction League
+# The Julian Rimet Prediction League
 
 JRPL is a spectator sports prediction league.
 
@@ -13,12 +13,12 @@ To run this application locally on your machine:
   - Open up a Command Line Interface application (e.g. iTerm, VSCode, SublimeText)
   - Start the Postgres server: `sudo service postgresql start`
   - Navigate to the jrpl project directory
-  - Create the JPRL DB running the following queries:
+  - Create the JPRL DB running the following queries (subsituting USER_NAME for your postgres role):
     - `$ psql USER_NAME -c "DROP DATABASE IF EXISTS jrpl_dev"`
     - `$ psql USER_NAME -c "CREATE DATABASE jrpl_dev"`
     - `$ psql USER_NAME -d jrpl_dev -f schema.sql`
     - `$ psql USER_NAME -d jrpl_dev -f wc_2022_data.sql`
-  - Boot the server with: `$ bundle exec ruby jrpl.ruby`
+  - Boot the server with: `$ bundle exec ruby jrpl.rb`
   - Open a browser and navigate to: http://localhost:4567
 
 Once you open the application:
