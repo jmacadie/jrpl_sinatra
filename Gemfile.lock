@@ -41,6 +41,7 @@ GEM
 
 PLATFORMS
   universal-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   bcrypt
@@ -54,4 +55,4 @@ DEPENDENCIES
   sinatra-contrib
 
 BUNDLED WITH
-   2.3.8
+   2.3.16
