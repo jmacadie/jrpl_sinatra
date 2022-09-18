@@ -4,7 +4,7 @@ require 'minitest/autorun'
 require 'rack/test'
 require 'simplecov'
 
-require_relative '../jrpl'
+require_relative '../src/jrpl'
 require_relative 'jrpl_test_administer_accounts'
 require_relative 'jrpl_test_carousel'
 require_relative 'jrpl_test_login'
@@ -37,10 +37,13 @@ class CMSTest < Minitest::Test
 
   def setup
     sql = File.read('test/test_data.sql')
+    $stderr.reopen("/dev/null", "w")
+    $stderr.sync = true
     PG.connect(dbname: 'jrpl_test').exec(sql)
   end
 
   def teardown  
+    $stderr = STDERR
   end
 
   def session
