@@ -1,11 +1,11 @@
 require 'pg'
 
-require_relative 'db_pers_cookies'
-require_relative 'db_pers_login'
-require_relative 'db_pers_matches'
-require_relative 'db_pers_points'
-require_relative 'db_pers_predictions'
-require_relative 'db_pers_users'
+require_relative 'cookies'
+require_relative 'login'
+require_relative 'matches'
+require_relative 'points'
+require_relative 'predictions'
+require_relative 'users'
 
 class DatabasePersistence
   include DBPersCookies
@@ -16,10 +16,12 @@ class DatabasePersistence
   include DBPersUsers
 
   def initialize(logger)
-    @db = if ENV['RACK_ENV'] == 'test'
+    @db = if ENV['RACK_ENV'] == 'prod'
+            PG.connect(dbname: 'jrpl')
+          elsif ENV['RACK_ENV'] == 'test'
             PG.connect(dbname: 'jrpl_test')
           else
-            PG.connect(dbname: 'jrpl')
+            PG.connect(dbname: 'jrpl_dev')
           end
     @logger = logger
   end

@@ -5,12 +5,12 @@ require 'sinatra'
 require 'sinatra/cookies'
 require 'tilt/erubis'
 
-require_relative 'database_persistence'
-require_relative 'loginable'
-require_relative 'login_cookies'
-require_relative 'jrpl_route_errors'
-require_relative 'jrpl_route_helpers'
-require_relative 'jrpl_view_helpers'
+require_relative 'db/database_persistence'
+require_relative 'login/loginable'
+require_relative 'login/login_cookies'
+require_relative 'route_errors'
+require_relative 'route_helpers'
+require_relative 'views/view_helpers'
 
 # Constant definitions
 LOCKDOWN_BUFFER = 30 * 60 # 30 minutes
