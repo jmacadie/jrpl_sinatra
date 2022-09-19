@@ -11,5 +11,5 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 
 group :development do
-    gem 'shotgun'
+  gem 'shotgun'
 end

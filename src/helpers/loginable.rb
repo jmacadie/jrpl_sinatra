@@ -7,7 +7,7 @@ module Loginable
   def change_pword(new_pword)
     @storage.change_pword(session[:user_name], new_pword)
   end
-  
+
   def change_username(new_user_name)
     @storage.change_username(session[:user_name], new_user_name)
     session[:user_name] = new_user_name
@@ -29,7 +29,8 @@ module Loginable
   def edit_login_error(user_details, current_pword)
     error = []
     error << input_username_error(user_details[:user_name])
-    error << edit_pword_error(user_details[:pword], user_details[:reenter_pword])
+    error << edit_pword_error(user_details[:pword],
+                              user_details[:reenter_pword])
     error << input_email_error(user_details[:email])
     error << credentials_error(current_pword)
     error << no_change_error(user_details, current_pword)
@@ -72,7 +73,7 @@ module Loginable
 
   def input_username_error(user_name)
     if @storage.load_user_credentials.keys.include?(user_name) &&
-      session[:user_name] != user_name
+       session[:user_name] != user_name
       'That username already exists. Please choose a different username.'
     elsif user_name == ''
       'Username cannot be blank! Please enter a username.'
@@ -125,7 +126,7 @@ module Loginable
 
   def signup_pword_error(user_details)
     if user_details[:pword] != user_details[:reenter_pword] &&
-      user_details[:pword] != ''
+       user_details[:pword] != ''
       'The passwords do not match.'
     elsif user_details[:pword] == ''
       'Password cannot be blank! Please enter a password.'

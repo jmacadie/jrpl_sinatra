@@ -1,8 +1,9 @@
 module TestMatchesFilter
   def test_filter_matches_all
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'all', "Group Stages"=>"tournament_stage", "Round of 16"=>"tournament_stage", "Quarter Finals"=>"tournament_stage", "Semi Finals"=>"tournament_stage", "Third Fourth Place Play-off"=>"tournament_stage", "Final"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'all',
+           "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -71,11 +72,12 @@ module TestMatchesFilter
     assert_includes last_response.body, '<td hidden>63</td>'
     assert_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_locked_down
     post '/matches/filter',
-      {match_status: 'locked_down', prediction_status: 'all', "Group Stages"=>"tournament_stage", "Round of 16"=>"tournament_stage", "Quarter Finals"=>"tournament_stage", "Semi Finals"=>"tournament_stage", "Third Fourth Place Play-off"=>"tournament_stage", "Final"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'locked_down', :prediction_status => 'all',
+           "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -144,11 +146,12 @@ module TestMatchesFilter
     refute_includes last_response.body, '<td hidden>63</td>'
     refute_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_not_locked_down
     post '/matches/filter',
-      {match_status: 'not_locked_down', prediction_status: 'all', "Group Stages"=>"tournament_stage", "Round of 16"=>"tournament_stage", "Quarter Finals"=>"tournament_stage", "Semi Finals"=>"tournament_stage", "Third Fourth Place Play-off"=>"tournament_stage", "Final"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'not_locked_down', :prediction_status => 'all',
+           "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -217,11 +220,12 @@ module TestMatchesFilter
     assert_includes last_response.body, '<td hidden>63</td>'
     assert_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_predicted
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'predicted', "Group Stages"=>"tournament_stage", "Round of 16"=>"tournament_stage", "Quarter Finals"=>"tournament_stage", "Semi Finals"=>"tournament_stage", "Third Fourth Place Play-off"=>"tournament_stage", "Final"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'predicted',
+           "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -290,11 +294,12 @@ module TestMatchesFilter
     refute_includes last_response.body, '<td hidden>63</td>'
     refute_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_not_predicted
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'not_predicted', "Group Stages"=>"tournament_stage", "Round of 16"=>"tournament_stage", "Quarter Finals"=>"tournament_stage", "Semi Finals"=>"tournament_stage", "Third Fourth Place Play-off"=>"tournament_stage", "Final"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'not_predicted',
+           "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -363,11 +368,12 @@ module TestMatchesFilter
     assert_includes last_response.body, '<td hidden>63</td>'
     assert_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_group_stages
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'all', "Group Stages"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'all',
+           "Group Stages" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -436,11 +442,12 @@ module TestMatchesFilter
     refute_includes last_response.body, '<td hidden>63</td>'
     refute_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_round_of_16
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'all', "Round of 16"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'all',
+           "Round of 16" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -509,11 +516,12 @@ module TestMatchesFilter
     refute_includes last_response.body, '<td hidden>63</td>'
     refute_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_quarter_finals
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'all', "Quarter Finals"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'all',
+           "Quarter Finals" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -582,11 +590,12 @@ module TestMatchesFilter
     refute_includes last_response.body, '<td hidden>63</td>'
     refute_includes last_response.body, '<td hidden>64</td>'
   end
-   
+
   def test_filter_matches_semi_finals
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'all', "Semi Finals"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'all',
+           "Semi Finals" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -655,11 +664,12 @@ module TestMatchesFilter
     refute_includes last_response.body, '<td hidden>63</td>'
     refute_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_3_4_place
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'all', "Third Fourth Place Play-off"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'all',
+           "Third Fourth Place Play-off" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -728,11 +738,12 @@ module TestMatchesFilter
     assert_includes last_response.body, '<td hidden>63</td>'
     refute_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_final
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'all', "Final"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'all',
+           "Final" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -801,11 +812,12 @@ module TestMatchesFilter
     refute_includes last_response.body, '<td hidden>63</td>'
     assert_includes last_response.body, '<td hidden>64</td>'
   end
-  
-def test_filter_matches_group_stages_and_final
+
+  def test_filter_matches_group_stages_and_final
     post '/matches/filter',
-      {match_status: 'all', prediction_status: 'all', "Group Stages"=>"tournament_stage", "Final"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'all', :prediction_status => 'all',
+           "Group Stages" => "tournament_stage", "Final" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -874,11 +886,12 @@ def test_filter_matches_group_stages_and_final
     refute_includes last_response.body, '<td hidden>63</td>'
     assert_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_not_locked_down_predicted_group_stages
     post '/matches/filter',
-      {match_status: 'not_locked_down', prediction_status: 'predicted', "Group Stages"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'not_locked_down', :prediction_status => 'predicted',
+           "Group Stages" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -947,11 +960,12 @@ def test_filter_matches_group_stages_and_final
     refute_includes last_response.body, '<td hidden>63</td>'
     refute_includes last_response.body, '<td hidden>64</td>'
   end
-  
+
   def test_filter_matches_locked_down_predicted_group_stages
     post '/matches/filter',
-      {match_status: 'locked_down', prediction_status: 'predicted', "Group Stages"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'locked_down', :prediction_status => 'predicted',
+           "Group Stages" => "tournament_stage" },
+         user_11_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, 'Matches List'
@@ -1023,21 +1037,28 @@ def test_filter_matches_group_stages_and_final
 
   def test_filter_matches_search_criteria_retained
     post '/matches/filter',
-      {match_status: 'locked_down', prediction_status: 'predicted', "Group Stages"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'locked_down', :prediction_status => 'predicted',
+           "Group Stages" => "tournament_stage" },
+         user_11_session
 
-    assert_includes last_response.body.gsub(/\n/, ''), %q(value="locked_down"     checked)
-    assert_includes last_response.body.gsub(/\n/, ''), %q(value="predicted"     checked)
-    assert_includes last_response.body.gsub(/\n/, ''), %q(name="Group Stages"      value="tournament_stage"      checked)
-    refute_includes last_response.body.gsub(/\n/, ''), %q(name="Final"      value="tournament_stage"      checked)
+    assert_includes last_response.body.gsub(/\n/, ''),
+                    'value="locked_down"     checked'
+    assert_includes last_response.body.gsub(/\n/, ''),
+                    'value="predicted"     checked'
+    assert_includes last_response.body.gsub(/\n/, ''),
+                    'name="Group Stages"      value="tournament_stage"      checked'
+    refute_includes last_response.body.gsub(/\n/, ''),
+                    'name="Final"      value="tournament_stage"      checked'
   end
 
   def test_filter_matches_no_matches_returned
     post '/matches/filter',
-      {match_status: 'locked_down', prediction_status: 'all', "Final"=>"tournament_stage"},
-      user_11_session
+         { :match_status => 'locked_down', :prediction_status => 'all',
+           "Final" => "tournament_stage" },
+         user_11_session
 
-    assert_includes last_response.body, 'No matches meet your criteria, please try again!'
+    assert_includes last_response.body,
+                    'No matches meet your criteria, please try again!'
     refute_includes last_response.body, 'Matches List'
   end
 end

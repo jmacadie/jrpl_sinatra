@@ -10,11 +10,11 @@ module RouteErrors
   end
 
   def match_result_error(match, home_points, away_points)
-    if !match_locked_down?(match)
-      'You cannot add or change the match result because ' \
-      'this match has not yet been played.'
-    else
+    if match_locked_down?(match)
       match_result_type_error(home_points, away_points)
+    else
+      'You cannot add or change the match result because ' \
+        'this match has not yet been played.'
     end
   end
 
@@ -35,7 +35,7 @@ module RouteErrors
   def prediction_error(match, home_prediction, away_prediction)
     if match_locked_down?(match)
       'You cannot add or change your prediction because ' \
-      'this match is already locked down!'
+        'this match is already locked down!'
     else
       prediction_type_error(home_prediction, away_prediction)
     end

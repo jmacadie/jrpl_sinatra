@@ -16,9 +16,10 @@ class DatabasePersistence
   include DBPersUsers
 
   def initialize(logger)
-    @db = if ENV['RACK_ENV'] == 'prod'
+    @db = case ENV.fetch('RACK_ENV', nil)
+          when 'prod'
             PG.connect(dbname: 'jrpl')
-          elsif ENV['RACK_ENV'] == 'test'
+          when 'test'
             PG.connect(dbname: 'jrpl_test')
           else
             PG.connect(dbname: 'jrpl_dev')

@@ -10,14 +10,15 @@ class App < Sinatra::Application
     # session[:message] = 'Match locked down!' if @match[:locked_down]
     erb :match_details
   end
-  
+
   post '/match/add_prediction' do
     require_signed_in_user
     match_id = params[:match_id].to_i
     @match = @storage.load_single_match(session[:user_id], match_id)
     home_prediction = params[:home_team_prediction].to_f
     away_prediction = params[:away_team_prediction].to_f
-    session[:message] = prediction_error(@match, home_prediction, away_prediction)
+    session[:message] =
+      prediction_error(@match, home_prediction, away_prediction)
     if session[:message]
       status 422
       erb :match_details
@@ -32,7 +33,7 @@ class App < Sinatra::Application
       redirect "/match/#{match_id}"
     end
   end
-  
+
   post '/match/add_result' do
     require_signed_in_as_admin
     home_points = params[:home_pts].to_f

@@ -1,5 +1,5 @@
 ENV['RACK_ENV'] = 'test'
-	
+
 require 'minitest/autorun'
 require 'rack/test'
 require 'simplecov'
@@ -42,7 +42,7 @@ class CMSTest < Minitest::Test
     PG.connect(dbname: 'jrpl_test').exec(sql)
   end
 
-  def teardown  
+  def teardown
     $stderr = STDERR
   end
 
@@ -51,68 +51,99 @@ class CMSTest < Minitest::Test
   end
 
   def admin_session
-    { 'rack.session' => { user_name: 'Maccas' , user_id: 4, user_email: 'james.macadie@telerealtrillium.com', user_roles: 'Admin'} }
+    { 'rack.session' => {
+      user_name: 'Maccas',
+      user_id: 4,
+      user_email: 'james.macadie@telerealtrillium.com',
+      user_roles: 'Admin'
+    } }
   end
 
   def user_11_session
-    { 'rack.session' => { user_name: 'Clare Mac', user_id: 11, user_email: 'clare@macadie.co.uk'} }
+    { 'rack.session' => {
+      user_name: 'Clare Mac',
+      user_id: 11,
+      user_email: 'clare@macadie.co.uk'
+    } }
   end
-  
+
   def nil_session
-    { 'rack.session' => { user_name: nil, user_id: nil, user_email: nil} }
+    { 'rack.session' => {
+      user_name: nil,
+      user_id: nil,
+      user_email: nil
+    } }
   end
-  
+
   def user_11_session_with_all_criteria
-    { 'rack.session' => { 
+    { 'rack.session' => {
       user_name: 'Clare Mac',
       user_id: 11,
       user_email: 'clare@macadie.co.uk',
-      criteria: { 
+      criteria: {
         match_status: "all",
         prediction_status: "all",
-        tournament_stages: ["Group Stages", "Round of 16", "Quarter Finals", "Semi Finals", "Third Fourth Place Play-off", "Final"]
+        tournament_stages:
+          ["Group Stages",
+           "Round of 16",
+           "Quarter Finals",
+           "Semi Finals",
+           "Third Fourth Place Play-off",
+           "Final"]
       }
-    }}
+    } }
   end
-  
+
   def user_11_session_predicted_criteria
-    { 'rack.session' => { 
+    { 'rack.session' => {
       user_name: 'Clare Mac',
       user_id: 11,
       user_email: 'clare@macadie.co.uk',
-      criteria: { 
+      criteria: {
         match_status: "all",
         prediction_status: "predicted",
-        tournament_stages: ["Group Stages", "Round of 16", "Quarter Finals", "Semi Finals", "Third Fourth Place Play-off", "Final"]
+        tournament_stages:
+          ["Group Stages",
+           "Round of 16",
+           "Quarter Finals",
+           "Semi Finals",
+           "Third Fourth Place Play-off",
+           "Final"]
       }
-    }}
+    } }
   end
-  
+
   def user_11_session_not_predicted_group_stages_criteria
-    { 'rack.session' => { 
+    { 'rack.session' => {
       user_name: 'Clare Mac',
       user_id: 11,
       user_email: 'clare@macadie.co.uk',
-      criteria: { 
+      criteria: {
         match_status: "all",
         prediction_status: "not_predicted",
         tournament_stages: ["Group Stages"]
       }
-    }}
+    } }
   end
-  
+
   def admin_session_with_all_criteria
-    { 'rack.session' => { 
+    { 'rack.session' => {
       user_name: 'Maccas',
       user_id: 4,
       user_email: 'james.macadie@telerealtrillium.com',
       user_roles: 'Admin',
-      criteria: { 
+      criteria: {
         match_status: "all",
         prediction_status: "all",
-        tournament_stages: ["Group Stages", "Round of 16", "Quarter Finals", "Semi Finals", "Third Fourth Place Play-off", "Final"]
+        tournament_stages:
+          ["Group Stages",
+           "Round of 16",
+           "Quarter Finals",
+           "Semi Finals",
+           "Third Fourth Place Play-off",
+           "Final"]
       }
-    }}
+    } }
   end
 
   def test_homepage_signed_out
@@ -123,7 +154,7 @@ class CMSTest < Minitest::Test
     refute_includes last_response.body, 'Administer account'
     refute_includes last_response.body, 'Administer users'
   end
-  
+
   def test_homepage_signed_in
     get '/', {}, user_11_session
     assert_equal 200, last_response.status
@@ -132,7 +163,7 @@ class CMSTest < Minitest::Test
     assert_includes last_response.body, 'Administer account'
     refute_includes last_response.body, 'Administer users'
   end
- 
+
   def test_homepage_signed_in_admin
     get '/', {}, admin_session
     assert_equal 200, last_response.status

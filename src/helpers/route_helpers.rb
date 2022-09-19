@@ -1,5 +1,4 @@
 module RouteHelpers
-
   def extract_search_criteria(params)
     tournament_stages = params.select do |_, v|
       v == 'tournament_stage'

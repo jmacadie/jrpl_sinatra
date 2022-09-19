@@ -6,10 +6,9 @@ require 'sinatra/cookies'
 require 'tilt/erubis'
 
 class App < Sinatra::Application
-
   # Constant definitions
   LOCKDOWN_BUFFER = 30 * 60 # 30 minutes
-  
+
   # Load database (model)
   require_relative 'db/database_persistence'
 
@@ -19,7 +18,7 @@ class App < Sinatra::Application
   require_relative 'helpers/route_errors'
   require_relative 'helpers/route_helpers'
   require_relative 'helpers/view_helpers'
-  
+
   # Load controllers
   require_relative 'controllers/home'
   require_relative 'controllers/match'
@@ -34,8 +33,8 @@ class App < Sinatra::Application
   end
 
   configure :development do
-    #require 'sinatra/reloader'
-    #also_reload 'database_persistence.rb'
+    # require 'sinatra/reloader'
+    # also_reload 'database_persistence.rb'
   end
 
   before do
