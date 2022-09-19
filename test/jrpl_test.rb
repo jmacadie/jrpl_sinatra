@@ -4,7 +4,7 @@ require 'minitest/autorun'
 require 'rack/test'
 require 'simplecov'
 
-require_relative '../src/jrpl'
+require_relative '../src/app'
 require_relative 'jrpl_test_administer_accounts'
 require_relative 'jrpl_test_carousel'
 require_relative 'jrpl_test_login'
@@ -32,6 +32,7 @@ class CMSTest < Minitest::Test
   include TestViewMatch
 
   def app
+    #App
     Sinatra::Application
   end
 

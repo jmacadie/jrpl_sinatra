@@ -40,6 +40,7 @@ GEM
     tilt (2.0.10)
 
 PLATFORMS
+  ruby
   universal-darwin-21
   x86_64-linux
 

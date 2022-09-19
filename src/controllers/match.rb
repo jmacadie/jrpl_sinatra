@@ -1,4 +1,5 @@
-get '/match/:match_id' do
+#class App < Sinatra::Base
+  get '/match/:match_id' do
     require_signed_in_user
     match_id = params[:match_id].to_i
     if session[:criteria].nil?
@@ -51,3 +52,4 @@ get '/match/:match_id' do
       redirect "/match/#{match_id}"
     end
   end
+#end
