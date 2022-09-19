@@ -9,4 +9,7 @@ gem 'rack-test'
 gem 'simplecov'
 gem 'sinatra'
 gem 'sinatra-contrib'
-gem 'shotgun'
+
+group :development do
+    gem 'shotgun'
+end

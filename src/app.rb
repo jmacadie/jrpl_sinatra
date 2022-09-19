@@ -18,7 +18,7 @@ class App < Sinatra::Application
   require_relative 'helpers/login_cookies'
   require_relative 'helpers/route_errors'
   require_relative 'helpers/route_helpers'
-  require_relative 'views/view_helpers'
+  require_relative 'helpers/view_helpers'
   
   # Load controllers
   require_relative 'controllers/home'

@@ -13,11 +13,11 @@ To run this application locally on your machine:
   - Open up a Command Line Interface application (e.g. iTerm, VSCode, SublimeText)
   - Start the Postgres server: `sudo service postgresql start`
   - Navigate to the jrpl project directory
-  - Create the JPRL DB running the following queries (subsituting USER_NAME for your postgres role):
+  - Create the JPRL DB running the following queries (substituting USER_NAME for your postgres role):
     - `$ psql USER_NAME -c "DROP DATABASE IF EXISTS jrpl_dev"`
     - `$ psql USER_NAME -c "CREATE DATABASE jrpl_dev"`
-    - `$ psql USER_NAME -d jrpl_dev -f schema.sql`
-    - `$ psql USER_NAME -d jrpl_dev -f wc_2022_data.sql`
+    - `$ psql USER_NAME -d jrpl_dev -f data/schema.sql`
+    - `$ psql USER_NAME -d jrpl_dev -f data/wc_2022_data.sql`
   - Install any missing gems: `$ bundle install`
   - Boot the server with: `$ shotgun`
   - Open a browser and navigate to: http://localhost:9393
