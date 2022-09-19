@@ -18,6 +18,13 @@ module LoginCookies
     )
   end
 
+  def clear_cookies
+    @storage.delete_cookie_data(
+      cookies[:series_id],
+      cookies[:token]
+    )
+  end
+
   def set_series_id_cookie
     series_id_value = unique_random_string()
     response.set_cookie(

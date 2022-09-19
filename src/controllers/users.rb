@@ -64,7 +64,7 @@ class App < Sinatra::Application
 
   post '/users/signout' do
     require_signed_in_user
-    @storage.delete_cookie_data(cookies[:series_id], cookies[:token])
+    clear_cookies()
     session.clear
     session[:message] = 'You have been signed out.'
     if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
