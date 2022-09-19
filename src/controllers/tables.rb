@@ -1,4 +1,4 @@
-#class App < Sinatra::Base
+class App < Sinatra::Application
   get '/scoreboard' do
     @scoring_system = 'official'
     @scores = @storage.load_scoreboard_data(@scoring_system)
@@ -10,4 +10,4 @@
     @scores = @storage.load_scoreboard_data(@scoring_system)
     erb :scoreboard
   end
-#end
+end

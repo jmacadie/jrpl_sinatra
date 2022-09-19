@@ -5,7 +5,7 @@ require 'sinatra'
 require 'sinatra/cookies'
 require 'tilt/erubis'
 
-#class App < Sinatra::Base
+class App < Sinatra::Application
 
   # Constant definitions
   LOCKDOWN_BUFFER = 30 * 60 # 30 minutes
@@ -56,4 +56,4 @@ require 'tilt/erubis'
     # View helper methods
     include ViewHelpers
   end
-#end
+end

@@ -1,4 +1,4 @@
-#class App < Sinatra::Base
+class App < Sinatra::Application
   get '/matches/all' do
     require_signed_in_user
     session[:criteria] = set_criteria_to_all_matches()
@@ -26,4 +26,4 @@
       erb :match_filter_form
     end
   end
-#end
+end

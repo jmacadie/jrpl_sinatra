@@ -1,4 +1,4 @@
-#class App < Sinatra::Base
+class App < Sinatra::Application
   get '/users/administer_accounts' do
     require_signed_in_as_admin
     @users = @storage.load_all_users_details
@@ -114,4 +114,4 @@
       redirect '/users/administer_accounts'
     end
   end
-#end
+end

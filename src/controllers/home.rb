@@ -1,4 +1,4 @@
-#class App < Sinatra::Base
+class App < Sinatra::Application
   get '/' do
     user_signed_in?
     erb :home
@@ -7,4 +7,4 @@
   not_found do
     redirect '/'
   end
-#end
+end

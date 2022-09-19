@@ -32,8 +32,7 @@ class CMSTest < Minitest::Test
   include TestViewMatch
 
   def app
-    #App
-    Sinatra::Application
+    App
   end
 
   def setup

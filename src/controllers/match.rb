@@ -1,4 +1,4 @@
-#class App < Sinatra::Base
+class App < Sinatra::Application
   get '/match/:match_id' do
     require_signed_in_user
     match_id = params[:match_id].to_i
@@ -52,4 +52,4 @@
       redirect "/match/#{match_id}"
     end
   end
-#end
+end

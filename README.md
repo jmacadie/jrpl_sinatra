@@ -18,8 +18,9 @@ To run this application locally on your machine:
     - `$ psql USER_NAME -c "CREATE DATABASE jrpl_dev"`
     - `$ psql USER_NAME -d jrpl_dev -f schema.sql`
     - `$ psql USER_NAME -d jrpl_dev -f wc_2022_data.sql`
-  - Boot the server with: `$ bundle exec ruby jrpl.rb`
-  - Open a browser and navigate to: http://localhost:4567
+  - Install any missing gems: `$ bundle install`
+  - Boot the server with: `$ shotgun`
+  - Open a browser and navigate to: http://localhost:9393
 
 Once you open the application:
   - The administrator has a username of 'Maccas', password 'a'

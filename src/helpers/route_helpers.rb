@@ -64,7 +64,7 @@ module RouteHelpers
   private
 
   def calculate_lockdown
-    lockdown_timedate = Time.now + LOCKDOWN_BUFFER
+    lockdown_timedate = Time.now + App::LOCKDOWN_BUFFER
     lockdown_date = lockdown_timedate.strftime("%Y-%m-%d")
     lockdown_time = lockdown_timedate.strftime("%k:%M:%S")
     { date: lockdown_date, time: lockdown_time }
