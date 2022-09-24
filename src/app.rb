@@ -1,9 +1,7 @@
 require 'bcrypt'
-require 'pry'
 require 'securerandom'
 require 'sinatra'
 require 'sinatra/cookies'
-require 'tilt/erubis'
 
 class App < Sinatra::Application
   # Constant definitions
