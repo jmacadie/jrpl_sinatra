@@ -16,14 +16,12 @@ class DatabasePersistence
   include DBPersUsers
 
   def initialize(logger)
-    @db = case ENV.fetch('RACK_ENV', nil)
-          when 'prod'
-            PG.connect(dbname: 'jrpl')
-          when 'test'
-            PG.connect(dbname: 'jrpl_test')
-          else
-            PG.connect(dbname: 'jrpl_dev')
-          end
+    hash = {dbname: App::settings.dbconf['database']}
+    hash[:host] = App::settings.dbconf['host'] if not App::settings.dbconf['host'].nil?
+    hash[:port] = App::settings.dbconf['port'] if not App::settings.dbconf['port'].nil?
+    hash[:user] = App::settings.dbconf['username'] if not App::settings.dbconf['username'].nil?
+    hash[:password] = App::settings.dbconf['password'] if not App::settings.dbconf['password'].nil?
+    @db = PG.connect(**hash)
     @logger = logger
   end
 

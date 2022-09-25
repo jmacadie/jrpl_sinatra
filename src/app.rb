@@ -1,9 +1,8 @@
 require 'bcrypt'
-require 'pry'
 require 'securerandom'
 require 'sinatra'
 require 'sinatra/cookies'
-require 'tilt/erubis'
+require 'yaml'
 
 class App < Sinatra::Application
   # Constant definitions
@@ -13,7 +12,7 @@ class App < Sinatra::Application
   require_relative 'db/database_persistence'
 
   # Load helpers
-  require_relative 'helpers/loginable'
+  require_relative 'helpers/auth'
   require_relative 'helpers/login_cookies'
   require_relative 'helpers/route_errors'
   require_relative 'helpers/route_helpers'
@@ -28,8 +27,20 @@ class App < Sinatra::Application
 
   configure do
     enable :sessions
-    set :session_secret, 'secret'
-    set :erb, escape_html: true
+    set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
+    set :erb           , escape_html: true
+
+    set :environment   , ENV.fetch('APP_ENV', 'development')
+
+    set :src           , File.expand_path(__dir__)
+    set :root          , File.expand_path('..', settings.src)
+    set :app_file      , File.expand_path(__FILE__)
+    set :public_folder , settings.root + '/public'
+    set :config        , settings.root + '/config'
+    set :views         , settings.src + '/views'
+
+    dbconf = YAML.load_file(settings.config + '/database.yml')
+    set :dbconf        , dbconf[settings.environment]
   end
 
   configure :development do

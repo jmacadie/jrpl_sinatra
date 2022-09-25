@@ -1,0 +1,22 @@
+adapter: postgresql
+
+development:
+  host: 
+  port: 
+  username: 
+  password:
+  database: jrpl_dev
+
+test:
+  host:
+  port:
+  username:
+  password:
+  database: jrpl_test
+
+production:
+  host: localhost
+  port: 5432
+  username:
+  password:
+  database: jrpl

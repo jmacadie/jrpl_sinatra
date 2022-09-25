@@ -20,6 +20,7 @@ GEM
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     ruby2_keywords (0.0.5)
+    securerandom (0.2.0)
     shotgun (0.9.2)
       rack (>= 1.0)
     simplecov (0.21.2)
@@ -40,6 +41,7 @@ GEM
       sinatra (= 2.2.0)
       tilt (~> 2.0)
     tilt (2.0.10)
+    yaml (0.2.0)
 
 PLATFORMS
   ruby
@@ -53,10 +55,12 @@ DEPENDENCIES
   pg
   pry
   rack-test
+  securerandom
   shotgun
   simplecov
   sinatra
   sinatra-contrib
+  yaml
 
 BUNDLED WITH
    2.3.16
