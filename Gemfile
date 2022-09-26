@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'bcrypt'
+gem 'erubis'
 gem 'pg'
 gem 'securerandom'
 gem 'sinatra'

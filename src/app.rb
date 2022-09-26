@@ -2,6 +2,7 @@ require 'bcrypt'
 require 'securerandom'
 require 'sinatra'
 require 'sinatra/cookies'
+require 'tilt/erubis'
 require 'yaml'
 
 class App < Sinatra::Application
