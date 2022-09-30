@@ -15,12 +15,12 @@ class DatabasePersistence
   include DBPersPredictions
   include DBPersUsers
 
-  def initialize(logger)
-    hash = {dbname: App::settings.dbconf['database']}
-    hash[:host] = App::settings.dbconf['host'] if not App::settings.dbconf['host'].nil?
-    hash[:port] = App::settings.dbconf['port'] if not App::settings.dbconf['port'].nil?
-    hash[:user] = App::settings.dbconf['username'] if not App::settings.dbconf['username'].nil?
-    hash[:password] = App::settings.dbconf['password'] if not App::settings.dbconf['password'].nil?
+  def initialize(logger, conf)
+    hash = {dbname: conf['database']}
+    hash[:host] = conf['host'] if not conf['host'].nil?
+    hash[:port] = conf['port'] if not conf['port'].nil?
+    hash[:user] = conf['username'] if not conf['username'].nil?
+    hash[:password] = conf['password'] if not conf['password'].nil?
     @db = PG.connect(**hash)
     @logger = logger
   end

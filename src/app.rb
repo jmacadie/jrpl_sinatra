@@ -50,7 +50,7 @@ class App < Sinatra::Application
   end
 
   before do
-    @storage = DatabasePersistence.new(logger)
+    @storage = DatabasePersistence.new(logger, settings.dbconf)
   end
 
   after do
