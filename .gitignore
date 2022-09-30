@@ -1,3 +1,4 @@
 # Ignore all Simplecov files
 /coverage/**
 .DS_Store
+config/*.sc

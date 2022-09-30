@@ -1,4 +1,5 @@
 require 'bcrypt'
+require 'pony'
 require 'securerandom'
 require 'sinatra'
 require 'sinatra/cookies'
@@ -14,6 +15,7 @@ class App < Sinatra::Application
 
   # Load helpers
   require_relative 'helpers/auth'
+  require_relative 'helpers/email'
   require_relative 'helpers/login_cookies'
   require_relative 'helpers/route_errors'
   require_relative 'helpers/route_helpers'
@@ -42,11 +44,16 @@ class App < Sinatra::Application
 
     dbconf = YAML.load_file(settings.config + '/database.yml')
     set :dbconf        , dbconf[settings.environment]
+
+    # Load general settings
+    conf = YAML.load_file(settings.config + '/general.yml').each do |k, v|
+      set k.to_sym, v
+    end
+
   end
 
-  configure :development do
-    # require 'sinatra/reloader'
-    # also_reload 'database_persistence.rb'
+  configure :development, :test, :staging do
+    Pony.subject_prefix(settings.environment.to_s.upcase + ': ')
   end
 
   before do
@@ -63,6 +70,7 @@ class App < Sinatra::Application
     include LoginCookies
     include RouteErrors
     include RouteHelpers
+    include Email
 
     # View helper methods
     include ViewHelpers
