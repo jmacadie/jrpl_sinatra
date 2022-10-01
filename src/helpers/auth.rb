@@ -1,3 +1,4 @@
+# rubocop:todo Metrics/ModuleLength
 module Loginable
   def change_email(new_email)
     @storage.change_email(session[:user_name], new_email)
@@ -167,3 +168,4 @@ module Loginable
     end
   end
 end
+# rubocop:enable Metrics/ModuleLength

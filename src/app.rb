@@ -29,6 +29,7 @@ class App < Sinatra::Application
   require_relative 'controllers/users'
 
   configure do
+    # rubocop:disable Layout/SpaceBeforeComma, Layout/ExtraSpacing
     enable :sessions
     set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
     set :erb           , escape_html: true
@@ -38,22 +39,22 @@ class App < Sinatra::Application
     set :src           , File.expand_path(__dir__)
     set :root          , File.expand_path('..', settings.src)
     set :app_file      , File.expand_path(__FILE__)
-    set :public_folder , settings.root + '/public'
-    set :config        , settings.root + '/config'
-    set :views         , settings.src + '/views'
+    set :public_folder , "#{settings.root}/public"
+    set :config        , "#{settings.root}/config"
+    set :views         , "#{settings.src}/views"
 
-    dbconf = YAML.load_file(settings.config + '/database.yml')
+    dbconf = YAML.load_file("#{settings.config}/database.yml")
     set :dbconf        , dbconf[settings.environment]
+    # rubocop:enable Layout/SpaceBeforeComma, Layout/ExtraSpacing
 
     # Load general settings
-    conf = YAML.load_file(settings.config + '/general.yml').each do |k, v|
+    YAML.load_file("#{settings.config}/general.yml").each do |k, v|
       set k.to_sym, v
     end
-
   end
 
   configure :development, :test, :staging do
-    Pony.subject_prefix(settings.environment.to_s.upcase + ': ')
+    Pony.subject_prefix("#{settings.environment.to_s.upcase}: ")
   end
 
   before do

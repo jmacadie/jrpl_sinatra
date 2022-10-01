@@ -1,3 +1,4 @@
+# rubocop:todo Metrics/ModuleLength
 module DBPersMatches
   def add_result(match_id, home_team_points, away_team_points, user_id)
     sql = update_match_table_query()
@@ -282,3 +283,4 @@ module DBPersMatches
     'WHERE match.match_id = $2'
   end
 end
+# rubocop:enable Metrics/ModuleLength

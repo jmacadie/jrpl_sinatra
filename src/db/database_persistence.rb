@@ -15,15 +15,17 @@ class DatabasePersistence
   include DBPersPredictions
   include DBPersUsers
 
+  # rubocop:disable Metrics/AbcSize
   def initialize(logger, conf)
-    hash = {dbname: conf['database']}
-    hash[:host] = conf['host'] if not conf['host'].nil?
-    hash[:port] = conf['port'] if not conf['port'].nil?
-    hash[:user] = conf['username'] if not conf['username'].nil?
-    hash[:password] = conf['password'] if not conf['password'].nil?
+    hash = { dbname: conf['database'] }
+    hash[:host] = conf['host'] if !conf['host'].nil?
+    hash[:port] = conf['port'] if !conf['port'].nil?
+    hash[:user] = conf['username'] if !conf['username'].nil?
+    hash[:password] = conf['password'] if !conf['password'].nil?
     @db = PG.connect(**hash)
     @logger = logger
   end
+  # rubocop:enable Metrics/AbcSize
 
   def disconnect
     @db.close
