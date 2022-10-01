@@ -1,4 +1,6 @@
-email_username:
-email_password:
-email_to_sub:
-email_default_to:
+email:
+  gmail_username: 
+  app_password: 
+  app_domain: 
+  default_to: 
+  sub_to: 
