@@ -2,9 +2,7 @@ class App < Sinatra::Application
   get '/match/:match_id' do
     require_signed_in_user
     match_id = params[:match_id].to_i
-    if session[:criteria].nil?
-      session[:criteria] = set_criteria_to_all_matches()
-    end
+    session[:criteria] ||= set_criteria_to_all_matches()
     @match = @storage.load_single_match(session[:user_id], match_id)
     @match[:locked_down] = match_locked_down?(@match)
     # session[:message] = 'Match locked down!' if @match[:locked_down]

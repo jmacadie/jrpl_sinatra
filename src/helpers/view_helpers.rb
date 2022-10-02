@@ -1,52 +1,26 @@
 module ViewHelpers
   def home_team_name(match)
-    if match[:home_team_name].nil?
-      match[:home_tournament_role]
-    else
-      match[:home_team_name]
-    end
+    match[:home_team_name] || match[:home_tournament_role]
   end
 
   def away_team_name(match)
-    if match[:away_team_name].nil?
-      match[:away_tournament_role]
-    else
-      match[:away_team_name]
-    end
+    match[:away_team_name] || match[:away_tournament_role]
   end
 
   def home_team_prediction(match)
-    prediction = match[:home_team_prediction]
-    if prediction.nil?
-      'no prediction'
-    else
-      prediction
-    end
+    match[:home_team_prediction] || 'no prediction'
   end
 
   def away_team_prediction(match)
-    prediction = match[:away_team_prediction]
-    if prediction.nil?
-      'no prediction'
-    else
-      prediction
-    end
+    match[:away_team_prediction] || 'no prediction'
   end
 
   def home_team_points(match)
-    if match[:home_pts].nil?
-      'no result'
-    else
-      match[:home_pts]
-    end
+    match[:home_pts] || 'no result'
   end
 
   def away_team_points(match)
-    if match[:away_pts].nil?
-      'no result'
-    else
-      match[:away_pts]
-    end
+    match[:away_pts] || 'no result'
   end
 
   def match_locked_down?(match)
@@ -57,7 +31,7 @@ module ViewHelpers
   def previous_match(match_id)
     match_list = load_match_list()
     current_match_index = match_list.index { |match| match == match_id }
-    current_match_index = 1 if current_match_index.nil?
+    current_match_index ||= 1
     previous_match_index = current_match_index - 1
     if previous_match_index < 0
       nil
@@ -70,7 +44,7 @@ module ViewHelpers
     match_list = load_match_list()
     max_index = match_list.size - 1
     current_match_index = match_list.index { |match| match == match_id }
-    current_match_index = 1 if current_match_index.nil?
+    current_match_index ||= 1
     next_match_index = current_match_index + 1
     if next_match_index > max_index
       nil
