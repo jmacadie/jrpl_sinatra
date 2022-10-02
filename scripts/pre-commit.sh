@@ -8,7 +8,7 @@ cd "$ROOT"
 # Makes sure these tests are only being applied to what's stage
 # But get all config files back out stash or the tests will break :)
 git stash --include-untracked --keep-index >/dev/null
-git restore --source=stash@{0} -- config/.
+git restore --source=stash@{0} -- config/. >/dev/null
 
 # Run rubocop
 echo -e "\nRunning Rubocop checks"
@@ -18,7 +18,8 @@ RET=$?
 if [[ $RET -ne 0 ]]; then
   echo "Unable to commit. Errors in Rubocop"
   # Get any working changes back out of stash
-  git stash pop -q --index
+  git reset --hard >/dev/null
+  git stash pop -q --index >/dev/null
   exit $RET
 fi
 
@@ -30,11 +31,13 @@ RET=$?
 if [[ $RET -ne 0 ]]; then
   echo "Unable to commit. Some tests not passed"
   # Get any working changes back out of stash
-  git stash pop -q --index
+  git reset --hard >/dev/null
+  git stash pop -q --index >/dev/null
   exit $RET
 fi
 
 # Get any working changes back out of stash
+git reset --hard >/dev/null
 git stash pop -q --index >/dev/null
 
 # Protect the config files
