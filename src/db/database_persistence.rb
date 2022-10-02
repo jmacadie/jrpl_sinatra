@@ -45,7 +45,12 @@ class DatabasePersistence
   end
 
   def query(statement, *params)
-    @logger.info "#{statement}: #{params}"
+    sql = statement
+          .gsub("\n", " ")
+          .gsub("\r", " ")
+          .gsub("\t", " ")
+          .squeeze(" ")
+    @logger.info "\n#{sql}\n#{params}"
     @db.exec_params(statement, params)
   end
 end
