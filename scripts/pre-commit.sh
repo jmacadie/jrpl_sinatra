@@ -5,8 +5,10 @@ ROOT=$(git rev-parse --show-toplevel)
 cd "$ROOT"
 
 # Stash any uncommitted changes
-# Makes sure these tests are only being applied to what's staged
+# Makes sure these tests are only being applied to what's stage
+# But get all config files back out stash or the tests will break :)
 git stash --include-untracked --keep-index >/dev/null
+git restore --source=stash@{0} -- config/.
 
 # Run rubocop
 echo -e "\nRunning Rubocop checks"
