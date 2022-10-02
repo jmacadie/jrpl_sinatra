@@ -57,6 +57,10 @@ class App < Sinatra::Application
     Pony.subject_prefix("#{settings.environment.to_s.upcase}: ")
   end
 
+  configure :test do
+    Pony.override_options = { via: :test }
+  end
+
   before do
     @storage = DatabasePersistence.new(logger, settings.dbconf)
   end

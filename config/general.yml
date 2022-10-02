@@ -2,5 +2,6 @@ email:
   gmail_username:
   app_password:
   app_domain:
+  from:
   default_to:
   sub_to:

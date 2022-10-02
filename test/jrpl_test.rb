@@ -7,6 +7,7 @@ require 'simplecov'
 require_relative '../src/app'
 require_relative 'jrpl_test_administer_accounts'
 require_relative 'jrpl_test_carousel'
+require_relative 'jrpl_test_email'
 require_relative 'jrpl_test_login'
 require_relative 'jrpl_test_matches_all'
 require_relative 'jrpl_test_matches_filter'
@@ -22,6 +23,7 @@ class CMSTest < Minitest::Test
   include Rack::Test::Methods
   include TestAdministerAccounts
   include TestCarousel
+  include TestEmail
   include TestLogin
   include TestMatchesAll
   include TestMatchesFilter

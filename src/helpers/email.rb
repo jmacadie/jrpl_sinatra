@@ -1,18 +1,27 @@
 module Email
   def send_email(subject, body, to = nil)
     config = App.settings.email
-    is_prod = App.settings.production?
-    params = {
-      to: get_to(to, config, is_prod),
-      subject: subject,
-      body: get_body(body, to, is_prod)
-    }
-    puts params
-    params = params.merge(get_transport(config))
+    env = App.settings.environment
+    sub_to = !(env == 'production' || env == 'test')
+    params = get_params(subject, body, to, config, sub_to, env)
+             .merge(get_transport(config))
     Pony.mail(params)
   end
 
   private
+
+  # rubocop:disable Metrics/ParameterLists
+  def get_params(subject, body, to, config, sub_to, env)
+    # rubocop:disable Layout/HashAlignment
+    {
+      to:      get_to(to, config, sub_to),
+      from:    config['from'],
+      subject: subject,
+      body:    get_body(body, to, env)
+    }
+    # rubocop:enable Layout/HashAlignment
+  end
+  # rubocop:enable Metrics/ParameterLists
 
   # rubocop:disable Metrics/MethodLength
   def get_transport(config)
@@ -34,19 +43,19 @@ module Email
   end
   # rubocop:enable Metrics/MethodLength
 
-  def get_body(body, to, is_prod)
-    if is_prod
+  def get_body(body, to, env)
+    if env == 'production'
       body
     else
       "App sending to: #{to}   \n#{body}"
     end
   end
 
-  def get_to(to, config, is_prod)
-    if is_prod
-      to.nil? ? config['default_to'] : to
-    else
+  def get_to(to, config, sub_to)
+    if sub_to
       config['sub_to']
+    else
+      to || config['default_to']
     end
   end
 end
