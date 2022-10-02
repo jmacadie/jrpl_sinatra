@@ -44,7 +44,7 @@ class App < Sinatra::Application
 
   post '/users/signin' do
     require_signed_out_user
-    session[:intended_route] = params['intended_route']
+    session[:intended_route] ||= params['intended_route'] || '/'
     user_name = extract_user_name(params[:login].strip)
     pword = params[:pword].strip
     if valid_credentials?(user_name, pword)
@@ -81,7 +81,7 @@ class App < Sinatra::Application
 
   post '/users/signup' do
     require_signed_out_user
-    session[:intended_route] = params[:intended_route]
+    session[:intended_route] ||= params['intended_route'] || '/'
     new_user_details = extract_user_details(params)
     session[:message] = signup_input_error(new_user_details)
     if session[:message].empty?
