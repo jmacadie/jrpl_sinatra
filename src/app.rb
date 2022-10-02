@@ -53,6 +53,10 @@ class App < Sinatra::Application
     end
   end
 
+  configure :development, :test do
+    set :session_secret, 'qwertyuiopasdfghjklzxcvbnm'
+  end
+
   configure :development, :test, :staging do
     Pony.subject_prefix("#{settings.environment.to_s.upcase}: ")
   end
