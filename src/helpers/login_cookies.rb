@@ -23,6 +23,8 @@ module LoginCookies
       cookies[:series_id],
       cookies[:token]
     )
+    cookies.delete(:series_id)
+    cookies.delete(:token)
   end
 
   def set_series_id_cookie
