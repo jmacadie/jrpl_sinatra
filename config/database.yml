@@ -14,7 +14,7 @@ test:
   password:
   database:
 
-Staging:
+staging:
   host:
   port:
   username:
