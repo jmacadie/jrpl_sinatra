@@ -26,5 +26,5 @@ To run the tests:
 To run rubocop (to check for coding style violations):
   - `$ rake rubocop`
 
-To run both tests and Rubocop, run the defailt rake task:
+To run both tests and Rubocop, run the default rake task:
   - `$ rake`
