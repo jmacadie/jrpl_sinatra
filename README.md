@@ -10,9 +10,8 @@ To run this application locally on your machine:
   - Copy the files into their own project directory
   - Install [Ruby and Budler](https://www.jetbrains.com/help/ruby/set-up-a-ruby-development-environment.html), if needed
   - Install [Postgres](https://www.postgresql.org/docs/14/install-binaries.html), if needed
-  - Open up a Command Line Interface application (e.g. iTerm, VSCode, SublimeText)
-  - Start the Postgres server: `sudo service postgresql start`
-  - Run the project with rake: `$ rake run[true]` (N.B. Need the gem rake installed first)
+  - Start the Postgres server: `$ sudo service postgresql start`
+  - Run the project with rake: `$ rake run[true]` (N.B. Need the gem `rake` installed first: `$ gem install rake`)
     - On subsequent runs only need `$ rake run`: the true paramenter tells rake to recreate the database
   - Open a browser and navigate to: http://localhost:9393
 
