@@ -5,7 +5,7 @@ require 'tempfile'
 
 Dir.glob('config/*.yml') do |filename|
     dest = filename.gsub('.yml','.sc')
-    FileUtils.cp_r(filename, dest)
+    FileUtils.cp(filename, dest)
     tmp = Tempfile.new('tmp.yml')
     File.open(filename, 'r') do |file|
         file.each_line do |line|
