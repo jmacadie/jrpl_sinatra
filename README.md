@@ -12,14 +12,8 @@ To run this application locally on your machine:
   - Install [Postgres](https://www.postgresql.org/docs/14/install-binaries.html), if needed
   - Open up a Command Line Interface application (e.g. iTerm, VSCode, SublimeText)
   - Start the Postgres server: `sudo service postgresql start`
-  - Navigate to the jrpl project directory
-  - Create the JPRL DB running the following queries:
-    - `$ psql -c "DROP DATABASE IF EXISTS jrpl_dev"`
-    - `$ psql -c "CREATE DATABASE jrpl_dev"`
-    - `$ psql -d jrpl_dev -f data/schema.sql`
-    - `$ psql -d jrpl_dev -f data/wc_2022_data.sql`
-  - Install any missing gems: `$ bundle install`
-  - Boot the server with: `$ shotgun`
+  - Run the project with rake: `$ rake run[true]` (N.B. Need the gem rake installed first)
+    - On subsequent runs only need `$ rake run`: the true paramenter tells rake to recreate the database
   - Open a browser and navigate to: http://localhost:9393
 
 Once you open the application:
@@ -27,9 +21,10 @@ Once you open the application:
   - Non-administrator user is 'Clare Mac', password 'a'
 
 To run the tests:
-  - Open a separate CLI
-  - Navigate to the jrpl project directory
-  - Run: $ ruby test/jrpl_test.rb
+  - `$ rake test`
 
 To run rubocop (to check for coding style violations):
-  - Run: $ rubocop filename.rb
+  - `$ rake rubocop`
+
+To run both tests and Rubocop, run the defailt rake task:
+  - `$ rake`

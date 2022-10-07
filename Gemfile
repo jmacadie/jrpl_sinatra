@@ -10,7 +10,9 @@ gem 'sinatra-contrib'
 gem 'yaml'
 
 group :development do
+  gem 'open3'
   gem 'pry'
+  gem 'rake'
   gem 'shotgun'
 end
 
