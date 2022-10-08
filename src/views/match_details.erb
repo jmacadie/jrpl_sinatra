@@ -42,7 +42,7 @@
           type="number" 
           min="0"
           id="home_pts" 
-          value="<%== home_team_points(@match) %>"
+          value="<%== home_team_score(@match) %>"
           name="home_pts"
         />
       </label>
@@ -51,7 +51,7 @@
           type="number" 
           min="0"
           id="away_pts" 
-          value="<%== away_team_points(@match) %>"
+          value="<%== away_team_score(@match) %>"
           name="away_pts"
         />
       </label>
@@ -59,8 +59,8 @@
       <button type="submit">Add/Change match result</button>
     </form>
   <% else %>
-    <p><%== home_team_name(@match) %>: <%== home_team_points(@match) %></p>
-    <p><%== away_team_name(@match) %>: <%== away_team_points(@match) %></p>
+    <p><%== home_team_name(@match) %>: <%== home_team_score(@match) %></p>
+    <p><%== away_team_name(@match) %>: <%== away_team_score(@match) %></p>
   <% end %>
 <% end %>
 

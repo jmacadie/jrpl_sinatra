@@ -1,3 +1,177 @@
-h1 {
-  color: dodgerblue;
+/*
+ * Layout
+ */
+
+.dropdown-menu > li > form {
+  padding-left: 15px;
+}
+
+.container {
+  margin-top: 70px;
+}
+
+/*
+ * Fixtures page
+ */
+
+.matchRow a .row,
+.matchRow a .row * {
+  text-decoration: none;
+}
+.matchRow a .matchText,
+.matchRow a .matchText * {
+  color: #000;
+}
+.matchRow  .col-xs-1{
+  padding: 0;
+}
+.matchRow {
+  padding-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*
+ * Flags
+ */
+ 
+.team-flag {
+  width: 54px;
+  height: 57px;
+  background-size: 648px 171px;
+  vertical-align: middle;
+}
+
+[class*=" flag-"],[class^=flag-] {
+    display: inline-block;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-image: url("/img/wc_flags_sprite_small.jpg");
+}
+
+.flag-ARG {
+    background-position: 0 0
+}
+
+.flag-AUS {
+    background-position: 9.1% 0
+}
+
+.flag-BEL {
+    background-position: 18.2% 0
+}
+
+.flag-BRA {
+    background-position: 27.3% 0
+}
+
+.flag-CAM {
+    background-position: 36.4% 0
+}
+
+.flag-CAN {
+    background-position: 45.5% 0
+}
+
+.flag-CRC {
+    background-position: 54.5% 0
+}
+
+.flag-CRO {
+    background-position: 63.6% 0
+}
+
+.flag-DEN {
+    background-position: 72.7% 0
+}
+
+.flag-ECU {
+    background-position: 81.8% 0
+}
+
+.flag-ENG {
+    background-position: 90.9% 0
+}
+
+.flag-FRA {
+    background-position: 100% 0
+}
+
+.flag-GER {
+    background-position: 0 50%
+}
+
+.flag-GHA {
+    background-position: 9.1% 50%
+}
+
+.flag-IRN {
+    background-position: 18.2% 50%
+}
+
+.flag-JPN {
+    background-position: 27.3% 50%
+}
+
+.flag-MEX {
+    background-position: 36.4% 50%
+}
+
+.flag-MAR {
+    background-position: 45.5% 50%
+}
+
+.flag-NED {
+    background-position: 54.5% 50%
+}
+
+.flag-POL {
+    background-position: 63.6% 50%
+}
+
+.flag-POR {
+    background-position: 72.7% 50%
+}
+
+.flag-QAT {
+    background-position: 81.8% 50%
+}
+
+.flag-KSA {
+    background-position: 90.9% 50%
+}
+
+.flag-SEN {
+    background-position: 100% 50%
+}
+
+.flag-SRB {
+    background-position: 18.2% 100%
+}
+
+.flag-KOR {
+    background-position: 27.3% 100%
+}
+
+.flag-ESP {
+    background-position: 36.4% 100%
+}
+
+.flag-SUI {
+    background-position: 45.5% 100%
+}
+
+.flag-TUN {
+    background-position: 54.5% 100%
+}
+
+.flag-USA {
+    background-position: 63.6% 100%
+}
+
+.flag-URU {
+    background-position: 72.7% 100%
+}
+
+.flag-WAL {
+    background-position: 81.8% 100%
 }

@@ -3,6 +3,7 @@ ENV['APP_ENV'] = 'test'
 require 'minitest/autorun'
 require 'rack/test'
 require 'simplecov'
+require 'stringio'
 
 require_relative '../src/app'
 require_relative 'jrpl_test_administer_accounts'
@@ -50,6 +51,13 @@ class CMSTest < Minitest::Test
 
   def session
     last_request.env['rack.session']
+  end
+
+  def body_text
+    last_response.body
+      .gsub(/\s/, ' ')
+      .gsub(/<[^>]*>/, ' ')
+      .squeeze(' ')
   end
 
   def admin_session
@@ -152,26 +160,26 @@ class CMSTest < Minitest::Test
     get '/'
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_includes last_response.body, 'Julian Rimet Prediction League'
-    refute_includes last_response.body, 'Administer account'
-    refute_includes last_response.body, 'Administer users'
+    assert_includes body_text, 'JRPL'
+    refute_includes body_text, 'Edit Details'
+    refute_includes body_text, 'Admin'
   end
 
   def test_homepage_signed_in
     get '/', {}, user_11_session
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_includes last_response.body, 'Julian Rimet Prediction League'
-    assert_includes last_response.body, 'Administer account'
-    refute_includes last_response.body, 'Administer users'
+    assert_includes body_text, 'JRPL'
+    assert_includes body_text, 'Edit Details'
+    refute_includes body_text, 'Admin'
   end
 
   def test_homepage_signed_in_admin
     get '/', {}, admin_session
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_includes last_response.body, 'Julian Rimet Prediction League'
-    assert_includes last_response.body, 'Administer account'
-    assert_includes last_response.body, 'Administer users'
+    assert_includes body_text, 'JRPL'
+    assert_includes body_text, 'Edit Details'
+    assert_includes body_text, 'Admin'
   end
 end

@@ -21,7 +21,7 @@ module TestLogin
     assert_equal 'Maccas', session[:user_name]
 
     get last_response['Location']
-    assert_includes last_response.body, 'Signed in as Maccas.'
+    assert_includes body_text, 'Signed in as Maccas'
   end
 
   def test_signin_already_signed_in
@@ -37,7 +37,7 @@ module TestLogin
     assert_equal 'Maccas', session[:user_name]
 
     get last_response['Location']
-    assert_includes last_response.body, 'Signed in as Maccas.'
+    assert_includes body_text, 'Signed in as Maccas'
   end
 
   def test_signin_with_bad_credentials
@@ -85,7 +85,7 @@ module TestLogin
     assert_equal 'Your account has been created.', session[:message]
 
     get '/'
-    assert_includes last_response.body, 'Signed in as joe.'
+    assert_includes body_text, 'Signed in as joe'
   end
 
   def test_signup_signed_out_strip_input
@@ -96,7 +96,7 @@ module TestLogin
     assert_equal 'Your account has been created.', session[:message]
 
     get '/'
-    assert_includes last_response.body, 'Signed in as joe.'
+    assert_includes body_text, 'Signed in as joe'
   end
 
   def test_signup_signed_in

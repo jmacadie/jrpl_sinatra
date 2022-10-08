@@ -25,7 +25,7 @@ module TestUserAccount
     assert_equal 'The following have been updated: username.', session[:message]
 
     get '/'
-    assert_includes last_response.body, 'Signed in as joe.'
+    assert_includes body_text, 'Signed in as joe'
   end
 
   def test_change_username_strip_input
@@ -36,7 +36,8 @@ module TestUserAccount
     assert_equal 'The following have been updated: username.', session[:message]
 
     get '/'
-    assert_includes last_response.body, 'Signed in as joe.'
+    assert_includes body_text, 'Signed in as joe'
+    #assert_includes last_response.body, 'Signed in as joe.'
   end
 
   def test_change_username_to_blank
@@ -178,7 +179,7 @@ module TestUserAccount
     assert_equal 'The following have been updated: email.', session[:message]
 
     get '/'
-    assert_includes last_response.body, 'Signed in as Clare Mac.'
+    assert_includes body_text, 'Signed in as Clare Mac'
   end
 
   def test_change_invalid_email
@@ -213,7 +214,7 @@ module TestUserAccount
                  session[:message]
 
     get '/'
-    assert_includes last_response.body, 'Signed in as joe.'
+    assert_includes body_text, 'Signed in as joe'
   end
 
   def test_change_username_pword_and_email

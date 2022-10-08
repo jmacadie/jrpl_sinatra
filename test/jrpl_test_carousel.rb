@@ -13,7 +13,7 @@ module TestCarousel
     assert_includes last_response.body, '<a href="/match/1">Next match'
   end
 
-  def test_carousel_not_predicted_group_stages
+  def test_carousel_not_predicted_group_stages_2
     get '/match/48', {}, user_11_session_not_predicted_group_stages_criteria
 
     assert_includes last_response.body, '<a href="/match/47">Previous match'

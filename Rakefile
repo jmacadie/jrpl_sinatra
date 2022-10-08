@@ -21,8 +21,15 @@ task :run, :clean do |t, args|
   sh "bundle install"
   if args[:clean]
     Rake::Task["db:build"].invoke('jrpl_dev')
+    Rake::Task["db:seed"].invoke('jrpl_dev')
   end
   sh "shotgun"
+end
+
+task :run_test do
+  Rake::Task["db:build"].invoke('jrpl_test')
+  Rake::Task["db:seed"].invoke('jrpl_test', 'test/test_data.sql')
+  sh "APP_ENV=test shotgun"
 end
 
 namespace :db do
@@ -32,7 +39,11 @@ namespace :db do
     shell "psql -c \"DROP DATABASE IF EXISTS #{args[:db_name]};\""
     shell "psql -c \"CREATE DATABASE #{args[:db_name]};\""
     shell "psql -d #{args[:db_name]} -f 'data/schema.sql';"
-    shell "psql -d #{args[:db_name]} -f 'data/wc_2022_data.sql';"
+  end
+
+  task :seed, [:db_name, :data_file] do |t, args|
+    args.with_defaults(:data_file => 'data/wc_2022_data.sql')
+    shell "psql -d #{args[:db_name]} -f #{args[:data_file]};"
   end
 end
 
