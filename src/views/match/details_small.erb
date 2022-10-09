@@ -1,0 +1,86 @@
+<!-- Layout for phones -->
+<div class="row visible-xs text-left small-match-row">
+  <div class="small-match-row">
+    <div class="col-xs-2">
+      <span class="team-flag flag-<%== @match[:home_team_short_name] %>"></span>
+    </div>
+    <div class="col-xs-6"><%== home_team_name(@match) %></div>
+    <div class="col-xs-4" id="homeTeamPointsXS"><%== home_team_score(@match) %></div>
+  </div>
+</div>
+<% if knockout?(@match) %>
+<div class="row visible-xs text-left">
+  <div class="col-xs-2">
+    <button id="btnHomeOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+  </div>
+</div>
+<div class="row visible-xs text-left">
+  <div class="col-xs-12">
+    <div id="homeOriginXS" class="panel panel-default" style="display: none;">
+      <div class="panel-body">
+      <a href="../match/?id=&ring=">
+      <div class="row text-center"><p>
+        <div class="col-xs-12"></div>
+      </p></div>
+      <small>
+        <div class="row"><p>
+          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
+          <div class="col-xs-6"></div>
+          <div class="col-xs-3"></div>
+        </p></div>
+        <div class="row"><p>
+          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
+          <div class="col-xs-6"></div>
+          <div class="col-xs-3"></div>
+        </p></div>
+      </small>
+      </a>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+<div class="row visible-xs text-left">
+  <div class="col-xs-6 col-xs-offset-2"><small>vs.</small></div>
+</div>
+<div class="row visible-xs text-left">
+  <div class="small-match-row">
+    <div class="col-xs-2">
+      <span class="team-flag flag-<%== @match[:away_team_short_name] %>"></span>
+    </div>
+    <div class="col-xs-6"><%== away_team_name(@match) %></div>
+    <div class="col-xs-4" id="awayTeamPointsXS"><%== away_team_score(@match) %></div>
+  </div>
+</div>
+<% if knockout?(@match) %>
+<div class="row visible-xs text-left">
+  <div class="col-xs-2">
+    <button id="btnAwayOriginXS" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+  </div>
+</div>
+<div class="row visible-xs text-left">
+  <div class="col-xs-12">
+    <div id="awayOriginXS" class="panel panel-default" style="display: none;">
+      <div class="panel-body">
+      <a href="../match/?id=&ring=">
+      <div class="row text-center"><p>
+        <div class="col-xs-12"></div>
+      </p></div>
+      <small>
+        <div class="row"><p>
+          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
+          <div class="col-xs-6"></div>
+          <div class="col-xs-3"></div>
+        </p></div>
+        <div class="row"><p>
+          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
+          <div class="col-xs-6"></div>
+          <div class="col-xs-3"></div>
+        </div>
+      </small>
+      </a>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div>

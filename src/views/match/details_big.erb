@@ -1,0 +1,81 @@
+<!-- Layout for tablets and bigger -->
+<div class="row hidden-xs">
+  <div class="col-sm-2 text-center">
+    <span class="team-flag flag-<%== @match[:home_team_short_name] %>"></span>
+  </div>
+  <div class="col-sm-2 text-right">
+    <span class="lead"><%== home_team_name(@match) %></span>
+    <% if knockout?(@match) %>
+    <br />
+    <button id="btnHomeOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+    <% end %>
+  </div>
+  <div class="col-sm-1 text-center lead">
+    <b><span id="homeTeamPoints"><%== home_team_score(@match) %></span></b>
+  </div>
+  <div class="col-sm-2 text-center">vs.</div>
+  <div class="col-sm-1 text-center lead">
+    <b><span id="awayTeamPoints"><%== away_team_score(@match) %></span></b>
+  </div>
+  <div class="col-sm-2 text-left lead">
+    <span class="lead"><%== away_team_name(@match) %></span>
+    <% if knockout?(@match) %>
+    <br />
+    <button id="btnAwayOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
+    <% end %>
+  </div>
+  <div class="col-sm-2 text-center">
+    <span class="team-flag flag-<%== @match[:away_team_short_name] %>"></span>
+  </div>
+</div><!-- /row (match result) -->
+<% if knockout?(@match) %>
+<!-- Team origin details for tablets and bigger -->
+<div class="row hidden-xs text-left">
+  <div class="col-sm-5">
+    <div id="homeOrigin" class="panel panel-default" style="display: none;">
+      <div class="panel-body">
+      <a href="../match/?id=&ring=">
+      <div class="row text-center"><p>
+        <div class="col-xs-12"></div>
+      </p></div>
+      <small>
+        <div class="row"><p>
+          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
+          <div class="col-xs-6"></div>
+          <div class="col-xs-3 text-left"></div>
+        </p></div>
+        <div class="row"><p>
+          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
+          <div class="col-xs-6"></div>
+          <div class="col-xs-3"></div>
+        </p></div>
+      </small>
+      </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-5 col-sm-offset-2">
+    <div id="awayOrigin" class="panel panel-default" style="display: none;">
+      <div class="panel-body">
+      <a href="../match/?id=&ring=">
+      <div class="row text-center"><p>
+        <div class="col-xs-12"></div>
+      </p></div>
+      <small>
+        <div class="row"><p>
+          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
+          <div class="col-xs-6"></div>
+          <div class="col-xs-3"></div>
+        </p></div>
+        <div class="row"><p>
+          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
+          <div class="col-xs-6"></div>
+          <div class="col-xs-3"></div>
+        </p></div>
+      </small>
+      </a>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,109 @@
+<!-- User prediction section -->
+<h4 class="form-heading">Your Prediction</h4>
+<% if @match[:locked_down] %>
+<p>
+  <em>Match locked down. No more updates to predictions possible</em>
+</p>
+<% end %>
+<!-- Layout for tablets and bigger -->
+<form class="hidden-xs" role="form" action="/match/add_prediction" method="post">
+  <fieldset <%== 'disabled' if @match[:locked_down] %>>
+    <div class="row form-group">
+      <div class="col-sm-4 text-right">
+        <label for="home_team_prediction"><%== home_team_name(@match) %></label>
+      </div>
+      <div class="col-sm-2">
+        <input
+          type="number"
+          min="0"
+          class="form-control"
+          id="home_team_prediction"
+          name="home_team_prediction"
+          value="<%== home_team_prediction(@match) %>">
+      </div>
+      <div class="col-sm-2">
+        <input
+          type="number"
+          min="0"
+          class="form-control"
+          id="away_team_prediction"
+          name="away_team_prediction"
+          value="<%== away_team_prediction(@match) %>">
+      </div>
+      <div class="col-sm-4 text-left">
+        <label for="away_team_prediction"><%== away_team_name(@match) %></label>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-sm-6 text-center">
+        <button
+          class="btn btn-sm btn-primary"
+          type="submit"
+          id="btn_submit_pred">
+            Submit
+          </button>
+      </div>
+      <div class="col-sm-6 text-center">
+        <button
+          class="btn btn-sm btn-success"
+          type="submit"
+          id="btn_submit_pred_next">
+            Submit &amp; Move Next
+        </button>
+      </div>
+    </div>
+    <input type="hidden" name="next" value="false">
+    <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
+  </fieldset>
+</form>
+<!-- Layout for phones -->
+<form class="form-horizontal visible-xs" role="form" action="/match/add_prediction" method="post">
+  <fieldset <%== 'disabled' if @match[:locked_down] %>>
+    <div class="form-group">
+      <label for="home_team_prediction_s" class="col-xs-8 control-label"><%== home_team_name(@match) %></label>
+      <div class="col-xs-4">
+        <input
+          type="number"
+          min="0"
+          class="form-control"
+          id="home_team_prediction_s"
+          name="home_team_prediction"
+          value="<%== home_team_prediction(@match) %>">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="away_team_prediction_s" class="col-xs-8 control-label"><%== away_team_name(@match) %></label>
+      <div class="col-xs-4">
+        <input
+          type="number"
+          min="0"
+          class="form-control"
+          id="away_team_prediction_s"
+          name="away_team_prediction"
+          value="<%== away_team_prediction(@match) %>">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6">
+        <button
+          class="btn btn-sm btn-primary"
+          type="submit"
+          id="btn_submit_pred_s">
+            Submit
+        </button>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6">
+        <button
+          class="btn btn-sm btn-success"
+          type="submit"
+          id="btn_submit_pred_next_s">
+            Submit &amp; Move Next
+        </button>
+      </div>
+    </div>
+    <input type="hidden" name="next" value="true">
+    <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
+  </fieldset>
+</form>

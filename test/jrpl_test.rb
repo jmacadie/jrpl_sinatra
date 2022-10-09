@@ -53,6 +53,12 @@ class CMSTest < Minitest::Test
     last_request.env['rack.session']
   end
 
+  def body_html
+    last_response.body
+      .gsub(/\s/, ' ')
+      .squeeze(' ')
+  end
+
   def body_text
     last_response.body
       .gsub(/\s/, ' ')

@@ -1,0 +1,13 @@
+<%== erb :'match/navigation', :layout => false %>
+<%== erb :'match/details', :layout => false %>
+<% if @match[:locked_down] && session[:user_roles]&.include?('Admin') %>
+  <hr />
+  <%== erb :'match/post_result', :layout => false %>
+<% end %>
+<hr />
+<%== erb :'match/prediction', :layout => false %>
+<% if @match[:locked_down] %>
+  <hr />
+  <%== erb :'match/predictions', :layout => false %>
+<% end %>
+<%== erb :'match/navigation', :layout => false %>

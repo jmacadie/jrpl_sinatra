@@ -12,6 +12,10 @@ module ViewHelpers
       !match[:away_team_prediction].nil?
   end
 
+  def knockout?(match)
+    match[:stage] != 'Group Stages'
+  end
+
   def home_team_prediction(match)
     match[:home_team_prediction] || 'no prediction'
   end
@@ -69,7 +73,8 @@ module ViewHelpers
     end
   end
 
-  def date_for_print(dt)
+  def date_for_print(match)
+    dt = match[:match_date]
     Date.parse(dt).strftime('%A, %-d %B')
   end
 

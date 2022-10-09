@@ -31,6 +31,15 @@
 }
 
 /*
+ * Match page
+ */
+
+.small-match-row {
+  display: flex;
+  align-items: center;
+}
+
+/*
  * Flags
  */
  

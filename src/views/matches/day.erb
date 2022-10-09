@@ -1,4 +1,4 @@
-<h2><%== date_for_print(@day) %></h2>
+<h2><%== date_for_print({ :match_date => @day}) %></h2>
 <% @day_matches.each do |m| %>
   <% @match = m %>
   <%== erb :'matches/match', :layout => false %>

@@ -1,0 +1,12 @@
+<h3>
+  <%== @match[:stage] %><br />
+  <%== date_for_print(@match) %><br />
+  <%== kick_off_for_print(@match) %><br />
+  <small>
+    <%== @match[:venue] %><br />
+    <%== @match[:broadcaster] %>
+  </small>
+</h3>
+  <%== erb :'match/details_big', :layout => false %>
+  <%== erb :'match/details_small', :layout => false %>
+</h3>

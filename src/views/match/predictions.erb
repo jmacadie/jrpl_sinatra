@@ -1,0 +1,11 @@
+<!-- All predictions section -->
+<h4 class="form-heading">All Predictions</h4>
+<% if !@match[:locked_down] %>
+<p>
+  <em>Match not yet locked down. Come back when it is...</em>
+</p>
+<% else %>
+  <%== erb :'match/predictions_graph', :layout => false %>
+  <hr />
+  <%== erb :'match/predictions_table', :layout => false %>
+<% end %>
