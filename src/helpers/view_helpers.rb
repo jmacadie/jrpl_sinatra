@@ -82,4 +82,23 @@ module ViewHelpers
     t = match[:kick_off]
     Time.parse(t).strftime('%k:%M')
   end
+
+  # rubocop:disable Metrics/MethodLength
+  def page
+    case request.path_info
+    when %r(^/matches)
+      "matches"
+    when %r(^/match)
+      "match"
+    when %r(^/users)
+      "users"
+    when %r(^/scoreboard)
+      "tables"
+    when %r(^/graphs)
+      "graphs"
+    else
+      ""
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
 end
