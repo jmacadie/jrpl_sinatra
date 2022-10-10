@@ -44,13 +44,44 @@ class DatabasePersistence
     str ? str.to_i : nil
   end
 
-  def query(statement, *params)
+  def convert_date(p)
+    Date.parse(p.to_s).strftime('%Y-%m-%d')
+  rescue Date::Error
+    ''
+  end
+
+  def convert_time(p)
+    DateTime.parse(p.to_s).strftime('%H:%M:%S')
+  rescue Date::Error
+    ''
+  end
+
+  def convert_param(p)
+    p_int = p.to_s
+    p_text = "'#{p}'"
+    p_date = "'#{convert_date(p)}'"
+    p_time = "'#{convert_time(p)}'"
+    [p_int, p_text, p_date, p_time]
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  def get_sql(statement, params)
     sql = statement
-          .gsub("\n", " ")
-          .gsub("\r", " ")
-          .gsub("\t", " ")
-          .squeeze(" ")
-    @logger.info "\n#{sql}\n#{params}"
+    params.each_with_index do |p, i|
+      formatted_param = convert_param(p)
+      sql = sql.gsub("\$#{i + 1}::int",  formatted_param[0])
+      sql = sql.gsub("\$#{i + 1}::text", formatted_param[1])
+      sql = sql.gsub("\$#{i + 1}::date", formatted_param[1])
+      sql = sql.gsub("\$#{i + 1}::time", formatted_param[1])
+      sql = sql.gsub("\$#{i + 1}",       p.to_s)
+    end
+    sql
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  def query(statement, *params)
+    sql = get_sql(statement, params)
+    @logger.info "\n#{sql}"
     @db.exec_params(statement, params)
   end
 end

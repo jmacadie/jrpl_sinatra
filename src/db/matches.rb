@@ -99,6 +99,9 @@ module DBPersMatches
     end
   end
 
+  # SQL builders
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   def construct_all_matches_query
     [
       select_match_details_clause(),
@@ -106,7 +109,7 @@ module DBPersMatches
       from_match_details_clause(),
       predictions_for_single_user_single_or_all_matches_clause(),
       order_clause()
-    ].join(' ')
+    ].join()
   end
 
   def construct_filter_matches_details_query(criteria)
@@ -114,12 +117,12 @@ module DBPersMatches
       select_match_details_clause(),
       from_match_details_clause(),
       predictions_for_single_user_filter_clause(),
-      'WHERE',
+      "WHERE\n",
       lockdown_clause(criteria[:match_status]),
       tournament_stages_clause(),
       predictions_clause(criteria[:prediction_status]),
       order_clause()
-    ].join(' ')
+    ].join()
   end
 
   def construct_filter_matches_list_query(criteria)
@@ -127,12 +130,12 @@ module DBPersMatches
       select_match_id_clause(),
       from_match_details_clause(),
       predictions_for_single_user_filter_clause(),
-      'WHERE',
+      "WHERE\n",
       lockdown_clause(criteria[:match_status]),
       tournament_stages_clause(),
       predictions_clause(criteria[:prediction_status]),
       order_clause()
-    ].join(' ')
+    ].join()
   end
 
   def construct_single_match_query
@@ -143,69 +146,23 @@ module DBPersMatches
       predictions_for_single_user_single_or_all_matches_clause(),
       where_single_match_clause(),
       order_clause()
-    ].join(' ')
+    ].join()
   end
 
-  def from_match_details_clause
-    <<~SQL
-    FROM match
-      INNER JOIN tournament_role AS home_tr ON match.home_team_id = home_tr.tournament_role_id
-      INNER JOIN tournament_role AS away_tr ON match.away_team_id = away_tr.tournament_role_id
-      LEFT OUTER JOIN team AS home_team ON home_tr.team_id = home_team.team_id
-      LEFT OUTER JOIN team AS away_team ON away_tr.team_id = away_team.team_id
-      INNER JOIN venue ON match.venue_id = venue.venue_id
-      INNER JOIN stage ON match.stage_id = stage.stage_id
-      INNER JOIN broadcaster ON match.broadcaster_id = broadcaster.broadcaster_id
-    SQL
-  end
-
-  def lockdown_clause(match_status)
-    case match_status
-    when 'locked_down'
-      '(date < $1::date OR (date = $1::date AND kick_off < $2::time))'
-    when 'not_locked_down'
-      '(date > $1::date OR (date = $1::date AND kick_off >= $2::time))'
-    else
-      '$1 != $2'
-    end
-  end
+  # Standalone SQL
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   def match_result_query
     'SELECT home_team_points, away_team_points FROM match WHERE match_id = $1;'
   end
 
-  def order_clause
-    'ORDER BY match.date, match.kick_off, match.match_id;'
-  end
+  # SELECT clauses
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  def predictions_clause(prediction_status)
-    case prediction_status
-    when 'predicted'
-      'AND (predictions.match_id IS NOT NULL)'
-    when 'not_predicted'
-      'AND (predictions.match_id IS NULL)'
-    else
-      ''
-    end
-  end
-
-  def predictions_for_single_user_filter_clause
+  def select_match_id_clause
     <<~SQL
-      LEFT OUTER JOIN
-        (SELECT prediction.match_id, prediction.home_team_points, prediction.away_team_points
-          FROM prediction
-          WHERE prediction.user_id = $9)
-      AS predictions ON predictions.match_id = match.match_id
-    SQL
-  end
-
-  def predictions_for_single_user_single_or_all_matches_clause
-    <<~SQL
-      LEFT OUTER JOIN
-        (SELECT prediction.match_id, prediction.home_team_points, prediction.away_team_points
-          FROM prediction
-          WHERE prediction.user_id = $1)
-      AS predictions ON predictions.match_id = match.match_id
+    SELECT
+      match.match_id
     SQL
   end
 
@@ -231,19 +188,116 @@ module DBPersMatches
     SQL
   end
 
-  def select_match_id_clause
-    'SELECT match.match_id'
+  def select_user_predictions_clause
+    <<-SQL
+  , predictions.home_team_points AS home_team_prediction,
+  predictions.away_team_points AS away_team_prediction
+    SQL
   end
 
-  def select_user_predictions_clause
+  # FROM clauses
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  def from_match_details_clause
     <<~SQL
-      , predictions.home_team_points AS home_team_prediction,
-      predictions.away_team_points AS away_team_prediction
+    FROM match
+      INNER JOIN tournament_role AS home_tr ON match.home_team_id = home_tr.tournament_role_id
+      INNER JOIN tournament_role AS away_tr ON match.away_team_id = away_tr.tournament_role_id
+      LEFT OUTER JOIN team AS home_team ON home_tr.team_id = home_team.team_id
+      LEFT OUTER JOIN team AS away_team ON away_tr.team_id = away_team.team_id
+      INNER JOIN venue ON match.venue_id = venue.venue_id
+      INNER JOIN stage ON match.stage_id = stage.stage_id
+      INNER JOIN broadcaster ON match.broadcaster_id = broadcaster.broadcaster_id
+    SQL
+  end
+
+  def predictions_for_single_user_filter_clause
+    <<-SQL
+  LEFT OUTER JOIN
+    (SELECT
+        prediction.match_id,
+        prediction.home_team_points,
+        prediction.away_team_points
+      FROM prediction
+      WHERE prediction.user_id = $9::int)
+      AS predictions ON predictions.match_id = match.match_id
+    SQL
+  end
+
+  def predictions_for_single_user_single_or_all_matches_clause
+    <<-SQL
+  LEFT OUTER JOIN
+    (SELECT
+        prediction.match_id,
+        prediction.home_team_points,
+        prediction.away_team_points
+      FROM prediction
+      WHERE prediction.user_id = $1::int)
+      AS predictions ON predictions.match_id = match.match_id
+    SQL
+  end
+
+  # WHERE clauses
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  def where_single_match_clause
+    <<~SQL
+    WHERE match.match_id = $2
     SQL
   end
 
   def tournament_stages_clause
-    'AND (stage.name IN ($3, $4, $5, $6, $7, $8))'
+    <<-SQL
+  AND (stage.name IN ($3::text, $4::text, $5::text, $6::text, $7::text, $8::text))
+    SQL
+  end
+
+  # rubocop:disable Metrics/MethodLength
+  def lockdown_clause(match_status)
+    case match_status
+    when 'locked_down'
+      <<-SQL
+  (date < $1::date OR (date = $1::date AND kick_off < $2::time))
+      SQL
+    when 'not_locked_down'
+      <<-SQL
+  (date > $1::date OR (date = $1::date AND kick_off >= $2::time))
+      SQL
+    else
+      <<-SQL
+  ($1 != $2) -- all locked down statuses: always true!
+      SQL
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  # rubocop:disable Metrics/MethodLength
+  def predictions_clause(prediction_status)
+    case prediction_status
+    when 'predicted'
+      <<-SQL
+  AND (predictions.match_id IS NOT NULL)
+      SQL
+    when 'not_predicted'
+      <<-SQL
+  AND (predictions.match_id IS NULL)
+      SQL
+    else
+      ''
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  # ORDER BY clauses
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  def order_clause
+    <<~SQL
+    ORDER BY
+      match.date,
+      match.kick_off,
+      match.match_id;
+    SQL
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -269,18 +323,14 @@ module DBPersMatches
 
   def update_match_table_query
     <<~SQL
-      UPDATE match
-      SET
-        home_team_points = $1,
-        away_team_points = $2,
-        result_posted_by = $3,
-        result_posted_on = $4
-      WHERE match_id = $5;
+    UPDATE match
+    SET
+      home_team_points = $1,
+      away_team_points = $2,
+      result_posted_by = $3,
+      result_posted_on = $4
+    WHERE match_id = $5;
     SQL
-  end
-
-  def where_single_match_clause
-    'WHERE match.match_id = $2'
   end
 end
 # rubocop:enable Metrics/ModuleLength
