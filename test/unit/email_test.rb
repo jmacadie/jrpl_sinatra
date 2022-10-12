@@ -1,6 +1,7 @@
-module TestEmail
+require_relative '../helpers/test_helpers'
+require "#{App.settings.src}/helpers/email"
 
-  require_relative '../src/helpers/email'
+class CMSTest < Minitest::Test
   include Email
 
   def test_email

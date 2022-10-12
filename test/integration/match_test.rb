@@ -1,6 +1,10 @@
-module TestViewMatch
+require_relative '../helpers/test_helpers'
+
+class CMSTest < Minitest::Test
+  include TestIntegrationMethods
+
   def test_carousel
-    get '/match/1', {}, user_11_session
+    get '/match/1', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -9,7 +13,7 @@ module TestViewMatch
   end
 
   def test_carousel_below_minimum
-    get '/match/2', {}, user_11_session
+    get '/match/2', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -18,7 +22,7 @@ module TestViewMatch
   end
 
   def test_carousel_above_maximum
-    get '/match/64', {}, user_11_session
+    get '/match/64', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -27,7 +31,7 @@ module TestViewMatch
   end
 
   def test_view_match_not_lockdown_no_pred_not_admin
-    get '/match/64', {}, user_11_session
+    get '/match/64', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -73,7 +77,7 @@ module TestViewMatch
   end
 
   def test_view_match_not_lockdown_prediction_not_admin
-    get '/match/11', {}, user_11_session
+    get '/match/11', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -119,7 +123,7 @@ module TestViewMatch
   end
 
   def test_view_match_lockdown_no_pred_no_result_not_admin
-    get '/match/3', {}, user_11_session
+    get '/match/3', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -165,7 +169,7 @@ module TestViewMatch
   end
 
   def test_view_match_lockdown_prediction_no_result_not_admin
-    get '/match/6', {}, user_11_session
+    get '/match/6', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -211,7 +215,7 @@ module TestViewMatch
   end
 
   def test_view_match_lockdown_no_pred_result_not_admin
-    get '/match/1', {}, user_11_session
+    get '/match/1', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -257,7 +261,7 @@ module TestViewMatch
   end
 
   def test_view_match_lockdown_prediction_result_not_admin
-    get '/match/8', {}, user_11_session
+    get '/match/8', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -303,7 +307,7 @@ module TestViewMatch
   end
 
   def test_view_single_match_signed_in
-    get '/match/11', {}, user_11_session
+    get '/match/11', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -313,7 +317,7 @@ module TestViewMatch
   end
 
   def test_view_single_match_signed_in_tournament_role
-    get '/match/64', {}, user_11_session
+    get '/match/64', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']

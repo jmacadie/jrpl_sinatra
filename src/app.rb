@@ -42,6 +42,7 @@ class App < Sinatra::Application
     set :public_folder , "#{settings.root}/public"
     set :config        , "#{settings.root}/config"
     set :views         , "#{settings.src}/views"
+    set :tests         , "#{settings.root}/test"
 
     dbconf = YAML.load_file("#{settings.config}/database.yml")
     set :dbconf        , dbconf[settings.environment]

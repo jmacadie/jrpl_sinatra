@@ -26,7 +26,7 @@ fi
 # Run test suite
 echo -e "\nRunning Tests"
 echo "---------------------------------------------------------"
-ruby test/jrpl_test.rb
+rake test
 RET=$?
 if [[ $RET -ne 0 ]]; then
   echo "Unable to commit. Some tests not passed"

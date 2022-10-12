@@ -7,7 +7,7 @@ desc 'Run all tests and Rubocop'
 task default: [:test, :rubocop]
 
 Rake::TestTask.new do |t|
-  t.test_files = FileList['test/jrpl_test.rb']
+  t.test_files = FileList['test/**/*_test.rb']
 end
 
 RuboCop::RakeTask.new(:rubocop) do |t|

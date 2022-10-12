@@ -1,6 +1,8 @@
-# Signup and Signin functionality
+require_relative '../helpers/test_helpers'
 
-module TestLogin
+class CMSTest < Minitest::Test
+  include TestIntegrationMethods
+
   def test_signin_form
     get '/users/signin'
     assert_equal 200, last_response.status
@@ -9,7 +11,7 @@ module TestLogin
   end
 
   def test_signin_form_already_signed_in
-    get '/users/signin', {}, user_11_session
+    get '/users/signin', {}, non_admin_session
     assert_equal 302, last_response.status
     assert_equal 'You must be signed out to do that.', session[:message]
   end
@@ -25,7 +27,7 @@ module TestLogin
   end
 
   def test_signin_already_signed_in
-    post '/users/signin', { login: 'Maccas', pword: 'a' }, user_11_session
+    post '/users/signin', { login: 'Maccas', pword: 'a' }, non_admin_session
     assert_equal 302, last_response.status
     assert_equal 'You must be signed out to do that.', session[:message]
   end
