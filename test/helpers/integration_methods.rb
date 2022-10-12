@@ -13,7 +13,7 @@ module TestIntegrationMethods
   end
 
   def refresh_test_db
-    sql = File.read("#{App.settings.tests}/helpers/test_data.sql")
+    sql = File.read("#{App.settings.root}/data/test_data.sql")
     $stderr.reopen("/dev/null", "w")
     $stderr.sync = true
     PG.connect(dbname: App.settings.dbconf['database']).exec(sql)
