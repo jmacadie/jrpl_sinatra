@@ -190,7 +190,8 @@ module DBPersMatches
 
   def select_user_predictions_clause
     <<-SQL
-  , predictions.home_team_points AS home_team_prediction,
+  ,
+  predictions.home_team_points AS home_team_prediction,
   predictions.away_team_points AS away_team_prediction
     SQL
   end
@@ -305,16 +306,16 @@ module DBPersMatches
     { match_id: tuple['match_id'].to_i,
       match_date: tuple['date'],
       kick_off: tuple['kick_off'],
-      home_pts: convert_str_to_int(tuple['home_team_points']),
-      away_pts: convert_str_to_int(tuple['away_team_points']),
-      home_team_prediction: convert_str_to_int(tuple['home_team_prediction']),
-      away_team_prediction: convert_str_to_int(tuple['away_team_prediction']),
-      home_team_name: tuple['home_team_name'],
+      home_score: convert_str_to_int(tuple['home_team_points']),
+      away_score: convert_str_to_int(tuple['away_team_points']),
+      home_prediction: convert_str_to_int(tuple['home_team_prediction']),
+      away_prediction: convert_str_to_int(tuple['away_team_prediction']),
+      home_name: tuple['home_team_name'],
       home_tournament_role: tuple['home_tournament_role'],
-      home_team_short_name: tuple['home_team_short_name'],
-      away_team_name: tuple['away_team_name'],
+      home_short_name: tuple['home_team_short_name'],
+      away_name: tuple['away_team_name'],
       away_tournament_role: tuple['away_tournament_role'],
-      away_team_short_name: tuple['away_team_short_name'],
+      away_short_name: tuple['away_team_short_name'],
       stage: tuple['stage'],
       venue: tuple['venue'],
       broadcaster: tuple['broadcaster'] }

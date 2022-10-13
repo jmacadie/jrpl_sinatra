@@ -1,46 +1,46 @@
 module ViewHelpers
-  def home_team_name(match)
-    match[:home_team_name] || match[:home_tournament_role]
+  def home_name(match)
+    match[:home_name] || match[:home_tournament_role]
   end
 
-  def away_team_name(match)
-    match[:away_team_name] || match[:away_tournament_role]
+  def away_name(match)
+    match[:away_name] || match[:away_tournament_role]
   end
 
   def predicted?(match)
-    !match[:home_team_prediction].nil? &&
-      !match[:away_team_prediction].nil?
+    !match[:home_prediction].nil? &&
+      !match[:away_prediction].nil?
   end
 
   def knockout?(match)
     match[:stage] != 'Group Stages'
   end
 
-  def home_team_prediction(match)
-    match[:home_team_prediction] || 'no prediction'
+  def home_prediction(match)
+    match[:home_prediction] || 'no prediction'
   end
 
-  def away_team_prediction(match)
-    match[:away_team_prediction] || 'no prediction'
+  def away_prediction(match)
+    match[:away_prediction] || 'no prediction'
   end
 
   def predicted_result(match)
     return 'No prediction' unless predicted?(match)
-    if match[:home_team_prediction] > match[:away_team_prediction]
-      "#{home_team_name(match)} Win"
-    elsif match[:away_team_prediction] > match[:home_team_prediction]
-      "#{away_team_name(match)} Win"
+    if match[:home_prediction] > match[:away_prediction]
+      "#{home_name(match)} Win"
+    elsif match[:away_prediction] > match[:home_prediction]
+      "#{away_name(match)} Win"
     else
       "Draw"
     end
   end
 
-  def home_team_score(match)
-    match[:home_pts] || ''
+  def home_score(match)
+    match[:home_score] || ''
   end
 
-  def away_team_score(match)
-    match[:away_pts] || ''
+  def away_score(match)
+    match[:away_score] || ''
   end
 
   def match_locked_down?(match)

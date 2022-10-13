@@ -1,31 +1,31 @@
 <!-- Layout for tablets and bigger -->
 <div class="row hidden-xs">
   <div class="col-sm-2 text-center">
-    <span class="team-flag flag-<%== @match[:home_team_short_name] %>"></span>
+    <span class="team-flag flag-<%== @match[:home_short_name] %>"></span>
   </div>
   <div class="col-sm-2 text-right">
-    <span class="lead"><%== home_team_name(@match) %></span>
+    <span class="lead"><%== home_name(@match) %></span>
     <% if knockout?(@match) %>
     <br />
     <button id="btnHomeOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
     <% end %>
   </div>
   <div class="col-sm-1 text-center lead">
-    <b><span id="homeTeamPoints"><%== home_team_score(@match) %></span></b>
+    <b><span id="homeTeamPoints"><%== home_score(@match) %></span></b>
   </div>
   <div class="col-sm-2 text-center">vs.</div>
   <div class="col-sm-1 text-center lead">
-    <b><span id="awayTeamPoints"><%== away_team_score(@match) %></span></b>
+    <b><span id="awayTeamPoints"><%== away_score(@match) %></span></b>
   </div>
   <div class="col-sm-2 text-left lead">
-    <span class="lead"><%== away_team_name(@match) %></span>
+    <span class="lead"><%== away_name(@match) %></span>
     <% if knockout?(@match) %>
     <br />
     <button id="btnAwayOrigin" type="button" class="btn btn-info btn-xs" data-state="show">Show Origin</button>
     <% end %>
   </div>
   <div class="col-sm-2 text-center">
-    <span class="team-flag flag-<%== @match[:away_team_short_name] %>"></span>
+    <span class="team-flag flag-<%== @match[:away_short_name] %>"></span>
   </div>
 </div><!-- /row (match result) -->
 <% if knockout?(@match) %>

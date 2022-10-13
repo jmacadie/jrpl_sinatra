@@ -7,29 +7,29 @@
   <a href="/match/<%== @match[:match_id] %>">
     <div class="row visible-xs">
       <div class="col-xs-4 text-center">
-        <span class="team-flag flag-<%== @match[:home_team_short_name] %>"></span>
+        <span class="team-flag flag-<%== @match[:home_short_name] %>"></span>
       </div>
       <div class="col-xs-4 col-xs-offset-4 text-center">
-        <span class="team-flag flag-<%== @match[:away_team_short_name] %>"></span>
+        <span class="team-flag flag-<%== @match[:away_short_name] %>"></span>
       </div>
     </div><!-- /row visible-xs -->
     <div class="row">
       <div class="col-sm-2 hidden-xs text-center">
-        <span class="team-flag flag-<%== @match[:home_team_short_name] %>"></span>
+        <span class="team-flag flag-<%== @match[:home_short_name] %>"></span>
       </div>
-      <div class="col-xs-4 visible-xs text-center matchText"><%== home_team_name(@match) %></div>
-      <div class="col-sm-2 hidden-xs text-right lead matchText"><%== home_team_name(@match) %></div>
+      <div class="col-xs-4 visible-xs text-center matchText"><%== home_name(@match) %></div>
+      <div class="col-sm-2 hidden-xs text-right lead matchText"><%== home_name(@match) %></div>
       <div class="col-xs-1 text-center lead matchText">
-        <b><%== home_team_score(@match) %></b>
+        <b><%== home_score(@match) %></b>
       </div>
       <div class="col-xs-2 text-center matchText">vs.</div>
       <div class="col-xs-1 text-center lead matchText">
-        <b><%== away_team_score(@match) %></b>
+        <b><%== away_score(@match) %></b>
       </div>
-      <div class="col-sm-2 hidden-xs text-left lead matchText"><%== away_team_name(@match) %></div>
-      <div class="col-xs-4 visible-xs text-center matchText"><%== away_team_name(@match) %></div>
+      <div class="col-sm-2 hidden-xs text-left lead matchText"><%== away_name(@match) %></div>
+      <div class="col-xs-4 visible-xs text-center matchText"><%== away_name(@match) %></div>
       <div class="col-sm-2 hidden-xs text-center">
-        <span class="team-flag flag-<%== @match[:away_team_short_name] %>"></span>
+        <span class="team-flag flag-<%== @match[:away_short_name] %>"></span>
       </div>
     </div><!-- /row -->
   </a>
@@ -47,9 +47,9 @@
     </div>
   </div><!-- /row -->
   <div class="row">
-    <div class="col-xs-1 col-xs-offset-4 text-center"><%== home_team_prediction(@match) %></div>
+    <div class="col-xs-1 col-xs-offset-4 text-center"><%== home_prediction(@match) %></div>
     <div class="col-xs-2 text-center">-</div>
-    <div class="col-xs-1 text-center"><%== away_team_prediction(@match) %></div>
+    <div class="col-xs-1 text-center"><%== away_prediction(@match) %></div>
   </div><!-- /row -->
 </div><!-- /alert -->
 <% else %>

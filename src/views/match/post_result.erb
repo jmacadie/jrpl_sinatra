@@ -5,7 +5,7 @@
   <fieldset <%== 'disabled' if !@match[:locked_down] %>>
     <div class="row form-group">
       <div class="col-sm-4 text-right">
-        <label for="home_pts"><%== home_team_name(@match) %></label>
+        <label for="home_pts"><%== home_name(@match) %></label>
       </div>
       <div class="col-sm-2">
         <input
@@ -14,7 +14,7 @@
           class="form-control"
           id="home_pts"
           name="home_pts"
-          value="<%== home_team_score(@match) %>">
+          value="<%== home_score(@match) %>">
       </div>
       <div class="col-sm-2">
         <input
@@ -23,10 +23,10 @@
           class="form-control"
           id="away_pts"
           name="away_pts"
-          value="<%== away_team_score(@match) %>">
+          value="<%== away_score(@match) %>">
       </div>
       <div class="col-sm-4 text-left">
-        <label for="away_pts"><%== away_team_name(@match) %></label>
+        <label for="away_pts"><%== away_name(@match) %></label>
       </div>
     </div>
     <div class="row form-group">
@@ -41,7 +41,7 @@
 <form class="form-horizontal visible-xs" role="form" action="/match/add_result" method="post">
   <fieldset <%== 'disabled' if !@match[:locked_down] %>>
     <div class="form-group">
-      <label for="home_pts_s" class="col-xs-8 control-label"><%== home_team_name(@match) %></label>
+      <label for="home_pts_s" class="col-xs-8 control-label"><%== home_name(@match) %></label>
       <div class="col-xs-4">
         <input
           type="number"
@@ -49,11 +49,11 @@
           class="form-control"
           id="home_pts_s"
           name="home_points"
-          value="<%== home_team_score(@match) %>">
+          value="<%== home_score(@match) %>">
       </div>
     </div>
     <div class="form-group">
-      <label for="away_pts_s" class="col-xs-8 control-label"><%== away_team_name(@match) %></label>
+      <label for="away_pts_s" class="col-xs-8 control-label"><%== away_name(@match) %></label>
       <div class="col-xs-4">
         <input
           type="number"
@@ -61,7 +61,7 @@
           class="form-control"
           id="away_pts_s"
           name="away_pts"
-          value="<%== away_team_score(@match) %>">
+          value="<%== away_score(@match) %>">
       </div>
     </div>
     <button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res_s">Submit</button>
