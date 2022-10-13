@@ -32,7 +32,10 @@ module DBPersPredictions
 
   def predictions_for_match_query
     <<~SQL
-      SELECT prediction_id, home_team_points, away_team_points
+      SELECT
+        prediction_id,
+        home_team_points,
+        away_team_points
       FROM prediction
       WHERE match_id = $1;
     SQL

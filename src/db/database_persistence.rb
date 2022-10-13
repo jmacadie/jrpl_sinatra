@@ -2,6 +2,7 @@ require 'pg'
 
 require_relative 'cookies'
 require_relative 'login'
+require_relative 'match_predictions'
 require_relative 'matches'
 require_relative 'points'
 require_relative 'predictions'
@@ -10,6 +11,7 @@ require_relative 'users'
 class DatabasePersistence
   include DBPersCookies
   include DBPersLogin
+  include DBPersMatchPredictions
   include DBPersMatches
   include DBPersPoints
   include DBPersPredictions

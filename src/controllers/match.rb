@@ -5,7 +5,7 @@ class App < Sinatra::Application
     session[:criteria] ||= set_criteria_to_all_matches()
     @match = @storage.load_single_match(session[:user_id], match_id)
     @match[:locked_down] = match_locked_down?(@match)
-    # session[:message] = 'Match locked down!' if @match[:locked_down]
+    @predictions = @storage.get_match_predictions(match_id, 1)
     erb :match
   end
 

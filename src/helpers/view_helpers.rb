@@ -1,3 +1,4 @@
+# rubocop:todo Metrics/ModuleLength
 module ViewHelpers
   def home_name(match)
     match[:home_name] || match[:home_tournament_role]
@@ -83,6 +84,41 @@ module ViewHelpers
     Time.parse(t).strftime('%k:%M')
   end
 
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def prediction_for_print(match)
+    out = []
+    if predicted?(match)
+      out.push '<strong>'
+      out.push predicted_result(match)
+      out.push '</strong>'
+      out.push '<br />'
+      if match[:home_prediction] > match[:away_prediction]
+        out.push home_prediction(match)
+        out.push ' - '
+        out.push away_prediction(match)
+      else
+        out.push away_prediction(match)
+        out.push ' - '
+        out.push home_prediction(match)
+      end
+    else
+      out.push '<em>'
+      out.push 'No prediction'
+      out.push '</em>'
+    end
+    out.join()
+  end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+  def points_for_print(prediction)
+    if prediction[:total_points].nil? ||
+       prediction[:total_points] == 0
+      '-'
+    else
+      prediction[:total_points].to_s
+    end
+  end
+
   # rubocop:disable Metrics/MethodLength
   def page
     case request.path_info
@@ -102,3 +138,4 @@ module ViewHelpers
   end
   # rubocop:enable Metrics/MethodLength
 end
+# rubocop:enable Metrics/ModuleLength
