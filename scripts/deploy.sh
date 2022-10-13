@@ -5,9 +5,9 @@ ROOT=$(git rev-parse --show-toplevel)
 cd "$ROOT"
 
 # Delete Bootstrap and jQuery from public folder
-sudo rm /public/css/bootstrap-3.4.1.css
-sudo rm /public/js/bootstrap-3.4.1.js
-sudo rm /public/js/jquery-2.1.4.js
+sudo rm public/css/bootstrap-3.4.1.css
+sudo rm public/js/bootstrap-3.4.1.js
+sudo rm public/js/jquery-2.1.4.js
 
 # Replace Boostrap and jquery refs in layout to CDN version
 DEV='<link rel="stylesheet" href="/css/bootstrap-3.4.1.css">'
