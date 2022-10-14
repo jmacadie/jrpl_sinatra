@@ -50,6 +50,7 @@ module ViewHelpers
   end
 
   def previous_match(match_id)
+    # TODO: cache this or something as getting called too much & it hits the DB
     match_list = load_match_list()
     current_match_index = match_list.index { |match| match == match_id }
     current_match_index ||= 1
@@ -62,6 +63,7 @@ module ViewHelpers
   end
 
   def next_match(match_id)
+    # TODO: cache this or something as getting called too much & it hits the DB
     match_list = load_match_list()
     max_index = match_list.size - 1
     current_match_index = match_list.index { |match| match == match_id }
@@ -74,10 +76,23 @@ module ViewHelpers
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
   def date_for_print(match)
-    dt = match[:match_date]
-    Date.parse(dt).strftime('%A, %-d %B')
+    dt = Date.parse(match[:match_date])
+    suffix =
+      case dt.mday
+      when 1, 11, 21
+        'st'
+      when 2, 22
+        'nd'
+      when 3, 23
+        'rd'
+      else
+        'th'
+      end
+    dt.strftime("%A, %-d#{suffix} %B %Y")
   end
+  # rubocop:enable Metrics/MethodLength
 
   def kick_off_for_print(match)
     t = match[:kick_off]

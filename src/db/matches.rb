@@ -90,13 +90,95 @@ module DBPersMatches
     query(sql).first['min'].to_i
   end
 
+  def lockdown_matches
+    sql = lockdown_match_query()
+    result = query(sql)
+    result.map do |tuple|
+      { match_id: tuple['match_id'].to_i,
+        match_date: tuple['date'],
+        kick_off: tuple['kick_off'],
+        match_datetime: to_datetime(tuple['date'], tuple['kick_off']) }
+    end
+  end
+
   private
+
+  def to_datetime(date, time)
+    base_date = Time.parse(date)
+    base_time = Time.parse(time)
+    base_time_in_s =
+      (base_time.hour * 3600) +
+      (base_time.min * 60) +
+      (base_time.sec)
+    base_date + base_time_in_s
+  end
 
   def add_empty_strings_for_stages_for_exec_params(criteria)
     number_of_stages = tournament_stage_names.size
     while criteria[:tournament_stages].size < number_of_stages
       criteria[:tournament_stages] << ''
     end
+  end
+
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def tuple_to_matches_details_hash(tuple)
+    { match_id: tuple['match_id'].to_i,
+      match_date: tuple['date'],
+      kick_off: tuple['kick_off'],
+      match_datetime: to_datetime(tuple['date'], tuple['kick_off']),
+      home_score: convert_str_to_int(tuple['home_team_points']),
+      away_score: convert_str_to_int(tuple['away_team_points']),
+      home_prediction: convert_str_to_int(tuple['home_team_prediction']),
+      away_prediction: convert_str_to_int(tuple['away_team_prediction']),
+      home_name: tuple['home_team_name'],
+      home_tournament_role: tuple['home_tournament_role'],
+      home_short_name: tuple['home_team_short_name'],
+      away_name: tuple['away_team_name'],
+      away_tournament_role: tuple['away_tournament_role'],
+      away_short_name: tuple['away_team_short_name'],
+      stage: tuple['stage'],
+      venue: tuple['venue'],
+      broadcaster: tuple['broadcaster'] }
+  end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+
+  # Standalone SQL
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  def match_result_query
+    <<~SQL
+    SELECT
+      home_team_points,
+      away_team_points
+    FROM match
+    WHERE match_id = $1;
+    SQL
+  end
+
+  def lockdown_match_query
+    <<~SQL
+    SELECT
+      m.match_id,
+      m.date,
+      m.kick_off
+    FROM match m
+      INNER JOIN emails e ON
+        e.match_id = m.match_id
+    WHERE e.predictions_sent = false
+    ORDER BY m.match_id ASC;
+    SQL
+  end
+
+  def update_match_table_query
+    <<~SQL
+    UPDATE match
+    SET
+      home_team_points = $1,
+      away_team_points = $2,
+      result_posted_by = $3,
+      result_posted_on = $4
+    WHERE match_id = $5;
+    SQL
   end
 
   # SQL builders
@@ -147,13 +229,6 @@ module DBPersMatches
       where_single_match_clause(),
       order_clause()
     ].join()
-  end
-
-  # Standalone SQL
-  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  def match_result_query
-    'SELECT home_team_points, away_team_points FROM match WHERE match_id = $1;'
   end
 
   # SELECT clauses
@@ -298,39 +373,6 @@ module DBPersMatches
       match.date,
       match.kick_off,
       match.match_id;
-    SQL
-  end
-
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-  def tuple_to_matches_details_hash(tuple)
-    { match_id: tuple['match_id'].to_i,
-      match_date: tuple['date'],
-      kick_off: tuple['kick_off'],
-      home_score: convert_str_to_int(tuple['home_team_points']),
-      away_score: convert_str_to_int(tuple['away_team_points']),
-      home_prediction: convert_str_to_int(tuple['home_team_prediction']),
-      away_prediction: convert_str_to_int(tuple['away_team_prediction']),
-      home_name: tuple['home_team_name'],
-      home_tournament_role: tuple['home_tournament_role'],
-      home_short_name: tuple['home_team_short_name'],
-      away_name: tuple['away_team_name'],
-      away_tournament_role: tuple['away_tournament_role'],
-      away_short_name: tuple['away_team_short_name'],
-      stage: tuple['stage'],
-      venue: tuple['venue'],
-      broadcaster: tuple['broadcaster'] }
-  end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
-
-  def update_match_table_query
-    <<~SQL
-    UPDATE match
-    SET
-      home_team_points = $1,
-      away_team_points = $2,
-      result_posted_by = $3,
-      result_posted_on = $4
-    WHERE match_id = $5;
     SQL
   end
 end

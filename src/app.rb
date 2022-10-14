@@ -7,8 +7,14 @@ require 'tilt/erubis'
 require 'yaml'
 
 class App < Sinatra::Application
+  attr_reader :storage
+
   # Constant definitions
   LOCKDOWN_BUFFER = 30 * 60 # 30 minutes
+
+  def lockdown_buffer
+    LOCKDOWN_BUFFER
+  end
 
   # Load database (model)
   require_relative 'db/database_persistence'
@@ -16,6 +22,7 @@ class App < Sinatra::Application
   # Load helpers
   require_relative 'helpers/auth'
   require_relative 'helpers/email'
+  require_relative 'helpers/lockdown'
   require_relative 'helpers/login_cookies'
   require_relative 'helpers/route_errors'
   require_relative 'helpers/route_helpers'
@@ -69,6 +76,7 @@ class App < Sinatra::Application
 
   before do
     @storage = DatabasePersistence.new(logger, settings.dbconf)
+    Lockdown.new(self).check_lockdown()
   end
 
   after do

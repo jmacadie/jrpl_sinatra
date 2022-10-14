@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'bcrypt'
+gem 'concurrent-ruby'
 gem 'erubis'
 gem 'pg'
 gem 'pony'
