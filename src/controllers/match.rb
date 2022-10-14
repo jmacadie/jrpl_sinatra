@@ -27,27 +27,29 @@ class App < Sinatra::Application
         home_prediction.to_i,
         away_prediction.to_i
       )
-      session[:message] = 'Prediction submitted.'
+      session[:message] = 'Prediction submitted'
       redirect "/match/#{match_id}"
     end
   end
 
   post '/match/add_result' do
     require_signed_in_as_admin
-    home_points = params[:home_pts].to_f
-    away_points = params[:away_pts].to_f
+    home_score = params[:home_score].to_f
+    away_score = params[:away_score].to_f
     match_id = params[:match_id].to_i
     @match = @storage.load_single_match(session[:user_id], match_id)
-    session[:message] = match_result_error(@match, home_points, away_points)
+    session[:message] = match_result_error(@match, home_score, away_score)
     if session[:message]
       status 422
       erb :match
     else
+      home_score = home_score.to_i
+      away_score = away_score.to_i
       @storage.add_result(
-        match_id, home_points.to_i, away_points.to_i, session[:user_id]
+        match_id, home_score, away_score, session[:user_id]
       )
-      update_scoreboard(match_id)
-      session[:message] = 'Result submitted.'
+      update_scoreboard(match_id, home_score, away_score)
+      session[:message] = 'Result submitted'
       redirect "/match/#{match_id}"
     end
   end

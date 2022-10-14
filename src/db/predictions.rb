@@ -10,8 +10,8 @@ module DBPersPredictions
     result = query(sql, match_id)
     result.map do |tuple|
       { pred_id: tuple['prediction_id'].to_i,
-        home_pts: tuple['home_team_points'].to_i,
-        away_pts: tuple['away_team_points'].to_i }
+        home_score: tuple['home_team_points'].to_i,
+        away_score: tuple['away_team_points'].to_i }
     end
   end
 

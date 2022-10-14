@@ -19,6 +19,7 @@ class App < Sinatra::Application
   require_relative 'helpers/login_cookies'
   require_relative 'helpers/route_errors'
   require_relative 'helpers/route_helpers'
+  require_relative 'helpers/scoring'
   require_relative 'helpers/view_helpers'
 
   # Load controllers
@@ -75,14 +76,12 @@ class App < Sinatra::Application
   end
 
   helpers do
-    # Route helper methods
+    include Email
     include Loginable
     include LoginCookies
     include RouteErrors
     include RouteHelpers
-    include Email
-
-    # View helper methods
+    include Scoring
     include ViewHelpers
   end
 end

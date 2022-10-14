@@ -13,7 +13,7 @@ module DBPersPoints
   end
 
   def id_for_scoring_system(scoring_system)
-    sql = 'SELECT scoring_system_id FROM scoring_system WHERE name = $1;'
+    sql = 'SELECT scoring_system_id FROM scoring_system WHERE name = $1::text;'
     query(sql, scoring_system).map do |tuple|
       tuple['scoring_system_id']
     end.first.to_i
@@ -36,7 +36,7 @@ module DBPersPoints
   def delete_existing_points_entry(pred_id, scoring_system_id)
     sql = <<~SQL
       DELETE FROM points
-      WHERE prediction_id = $1 AND scoring_system_id = $2;
+      WHERE prediction_id = $1::int AND scoring_system_id = $2::int;
     SQL
     query(sql, pred_id, scoring_system_id)
   end
@@ -60,7 +60,7 @@ module DBPersPoints
       FROM users
       LEFT OUTER JOIN prediction ON users.user_id = prediction.user_id
       LEFT OUTER JOIN
-        (SELECT * FROM points WHERE scoring_system_id = $1) AS system_points
+        (SELECT * FROM points WHERE scoring_system_id = $1::int) AS system_points
         ON prediction.prediction_id = system_points.prediction_id
       GROUP BY users.user_id
       ORDER BY total_points DESC, score_points DESC, result_points DESC, user_name;
@@ -70,7 +70,7 @@ module DBPersPoints
   def update_points_table_query
     <<~SQL
       UPDATE points
-      SET result_points = $1, score_points = $2, total_points = $3
+      SET result_points = $1::int, score_points = $2::int, total_points = $3::int
       WHERE (prediction_id = $4 AND scoring_system_id = $5);
     SQL
   end

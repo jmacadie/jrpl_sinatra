@@ -39,7 +39,7 @@ class CMSTest < Minitest::Test
 
   def test_view_match_lockdown_no_result_post_correct_score
     post '/match/add_result',
-          {home_pts: 81, away_pts: 82, match_id: 6},
+          {home_score: 81, away_score: 82, match_id: 6},
           admin_session
 
     assert_equal 302, last_response.status
@@ -51,7 +51,7 @@ class CMSTest < Minitest::Test
 
   def test_view_match_lockdown_no_result_post_correct_result
     post '/match/add_result',
-          {home_pts: 1, away_pts: 2, match_id: 6},
+          {home_score: 1, away_score: 2, match_id: 6},
           admin_session
 
     assert_equal 302, last_response.status
@@ -63,7 +63,7 @@ class CMSTest < Minitest::Test
 
   def test_view_match_lockdown_no_result_post_incorrect_result
     post '/match/add_result',
-          {home_pts: 3, away_pts: 2, match_id: 6},
+          {home_score: 3, away_score: 2, match_id: 6},
           admin_session
 
     assert_equal 302, last_response.status

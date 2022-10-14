@@ -10,7 +10,7 @@ class CMSTest < Minitest::Test
 
     assert_equal 302, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_equal 'Prediction submitted.', session[:message]
+    assert_equal 'Prediction submitted', session[:message]
 
     get last_response['Location']
     assert_includes body_text, '98'
@@ -24,7 +24,7 @@ class CMSTest < Minitest::Test
 
     assert_equal 302, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_equal 'Prediction submitted.', session[:message]
+    assert_equal 'Prediction submitted', session[:message]
 
     get last_response['Location']
     assert_includes body_text, '98'

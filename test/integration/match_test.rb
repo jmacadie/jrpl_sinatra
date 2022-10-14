@@ -10,9 +10,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Winner Semi-Final 1 Show Origin vs. Winner Semi-Final 2 Show Origin'
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value='
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value='
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value='
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value='
     refute_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     refute_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -33,9 +33,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Winner Semi-Final 1 Show Origin vs. Winner Semi-Final 2 Show Origin'
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value='
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value='
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value='
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value='
     refute_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     refute_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -56,9 +56,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Spain vs. IC Play Off 2'
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value='
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value='
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value='
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value='
     refute_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     refute_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -79,9 +79,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Belgium vs. Canada'
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value='
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value='
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value='
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value='
     refute_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     refute_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -102,9 +102,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Qatar vs. Ecuador'
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value='
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value='
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value='
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value='
     refute_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -125,9 +125,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Qatar vs. Ecuador'
     assert_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value="">'
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value="">'
     assert_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value="">'
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value="">'
     assert_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -148,9 +148,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Denmark vs. Tunisia'
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value='
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value='
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value='
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value='
     refute_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -171,9 +171,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Denmark vs. Tunisia'
     assert_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value="">'
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value="">'
     assert_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value="">'
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value="">'
     assert_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -194,9 +194,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Senegal 6 vs. 3 Netherlands'
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value='
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value='
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value='
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value='
     refute_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -217,9 +217,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Senegal 6 vs. 3 Netherlands'
     assert_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value="6">'
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value="6">'
     assert_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value="3">'
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value="3">'
     assert_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -240,9 +240,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'France 63 vs. 64 IC Play Off 1'
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value='
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value='
     refute_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value='
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value='
     refute_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text, 'Match locked down. No more updates to predictions possible'
@@ -263,9 +263,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'France 63 vs. 64 IC Play Off 1'
     assert_includes body_html,
-      '<input type="number" min="0" class="form-control" id="home_pts" name="home_pts" value="63">'
+      '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value="63">'
     assert_includes body_html,
-      '<input type="number" min="0" class="form-control" id="away_pts" name="away_pts" value="64">'
+      '<input type="number" min="0" class="form-control" id="away_score" name="away_score" value="64">'
     assert_includes body_html,
       '<button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text, 'Match locked down. No more updates to predictions possible'

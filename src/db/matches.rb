@@ -75,8 +75,8 @@ module DBPersMatches
     sql = match_result_query()
     result = query(sql, match_id)
     result.map do |tuple|
-      { home_pts: tuple['home_team_points'].to_i,
-        away_pts: tuple['away_team_points'].to_i }
+      { home_score: tuple['home_team_points'].to_i,
+        away_score: tuple['away_team_points'].to_i }
     end.first
   end
 
