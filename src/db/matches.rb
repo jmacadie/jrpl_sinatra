@@ -114,7 +114,8 @@ module DBPersMatches
   end
 
   def add_empty_strings_for_stages_for_exec_params(criteria)
-    number_of_stages = tournament_stage_names.size
+    @stage_names ||= tournament_stage_names()
+    number_of_stages = @stage_names.size
     while criteria[:tournament_stages].size < number_of_stages
       criteria[:tournament_stages] << ''
     end

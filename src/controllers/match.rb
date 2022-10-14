@@ -37,6 +37,7 @@ class App < Sinatra::Application
     home_score = params[:home_score].to_f
     away_score = params[:away_score].to_f
     match_id = params[:match_id].to_i
+    # TODO: This is an excessive data load
     @match = @storage.load_single_match(session[:user_id], match_id)
     session[:message] = match_result_error(@match, home_score, away_score)
     if session[:message]

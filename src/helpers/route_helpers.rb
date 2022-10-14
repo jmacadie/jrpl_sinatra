@@ -32,6 +32,10 @@ module RouteHelpers
   def set_criteria_to_all_matches
     { match_status: 'all',
       prediction_status: 'all',
-      tournament_stages: @storage.tournament_stage_names }
+      tournament_stages: tournament_stage_names() }
+  end
+
+  def tournament_stage_names
+    @tournament_stage_names ||= @storage.tournament_stage_names
   end
 end
