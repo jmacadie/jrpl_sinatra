@@ -4,7 +4,7 @@
   </div>
 </div>
 <div class="matchRow">
-  <a href="/match/<%== @match[:match_id] %>">
+  <a href="/match/<%== @match[:match_id] %><%== ring_for_url(@ring) %>">
     <div class="row visible-xs">
       <div class="col-xs-4 text-center">
         <span class="team-flag flag-<%== @match[:home_short_name] %>"></span>

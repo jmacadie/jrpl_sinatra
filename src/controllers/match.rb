@@ -4,6 +4,11 @@ class App < Sinatra::Application
     match_id = params[:match_id].to_i
     session[:criteria] ||= set_criteria_to_all_matches()
     @match = @storage.load_single_match(session[:user_id], match_id)
+    if !params[:ring].nil?
+      ring = Ring.new({ ring: params[:ring] })
+      @prev_match = ring.prev_match
+      @next_match = ring.next_match
+    end
     @match[:locked_down] = match_locked_down?(@match)
     @predictions = @storage.get_match_predictions(match_id, 1)
     erb :match

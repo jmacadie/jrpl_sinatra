@@ -24,6 +24,7 @@ class App < Sinatra::Application
   require_relative 'helpers/email'
   require_relative 'helpers/lockdown'
   require_relative 'helpers/login_cookies'
+  require_relative 'helpers/ring'
   require_relative 'helpers/route_errors'
   require_relative 'helpers/route_helpers'
   require_relative 'helpers/scoring'

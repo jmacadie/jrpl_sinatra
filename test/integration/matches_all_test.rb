@@ -11,7 +11,7 @@ class CMSTest < Minitest::Test
     assert_includes body_text, 'Filters'
     assert_includes last_response.body, 'type="radio"'
     assert_includes last_response.body, 'type="checkbox"'
-    assert_includes last_response.body, '<a href="/match/48">'
+    assert_includes last_response.body, '<a href="/match/48'
     assert_includes body_text, 'Winner Group A'
   end
 

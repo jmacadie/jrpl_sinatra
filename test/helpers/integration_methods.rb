@@ -35,6 +35,9 @@ module TestIntegrationMethods
       .gsub(/\s/, ' ') # remove newlines, tabs etc
       .gsub(/<input[^>]*value="([0-9]*)">/, ' \1 ') # Convert inputs with a value to just thier value
       .gsub(/<[^>]*>/, ' ') # Remove all other tags
+      .gsub(/&lt;/, '<')    # Switch out encoded symbol
+      .gsub(/&gt;/, '>')    # Switch out encoded symbol
+      .gsub(/&amp;/, '&')   # Switch out encoded symbol
       .squeeze(' ') # collapse out multiple spaces
   end
  end

@@ -92,6 +92,14 @@ module ViewHelpers
   end
   # rubocop:enable Metrics/MethodLength
 
+  def ring_for_url(ring)
+    "?ring=#{ring}"
+  end
+
+  def link_for_ring_navigation(match)
+    "/match/#{match[:match_id]}?ring=#{match[:ring]}"
+  end
+
   def kick_off_for_print(match)
     t = match[:kick_off]
     Time.parse(t).strftime('%k:%M')

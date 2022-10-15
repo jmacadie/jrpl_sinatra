@@ -1,6 +1,7 @@
 <h2><%== date_for_print({ :match_date => @day}) %></h2>
 <% @day_matches.each do |m| %>
   <% @match = m %>
+  <% @ring = Ring.new({ match_ids: @match_ids, match_id: m[:match_id] }) %>)
   <%== erb :'matches/match', :layout => false %>
 <% end %>
 <hr />
