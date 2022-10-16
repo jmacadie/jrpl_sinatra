@@ -88,7 +88,7 @@ module ViewHelpers
       else
         'th'
       end
-    dt.strftime("%A, %-d#{suffix} %B %Y")
+    dt.strftime("%A, %-d<sup>#{suffix}</sup> %B %Y")
   end
   # rubocop:enable Metrics/MethodLength
 
