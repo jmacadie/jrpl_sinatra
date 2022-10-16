@@ -149,7 +149,7 @@ module ViewHelpers
       "match"
     when %r(^/users)
       "users"
-    when %r(^/scoreboard)
+    when %r(^/tables)
       "tables"
     when %r(^/graphs)
       "graphs"

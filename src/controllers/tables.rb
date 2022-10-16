@@ -1,13 +1,7 @@
 class App < Sinatra::Application
-  get '/scoreboard' do
+  get '/tables' do
     @scoring_system = 'official'
     @scores = @storage.load_scoreboard_data(@scoring_system)
-    erb :scoreboard
-  end
-
-  get '/toggle_scoring_system' do
-    @scoring_system = params[:scoring_system]
-    @scores = @storage.load_scoreboard_data(@scoring_system)
-    erb :scoreboard
+    erb :tables
   end
 end
