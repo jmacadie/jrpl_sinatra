@@ -3,73 +3,62 @@ require_relative '../helpers/test_helpers'
 class CMSTest < Minitest::Test
   include TestIntegrationMethods
 
-  def test_view_match_not_lockdown_not_admin
-    get '/match/64', {}, non_admin_session
-
-    assert_equal 200, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    refute_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-  end
-
-  def test_view_match_not_lockdown_admin
-    get '/match/64', {}, admin_session
-
-    assert_equal 200, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    refute_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-  end
-
-  def test_view_match_lockdown_no_result_not_admin
-    get '/match/6', {}, non_admin_session
-
-    assert_equal 200, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>-</td> </tr>'
-  end
-
-  def test_view_match_lockdown_no_result_admin
-    get '/match/6', {}, admin_session
-
-    assert_equal 200, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>-</td> </tr>'
-  end
-
-  def test_view_match_lockdown_no_result_post_correct_score
-    post '/match/add_result',
-          {home_score: 81, away_score: 82, match_id: 6},
-          admin_session
+  def test_add_new_prediction
+    post '/match/add_prediction',
+         { match_id: '12', home_team_prediction: '98', away_team_prediction: '99' },
+         non_admin_session
 
     assert_equal 302, last_response.status
+    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
+    assert_equal 'Prediction submitted', session[:message]
 
     get last_response['Location']
-    assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>3</td> </tr>'
+    assert_includes body_text, '98'
+    assert_includes body_text, '99'
   end
 
-  def test_view_match_lockdown_no_result_post_correct_result
-    post '/match/add_result',
-          {home_score: 1, away_score: 2, match_id: 6},
-          admin_session
+  def test_change_prediction
+    post '/match/add_prediction',
+         { match_id: '11', home_team_prediction: '98', away_team_prediction: '99' },
+         non_admin_session
 
     assert_equal 302, last_response.status
+    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
+    assert_equal 'Prediction submitted', session[:message]
 
     get last_response['Location']
-    assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>1</td> </tr>'
+    assert_includes body_text, '98'
+    assert_includes body_text, '99'
   end
 
-  def test_view_match_lockdown_no_result_post_incorrect_result
-    post '/match/add_result',
-          {home_score: 3, away_score: 2, match_id: 6},
-          admin_session
+  def test_add_decimal_prediction
+    post '/match/add_prediction',
+         { match_id: '11', home_team_prediction: '2.3', away_team_prediction: '3' },
+         non_admin_session_with_all_criteria
 
-    assert_equal 302, last_response.status
+    assert_equal 422, last_response.status
+    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
+    assert_includes body_text, 'Your predictions must be integers.'
+  end
 
-    get last_response['Location']
-    assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>-</td> </tr>'
+  def test_add_negative_prediction
+    post '/match/add_prediction',
+         { match_id: '11', home_team_prediction: '-2', away_team_prediction: '3' },
+         non_admin_session_with_all_criteria
+
+    assert_equal 422, last_response.status
+    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
+    assert_includes body_text, 'Your predictions must be non-negative.'
+  end
+
+  def test_add_prediction_lockeddown_match
+    post '/match/add_prediction',
+         { match_id: '1', home_team_prediction: '2', away_team_prediction: '3' },
+         non_admin_session_with_all_criteria
+
+    assert_equal 422, last_response.status
+    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
+    assert_includes body_text,
+                    'You cannot add or change your prediction because this match is already locked down!'
   end
 end

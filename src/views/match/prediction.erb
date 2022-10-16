@@ -6,7 +6,7 @@
 </p>
 <% end %>
 <!-- Layout for tablets and bigger -->
-<form class="hidden-xs" role="form" action="/match/add_prediction" method="post">
+<form class="hidden-xs" id="prediction" role="form" action="/match/add_prediction" method="post">
   <fieldset <%== 'disabled' if @match[:locked_down] %>>
     <div class="row form-group">
       <div class="col-sm-4 text-right">
@@ -47,17 +47,18 @@
         <button
           class="btn btn-sm btn-success"
           type="submit"
-          id="btn_submit_pred_next">
+          id="btn_submit_pred_next" <%== 'disabled' if @next_match.nil? %>>
             Submit &amp; Move Next
         </button>
       </div>
     </div>
-    <input type="hidden" name="next" value="false">
+    <input type="hidden" id="next" name="next" value="false">
+    <input type="hidden" name="ring" value="<%== "#{@ring}" %>">
     <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
   </fieldset>
 </form>
 <!-- Layout for phones -->
-<form class="form-horizontal visible-xs" role="form" action="/match/add_prediction" method="post">
+<form class="form-horizontal visible-xs" id="prediction_s" role="form" action="/match/add_prediction" method="post">
   <fieldset <%== 'disabled' if @match[:locked_down] %>>
     <div class="form-group">
       <label for="home_team_prediction_s" class="col-xs-8 control-label"><%== home_name(@match) %></label>
@@ -98,12 +99,13 @@
         <button
           class="btn btn-sm btn-success"
           type="submit"
-          id="btn_submit_pred_next_s">
+          id="btn_submit_pred_next_s" <%== 'disabled' if @next_match.nil? %>>
             Submit &amp; Move Next
         </button>
       </div>
     </div>
-    <input type="hidden" name="next" value="true">
+    <input type="hidden" id="next_s" name="next" value="false">
+    <input type="hidden" name="ring" value="<%== "#{@ring}" %>">
     <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
   </fieldset>
 </form>

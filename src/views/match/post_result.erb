@@ -34,6 +34,7 @@
         <button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>
       </div>
     </div>
+    <input type="hidden" name="ring" value="<%== "#{@ring}" %>">
     <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
   </fieldset>
 </form>
@@ -65,6 +66,7 @@
       </div>
     </div>
     <button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res_s">Submit</button>
+    <input type="hidden" name="ring" value="<%== "#{@ring}" %>">
     <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
   </fieldset>
 </form>
