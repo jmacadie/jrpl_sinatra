@@ -153,6 +153,8 @@ module ViewHelpers
       "tables"
     when %r(^/graphs)
       "graphs"
+    when %r(^/rules)
+      "rules"
     else
       ""
     end

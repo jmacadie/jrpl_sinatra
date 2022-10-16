@@ -23,8 +23,9 @@
             <li><a href="/users/edit_credentials">Edit Details</a></li>
           </ul>
         </li>
-        <li<%== ' class="active"' if page == "matches" %>><a href="/matches/all">Matches</a></li>
-        <li<%== ' class="active"' if page == "tables" %>><a href="/scoreboard">Tables</a></li>
+        <li<%== ' class="active"' if page == 'matches' %>><a href="/matches/all">Matches</a></li>
+        <li<%== ' class="active"' if page == 'tables' %>><a href="/scoreboard">Tables</a></li>
+        <li<%== ' class="active"' if page == 'rules' %>><a href="/rules">Rules</a></li>
         <% else %>
         <li><a href="/users/signin">Sign In</a></li>
         <li><a href="/users/signup">Create Account</a></li>
