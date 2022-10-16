@@ -1,19 +1,12 @@
-<h1>Sign in</h1>
-<form method="post" action="/users/signin">
-  <div>
-    <label for="login"> Username or email address:
-      <input name="login" id="login" value="<%== params[:user_name] %>"/>
+<form class="form-login" role="form" method="post" action="/users/signin">
+  <h2 class="form-login-heading">Please log in</h2>
+  <div id="logInMessage"></div>
+  <input type="text" class="form-control" id="login" name="login" placeholder="Username / E-mail address" required autofocus>
+  <input type="password" class="form-control" id="pword" name="pword" placeholder="Password" required>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="remember_me" name="remember_me"> Remember me
     </label>
   </div>
-  <div>
-    <label for="pword"> Password:
-      <input type="password" id="pword" name="pword" />
-    </label>
-  </div>
-  <div>
-    <label for="remember_me>"> Remember me:
-      <input type="checkbox" id="remember_me" name="remember_me">
-    </label>
-  </div>
-  <button type="submit">Sign In</button>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" id="logInBtn">Log in</button>
 </form>

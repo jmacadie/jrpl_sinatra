@@ -6,8 +6,9 @@ class CMSTest < Minitest::Test
   def test_signin_form
     get '/users/signin'
     assert_equal 200, last_response.status
-    assert_includes last_response.body, '<input'
-    assert_includes last_response.body, '<button type="submit"'
+    assert_includes body_html, '<input type="text" class="form-control" id="login" name="login"'
+    assert_includes body_html, '<input type="password" class="form-control" id="pword" name="pword"'
+    assert_includes body_html, '<button class="btn btn-lg btn-primary btn-block" type="submit" id="logInBtn">Log in</button>'
   end
 
   def test_signin_form_already_signed_in
