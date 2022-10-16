@@ -143,8 +143,8 @@ module ViewHelpers
   # rubocop:disable Metrics/MethodLength
   def page
     case request.path_info
-    when %r(^/matches)
-      "matches"
+    when %r(^/fixtures)
+      "fixtures"
     when %r(^/match)
       "match"
     when %r(^/users)

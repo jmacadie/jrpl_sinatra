@@ -4,7 +4,7 @@ class CMSTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_view_matches_list_signed_in
-    get '/matches/all', {}, non_admin_session
+    get '/fixtures', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
@@ -16,14 +16,14 @@ class CMSTest < Minitest::Test
   end
 
   def test_view_matches_list_signed_out
-    get '/matches/all'
+    get '/fixtures'
 
     assert_equal 302, last_response.status
     assert_equal 'You must be signed in to do that.', session[:message]
   end
 
   def test_locked_down_displayed_matches_list
-    get '/matches/all', {}, non_admin_session
+    get '/fixtures', {}, non_admin_session
 
     assert_includes body_text, 'Qatar Qatar vs. Ecuador Ecuador Not yet predicted'
     assert_includes body_text, 'England England 4 vs. 5 Iran Iran Not yet predicted'
@@ -32,7 +32,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_select_deselect_all_on_match_filter_form
-    get '/matches/all', {}, non_admin_session
+    get '/fixtures', {}, non_admin_session
 
     assert_includes last_response.body, 'Select/Deselect All'
   end

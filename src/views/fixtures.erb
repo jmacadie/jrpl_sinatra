@@ -1,8 +1,8 @@
-<%== erb :'matches/filter_form', :layout => false %>
+<%== erb :'fixtures/filter_form', :layout => false %>
 <% unless @matches.empty? %>
   <% @matches.map { |m| m[:match_date] }.uniq.sort.each do |d| %>
     <% @day_matches = @matches.filter { |m| m[:match_date] == d } %>
     <% @day = d %>
-    <%== erb :'matches/day', :layout => false %>
+    <%== erb :'fixtures/day', :layout => false %>
   <% end %>
 <% end %>

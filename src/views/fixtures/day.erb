@@ -2,6 +2,6 @@
 <% @day_matches.each do |m| %>
   <% @match = m %>
   <% @ring = Ring.new({ match_ids: @match_ids, match_id: m[:match_id] }) %>
-  <%== erb :'matches/match', :layout => false %>
+  <%== erb :'fixtures/match', :layout => false %>
 <% end %>
 <hr />

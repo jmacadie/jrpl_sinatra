@@ -31,9 +31,9 @@ class App < Sinatra::Application
   require_relative 'helpers/view_helpers'
 
   # Load controllers
+  require_relative 'controllers/fixtures'
   require_relative 'controllers/home'
   require_relative 'controllers/match'
-  require_relative 'controllers/matches'
   require_relative 'controllers/rules'
   require_relative 'controllers/tables'
   require_relative 'controllers/users'

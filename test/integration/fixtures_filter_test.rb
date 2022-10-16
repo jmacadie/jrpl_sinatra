@@ -4,7 +4,7 @@ class CMSTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_filter_matches_all
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'all',
            "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
          non_admin_session
@@ -77,7 +77,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_locked_down
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'locked_down', :prediction_status => 'all',
            "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
          non_admin_session
@@ -150,7 +150,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_not_locked_down
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'not_locked_down', :prediction_status => 'all',
            "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
          non_admin_session
@@ -223,7 +223,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_predicted
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'predicted',
            "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
          non_admin_session
@@ -296,7 +296,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_not_predicted
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'not_predicted',
            "Group Stages" => "tournament_stage", "Round of 16" => "tournament_stage", "Quarter Finals" => "tournament_stage", "Semi Finals" => "tournament_stage", "Third Fourth Place Play-off" => "tournament_stage", "Final" => "tournament_stage" },
          non_admin_session
@@ -369,7 +369,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_group_stages
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'all',
            "Group Stages" => "tournament_stage" },
          non_admin_session
@@ -442,7 +442,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_round_of_16
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'all',
            "Round of 16" => "tournament_stage" },
          non_admin_session
@@ -515,7 +515,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_quarter_finals
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'all',
            "Quarter Finals" => "tournament_stage" },
          non_admin_session
@@ -588,7 +588,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_semi_finals
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'all',
            "Semi Finals" => "tournament_stage" },
          non_admin_session
@@ -661,7 +661,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_3_4_place
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'all',
            "Third Fourth Place Play-off" => "tournament_stage" },
          non_admin_session
@@ -734,7 +734,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_final
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'all',
            "Final" => "tournament_stage" },
          non_admin_session
@@ -807,7 +807,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_group_stages_and_final
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'all', :prediction_status => 'all',
            "Group Stages" => "tournament_stage", "Final" => "tournament_stage" },
          non_admin_session
@@ -880,7 +880,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_not_locked_down_predicted_group_stages
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'not_locked_down', :prediction_status => 'predicted',
            "Group Stages" => "tournament_stage" },
          non_admin_session
@@ -953,7 +953,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_locked_down_predicted_group_stages
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'locked_down', :prediction_status => 'predicted',
            "Group Stages" => "tournament_stage" },
          non_admin_session
@@ -1026,7 +1026,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_search_criteria_retained
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'locked_down', :prediction_status => 'predicted',
            "Group Stages" => "tournament_stage" },
          non_admin_session
@@ -1038,7 +1038,7 @@ class CMSTest < Minitest::Test
   end
 
   def test_filter_matches_no_matches_returned
-    post '/matches/filter',
+    post '/fixtures',
          { :match_status => 'locked_down', :prediction_status => 'all',
            "Final" => "tournament_stage" },
          non_admin_session
