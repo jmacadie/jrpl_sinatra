@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Make sure we're in the repo root directory
+# Make sure we've got the repo root directory
+cd "${0%/*}"
 ROOT=$(git rev-parse --show-toplevel)
 
 # Delete Bootstrap and jQuery from public folder
