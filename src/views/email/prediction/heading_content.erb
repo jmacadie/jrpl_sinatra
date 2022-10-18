@@ -1,0 +1,43 @@
+<!-- content -->
+<tr>
+  <td>
+    <img border="0"
+         style="vertical-align: middle;"
+         src="http://www.julianrimet.com/assets/img/flags/<%= locals[:match][:home_short_name].downcase %>.png">
+  </td>
+  <td width="48%"
+      style="white-space: nowrap;
+             font-family: Helvetica, arial, sans-serif;
+             font-size: 25px;
+             color: #333333;
+             text-align:right;
+             line-height: 30px;"
+      st-content="fulltext-content">
+    <%= locals[:match][:home_name] %>
+  </td>
+  <td style="white-space: nowrap;
+             font-family: Helvetica, arial, sans-serif;
+             font-size: 16px;
+             color: #333333;
+             text-align:center;
+             line-height: 30px;"
+      st-content="fulltext-content">
+    vs.
+  </td>
+  <td width="48%"
+      style="white-space: nowrap;
+             font-family: Helvetica, arial, sans-serif;
+             font-size: 25px;
+             color: #333333;
+             text-align:left;
+             line-height: 30px;"
+      st-content="fulltext-content">
+    <%= locals[:match][:away_name] %>
+  </td>
+  <td>
+    <img border="0"
+         style="vertical-align: middle;"
+         src="http://www.julianrimet.com/assets/img/flags/<%= locals[:match][:away_short_name].downcase %>.png">
+  </td>
+</tr>
+<!-- End of content -->

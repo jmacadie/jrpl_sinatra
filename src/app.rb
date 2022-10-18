@@ -6,37 +6,22 @@ require 'sinatra/cookies'
 require 'tilt/erubis'
 require 'yaml'
 
-class App < Sinatra::Application
-  attr_reader :storage
+# Load up all helpers first
+Dir["#{File.expand_path(__dir__)}/helpers/**/*.rb"].sort.each do |file|
+  require file
+end
 
+# Load up all controllers
+Dir["#{File.expand_path(__dir__)}/controllers/**/*.rb"].sort.each do |file|
+  require file
+end
+
+# Load database (model)
+require_relative 'db/database_persistence'
+
+class App < Sinatra::Application
   # Constant definitions
   LOCKDOWN_BUFFER = 30 * 60 # 30 minutes
-
-  def lockdown_buffer
-    LOCKDOWN_BUFFER
-  end
-
-  # Load database (model)
-  require_relative 'db/database_persistence'
-
-  # Load helpers
-  require_relative 'helpers/auth'
-  require_relative 'helpers/email'
-  require_relative 'helpers/lockdown'
-  require_relative 'helpers/login_cookies'
-  require_relative 'helpers/ring'
-  require_relative 'helpers/route_errors'
-  require_relative 'helpers/route_helpers'
-  require_relative 'helpers/scoring'
-  require_relative 'helpers/view_helpers'
-
-  # Load controllers
-  require_relative 'controllers/fixtures'
-  require_relative 'controllers/home'
-  require_relative 'controllers/match'
-  require_relative 'controllers/rules'
-  require_relative 'controllers/tables'
-  require_relative 'controllers/users'
 
   configure do
     # rubocop:disable Layout/SpaceBeforeComma, Layout/ExtraSpacing
@@ -78,7 +63,7 @@ class App < Sinatra::Application
 
   before do
     @storage = DatabasePersistence.new(logger, settings.dbconf)
-    Lockdown.new(self).check_lockdown()
+    check_lockdown()
   end
 
   after do
@@ -87,6 +72,7 @@ class App < Sinatra::Application
 
   helpers do
     include Email
+    include Lockdown
     include Loginable
     include LoginCookies
     include RouteErrors

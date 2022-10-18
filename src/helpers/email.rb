@@ -1,9 +1,9 @@
 module Email
-  def send_email(subject, body, to = nil)
+  def send_email(subject: '', body: '', to: nil, plain_text: false)
     config = App.settings.email
     env = App.settings.environment
     sub_to = !(env == 'production' || env == 'test')
-    params = get_params(subject, body, to, config, sub_to, env)
+    params = get_params(subject, body, to, config, sub_to, env, plain_text)
              .merge(get_transport(config))
     Pony.mail(params)
   end
@@ -11,14 +11,18 @@ module Email
   private
 
   # rubocop:disable Metrics/ParameterLists
-  def get_params(subject, body, to, config, sub_to, env)
+  def get_params(subject, body, to, config, sub_to, env, plain_text)
     # rubocop:disable Layout/HashAlignment
-    {
+    params = {
       to:      get_to(to, config, sub_to),
       from:    config['from'],
-      subject: subject,
-      body:    get_body(body, to, env)
+      subject: subject
     }
+    if plain_text
+      params.merge({ body: get_body(body, to, env) })
+    else
+      params.merge({ html_body: get_body(body, to, env) })
+    end
     # rubocop:enable Layout/HashAlignment
   end
   # rubocop:enable Metrics/ParameterLists
