@@ -29,7 +29,7 @@ module Lockdown
   end
 
   def email_subject(match)
-    "Match Predictions for #{home_name(match)} vs. #{away_name(match)}"
+    "Predictions for #{home_name(match)} vs. #{away_name(match)}"
   end
 
   def lockdowm_email_body(match, predictions)

@@ -31,8 +31,13 @@ module TestIntegrationMethods
   end
 
   def body_text
-    last_response.body
+    html_to_text(last_response.body)
+  end
+
+  def html_to_text(html)
+    html
       .gsub(/\s/, ' ') # remove newlines, tabs etc
+      .gsub(/<head>.*<\/head>/, '') # remove the head: it's not printed
       .gsub(/<input[^>]*value="([0-9]*)">/, ' \1 ') # Convert inputs with a value to just thier value
       .gsub(/<[^>]*>/, ' ') # Remove all other tags
       .gsub(/&lt;/, '<')    # Switch out encoded symbol
