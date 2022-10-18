@@ -25,7 +25,7 @@ class CMSTest < Minitest::Test
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>-</td> </tr>'
+    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82&nbsp;-&nbsp;81</td> <td>-</td> </tr>'
   end
 
   def test_view_match_lockdown_no_result_admin
@@ -34,7 +34,7 @@ class CMSTest < Minitest::Test
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>-</td> </tr>'
+    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82&nbsp;-&nbsp;81</td> <td>-</td> </tr>'
   end
 
   def test_view_match_lockdown_no_result_post_correct_score
@@ -46,7 +46,7 @@ class CMSTest < Minitest::Test
 
     get last_response['Location']
     assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>3</td> </tr>'
+    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82&nbsp;-&nbsp;81</td> <td>3</td> </tr>'
   end
 
   def test_view_match_lockdown_no_result_post_correct_result
@@ -58,7 +58,7 @@ class CMSTest < Minitest::Test
 
     get last_response['Location']
     assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>1</td> </tr>'
+    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82&nbsp;-&nbsp;81</td> <td>1</td> </tr>'
   end
 
   def test_view_match_lockdown_no_result_post_incorrect_result
@@ -70,6 +70,6 @@ class CMSTest < Minitest::Test
 
     get last_response['Location']
     assert_includes body_html, '<tr> <th>Player</th> <th>Prediction</th> <th>Points</th> </tr>'
-    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82 - 81</td> <td>-</td> </tr>'
+    assert_includes body_html, '<tr> <td>Maccas</td> <td><strong>Tunisia Win</strong><br />82&nbsp;-&nbsp;81</td> <td>-</td> </tr>'
   end
 end

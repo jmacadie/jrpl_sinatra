@@ -115,11 +115,11 @@ module ViewHelpers
       out.push '<br />'
       if match[:home_prediction] > match[:away_prediction]
         out.push home_prediction(match)
-        out.push ' - '
+        out.push '&nbsp;-&nbsp;'
         out.push away_prediction(match)
       else
         out.push away_prediction(match)
-        out.push ' - '
+        out.push '&nbsp;-&nbsp;'
         out.push home_prediction(match)
       end
     else

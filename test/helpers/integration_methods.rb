@@ -39,6 +39,7 @@ module TestIntegrationMethods
       .gsub(/&gt;/, '>')    # Switch out encoded symbol
       .gsub(/&amp;/, '&')   # Switch out encoded symbol
       .gsub(/&pound;/, '£') # Switch out encoded symbol
+      .gsub(/&nbsp;/, ' ')  # Switch out encoded symbol
       .squeeze(' ') # collapse out multiple spaces
   end
 end
