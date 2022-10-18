@@ -20,14 +20,14 @@
   <link rel="shortcut icon" href="/ico/favicon.png" type="image/x-icon">
 </head>
 <body>
-  <%== erb :'layout/navbar', :layout => false %>
+  <%== erb :'layout/navbar' %>
   <div class="container">
     <div class="page-content">
       <% if session[:message] %>
         <p class='message'><%== session.delete(:message) %></p>
       <% end %>
       <%== yield %>
-      <%== erb :'layout/footer', :layout => false %>
+      <%== erb :'layout/footer' %>
     </div><!-- /page-content -->
   </div><!-- /container -->
 </body>
