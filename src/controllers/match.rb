@@ -69,7 +69,7 @@ class App < Sinatra::Application
 
   def load_match_details(match_id)
     @match = @storage.load_single_match(session[:user_id], match_id)
-    return unless !params[:ring].nil?
+    return unless !params[:ring].nil? && params[:ring] != ""
     @ring = Ring.new({ ring: params[:ring] })
     @prev_match = @ring.prev_match
     @next_match = @ring.next_match
