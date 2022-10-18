@@ -9,7 +9,7 @@ class CMSTest < Minitest::Test
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Tables'
-    assert_includes body_html, '<td>Clare Mac</td> <td>1</td> <td>2</td> <td>3</td>'
+    assert_includes body_text, 'Clare Mac 1 2 3'
   end
 
   def test_scoreboard_change_result
@@ -21,21 +21,21 @@ class CMSTest < Minitest::Test
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Tables'
-    assert_includes body_html, '<td>Mr. Mean</td> <td>1</td> <td>2</td> <td>3</td>'
-    refute_includes body_html, '<td>Clare Mac</td> <td>1</td> <td>2</td> <td>3</td>'
+    assert_includes body_text, 'Mr. Mean 1 0 1'
+    refute_includes body_text, 'Clare Mac 1 2 3'
   end
 
   def test_scoreboard_add_result
     post '/match/add_result',
-          { match_id: 6, home_score: '2', away_score: '1' },
+          { match_id: 6, home_score: '76', away_score: '77' },
           admin_session
     get '/tables'
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Tables'
-    assert_includes body_html, '<td>Clare Mac</td> <td>1</td> <td>2</td> <td>3</td>'
-    assert_includes body_html, '<td>Mr. Median</td> <td>1</td> <td>2</td> <td>3</td>'
-    assert_includes body_html, '<td>Maccas</td> <td>1</td> <td>0</td> <td>1</td>'
+    assert_includes body_text, 'Clare Mac 2 2 4'
+    assert_includes body_text, 'Mr. Median 1 2 3'
+    assert_includes body_text, 'Maccas 2 0 2'
   end
 end

@@ -77,6 +77,7 @@ class App < Sinatra::Application
     include LoginCookies
     include RouteErrors
     include RouteHelpers
+    include MrMen
     include Scoring
     include ViewHelpers
   end

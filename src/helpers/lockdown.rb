@@ -12,6 +12,7 @@ module Lockdown
 
   def check_one_match(match)
     return unless locked_down?(match)
+    calc_mr_men(match[:match_id])
     send_lockdown_email(match[:match_id])
     @storage.record_predictions_email_sent(match[:match_id])
   end
