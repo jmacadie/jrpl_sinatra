@@ -1,0 +1,24 @@
+<% if locals[:shade] %>
+<tr style="background-color: #f4ecdc;">
+<% else %>
+<tr>
+<% end %>
+  <%== erb :'email/common/table_row_cell', locals: { align: 'left' } %>
+    <%== locals[:prediction][:user] %>
+  </td>
+  <%== erb :'email/common/table_row_cell', locals: { align: 'left' } %>
+    <%== prediction_for_print(locals[:prediction]) %>
+  </td>
+  <%== erb :'email/common/table_row_cell', locals: { align: 'left' } %>
+    &nbsp;
+  </td>
+  <%== erb :'email/common/table_row_cell', locals: { align: 'center' } %>
+    <%== points_for_print(locals[:prediction][:result_points]) %>
+  </td>
+  <%== erb :'email/common/table_row_cell', locals: { align: 'center' } %>
+    <%== points_for_print(locals[:prediction][:score_points]) %>
+  </td>
+  <%== erb :'email/common/table_row_cell', locals: { align: 'center' } %>
+    <%== points_for_print(locals[:prediction][:total_points]) %>
+  </td>
+</tr>

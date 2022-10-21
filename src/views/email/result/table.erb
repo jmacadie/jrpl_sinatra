@@ -1,0 +1,24 @@
+<!-- Start  of Predictions table -->
+<%== erb :'email/common/wrap_table_start' %>
+<%== erb :'email/result/table/title' %>
+<%== erb :'email/common/spacing' %>
+  <tr>
+    <td st-content="fulltext-content">
+      <!-- content -->
+      <table border="0"
+            width="100%"
+            cellpadding="4"
+            cellspacing="0"
+            border="0"
+            align="left"
+            class="devicewidth">
+        <%== erb :'email/result/table/header' %>
+        <% locals[:table].each_with_index do |user, index| %>
+          <%== erb :'email/result/table/row', locals: { user: user, shade: index.odd? } %>
+        <% end %>
+      </table>
+      <!-- End of content -->
+    </td>
+  </tr>
+<%== erb :'email/common/wrap_table_end' %>
+<!-- End  of Predictions table -->

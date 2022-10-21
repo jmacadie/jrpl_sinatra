@@ -1,0 +1,24 @@
+<!-- Start  of Match Result table -->
+<%== erb :'email/common/wrap_table_start' %>
+<%== erb :'email/result/match_result/title' %>
+<%== erb :'email/common/spacing' %>
+  <tr>
+    <td st-content="fulltext-content">
+      <!-- content -->
+      <table border="0"
+            width="100%"
+            cellpadding="4"
+            cellspacing="0"
+            border="0"
+            align="left"
+            class="devicewidth">
+        <%== erb :'email/result/match_result/header' %>
+        <% locals[:predictions].each_with_index do |pred, index| %>
+          <%== erb :'email/result/match_result/row', locals: { prediction: pred, shade: index.odd? } %>
+        <% end %>
+      </table>
+      <!-- End of content -->
+    </td>
+  </tr>
+<%== erb :'email/common/wrap_table_end' %>
+<!-- End  of Match Result table -->

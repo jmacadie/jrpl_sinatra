@@ -2,6 +2,7 @@ require_relative '../helpers/test_helpers'
 
 class CMSTest < Minitest::Test
   include TestIntegrationMethods
+  include TestEmailMethods
 
   def test_lockdown_emails
     Mail::TestMailer.deliveries.clear
@@ -9,29 +10,15 @@ class CMSTest < Minitest::Test
 
     get '/'
     # 8 before the WC kicks off but will increase as actual match dates pass
-    dels = Mail::TestMailer.deliveries
-    assert_operator 8, :<=, dels.length
+    assert_operator 8, :<=, Mail::TestMailer.deliveries.length
 
-    match = dels.filter { |m| subject(m) == 'TEST: Predictions for Qatar vs. Ecuador' }.first
-    body_text = html_to_text(body(match))
+    match = get_mail_by_subject('TEST: Predictions for Qatar vs. Ecuador')
+    body_text = email_body_text(match)
     assert_includes body_text, 'Sammie Qatar Win 1 - 0'
     assert_includes body_text, 'Mr. Mode Qatar Win 1 - 0'
     assert_includes body_text, 'Uwe Draw 2 - 2'
     assert_includes body_text, 'Mr. Mean Ecuador Win 4 - 2'
     assert_includes body_text, 'Binary Boy Ecuador Win 20 - 3'
-  end
-
-  private
-
-  def subject(mail)
-    mail.header
-        .fields
-        .filter { |f| f.name == 'Subject' }
-        .first
-        .value
-  end
-
-  def body(mail)
-    mail.html_part.body.raw_source
+    Mail::TestMailer.deliveries.clear
   end
 end

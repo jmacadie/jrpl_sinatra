@@ -20,7 +20,7 @@ module Lockdown
   def send_lockdown_email(match_id)
     match = @storage.load_single_match(1, match_id)
     predictions = @storage.get_match_predictions(match_id)
-    subject = email_subject(match)
+    subject = lockdown_email_subject(match)
     body = lockdowm_email_body(match, predictions)
     send_email(
       subject: subject,
@@ -28,7 +28,7 @@ module Lockdown
     )
   end
 
-  def email_subject(match)
+  def lockdown_email_subject(match)
     "Predictions for #{home_name(match)} vs. #{away_name(match)}"
   end
 

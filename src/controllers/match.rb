@@ -43,6 +43,7 @@ class App < Sinatra::Application
       match_id, home_score, away_score, session[:user_id]
     )
     update_scoreboard(match_id, home_score, away_score)
+    send_result_email(match_id)
     session[:message] = 'Result submitted'
     redirect redirect_url(match_id)
   end
@@ -84,5 +85,28 @@ class App < Sinatra::Application
 
   def to_bool(str)
     str == 'true'
+  end
+
+  def send_result_email(match_id)
+    match = @storage.load_single_match(1, match_id)
+    predictions = @storage.get_match_predictions(match_id)
+    table = @storage.load_scoreboard_data('Official')
+    subject = result_email_subject(match)
+    body = result_email_body(match, predictions, table)
+    send_email(
+      subject: subject,
+      body: body
+    )
+    @storage.record_results_email_sent(match_id)
+  end
+
+  def result_email_subject(match)
+    "Results for #{home_name(match)} vs. #{away_name(match)}"
+  end
+
+  def result_email_body(match, predictions, table)
+    erb :'email/result',
+        layout: false,
+        locals: { match: match, predictions: predictions, table: table }
   end
 end

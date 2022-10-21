@@ -23,15 +23,39 @@ module DBPersPoints
     scoring_system_id = id_for_scoring_system(scoring_system)
     sql = select_users_points_query()
     result = query(sql, scoring_system_id)
+    result = tuple_to_table_hash(result)
+    add_rank(result)
+  end
+
+  private
+
+  # rubocop:disable Metrics/MethodLength
+  def add_rank(table)
+    rank_str = ''
+    last_points = -1
+    table.each_with_index do |user, index|
+      if user[:total_points] != last_points
+        rank_str = (index + 1).to_s
+        # rubocop:disable Layout/LineLength
+        rank_str += '=' if index < (table.size - 1) &&
+                           user[:total_points] == table[index + 1][:total_points]
+        # rubocop:enable Layout/LineLength
+        last_points = user[:total_points]
+      end
+      user[:rank] = rank_str
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  def tuple_to_table_hash(result)
     result.map do |tuple|
       { user_id: tuple['user_id'],
         user_name: tuple['user_name'],
         result_points: tuple['result_points'].to_i,
-        score_points: tuple['score_points'].to_i }
+        score_points: tuple['score_points'].to_i,
+        total_points: tuple['result_points'].to_i + tuple['score_points'].to_i }
     end
   end
-
-  private
 
   def delete_existing_points_entry(pred_id, scoring_system_id)
     sql = <<~SQL

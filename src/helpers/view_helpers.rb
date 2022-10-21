@@ -131,13 +131,17 @@ module ViewHelpers
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-  def points_for_print(prediction)
-    if prediction[:total_points].nil? ||
-       prediction[:total_points] == 0
+  def points_for_print(points)
+    if points.nil? ||
+       points == 0
       '-'
     else
-      prediction[:total_points].to_s
+      points.to_s
     end
+  end
+
+  def prediction_points_for_print(prediction)
+    points_for_print(prediction[:total_points])
   end
 
   # rubocop:disable Metrics/MethodLength
