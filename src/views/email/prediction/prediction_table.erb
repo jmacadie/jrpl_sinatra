@@ -10,9 +10,9 @@
             border="0"
             align="left"
             class="devicewidth">
-        <%== erb :'email/prediction/prediction_table_header' %>
+        <%== erb :'email/prediction/prediction_table/header' %>
         <% locals[:predictions].each_with_index do |pred, index| %>
-          <%== erb :'email/prediction/prediction_table_row', locals: { prediction: pred, shade: index.odd? } %>
+          <%== erb :'email/prediction/prediction_table/row', locals: { prediction: pred, shade: index.odd? } %>
         <% end %>
       </table>
       <!-- End of content -->

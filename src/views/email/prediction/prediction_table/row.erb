@@ -1,0 +1,12 @@
+<% if locals[:shade] %>
+<tr style="background-color: #f4ecdc;">
+<% else %>
+<tr>
+<% end %>
+  <%== erb :'email/common/table_row_cell', locals: { align: 'left' } %>
+    <%== locals[:prediction][:user] %>
+  </td>
+  <%== erb :'email/common/table_row_cell', locals: { align: 'left' } %>
+    <%== prediction_for_print(locals[:prediction]) %>
+  </td>
+</tr>
