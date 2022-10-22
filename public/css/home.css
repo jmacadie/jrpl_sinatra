@@ -1,0 +1,100 @@
+/*
+ * Set font type for page main text and footer
+ */
+
+.cover,
+.footer,
+.footer > .text-muted {
+  color: #eee;
+  text-align: center;
+  text-shadow: 0 1px 5px rgba(0,0,0,.75);
+}
+
+/*
+ * Full page body so background photo and box shadow both work right
+ */
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+body > div.container {
+  margin-top: 50px;
+}
+
+/*
+ * Shadow round page edge to improve footer legibility
+ */
+
+body {
+  box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+}
+
+/*
+ * Get text to float in middle of page
+ */
+
+.cover {
+  width:200px;
+  height:200px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -100px;
+}
+
+/* Over-rule bootstrap's padding */
+.container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Pull out the footer */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%; /* Must be percentage or pixels for horizontal alignment */
+}
+
+@media (min-width: 768px) {
+  .footer  {
+    width: 700px;
+  }
+}
+
+/*
+ * Cover page: set full page background image, mobile first
+ */
+
+html,
+body {
+  background: url("/img/WC2022Collage_small.png") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+@media (min-width: 400px) {
+  html,
+  body {
+    background: url("/img/WC2022Collage_med.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+}
+
+@media (min-width: 768px) {
+  html,
+  body {
+    background: url("/img/WC2022Collage.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+}
