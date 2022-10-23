@@ -1,0 +1,42 @@
+          <h3>Select Stages / Groups</h3>
+          <%== erb :'fixtures/filter_groups' %>
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                id="ckbR16"
+                name="st_r16"
+                <%== 'checked' if session[:criteria][:stages][:round16] %>>
+              Round of 16
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                id="ckbQuarterFinals"
+                name="st_qf"
+                <%== 'checked' if session[:criteria][:stages][:quarter_final] %>>
+              Quarter-finals
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                id="ckbSemiFinals"
+                name="st_sf"
+                <%== 'checked' if session[:criteria][:stages][:semi_final] %>>
+              Semi-finals
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                id="ckbFinal"
+                name="st_f"
+                <%== 'checked' if session[:criteria][:stages][:final] %>>
+              Final
+            </label>
+          </div>

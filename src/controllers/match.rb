@@ -2,7 +2,6 @@ class App < Sinatra::Application
   get '/match/:match_id' do
     require_signed_in_user
     match_id = params[:match_id].to_i
-    session[:criteria] ||= set_criteria_to_all_matches()
     load_match_details(match_id)
     @match[:locked_down] = match_locked_down?(@match)
     @predictions = @storage.get_match_predictions(match_id, 1)

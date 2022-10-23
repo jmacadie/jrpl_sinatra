@@ -4,11 +4,11 @@ class CMSTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_view_match_not_lockdown_no_pred_not_admin
-    get '/match/64', {}, non_admin_session
+    get '/match/62', {}, non_admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_includes body_text, 'Winner Semi-Final 1 Show Origin vs. Winner Semi-Final 2 Show Origin'
+    assert_includes body_text, 'Winner Quarter-Final 3 Show Origin vs. Winner Quarter-Final 4 Show Origin'
     refute_includes body_html,
       '<input type="number" min="0" class="form-control" id="home_score" name="home_score" value='
     refute_includes body_html,

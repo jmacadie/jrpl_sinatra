@@ -4,6 +4,7 @@ require_relative 'cookies'
 require_relative 'emails'
 require_relative 'login'
 require_relative 'match_predictions'
+require_relative 'matches_full'
 require_relative 'matches'
 require_relative 'points'
 require_relative 'predictions'
@@ -14,6 +15,7 @@ class DatabasePersistence
   include DBPersEmails
   include DBPersLogin
   include DBPersMatchPredictions
+  include DBPersMatchesFull
   include DBPersMatches
   include DBPersPoints
   include DBPersPredictions

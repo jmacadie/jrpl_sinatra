@@ -1,4 +1,8 @@
-<div class="panel-group" id="accordionFilters" role="tablist" aria-multiselectable="true">
+<div
+  class="panel-group"
+  id="accordionFilters"
+  role="tablist"
+  aria-multiselectable="true">
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingFilters">
       <h4 class="panel-title">
@@ -10,108 +14,42 @@
           href="#collapseFilters"
           aria-expanded="false"
           aria-controls="collapseFilters">
-            Filters
+          Filters
         </a>
       </h4>
-    </div><!-- /#headingFilters -->
+    </div><!-- /#headingFilters.panel-heading -->
     <div
       id="collapseFilters"
       class="panel-collapse collapse"
       role="tabpanel"
       aria-labelledby="headingFilters">
-        <div class="panel-body">
-          <form class="filter_form" action="/fixtures" method="post">
-            <p>Match status:</p>
-            <input 
-              type="radio"
-              id="not_locked_down"
-              name="match_status"
-              value="not_locked_down"
-              <% if session[:criteria][:match_status] == 'not_locked_down' %>
-              checked
-              <% end %>
-            />
-            <label for="not_locked_down">Not locked down</label><br>
-
-            <input 
-              type="radio"
-              id="locked_down"
-              name="match_status"
-              value="locked_down"
-              <% if session[:criteria][:match_status] == 'locked_down' %>
-              checked 
-              <% end %>
-            />
-            <label for="locked_down">Locked down</label><br>
-
-            <input
-              type="radio"
-              id="match_status_all"
-              name="match_status" value="all"
-              <% if session[:criteria][:match_status] == 'all' || session[:criteria].nil? %>
-              checked 
-              <% end %>
-            />
-            <label for="match_status_all">All</label>
-
-            <hr />
-            <p>Prediction status:</p>
-            <input 
-              type="radio"
-              id="not_predicted"
-              name="prediction_status"
-              value="not_predicted"
-              <% if session[:criteria][:prediction_status] == 'not_predicted' %>
-              checked 
-              <% end %>
-            />
-            <label for="not_predicted">Not predicted</label><br>
-
-            <input 
-              type="radio"
-              id="predicted"
-              name="prediction_status"
-              value="predicted"
-              <% if session[:criteria][:prediction_status] == 'predicted' %>
-              checked 
-              <% end %>
-            />
-            <label for="predicted">Predicted</label><br>
-
-            <input 
-              type="radio"
-              id="prediction_status_all"
-              name="prediction_status"
-              value="all" 
-              <% if session[:criteria][:prediction_status] == 'all' || session[:criteria].nil? %>
-              checked 
-              <% end %>
-            />
-            <label for="prediction_status_all">All</label>
-
-            <hr />
-            <p>Tournament stage:</p>
-            <% @stage_names.each do |stage| %>
-              <input 
+      <div class="panel-body">
+        <form class="filter_form" action="/fixtures" method="post">
+          <div class="checkbox">
+            <label>
+              <input
                 type="checkbox"
-                id="<% stage.downcase.split.join('_') %>"
-                name="<%== stage %>"
-                value="tournament_stage"
-                <% if session[:criteria][:tournament_stages].include?(stage) %>
-                checked 
-                <% end %>
-              />
-              <label for="<% stage.downcase.split.join('_') %>"><%== stage %></label><br>
-            <% end %>
-                <div>
-              <input type="checkbox" id="select-all">
-              <label for="final">Select/Deselect All</label>
-              </div>
-
-            <input type="hidden" name="criteria" value="<%== @criteria %>" />
-            <button type="submit">Search matches</button>
-          <form>
-        </div><!-- /panel-body -->
-    </div><!-- /#collapseFilters -->
-  </div><!-- /panel-default -->
-</div><!-- /#accordionFilters -->
+                id="ckbPlayedMatches"
+                name="exc_play"
+                <%== 'checked' if session[:criteria][:exclude_played] %>>
+              Exclude played matches
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                id="ckbPredictedMatches"
+                name="exc_pred"
+                <%== 'checked' if session[:criteria][:exclude_predicted] %>>
+              Exclude predicted matches
+            </label>
+          </div>
+          <hr>
+          <%== erb :'fixtures/filter_stages' %>
+          <button class="btn btn-lg btn-primary btn-block" type="submit" id="btnUpdateMatches">Update</button>
+        </form>
+      </div><!-- /.panel-body -->
+    </div><!-- /#collapseFilters.panel-collapse -->
+  </div><!-- /.panel-default -->
+</div><!-- /#accordionFilters.panel-group -->

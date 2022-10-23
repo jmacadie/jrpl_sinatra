@@ -413,7 +413,9 @@ INSERT INTO prediction (user_id, match_id, home_team_points, away_team_points, d
     (8, 3, 1, 1, '2022-06-13 11:45:15'),
     (9, 3, 1, 0, '2022-06-13 11:45:15'),
     (10, 3, 2, 2, '2022-06-13 11:45:15'),
-    (12, 3, 2, 4, '2022-06-13 11:45:15');
+    (12, 3, 2, 4, '2022-06-13 11:45:15'),
+    (11, 63, 6, 6, '2022-06-12 16:45:15'),
+    (11, 64, 6, 6, '2022-06-12 16:45:15');
 
 INSERT INTO points (prediction_id, scoring_system_id, result_points, score_points, total_points) VALUES 
     (7, 1, 1, 2, 3),
