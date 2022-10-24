@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'base64'
 gem 'bcrypt'
 gem 'concurrent-ruby'
 gem 'erubis'
@@ -9,6 +10,7 @@ gem 'securerandom'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'yaml'
+gem 'zlib'
 
 group :development do
   gem 'debug'

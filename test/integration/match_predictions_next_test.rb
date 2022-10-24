@@ -24,7 +24,7 @@ class CMSTest < Minitest::Test
           home_team_prediction: '98',
           away_team_prediction: '99',
           next: 'true',
-          ring: '00100100C002' },
+          ring: 'eJwzMDA0AKFkAwMjAA-LAng=' },
          non_admin_session
 
     assert_equal 302, last_response.status
