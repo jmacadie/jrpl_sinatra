@@ -1,0 +1,19 @@
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseUsers">
+          Select Users
+        </a>
+      </h4>
+    </div> <!-- /.panel-heading -->
+    <div id="collapseUsers" class="panel-collapse collapse">
+      <div class="panel-body">
+        <% users = locals[:users] %>
+        <% while !users.empty? %>
+          <%== erb :'graphs/pick_user_row', locals: { users: users.shift(4) } %>
+        <% end %>
+      </div> <!-- /.panel-body -->
+    </div> <!-- /#collapseUsers.panel-collapse -->
+  </div><!-- /.panel-default -->
+</div><!-- /#accordion.panel-group -->

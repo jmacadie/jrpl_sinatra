@@ -1,0 +1,18 @@
+<h1>Graphs</h1>
+<%== erb :'graphs/pick_users', locals: { users: @users } %>
+<hr>
+<h3>Overall Points</h3>
+<div id="chartOverall"></div>
+<hr>
+<h3>Relative Points</h3>
+<div id="chartRelative"></div>
+<hr>
+<h3>Position</h3>
+<div id="chartPosition"></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  <%== erb :'graphs/data/overall', locals: { data: @points } %>
+  <%== erb :'graphs/data/relative', locals: { data: @points } %>
+  <%== erb :'graphs/data/position', locals: { data: @points } %>
+</script>
+<script type="text/javascript" src="/js/graphs.js"></script>

@@ -1,0 +1,10 @@
+<div class="col-xs-6 col-sm-3">
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"
+             value="<%== locals[:user][:user_id] %>"
+             <%== 'checked' if locals[:user][:user_id] == session[:user_id] %>>
+      <%== locals[:user][:user_name] %>
+    </label>
+  </div>
+</div>

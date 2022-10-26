@@ -1,0 +1,16 @@
+function initOverallPoints() {
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Match');
+  <% locals[:data][0][:users].each do |user| %>
+  data.addColumn('number', '<%== user[:user_name] %>');
+  <% end %>
+
+  data.addRows([
+    <% locals[:data].each do |match| %>
+    <% points = match[:users].map { |u| u[:cum_points] }.join(', ') %>
+    [<%== "'#{match[:match]}', #{points}" %>],
+    <% end %>
+  ]);
+
+  return data;
+}

@@ -38,6 +38,7 @@ module TestIntegrationMethods
     html
       .gsub(/\s/, ' ') # remove newlines, tabs etc
       .gsub(/<head>.*<\/head>/, '') # remove the head: it's not printed
+      .gsub(/<script[^(<\/script>)]*<\/script>/, '') # remove any javascript
       .gsub(/<input[^>]*value="([0-9]*)">/, ' \1 ') # Convert inputs with a value to just thier value
       .gsub(/<[^>]*>/, ' ') # Remove all other tags
       .gsub(/&lt;/, '<')    # Switch out encoded symbol
