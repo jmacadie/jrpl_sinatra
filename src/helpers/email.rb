@@ -1,4 +1,15 @@
 module Email
+  def send_email_all(subject: '', body: '', plain_text: false)
+    users = @storage.load_all_users_details()
+    to = users.reject { |u| mr_men? u }
+              .map { |u| "#{u[:user_name]} <#{u[:email]}>" }
+              .join(', ')
+    send_email(subject: subject,
+               body: body,
+               to: to,
+               plain_text: plain_text)
+  end
+
   def send_email(subject: '', body: '', to: nil, plain_text: false)
     config = App.settings.email
     env = App.settings.environment
@@ -10,6 +21,13 @@ module Email
 
   private
 
+  def mr_men?(user)
+    return false if user[:roles].nil?
+    user[:roles].include?("Mr Mean") ||
+      user[:roles].include?("Mr Median") ||
+      user[:roles].include?("Mr Mode")
+  end
+
   # rubocop:disable Metrics/ParameterLists
   def get_params(subject, body, to, config, sub_to, env, plain_text)
     # rubocop:disable Layout/HashAlignment
@@ -18,12 +36,12 @@ module Email
       from:    config['from'],
       subject: subject
     }
+    # rubocop:enable Layout/HashAlignment
     if plain_text
       params.merge({ body: get_body(body, to, env) })
     else
       params.merge({ html_body: get_body(body, to, env) })
     end
-    # rubocop:enable Layout/HashAlignment
   end
   # rubocop:enable Metrics/ParameterLists
 
@@ -51,15 +69,12 @@ module Email
     if env == 'production'
       body
     else
-      "App sending to: #{to}   \n#{body}"
+      "App sending to: #{to}\n#{body}"
     end
   end
 
   def get_to(to, config, sub_to)
-    if sub_to
-      config['sub_to']
-    else
-      to || config['default_to']
-    end
+    return config['sub_to'] if sub_to
+    to || config['default_to']
   end
 end

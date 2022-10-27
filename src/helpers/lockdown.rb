@@ -22,7 +22,7 @@ module Lockdown
     predictions = @storage.get_match_predictions(match_id)
     subject = lockdown_email_subject(match)
     body = lockdowm_email_body(match, predictions)
-    send_email(
+    send_email_all(
       subject: subject,
       body: body
     )

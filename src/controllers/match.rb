@@ -92,7 +92,7 @@ class App < Sinatra::Application
     table = @storage.load_scoreboard_data('Official')
     subject = result_email_subject(match)
     body = result_email_body(match, predictions, table)
-    send_email(
+    send_email_all(
       subject: subject,
       body: body
     )
