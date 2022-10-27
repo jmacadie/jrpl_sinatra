@@ -13,19 +13,17 @@ class CMSTest < Minitest::Test
     get '/users/edit_credentials', {}, admin_session
 
     assert_equal 200, last_response.status
-    assert_includes body_text, 'Enter new username'
-    assert_includes body_text, 'Enter your new email address'
-    assert_includes body_text, 'Enter current password'
-    assert_includes body_text, 'Enter new password'
-    assert_includes body_text, 'Reenter new password'
+    assert_includes body_text, 'Change username / e-mail:'
+    assert_includes body_text, 'Change password: Leave blank to keep current'
+    assert_includes body_text, 'Current password required for any changes:'
   end
 
   def test_change_username
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'joe',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: '',
+            user_name: 'joe',
+            email: 'clare@macadie.co.uk',
+            pword: '',
             reenter_pword: '' },
           non_admin_session
 
@@ -40,9 +38,9 @@ class CMSTest < Minitest::Test
   def test_change_username_strip_input
     post '/users/edit_credentials',
           { current_pword: '   a ',
-            new_user_name: '   joe ',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: '',
+            user_name: '   joe ',
+            email: 'clare@macadie.co.uk',
+            pword: '',
             reenter_pword: '' },
           non_admin_session
 
@@ -57,9 +55,9 @@ class CMSTest < Minitest::Test
   def test_change_username_to_blank
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: '',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: '',
+            user_name: '',
+            email: 'clare@macadie.co.uk',
+            pword: '',
             reenter_pword: '' },
           non_admin_session
 
@@ -72,9 +70,9 @@ class CMSTest < Minitest::Test
   def test_change_username_to_existing_username
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'Maccas',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: '',
+            user_name: 'Maccas',
+            email: 'clare@macadie.co.uk',
+            pword: '',
             reenter_pword: '' },
           non_admin_session
 
@@ -87,9 +85,9 @@ class CMSTest < Minitest::Test
   def test_change_pword
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'Clare Mac',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: 'Qwerty90',
+            user_name: 'Clare Mac',
+            email: 'clare@macadie.co.uk',
+            pword: 'Qwerty90',
             reenter_pword: 'Qwerty90' },
           non_admin_session
 
@@ -108,9 +106,9 @@ class CMSTest < Minitest::Test
   def test_change_pword_strip_input
     post '/users/edit_credentials',
           { current_pword: ' a   ',
-            new_user_name: 'Clare Mac',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: ' Qwerty90 ',
+            user_name: 'Clare Mac',
+            email: 'clare@macadie.co.uk',
+            pword: ' Qwerty90 ',
             reenter_pword: '   Qwerty90 ' },
           non_admin_session
 
@@ -129,9 +127,9 @@ class CMSTest < Minitest::Test
   def test_change_pword_mismatched
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'Clare Mac',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: 'b',
+            user_name: 'Clare Mac',
+            email: 'clare@macadie.co.uk',
+            pword: 'b',
             reenter_pword: 'c' },
           non_admin_session
 
@@ -143,9 +141,9 @@ class CMSTest < Minitest::Test
   def test_change_username_and_pword
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'joe',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: 'Qwerty90',
+            user_name: 'joe',
+            email: 'clare@macadie.co.uk',
+            pword: 'Qwerty90',
             reenter_pword: 'Qwerty90' },
           non_admin_session
 
@@ -165,9 +163,9 @@ class CMSTest < Minitest::Test
   def test_change_username_and_pword_strip
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: '   joe   ',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: ' Qwerty90',
+            user_name: '   joe   ',
+            email: 'clare@macadie.co.uk',
+            pword: ' Qwerty90',
             reenter_pword: '   Qwerty90 ' },
           non_admin_session
 
@@ -187,9 +185,9 @@ class CMSTest < Minitest::Test
   def test_change_username_and_pword_empty
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: '   joe   ',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: '   ',
+            user_name: '   joe   ',
+            email: 'clare@macadie.co.uk',
+            pword: '   ',
             reenter_pword: '   ' },
          non_admin_session
 
@@ -208,9 +206,9 @@ class CMSTest < Minitest::Test
   def test_change_user_credentials_pword_mismatched
     post '/users/edit_credentials',
           { current_pword: 'wrong_pword',
-            new_user_name: 'joe',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: 'b',
+            user_name: 'joe',
+            email: 'clare@macadie.co.uk',
+            pword: 'b',
             reenter_pword: 'b' },
          non_admin_session
 
@@ -223,9 +221,9 @@ class CMSTest < Minitest::Test
   def test_change_user_credentials_nothing_changed
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'Clare Mac',
-            new_email: 'clare@macadie.co.uk',
-            new_pword: '',
+            user_name: 'Clare Mac',
+            email: 'clare@macadie.co.uk',
+            pword: '',
             reenter_pword: '' },
          non_admin_session
 
@@ -237,9 +235,9 @@ class CMSTest < Minitest::Test
   def test_change_admin_pword
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'Maccas',
-            new_email: 'james.macadie@telerealtrillium.com',
-            new_pword: 'b',
+            user_name: 'Maccas',
+            email: 'james.macadie@telerealtrillium.com',
+            pword: 'b',
             reenter_pword: 'b' },
          admin_session
 
@@ -258,9 +256,9 @@ class CMSTest < Minitest::Test
   def test_change_email
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'Clare Mac',
-            new_email: 'new@email.com',
-            new_pword: '',
+            user_name: 'Clare Mac',
+            email: 'new@email.com',
+            pword: '',
             reenter_pword: '' },
          non_admin_session
 
@@ -276,9 +274,9 @@ class CMSTest < Minitest::Test
   def test_change_invalid_email
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'Clare Mac',
-            new_email: 'joe',
-            new_pword: '',
+            user_name: 'Clare Mac',
+            email: 'joe',
+            pword: '',
             reenter_pword: '' },
          non_admin_session
 
@@ -289,9 +287,9 @@ class CMSTest < Minitest::Test
   def test_change_blank_email
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'Clare Mac',
-            new_email: '',
-            new_pword: '',
+            user_name: 'Clare Mac',
+            email: '',
+            pword: '',
             reenter_pword: '' },
          non_admin_session
 
@@ -302,9 +300,9 @@ class CMSTest < Minitest::Test
   def test_change_duplicate_email
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'Clare Mac',
-            new_email: 'mrmean@julianrimet.com',
-            new_pword: '',
+            user_name: 'Clare Mac',
+            email: 'mrmean@julianrimet.com',
+            pword: '',
             reenter_pword: '' },
          non_admin_session
 
@@ -315,9 +313,9 @@ class CMSTest < Minitest::Test
   def test_change_username_and_email
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'joe',
-            new_email: 'new@email.com',
-            new_pword: '',
+            user_name: 'joe',
+            email: 'new@email.com',
+            pword: '',
             reenter_pword: '' },
          non_admin_session
 
@@ -333,9 +331,9 @@ class CMSTest < Minitest::Test
   def test_change_username_pword_and_email
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: 'joe',
-            new_email: 'new@email.com',
-            new_pword: 'Qwerty90',
+            user_name: 'joe',
+            email: 'new@email.com',
+            pword: 'Qwerty90',
             reenter_pword: 'Qwerty90' },
          non_admin_session
 
@@ -355,9 +353,9 @@ class CMSTest < Minitest::Test
   def test_change_username_pword_and_email_strip
     post '/users/edit_credentials',
           { current_pword: 'a',
-            new_user_name: '   joe ',
-            new_email: '  new@email.com ',
-            new_pword: 'Qwerty90  ',
+            user_name: '   joe ',
+            email: '  new@email.com ',
+            pword: 'Qwerty90  ',
             reenter_pword: ' Qwerty90 ' },
          non_admin_session
 

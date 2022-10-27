@@ -47,7 +47,7 @@ class CMSTest < Minitest::Test
     post '/users/signin', { login: 'guest', pword: 'shhhh' }, {}
     assert_equal 422, last_response.status
     assert_nil session[:user_name]
-    assert_includes last_response.body, 'Invalid credentials.'
+    assert_includes body_text, 'Invalid credentials.'
   end
 
   def test_signout
@@ -59,7 +59,7 @@ class CMSTest < Minitest::Test
 
     get last_response['Location']
     assert_nil session[:user_name]
-    assert_includes last_response.body, 'Sign In'
+    assert_includes body_text, 'Sign In'
   end
 
   def test_signout_already_signed_out
@@ -71,7 +71,7 @@ class CMSTest < Minitest::Test
   def test_view_signup_form_signed_out
     get '/users/signup'
     assert_equal 200, last_response.status
-    assert_includes last_response.body, 'Reenter password'
+    assert_includes body_html, 'Re-enter Password'
   end
 
   def test_view_signup_form_signed_in
@@ -82,7 +82,7 @@ class CMSTest < Minitest::Test
 
   def test_signup_signed_out
     post '/users/signup',
-         { new_user_name: 'joe', new_email: 'joe@joe.com', new_pword: 'Dfghiewo34334',
+         { user_name: 'joe', email: 'joe@joe.com', pword: 'Dfghiewo34334',
            reenter_pword: 'Dfghiewo34334' }
     assert_equal 302, last_response.status
     assert_equal 'Your account has been created.', session[:message]
@@ -93,8 +93,8 @@ class CMSTest < Minitest::Test
 
   def test_signup_signed_out_strip_input
     post '/users/signup',
-         { new_user_name: '   joe  ', new_email: 'joe@joe.com',
-           new_pword: ' Dfghiewo34334    ', reenter_pword: '  Dfghiewo34334 ' }
+         { user_name: '   joe  ', email: 'joe@joe.com',
+           pword: ' Dfghiewo34334    ', reenter_pword: '  Dfghiewo34334 ' }
     assert_equal 302, last_response.status
     assert_equal 'Your account has been created.', session[:message]
 
@@ -104,76 +104,76 @@ class CMSTest < Minitest::Test
 
   def test_signup_signed_in
     post '/users/signup',
-         { new_user_name: 'joe', new_email: 'joe@joe.com', new_pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }, admin_session
+         { user_name: 'joe', email: 'joe@joe.com', pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }, admin_session
     assert_equal 302, last_response.status
     assert_equal 'You must be signed out to do that.', session[:message]
   end
 
   def test_signup_existing_username
     post '/users/signup',
-         { new_user_name: 'Clare Mac', new_email: 'joe@joe.com',
-           new_pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
+         { user_name: 'Clare Mac', email: 'joe@joe.com',
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
     assert_equal 422, last_response.status
-    assert_includes last_response.body, 'That username already exists.'
+    assert_includes body_text, 'That username already exists.'
   end
 
   def test_signup_blank_username
     post '/users/signup',
-         { new_user_name: '', new_email: 'joe@joe.com', new_pword: 'dfghiewo34334',
+         { user_name: '', email: 'joe@joe.com', pword: 'dfghiewo34334',
            reenter_pword: 'dfghiewo34334' }
     assert_equal 422, last_response.status
-    assert_includes last_response.body,
+    assert_includes body_text,
                     'Username cannot be blank! Please enter a username.'
   end
 
   def test_signup_blank_pword
     post '/users/signup',
-         { new_user_name: 'joanna', new_email: 'joe@joe.com', new_pword: '',
+         { user_name: 'joanna', email: 'joe@joe.com', pword: '',
            reenter_pword: '' }
     assert_equal 422, last_response.status
-    assert_includes last_response.body,
+    assert_includes body_text,
                     'Password cannot be blank! Please enter a password.'
   end
 
   def test_signup_blank_username_and_pword
     post '/users/signup',
-         { new_user_name: '', new_email: 'joe@joe.com', new_pword: '',
+         { user_name: '', email: 'joe@joe.com', pword: '',
            reenter_pword: '' }
     assert_equal 422, last_response.status
-    assert_includes last_response.body,
+    assert_includes body_text,
                     'Username cannot be blank! Please enter a username. Password cannot be blank! Please enter a password.'
   end
 
   def test_signup_mismatched_pwords
     post '/users/signup',
-         { new_user_name: 'joanna', new_email: 'joe@joe.com',
-           new_pword: 'dfghiewo34334', reenter_pword: 'mismatched' }
+         { user_name: 'joanna', email: 'joe@joe.com',
+           pword: 'dfghiewo34334', reenter_pword: 'mismatched' }
     assert_equal 422, last_response.status
-    assert_includes last_response.body, 'The passwords do not match.'
+    assert_includes body_text, 'The passwords do not match.'
   end
 
   def test_signup_invalid_email
     post '/users/signup',
-         { new_user_name: 'joanna', new_email: 'joe', new_pword: 'dfghiewo34334',
+         { user_name: 'joanna', email: 'joe', pword: 'dfghiewo34334',
            reenter_pword: 'dfghiewo34334' }
     assert_equal 422, last_response.status
-    assert_includes last_response.body, 'That is not a valid email address.'
+    assert_includes body_text, 'That is not a valid email address.'
   end
 
   def test_signup_blank_email
     post '/users/signup',
-         { new_user_name: 'joanna', new_email: '', new_pword: 'dfghiewo34334',
+         { user_name: 'joanna', email: '', pword: 'dfghiewo34334',
            reenter_pword: 'dfghiewo34334' }
     assert_equal 422, last_response.status
-    assert_includes last_response.body,
+    assert_includes body_text,
                     'Email cannot be blank! Please enter an email.'
   end
 
   def test_signup_duplicate_email
     post '/users/signup',
-         { new_user_name: 'joanna', new_email: 'clare@macadie.co.uk',
-           new_pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
+         { user_name: 'joanna', email: 'clare@macadie.co.uk',
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
     assert_equal 422, last_response.status
-    assert_includes last_response.body, 'That email address already exists.'
+    assert_includes body_text, 'That email address already exists.'
   end
 end

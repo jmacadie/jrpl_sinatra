@@ -51,9 +51,9 @@ module Loginable
   end
 
   def extract_user_details(params)
-    { user_name: params[:new_user_name].strip,
-      email: params[:new_email].strip,
-      pword: params[:new_pword].strip,
+    { user_name: params[:user_name].strip,
+      email: params[:email].strip,
+      pword: params[:pword].strip,
       reenter_pword: params[:reenter_pword].strip }
   end
 

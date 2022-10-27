@@ -54,17 +54,57 @@ hr {
 .form-login .form-control:focus {
   z-index: 2;
 }
-.form-login input[type="email"] {
+.form-login #login {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.form-login input[type="password"] {
+.form-login #pword {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
+/*
+ * Sign up & edit details page
+ */
+
+.form-signup {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signup .form-login-heading,
+.form-signup  {
+  margin-bottom: 10px;
+}
+.form-signup .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signup .form-control:focus {
+  z-index: 2;
+}
+.form-signup #user_name,
+.form-signup #pword {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signup #email,
+.form-signup #reenter_pword {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.form-signup #current_pword {
+  margin-bottom: 10px;
+}
 /*
  * Layout
  */
