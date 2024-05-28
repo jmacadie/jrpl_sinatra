@@ -7,7 +7,7 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -22,7 +22,7 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { exc_pred: 'on',
            st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -37,7 +37,7 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { exc_play: 'on',
            st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -52,7 +52,7 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { exc_pred: 'on', exc_play: 'on',
            st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -66,7 +66,7 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_gr: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -80,7 +80,7 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_r16: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -94,7 +94,7 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_qf: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -108,7 +108,7 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_sf: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -122,7 +122,7 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -136,7 +136,7 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_gr: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_equal 200, last_response.status
@@ -165,7 +165,7 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { exc_pred: 'on',
            st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
+           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
     non_admin_session
 
     assert_includes body_text,

@@ -29,7 +29,6 @@ def admin_session_with_all_criteria
          "Round of 16",
          "Quarter Finals",
          "Semi Finals",
-         "Third Fourth Place Play-off",
          "Final"]
     }
   } }
@@ -56,7 +55,6 @@ def non_admin_session_with_all_criteria
        "Round of 16",
        "Quarter Finals",
        "Semi Finals",
-       "Third Fourth Place Play-off",
        "Final"]
     }
   } }
@@ -75,7 +73,6 @@ def non_admin_session_predicted_criteria
          "Round of 16",
          "Quarter Finals",
          "Semi Finals",
-         "Third Fourth Place Play-off",
          "Final"]
     }
   } }

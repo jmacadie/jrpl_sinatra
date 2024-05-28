@@ -184,8 +184,8 @@ INSERT INTO tournament_role
     ('Winner Quarter-Final 2',    NULL,    NULL,          NULL,          4),
     ('Winner Quarter-Final 3',    NULL,    NULL,          NULL,          4),
     ('Winner Quarter-Final 4',    NULL,    NULL,          NULL,          4),
-    ('Winner Semi-Final 1',       NULL,    NULL,          NULL,          6),
-    ('Winner Semi-Final 2',       NULL,    NULL,          NULL,          6);
+    ('Winner Semi-Final 1',       NULL,    NULL,          NULL,          5),
+    ('Winner Semi-Final 2',       NULL,    NULL,          NULL,          5);
 
 INSERT INTO match
     (date, kick_off, venue_id, home_team_id, away_team_id, home_team_points, away_team_points, result_posted_by, result_posted_on, stage_id, broadcaster_id) VALUES

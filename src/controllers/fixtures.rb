@@ -40,9 +40,7 @@ class App < Sinatra::Application
         C: param_posted?('gr_C'),
         D: param_posted?('gr_D'),
         E: param_posted?('gr_E'),
-        F: param_posted?('gr_F'),
-        G: param_posted?('gr_G'),
-        H: param_posted?('gr_H')
+        F: param_posted?('gr_F')
       }
     }
   end
@@ -70,9 +68,7 @@ class App < Sinatra::Application
         C: true,
         D: true,
         E: true,
-        F: true,
-        G: true,
-        H: true
+        F: true
       }
     }
   end

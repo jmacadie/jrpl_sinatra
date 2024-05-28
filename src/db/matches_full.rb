@@ -126,7 +126,7 @@ module DBPersMatchesFull
       round16:       "'Round of 16'",
       quarter_final: "'Quarter Finals'",
       semi_final:    "'Semi Finals'",
-      final:         "'Third Fourth Place Play-off', 'Final'"
+      final:         "'Final'"
     }
     # rubocop:enable Layout/HashAlignment
     list = stages.filter { |k, _| k != :group }
