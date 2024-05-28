@@ -20,12 +20,12 @@ class CMSTest < Minitest::Test
 
   def test_change_username
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'joe',
-            email: 'clare@macadie.co.uk',
-            pword: '',
-            reenter_pword: '' },
-          non_admin_session
+         { current_pword: 'a',
+           user_name: 'joe',
+           email: 'clare@macadie.co.uk',
+           pword: '',
+           reenter_pword: '' },
+         non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'joe', session[:user_name]
@@ -37,12 +37,12 @@ class CMSTest < Minitest::Test
 
   def test_change_username_strip_input
     post '/users/edit_credentials',
-          { current_pword: '   a ',
-            user_name: '   joe ',
-            email: 'clare@macadie.co.uk',
-            pword: '',
-            reenter_pword: '' },
-          non_admin_session
+         { current_pword: '   a ',
+           user_name: '   joe ',
+           email: 'clare@macadie.co.uk',
+           pword: '',
+           reenter_pword: '' },
+         non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'joe', session[:user_name]
@@ -54,12 +54,12 @@ class CMSTest < Minitest::Test
 
   def test_change_username_to_blank
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: '',
-            email: 'clare@macadie.co.uk',
-            pword: '',
-            reenter_pword: '' },
-          non_admin_session
+         { current_pword: 'a',
+           user_name: '',
+           email: 'clare@macadie.co.uk',
+           pword: '',
+           reenter_pword: '' },
+         non_admin_session
 
     assert_equal 422, last_response.status
     assert_equal 'Clare Mac', session[:user_name]
@@ -69,12 +69,12 @@ class CMSTest < Minitest::Test
 
   def test_change_username_to_existing_username
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'Maccas',
-            email: 'clare@macadie.co.uk',
-            pword: '',
-            reenter_pword: '' },
-          non_admin_session
+         { current_pword: 'a',
+           user_name: 'Maccas',
+           email: 'clare@macadie.co.uk',
+           pword: '',
+           reenter_pword: '' },
+         non_admin_session
 
     assert_equal 422, last_response.status
     assert_equal 'Clare Mac', session[:user_name]
@@ -84,12 +84,12 @@ class CMSTest < Minitest::Test
 
   def test_change_pword
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'Clare Mac',
-            email: 'clare@macadie.co.uk',
-            pword: 'Qwerty90',
-            reenter_pword: 'Qwerty90' },
-          non_admin_session
+         { current_pword: 'a',
+           user_name: 'Clare Mac',
+           email: 'clare@macadie.co.uk',
+           pword: 'Qwerty90',
+           reenter_pword: 'Qwerty90' },
+         non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'Clare Mac', session[:user_name]
@@ -105,12 +105,12 @@ class CMSTest < Minitest::Test
 
   def test_change_pword_strip_input
     post '/users/edit_credentials',
-          { current_pword: ' a   ',
-            user_name: 'Clare Mac',
-            email: 'clare@macadie.co.uk',
-            pword: ' Qwerty90 ',
-            reenter_pword: '   Qwerty90 ' },
-          non_admin_session
+         { current_pword: ' a   ',
+           user_name: 'Clare Mac',
+           email: 'clare@macadie.co.uk',
+           pword: ' Qwerty90 ',
+           reenter_pword: '   Qwerty90 ' },
+         non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'Clare Mac', session[:user_name]
@@ -126,12 +126,12 @@ class CMSTest < Minitest::Test
 
   def test_change_pword_mismatched
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'Clare Mac',
-            email: 'clare@macadie.co.uk',
-            pword: 'b',
-            reenter_pword: 'c' },
-          non_admin_session
+         { current_pword: 'a',
+           user_name: 'Clare Mac',
+           email: 'clare@macadie.co.uk',
+           pword: 'b',
+           reenter_pword: 'c' },
+         non_admin_session
 
     assert_equal 422, last_response.status
     assert_equal 'Clare Mac', session[:user_name]
@@ -140,12 +140,12 @@ class CMSTest < Minitest::Test
 
   def test_change_username_and_pword
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'joe',
-            email: 'clare@macadie.co.uk',
-            pword: 'Qwerty90',
-            reenter_pword: 'Qwerty90' },
-          non_admin_session
+         { current_pword: 'a',
+           user_name: 'joe',
+           email: 'clare@macadie.co.uk',
+           pword: 'Qwerty90',
+           reenter_pword: 'Qwerty90' },
+         non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'joe', session[:user_name]
@@ -162,12 +162,12 @@ class CMSTest < Minitest::Test
 
   def test_change_username_and_pword_strip
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: '   joe   ',
-            email: 'clare@macadie.co.uk',
-            pword: ' Qwerty90',
-            reenter_pword: '   Qwerty90 ' },
-          non_admin_session
+         { current_pword: 'a',
+           user_name: '   joe   ',
+           email: 'clare@macadie.co.uk',
+           pword: ' Qwerty90',
+           reenter_pword: '   Qwerty90 ' },
+         non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'joe', session[:user_name]
@@ -184,11 +184,11 @@ class CMSTest < Minitest::Test
 
   def test_change_username_and_pword_empty
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: '   joe   ',
-            email: 'clare@macadie.co.uk',
-            pword: '   ',
-            reenter_pword: '   ' },
+         { current_pword: 'a',
+           user_name: '   joe   ',
+           email: 'clare@macadie.co.uk',
+           pword: '   ',
+           reenter_pword: '   ' },
          non_admin_session
 
     assert_equal 302, last_response.status
@@ -205,11 +205,11 @@ class CMSTest < Minitest::Test
 
   def test_change_user_credentials_pword_mismatched
     post '/users/edit_credentials',
-          { current_pword: 'wrong_pword',
-            user_name: 'joe',
-            email: 'clare@macadie.co.uk',
-            pword: 'b',
-            reenter_pword: 'b' },
+         { current_pword: 'wrong_pword',
+           user_name: 'joe',
+           email: 'clare@macadie.co.uk',
+           pword: 'b',
+           reenter_pword: 'b' },
          non_admin_session
 
     assert_equal 422, last_response.status
@@ -220,11 +220,11 @@ class CMSTest < Minitest::Test
 
   def test_change_user_credentials_nothing_changed
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'Clare Mac',
-            email: 'clare@macadie.co.uk',
-            pword: '',
-            reenter_pword: '' },
+         { current_pword: 'a',
+           user_name: 'Clare Mac',
+           email: 'clare@macadie.co.uk',
+           pword: '',
+           reenter_pword: '' },
          non_admin_session
 
     assert_equal 422, last_response.status
@@ -234,11 +234,11 @@ class CMSTest < Minitest::Test
 
   def test_change_admin_pword
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'Maccas',
-            email: 'james.macadie@telerealtrillium.com',
-            pword: 'b',
-            reenter_pword: 'b' },
+         { current_pword: 'a',
+           user_name: 'Maccas',
+           email: 'james.macadie@telerealtrillium.com',
+           pword: 'b',
+           reenter_pword: 'b' },
          admin_session
 
     assert_equal 302, last_response.status
@@ -255,11 +255,11 @@ class CMSTest < Minitest::Test
 
   def test_change_email
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'Clare Mac',
-            email: 'new@email.com',
-            pword: '',
-            reenter_pword: '' },
+         { current_pword: 'a',
+           user_name: 'Clare Mac',
+           email: 'new@email.com',
+           pword: '',
+           reenter_pword: '' },
          non_admin_session
 
     assert_equal 302, last_response.status
@@ -273,11 +273,11 @@ class CMSTest < Minitest::Test
 
   def test_change_invalid_email
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'Clare Mac',
-            email: 'joe',
-            pword: '',
-            reenter_pword: '' },
+         { current_pword: 'a',
+           user_name: 'Clare Mac',
+           email: 'joe',
+           pword: '',
+           reenter_pword: '' },
          non_admin_session
 
     assert_equal 422, last_response.status
@@ -286,11 +286,11 @@ class CMSTest < Minitest::Test
 
   def test_change_blank_email
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'Clare Mac',
-            email: '',
-            pword: '',
-            reenter_pword: '' },
+         { current_pword: 'a',
+           user_name: 'Clare Mac',
+           email: '',
+           pword: '',
+           reenter_pword: '' },
          non_admin_session
 
     assert_equal 422, last_response.status
@@ -299,11 +299,11 @@ class CMSTest < Minitest::Test
 
   def test_change_duplicate_email
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'Clare Mac',
-            email: 'mrmean@julianrimet.com',
-            pword: '',
-            reenter_pword: '' },
+         { current_pword: 'a',
+           user_name: 'Clare Mac',
+           email: 'mrmean@julianrimet.com',
+           pword: '',
+           reenter_pword: '' },
          non_admin_session
 
     assert_equal 422, last_response.status
@@ -312,17 +312,18 @@ class CMSTest < Minitest::Test
 
   def test_change_username_and_email
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'joe',
-            email: 'new@email.com',
-            pword: '',
-            reenter_pword: '' },
+         { current_pword: 'a',
+           user_name: 'joe',
+           email: 'new@email.com',
+           pword: '',
+           reenter_pword: '' },
          non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'joe', session[:user_name]
     assert_equal 'new@email.com', session[:user_email]
-    assert_equal 'The following have been updated: username, email.', session[:message]
+    assert_equal 'The following have been updated: username, email.',
+                 session[:message]
 
     get '/'
     assert_includes body_text, 'Signed in as joe'
@@ -330,17 +331,18 @@ class CMSTest < Minitest::Test
 
   def test_change_username_pword_and_email
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: 'joe',
-            email: 'new@email.com',
-            pword: 'Qwerty90',
-            reenter_pword: 'Qwerty90' },
+         { current_pword: 'a',
+           user_name: 'joe',
+           email: 'new@email.com',
+           pword: 'Qwerty90',
+           reenter_pword: 'Qwerty90' },
          non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'joe', session[:user_name]
     assert_equal 'new@email.com', session[:user_email]
-    assert_equal 'The following have been updated: username, password, email.', session[:message]
+    assert_equal 'The following have been updated: username, password, email.',
+                 session[:message]
 
     post '/users/signout'
     post '/users/signin', { login: 'joe', pword: 'Qwerty90' }, {}
@@ -352,17 +354,18 @@ class CMSTest < Minitest::Test
 
   def test_change_username_pword_and_email_strip
     post '/users/edit_credentials',
-          { current_pword: 'a',
-            user_name: '   joe ',
-            email: '  new@email.com ',
-            pword: 'Qwerty90  ',
-            reenter_pword: ' Qwerty90 ' },
+         { current_pword: 'a',
+           user_name: '   joe ',
+           email: '  new@email.com ',
+           pword: 'Qwerty90  ',
+           reenter_pword: ' Qwerty90 ' },
          non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'joe', session[:user_name]
     assert_equal 'new@email.com', session[:user_email]
-    assert_equal 'The following have been updated: username, password, email.', session[:message]
+    assert_equal 'The following have been updated: username, password, email.',
+                 session[:message]
 
     post '/users/signout'
     post '/users/signin', { login: 'joe', pword: 'Qwerty90' }, {}

@@ -5,7 +5,8 @@ class CMSTest < Minitest::Test
 
   def test_add_prediction_no_move
     post '/match/add_prediction',
-         { match_id: '12', home_team_prediction: '98', away_team_prediction: '99', next: 'false' },
+         { match_id: '12', home_team_prediction: '98',
+           away_team_prediction: '99', next: 'false' },
          non_admin_session
 
     assert_equal 302, last_response.status
@@ -20,11 +21,12 @@ class CMSTest < Minitest::Test
   def test_add_prediction_move
     post '/match/add_prediction',
          {
-          match_id: '12',
-          home_team_prediction: '98',
-          away_team_prediction: '99',
-          next: 'true',
-          ring: 'eJwzMDA0AKFkAwMjAA-LAng=' },
+           match_id: '12',
+           home_team_prediction: '98',
+           away_team_prediction: '99',
+           next: 'true',
+           ring: 'eJwzMDA0AKFkAwMjAA-LAng='
+         },
          non_admin_session
 
     assert_equal 302, last_response.status

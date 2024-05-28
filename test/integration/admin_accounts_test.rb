@@ -28,7 +28,8 @@ class CMSTest < Minitest::Test
 
     assert_equal 302, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_equal "The password has been reset to 'jrpl' for Clare Mac.", session[:message]
+    assert_equal "The password has been reset to 'jrpl' for Clare Mac.",
+                 session[:message]
     post '/users/signout'
 
     post '/users/signin', { login: 'Clare Mac', pword: 'jrpl' }, {}
@@ -44,7 +45,8 @@ class CMSTest < Minitest::Test
     assert_equal 302, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_equal 'You must be an administrator to do that.', session[:message]
-    refute_includes body_text, "The password has been reset to 'jrpl' for Clare Mac."
+    refute_includes body_text,
+                    "The password has been reset to 'jrpl' for Clare Mac."
     post '/users/signout'
 
     post '/users/signin', { login: 'Clare Mac', pword: 'jrpl' }, {}
@@ -59,7 +61,8 @@ class CMSTest < Minitest::Test
     assert_equal 302, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_equal 'You must be an administrator to do that.', session[:message]
-    refute_includes body_text, "The password has been reset to 'jrpl' for Clare MacAdie."
+    refute_includes body_text,
+                    "The password has been reset to 'jrpl' for Clare MacAdie."
     post '/users/signout'
 
     post '/users/signin', { login: 'Clare Mac', pword: 'jrpl' }, {}
@@ -69,13 +72,15 @@ class CMSTest < Minitest::Test
   end
 
   def test_make_user_admin_then_not_admin
-    post '/users/toggle_admin', { user_id: '11', button: 'grant_admin' }, admin_session
+    post '/users/toggle_admin', { user_id: '11', button: 'grant_admin' },
+         admin_session
     post '/users/signout'
     post '/users/signin', { login: 'Clare Mac', pword: 'a' }, {}
 
     assert_includes session[:user_roles], 'Admin'
 
-    post '/users/toggle_admin', { user_id: '11', button: 'revoke_admin' }, admin_session
+    post '/users/toggle_admin', { user_id: '11', button: 'revoke_admin' },
+         admin_session
     post '/users/signout'
     post '/users/signin', { login: 'Clare Mac', pword: 'a' }, {}
 
@@ -83,8 +88,10 @@ class CMSTest < Minitest::Test
   end
 
   def test_make_user_admin_already_admin
-    post '/users/toggle_admin', { user_id: '11', button: 'grant_admin' }, admin_session
-    post '/users/toggle_admin', { user_id: '11', button: 'grant_admin' }, admin_session
+    post '/users/toggle_admin', { user_id: '11', button: 'grant_admin' },
+         admin_session
+    post '/users/toggle_admin', { user_id: '11', button: 'grant_admin' },
+         admin_session
     post '/users/signout'
     post '/users/signin', { login: 'Clare Mac', pword: 'a' }, {}
 
@@ -92,7 +99,8 @@ class CMSTest < Minitest::Test
   end
 
   def test_make_user_not_admin_already_not_admin
-    post '/users/toggle_admin', { user_id: '11', button: 'revoke_admin' }, admin_session
+    post '/users/toggle_admin', { user_id: '11', button: 'revoke_admin' },
+         admin_session
     post '/users/signout'
     post '/users/signin', { login: 'Clare Mac', pword: 'a' }, {}
 

@@ -5,7 +5,8 @@ class CMSTest < Minitest::Test
 
   def test_add_new_prediction
     post '/match/add_prediction',
-         { match_id: '12', home_team_prediction: '98', away_team_prediction: '99' },
+         { match_id: '12', home_team_prediction: '98',
+           away_team_prediction: '99' },
          non_admin_session
 
     assert_equal 302, last_response.status
@@ -19,7 +20,8 @@ class CMSTest < Minitest::Test
 
   def test_change_prediction
     post '/match/add_prediction',
-         { match_id: '11', home_team_prediction: '98', away_team_prediction: '99' },
+         { match_id: '11', home_team_prediction: '98',
+           away_team_prediction: '99' },
          non_admin_session
 
     assert_equal 302, last_response.status
@@ -33,7 +35,8 @@ class CMSTest < Minitest::Test
 
   def test_add_decimal_prediction
     post '/match/add_prediction',
-         { match_id: '11', home_team_prediction: '2.3', away_team_prediction: '3' },
+         { match_id: '11', home_team_prediction: '2.3',
+           away_team_prediction: '3' },
          non_admin_session_with_all_criteria
 
     assert_equal 422, last_response.status
@@ -43,7 +46,8 @@ class CMSTest < Minitest::Test
 
   def test_add_negative_prediction
     post '/match/add_prediction',
-         { match_id: '11', home_team_prediction: '-2', away_team_prediction: '3' },
+         { match_id: '11', home_team_prediction: '-2',
+           away_team_prediction: '3' },
          non_admin_session_with_all_criteria
 
     assert_equal 422, last_response.status
@@ -53,7 +57,8 @@ class CMSTest < Minitest::Test
 
   def test_add_prediction_lockeddown_match
     post '/match/add_prediction',
-         { match_id: '1', home_team_prediction: '2', away_team_prediction: '3' },
+         { match_id: '1', home_team_prediction: '2',
+           away_team_prediction: '3' },
          non_admin_session_with_all_criteria
 
     assert_equal 422, last_response.status

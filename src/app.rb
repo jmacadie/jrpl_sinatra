@@ -37,6 +37,7 @@ class App < Sinatra::Application
     set :public_folder , "#{settings.root}/public"
     set :config        , "#{settings.root}/config"
     set :views         , "#{settings.src}/views"
+    set :helpers       , "#{settings.src}/helpers"
     set :tests         , "#{settings.root}/test"
 
     dbconf = YAML.load_file("#{settings.config}/database.yml")
@@ -50,7 +51,9 @@ class App < Sinatra::Application
   end
 
   configure :development, :test do
-    set :session_secret, 'qwertyuiopasdfghjklzxcvbnm'
+    # rubocop:disable Layout/LineLength
+    set :session_secret, 'qwertyuiopasdfghjklzxcvbnmsssssssssssrpppppppppppppppppppppppppppppppppppppppppppppppp'
+    # rubocop:enable Layout/LineLength
   end
 
   configure :development, :test, :staging do
@@ -62,23 +65,24 @@ class App < Sinatra::Application
   end
 
   before do
-    @storage = DatabasePersistence.new(logger, settings.dbconf)
+    # Add in all the helper modules
+    extend Email
+    extend Lockdown
+    extend Loginable
+    extend LoginCookies
+    extend RouteErrors
+    extend RouteHelpers
+    extend MrMen
+    extend Scoring
+    extend ViewHelpers
+
+    DatabasePersistence.create(logger, settings.dbconf)
+    @storage = DatabasePersistence.new
+
     check_lockdown()
   end
 
   after do
-    @storage.disconnect
-  end
-
-  helpers do
-    include Email
-    include Lockdown
-    include Loginable
-    include LoginCookies
-    include RouteErrors
-    include RouteHelpers
-    include MrMen
-    include Scoring
-    include ViewHelpers
+    DatabasePersistence.disconnect
   end
 end

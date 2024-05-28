@@ -23,8 +23,10 @@ class CMSTest < Minitest::Test
   def test_locked_down_displayed_matches_list
     get '/fixtures', {}, non_admin_session
 
-    assert_includes body_text, 'Qatar Qatar vs. Ecuador Ecuador Not yet predicted'
-    assert_includes body_text, 'Denmark Denmark vs. Tunisia Tunisia Predicted: Tunisia Win Predicted: Tunisia Win 71 - 72'
+    assert_includes body_text,
+                    'Spain Spain vs. Croatia Croatia Not yet predicted'
+    assert_includes body_text,
+                    'Slovenia Slovenia vs. Denmark Denmark Predicted: Denmark Win Predicted: Denmark Win 71 - 72'
   end
 
   def test_select_deselect_all_on_match_filter_form

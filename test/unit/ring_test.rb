@@ -2,7 +2,6 @@ require_relative '../helpers/test_helpers'
 require "#{App.settings.src}/helpers/ring"
 
 class CMSTest < Minitest::Test
-
   def test_create_with_ring
     ring = Ring.new({ ring: 'eJwzMDA0ACEjAwNjAA7IAkg=' })
     assert_equal 'eJwzMDA0ACEjAwNjAA7IAkg=', ring.to_s
@@ -31,7 +30,7 @@ class CMSTest < Minitest::Test
 
   def test_create_with_matchids_matchid
     ring = Ring.new({ match_ids: [1, 2, 3], match_id: 2 })
-    assert_equal  'eJwzMDA0ACEjAwNjAA7IAkg=', ring.to_s
+    assert_equal 'eJwzMDA0ACEjAwNjAA7IAkg=', ring.to_s
 
     out = ring.next_match
     assert_equal 3, out[:match_id]
@@ -47,7 +46,9 @@ class CMSTest < Minitest::Test
   end
 
   def test_create_with_matchids_str
-    assert_raises(ArgumentError) { Ring.new({ match_ids: '1, 2, 3', match_id: 2 }) }
+    assert_raises(ArgumentError) do
+      Ring.new({ match_ids: '1, 2, 3', match_id: 2 })
+    end
   end
 
   def test_create_no_matchids_no_ring
@@ -81,16 +82,22 @@ class CMSTest < Minitest::Test
   end
 
   def test_create_with_index_into_hex
-    ring = Ring.new({ match_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], match_id: 14 })
-    assert_equal 'eJwVyskBwBAAALCV4qjWOBT7j4C8wyAQSWQeCi8flUbnd9tknbsBFcsLKA==', ring.to_s
+    ring = Ring.new({
+                      match_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                                  16], match_id: 14
+                    })
+    assert_equal 'eJwVyskBwBAAALCV4qjWOBT7j4C8wyAQSWQeCi8flUbnd9tknbsBFcsLKA==',
+                 ring.to_s
 
     out = ring.next_match
     assert_equal 15, out[:match_id]
-    assert_equal 'eJwVyskBwBAAALCV4qjWOBT7j4C8wyQQSWQeCi8flUbnZ7hznbsBFfwLKQ==', out[:ring]
+    assert_equal 'eJwVyskBwBAAALCV4qjWOBT7j4C8wyQQSWQeCi8flUbnZ7hznbsBFfwLKQ==',
+                 out[:ring]
 
     out = ring.prev_match
     assert_equal 13, out[:match_id]
-    assert_equal 'eJwVyskBwBAAALCV4qjWOBT7j4C8w08gksg8FF4-Ko3unsFknbsBFZoLJw==', out[:ring]
+    assert_equal 'eJwVyskBwBAAALCV4qjWOBT7j4C8w08gksg8FF4-Ko3unsFknbsBFZoLJw==',
+                 out[:ring]
   end
 
   def test_create_at_start

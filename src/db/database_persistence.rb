@@ -4,7 +4,6 @@ require_relative 'cookies'
 require_relative 'cumulative_points'
 require_relative 'emails'
 require_relative 'login'
-require_relative 'match_predictions'
 require_relative 'matches_full'
 require_relative 'matches'
 require_relative 'points'
@@ -16,27 +15,23 @@ class DatabasePersistence
   include DBPersCumPoints
   include DBPersEmails
   include DBPersLogin
-  include DBPersMatchPredictions
   include DBPersMatchesFull
   include DBPersMatches
   include DBPersPoints
   include DBPersPredictions
   include DBPersUsers
 
-  # rubocop:disable Metrics/AbcSize
-  def initialize(logger, conf)
-    hash = { dbname: conf['database'] }
-    hash[:host] = conf['host'] if !conf['host'].nil?
-    hash[:port] = conf['port'] if !conf['port'].nil?
-    hash[:user] = conf['username'] if !conf['username'].nil?
-    hash[:password] = conf['password'] if !conf['password'].nil?
-    @db = PG.connect(**hash)
-    @logger = logger
+  def initialize
+    raise("Database connection not initialised") if @@db.nil?
   end
-  # rubocop:enable Metrics/AbcSize
 
-  def disconnect
-    @db.close
+  def self.create(logger, conf)
+    connect_db(conf)
+    @@logger = logger
+  end
+
+  def self.disconnect
+    @@db.close
   end
 
   def tournament_stage_names
@@ -45,11 +40,20 @@ class DatabasePersistence
     result.map { |tuple| tuple['name'] }
   end
 
-  private
+  # rubocop:disable Metrics/AbcSize
+  def self.connect_db(conf)
+    hash = { dbname: conf['database'] }
+    hash[:host] = conf['host'] if !conf['host'].nil?
+    hash[:port] = conf['port'] if !conf['port'].nil?
+    hash[:user] = conf['username'] if !conf['username'].nil?
+    hash[:password] = conf['password'] if !conf['password'].nil?
+    @@db = PG.connect(**hash)
+  end
+  # rubocop:enable Metrics/AbcSize
 
   def convert_str_to_int(str)
     # This is needed because nil.to_i returns 0!!!
-    str ? str.to_i : nil
+    str&.to_i
   end
 
   def convert_date(p)
@@ -77,11 +81,11 @@ class DatabasePersistence
     sql = statement
     params.each_with_index do |p, i|
       formatted_param = convert_param(p)
-      sql = sql.gsub("\$#{i + 1}::int",  formatted_param[0])
-      sql = sql.gsub("\$#{i + 1}::text", formatted_param[1])
-      sql = sql.gsub("\$#{i + 1}::date", formatted_param[1])
-      sql = sql.gsub("\$#{i + 1}::time", formatted_param[1])
-      sql = sql.gsub("\$#{i + 1}",       p.to_s)
+      sql = sql.gsub("$#{i + 1}::int",  formatted_param[0])
+      sql = sql.gsub("$#{i + 1}::text", formatted_param[1])
+      sql = sql.gsub("$#{i + 1}::date", formatted_param[1])
+      sql = sql.gsub("$#{i + 1}::time", formatted_param[1])
+      sql = sql.gsub("$#{i + 1}",       p.to_s)
     end
     sql
   end
@@ -89,7 +93,7 @@ class DatabasePersistence
 
   def query(statement, *params)
     sql = get_sql(statement, params)
-    @logger.info "\n#{sql}"
-    @db.exec_params(statement, params)
+    @@logger.info "\n#{sql}"
+    @@db.exec_params(statement, params)
   end
 end

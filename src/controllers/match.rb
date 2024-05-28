@@ -1,10 +1,12 @@
+require_relative '../db/match_predictions'
+
 class App < Sinatra::Application
   get '/match/:match_id' do
     require_signed_in_user
     match_id = params[:match_id].to_i
     load_match_details(match_id)
     @match[:locked_down] = match_locked_down?(@match)
-    @predictions = @storage.get_match_predictions(match_id, 1)
+    @predictions = DBMatchPredictions.new.get_match_predictions(match_id, 1)
     erb :match
   end
 
@@ -88,7 +90,7 @@ class App < Sinatra::Application
 
   def send_result_email(match_id)
     match = @storage.load_single_match(1, match_id)
-    predictions = @storage.get_match_predictions(match_id)
+    predictions = DBMatchPredictions.new.get_match_predictions(match_id)
     table = @storage.load_scoreboard_data('Official')
     subject = result_email_subject(match)
     body = result_email_body(match, predictions, table)

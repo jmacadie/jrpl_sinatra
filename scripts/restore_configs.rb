@@ -3,6 +3,6 @@
 require 'fileutils'
 
 Dir.glob('config/*.sc') do |filename|
-    dest = filename.gsub('.sc','.yml')
-    FileUtils.cp(filename, dest)
+  dest = filename.gsub('.sc', '.yml')
+  FileUtils.cp(filename, dest)
 end

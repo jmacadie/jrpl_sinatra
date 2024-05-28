@@ -16,8 +16,8 @@ class CMSTest < Minitest::Test
 
   def test_scoreboard_change_result
     post '/match/add_result',
-          { match_id: 7, home_score: '4', away_score: '2' },
-          admin_session
+         { match_id: 7, home_score: '4', away_score: '2' },
+         admin_session
     get '/tables'
 
     assert_equal 200, last_response.status
@@ -30,8 +30,8 @@ class CMSTest < Minitest::Test
 
   def test_scoreboard_add_result
     post '/match/add_result',
-          { match_id: 6, home_score: '76', away_score: '77' },
-          admin_session
+         { match_id: 6, home_score: '76', away_score: '77' },
+         admin_session
     get '/tables'
 
     assert_equal 200, last_response.status

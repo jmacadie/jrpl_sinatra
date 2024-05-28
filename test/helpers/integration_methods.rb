@@ -26,8 +26,8 @@ module TestIntegrationMethods
 
   def body_html
     last_response.body
-      .gsub(/\s/, ' ')
-      .squeeze(' ')
+                 .gsub(/\s/, ' ')
+                 .squeeze(' ')
   end
 
   def body_text
@@ -37,15 +37,15 @@ module TestIntegrationMethods
   def html_to_text(html)
     html
       .gsub(/\s/, ' ') # remove newlines, tabs etc
-      .gsub(/<head>.*<\/head>/, '') # remove the head: it's not printed
-      .gsub(/<script[^(<\/script>)]*<\/script>/, '') # remove any javascript
+      .gsub(%r(<head>.*</head>), '') # remove the head: it's not printed
+      .gsub(%r(<script[^(</script>)]*</script>), '') # remove any javascript
       .gsub(/<input[^>]*value="([0-9]*)">/, ' \1 ') # Convert inputs with a value to just thier value
       .gsub(/<[^>]*>/, ' ') # Remove all other tags
-      .gsub(/&lt;/, '<')    # Switch out encoded symbol
-      .gsub(/&gt;/, '>')    # Switch out encoded symbol
-      .gsub(/&amp;/, '&')   # Switch out encoded symbol
-      .gsub(/&pound;/, '£') # Switch out encoded symbol
-      .gsub(/&nbsp;/, ' ')  # Switch out encoded symbol
+      .gsub("&lt;", '<')    # Switch out encoded symbol
+      .gsub("&gt;", '>')    # Switch out encoded symbol
+      .gsub("&amp;", '&')   # Switch out encoded symbol
+      .gsub("&pound;", '£') # Switch out encoded symbol
+      .gsub("&nbsp;", ' ')  # Switch out encoded symbol
       .squeeze(' ') # collapse out multiple spaces
   end
 end

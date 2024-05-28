@@ -14,19 +14,19 @@ class CMSTest < Minitest::Test
     assert_equal 0, Mail::TestMailer.deliveries.length
 
     post '/match/add_result',
-          { match_id: 6, home_score: 81, away_score: 82 },
-          admin_session
+         { match_id: 6, home_score: 81, away_score: 82 },
+         admin_session
     assert_equal 1, Mail::TestMailer.deliveries.length
 
-    match = get_mail_by_subject('TEST: Results for Denmark vs. Tunisia')
+    match = get_mail_by_subject('TEST: Results for Slovenia vs. Denmark')
     refute_nil(match)
 
     body_text = email_body_text(match)
     assert_includes body_text, 'New result posted'
-    assert_includes body_text, 'Denmark 81 - 82 Tunisia'
+    assert_includes body_text, 'Slovenia 81 - 82 Denmark'
     assert_includes body_text, 'Details for match'
-    assert_includes body_text, 'Maccas Tunisia Win 82 - 81 1 2 3'
-    assert_includes body_text, 'Clare Mac Tunisia Win 72 - 71 1 - 1'
+    assert_includes body_text, 'Maccas Denmark Win 82 - 81 1 2 3'
+    assert_includes body_text, 'Clare Mac Denmark Win 72 - 71 1 - 1'
     assert_includes body_text, 'Sammie No prediction - - -'
     assert_includes body_text, 'Current League Table'
     assert_includes body_text, '1=3D Clare Mac 2 2 4'
@@ -45,19 +45,19 @@ class CMSTest < Minitest::Test
     assert_equal 0, Mail::TestMailer.deliveries.length
 
     post '/match/add_result',
-          { match_id: 6, home_score: 71, away_score: 72 },
-          admin_session
+         { match_id: 6, home_score: 71, away_score: 72 },
+         admin_session
     assert_equal 1, Mail::TestMailer.deliveries.length
 
-    match = get_mail_by_subject('TEST: Results for Denmark vs. Tunisia')
+    match = get_mail_by_subject('TEST: Results for Slovenia vs. Denmark')
     refute_nil(match)
 
     body_text = email_body_text(match)
     assert_includes body_text, 'New result posted'
-    assert_includes body_text, 'Denmark 71 - 72 Tunisia'
+    assert_includes body_text, 'Slovenia 71 - 72 Denmark'
     assert_includes body_text, 'Details for match'
-    assert_includes body_text, 'Clare Mac Tunisia Win 72 - 71 1 2 3'
-    assert_includes body_text, 'Maccas Tunisia Win 82 - 81 1 - 1'
+    assert_includes body_text, 'Clare Mac Denmark Win 72 - 71 1 2 3'
+    assert_includes body_text, 'Maccas Denmark Win 82 - 81 1 - 1'
     assert_includes body_text, 'Sammie No prediction - - -'
     assert_includes body_text, 'Current League Table'
     assert_includes body_text, '1 Clare Mac 2 4 6'
@@ -72,25 +72,25 @@ class CMSTest < Minitest::Test
     Mail::TestMailer.deliveries.clear
 
     post '/match/add_result',
-          { match_id: 6, home_score: 81, away_score: 82 },
-          admin_session
+         { match_id: 6, home_score: 81, away_score: 82 },
+         admin_session
     assert_equal 1, Mail::TestMailer.deliveries.length
     Mail::TestMailer.deliveries.clear
     assert_equal 0, Mail::TestMailer.deliveries.length
     post '/match/add_result',
-          { match_id: 6, home_score: 81, away_score: 82 },
-          admin_session
+         { match_id: 6, home_score: 81, away_score: 82 },
+         admin_session
     assert_equal 1, Mail::TestMailer.deliveries.length
 
-    match = get_mail_by_subject('TEST: Results for Denmark vs. Tunisia')
+    match = get_mail_by_subject('TEST: Results for Slovenia vs. Denmark')
     refute_nil(match)
 
     body_text = email_body_text(match)
     assert_includes body_text, 'New result posted'
-    assert_includes body_text, 'Denmark 81 - 82 Tunisia'
+    assert_includes body_text, 'Slovenia 81 - 82 Denmark'
     assert_includes body_text, 'Details for match'
-    assert_includes body_text, 'Maccas Tunisia Win 82 - 81 1 2 3'
-    assert_includes body_text, 'Clare Mac Tunisia Win 72 - 71 1 - 1'
+    assert_includes body_text, 'Maccas Denmark Win 82 - 81 1 2 3'
+    assert_includes body_text, 'Clare Mac Denmark Win 72 - 71 1 - 1'
     assert_includes body_text, 'Sammie No prediction - - -'
     assert_includes body_text, 'Current League Table'
     assert_includes body_text, '1=3D Clare Mac 2 2 4'

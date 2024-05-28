@@ -11,7 +11,7 @@ class Ring
   #
   # The remaining chars are the order sorted, list of match_ids that are
   # currently selected by search parameters.
-  # Each match_id is assigned 3 hex chars (hence the hard 4,096 limit)
+  # Each match_id is assigned 3 hex chars (hence the hard 16^3 = 4,096 limit)
   #
   # This will be as long as it needs to be. In the worst case in a world cup
   # with 64 matches, with all matches selected, the ring will be:

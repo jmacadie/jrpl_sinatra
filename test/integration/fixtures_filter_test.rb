@@ -8,7 +8,7 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
@@ -23,11 +23,11 @@ class CMSTest < Minitest::Test
          { exc_pred: 'on',
            st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
-    exc_matches = [6, 7, 8, 11, 63, 64]
+    exc_matches = [6, 7, 8, 11, 51]
     inc_matches = all_match_ids - exc_matches
     fixtures_page_parts(inc_matches, exc_matches)
   end
@@ -38,7 +38,7 @@ class CMSTest < Minitest::Test
          { exc_play: 'on',
            st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
@@ -53,11 +53,11 @@ class CMSTest < Minitest::Test
          { exc_pred: 'on', exc_play: 'on',
            st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
-    exc_matches = [1, 2, 6, 7, 8, 11, 63, 64]
+    exc_matches = [1, 2, 6, 7, 8, 11, 51]
     inc_matches = all_match_ids - exc_matches
     fixtures_page_parts(inc_matches, exc_matches)
   end
@@ -67,11 +67,11 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { st_gr: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
-    inc_matches = (1..48).to_a
+    inc_matches = (1..36).to_a
     exc_matches = all_match_ids - inc_matches
     fixtures_page_parts(inc_matches, exc_matches)
   end
@@ -81,11 +81,11 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { st_r16: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
-    inc_matches = (49..56).to_a
+    inc_matches = (37..44).to_a
     exc_matches = all_match_ids - inc_matches
     fixtures_page_parts(inc_matches, exc_matches)
   end
@@ -95,11 +95,11 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { st_qf: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
-    inc_matches = (57..60).to_a
+    inc_matches = (45..48).to_a
     exc_matches = all_match_ids - inc_matches
     fixtures_page_parts(inc_matches, exc_matches)
   end
@@ -109,11 +109,11 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { st_sf: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
-    inc_matches = [61, 62]
+    inc_matches = [49, 50]
     exc_matches = all_match_ids - inc_matches
     fixtures_page_parts(inc_matches, exc_matches)
   end
@@ -123,11 +123,11 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { st_f: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
-    inc_matches = [63, 64]
+    inc_matches = [51]
     exc_matches = all_match_ids - inc_matches
     fixtures_page_parts(inc_matches, exc_matches)
   end
@@ -137,11 +137,11 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { st_gr: 'on', st_f: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
-    inc_matches = (1..48).to_a + [63, 64]
+    inc_matches = (1..36).to_a + [51]
     exc_matches = all_match_ids - inc_matches
     fixtures_page_parts(inc_matches, exc_matches)
   end
@@ -151,11 +151,11 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { st_gr: 'on',
            gr_C: 'on' }
-         non_admin_session
+    non_admin_session
 
     assert_equal 200, last_response.status
 
-    inc_matches = [5, 7, 22, 24, 39, 40]
+    inc_matches = [6, 7, 16, 17, 31, 32]
     exc_matches = all_match_ids - inc_matches
     fixtures_page_parts(inc_matches, exc_matches)
   end
@@ -166,9 +166,10 @@ class CMSTest < Minitest::Test
          { exc_pred: 'on',
            st_f: 'on',
            gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on', gr_G: 'on', gr_H: 'on' }
-         non_admin_session
+    non_admin_session
 
-    assert_includes body_text, 'No matches meet your criteria, please try again!'
+    assert_includes body_text,
+                    'No matches meet your criteria, please try again!'
   end
 
   private
@@ -188,6 +189,6 @@ class CMSTest < Minitest::Test
   end
 
   def all_match_ids
-    (1..64).to_a
+    (1..51).to_a
   end
 end

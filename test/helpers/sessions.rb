@@ -49,9 +49,9 @@ def non_admin_session_with_all_criteria
     user_id: 11,
     user_email: 'clare@macadie.co.uk',
     criteria: {
-    match_status: "all",
-    prediction_status: "all",
-    tournament_stages:
+      match_status: "all",
+      prediction_status: "all",
+      tournament_stages:
       ["Group Stages",
        "Round of 16",
        "Quarter Finals",
