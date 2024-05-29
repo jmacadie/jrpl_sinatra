@@ -13,6 +13,9 @@ To run this application locally on your machine:
   - Start the Postgres server: `sudo service postgresql start`
   - Update the gems with `bundle update`
   - If running v0.9.2 of shotgun then we need to [monkey patch the code as it doesn't work with Ruby 3.x](https://github.com/rtomayko/shotgun/issues/76)
+  - Also need to monkey patch WEBrick::HTTPServer::run on line 109:
+      `if req.keep_alive? && res.keep_alive? && req.request_method != "POST"`
+    Can't find anyone else on the webs talking about this but without the last guard `fixup` gets called but the `server.service(req, res)` line a few above has already read the body off the socket and so the `fixup` call ends up with a timeout while it waits for an empty socket to yield more bytes
   - Run the project with rake: `bundle exec rake run\[true\]`
     - On subsequent runs only need `bundle exec rake run`: the true parameter tells rake to recreate the database
   - Open a browser and navigate to: http://localhost:9393
