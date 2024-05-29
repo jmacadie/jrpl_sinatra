@@ -149,146 +149,109 @@ hr {
 /*
  * Flags
  */
- 
+
 .team-flag {
-  width: 55px;
-  height: 58px;
-  background-size: 660px 174px;
-  vertical-align: middle;
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
-[class*=" flag-"],[class^=flag-] {
-    display: inline-block;
-    margin: 0;
-    background-repeat: no-repeat;
-    background-image: url("/img/wc_flags_sprite_w_blank_s.jpg");
-    background-position: 0 100%;
+.flag-ALB {
+    background-image: url("/img/flags/ALB.png");
 }
 
-.flag-ARG {
-    background-position: 0 0;
-}
-
-.flag-AUS {
-    background-position: 9.1% 0;
+.flag-AUT {
+    background-image: url("/img/flags/AUT.png");
 }
 
 .flag-BEL {
-    background-position: 18.2% 0;
-}
-
-.flag-BRA {
-    background-position: 27.3% 0;
-}
-
-.flag-CMR {
-    background-position: 36.4% 0;
-}
-
-.flag-CAN {
-    background-position: 45.5% 0;
-}
-
-.flag-CRC {
-    background-position: 54.5% 0;
+    background-image: url("/img/flags/BEL.png");
 }
 
 .flag-CRO {
-    background-position: 63.6% 0;
+    background-image: url("/img/flags/CRO.png");
+}
+
+.flag-CZE {
+    background-image: url("/img/flags/CZE.png");
 }
 
 .flag-DEN {
-    background-position: 72.7% 0;
-}
-
-.flag-ECU {
-    background-position: 81.8% 0;
+    background-image: url("/img/flags/DEN.png");
 }
 
 .flag-ENG {
-    background-position: 90.9% 0;
-}
-
-.flag-FRA {
-    background-position: 100% 0;
-}
-
-.flag-GER {
-    background-position: 0 50%;
-}
-
-.flag-GHA {
-    background-position: 9.1% 50%;
-}
-
-.flag-IRN {
-    background-position: 18.2% 50%;
-}
-
-.flag-JPN {
-    background-position: 27.3% 50%;
-}
-
-.flag-MEX {
-    background-position: 36.4% 50%;
-}
-
-.flag-MAR {
-    background-position: 45.5% 50%;
-}
-
-.flag-NED {
-    background-position: 54.5% 50%;
-}
-
-.flag-POL {
-    background-position: 63.6% 50%;
-}
-
-.flag-POR {
-    background-position: 72.7% 50%;
-}
-
-.flag-QAT {
-    background-position: 81.8% 50%;
-}
-
-.flag-KSA {
-    background-position: 90.9% 50%;
-}
-
-.flag-SEN {
-    background-position: 100% 50%;
-}
-
-.flag-SRB {
-    background-position: 18.2% 100%;
-}
-
-.flag-KOR {
-    background-position: 27.3% 100%;
+    background-image: url("/img/flags/ENG.png");
 }
 
 .flag-ESP {
-    background-position: 36.4% 100%;
+    background-image: url("/img/flags/ESP.png");
+}
+
+.flag-FRA {
+    background-image: url("/img/flags/FRA.png");
+}
+
+.flag-GEO {
+    background-image: url("/img/flags/GEO.png");
+}
+
+.flag-GER {
+    background-image: url("/img/flags/GER.png");
+}
+
+.flag-HUN {
+    background-image: url("/img/flags/HUN.png");
+}
+
+.flag-ITA {
+    background-image: url("/img/flags/ITA.png");
+}
+
+.flag-NED {
+    background-image: url("/img/flags/NED.png");
+}
+
+.flag-POL {
+    background-image: url("/img/flags/POL.png");
+}
+
+.flag-POR {
+    background-image: url("/img/flags/POR.png");
+}
+
+.flag-ROM {
+    background-image: url("/img/flags/ROM.png");
+}
+
+.flag-SCO {
+    background-image: url("/img/flags/SCO.png");
+}
+
+.flag-SRB {
+    background-image: url("/img/flags/SRB.png");
 }
 
 .flag-SUI {
-    background-position: 45.5% 100%;
+    background-image: url("/img/flags/SUI.png");
 }
 
-.flag-TUN {
-    background-position: 54.5% 100%;
+.flag-SVK {
+    background-image: url("/img/flags/SVK.png");
 }
 
-.flag-USA {
-    background-position: 63.6% 100%;
+.flag-SVN {
+    background-image: url("/img/flags/SVN.png");
 }
 
-.flag-URU {
-    background-position: 72.7% 100%;
+.flag-TUR {
+    background-image: url("/img/flags/TUR.png");
 }
 
-.flag-WAL {
-    background-position: 81.8% 100%;
+.flag-UKR {
+    background-image: url("/img/flags/UKR.png");
 }
+
