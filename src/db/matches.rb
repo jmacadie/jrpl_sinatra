@@ -139,6 +139,7 @@ module DBPersMatches
       away_short_name: tuple['away_team_short_name'],
       stage: tuple['stage'],
       venue: tuple['venue'],
+      city: tuple['city'],
       broadcaster: tuple['broadcaster'] }
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
@@ -260,6 +261,7 @@ module DBPersMatches
       away_tr.name AS away_tournament_role,
       stage.name AS stage,
       venue.name AS venue,
+      venue.city AS city,
       broadcaster.name AS broadcaster
     SQL
   end

@@ -3,10 +3,11 @@
   <%== date_for_print(@match) %><br />
   <%== kick_off_for_print(@match) %><br />
   <small>
-    <%== @match[:venue] %><br />
+    <%== "#{@match[:venue]}, #{@match[:city]}" %><br />
     <%== @match[:broadcaster] %>
   </small>
 </h3>
   <%== erb :'match/details_big' %>
   <%== erb :'match/details_small' %>
 </h3>
+
