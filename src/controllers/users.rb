@@ -19,6 +19,7 @@ class App < Sinatra::Application
       update_user_credentials(new_user_details)
       redirect '/'
     else
+      session[:message_level] = 'danger'
       status 422
       erb :edit_credentials
     end
@@ -30,6 +31,7 @@ class App < Sinatra::Application
     @storage.reset_pword(user_name)
     session[:message] =
       "The password has been reset to 'jrpl' for #{user_name}."
+    session[:message_level] = 'info'
     if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
       '/'
     else
@@ -54,9 +56,11 @@ class App < Sinatra::Application
         implement_cookies()
       end
       session[:message] = 'Welcome!'
+      session[:message_level] = 'success'
       redirect(session[:intended_route])
     else
       session[:message] = 'Invalid credentials.'
+      session[:message_level] = 'danger'
       status 422
       erb :signin
     end
@@ -67,6 +71,7 @@ class App < Sinatra::Application
     clear_cookies()
     session.clear
     session[:message] = 'You have been signed out.'
+    session[:message_level] = 'info'
     if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
       '/'
     else
@@ -94,6 +99,7 @@ class App < Sinatra::Application
       session[:message] = 'Your account has been created.'
       redirect(session[:intended_route])
     else
+      session[:message_level] = 'danger'
       status 422
       erb :signup
     end

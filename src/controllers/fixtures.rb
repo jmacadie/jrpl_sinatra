@@ -16,6 +16,7 @@ class App < Sinatra::Application
     @match_ids = @matches.map { |m| m[:match_id] }
     if @matches.empty?
       session[:message] = 'No matches meet your criteria, please try again!'
+      session[:message_level] = 'warning'
     end
     erb :fixtures
   end

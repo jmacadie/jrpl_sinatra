@@ -93,18 +93,21 @@ module Loginable
     return if user_signed_in? && user_is_admin?
     session[:intended_route] = request.path_info
     session[:message] = 'You must be an administrator to do that.'
+    session[:message_level] = 'danger'
     redirect '/'
   end
 
   def require_signed_in_user
     return if user_signed_in?
     session[:message] = 'You must be signed in to do that.'
+    session[:message_level] = 'danger'
     redirect '/users/signin'
   end
 
   def require_signed_out_user
     return unless user_signed_in?
     session[:message] = 'You must be signed out to do that.'
+    session[:message_level] = 'warning'
     redirect '/'
   end
 
@@ -147,6 +150,7 @@ module Loginable
       changed_details.include?('email')
 
     session[:message] = "The following have been updated: #{changed_details}."
+    session[:message_level] = 'info'
   end
 
   def user_is_admin?

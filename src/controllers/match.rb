@@ -26,6 +26,7 @@ class App < Sinatra::Application
       away_prediction.to_i
     )
     session[:message] = 'Prediction submitted'
+    session[:message_level] = 'success'
     match_id = @next_match[:match_id] if move_next
     redirect redirect_url(match_id, move_next: move_next)
   end
@@ -46,6 +47,7 @@ class App < Sinatra::Application
     update_scoreboard(match_id, home_score, away_score)
     send_result_email(match_id)
     session[:message] = 'Result submitted'
+    session[:message_level] = 'success'
     redirect redirect_url(match_id)
   end
 
@@ -54,6 +56,7 @@ class App < Sinatra::Application
   def validate_prediction(home, away)
     session[:message] = prediction_error(@match, home, away)
     if session[:message]
+      session[:message_level] = 'danger'
       status 422
       return false
     end
@@ -63,6 +66,7 @@ class App < Sinatra::Application
   def validate_result(home, away)
     session[:message] = match_result_error(@match, home, away)
     if session[:message]
+      session[:message_level] = 'danger'
       status 422
       return false
     end

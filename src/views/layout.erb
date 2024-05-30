@@ -24,7 +24,10 @@
   <div class="container">
     <div class="page-content">
       <% if session[:message] %>
-        <p class='message'><%== session.delete(:message) %></p>
+        <p class='alert alert-<%== session[:message_level] %> alert-dismissable'>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <%== session.delete(:message) %>
+        </p>
       <% end %>
       <%== yield %>
       <%== erb :'layout/footer' %>
@@ -32,3 +35,4 @@
   </div><!-- /container -->
 </body>
 </html>
+
