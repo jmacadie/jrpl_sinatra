@@ -47,8 +47,9 @@ To deploy, it is assumed that you will be following [this bootstrap process](htt
     - You need to set up the database. Run the script `scripts/reset_db.sh {APP_NAME}` to deploy a fresh copy from the source script
     - You need to provide the system settings in `sudo vim current/config/database.yml` and `sudo vim current/config/general.yml`
       - This must be done by hand for security
-      - It has to be done with sudo permissions
+      - It has to be done with super user permissions, as it is not your file and is locked for editing
       - The database passwords are provided in the text output of `./create_new_app.sh`
       - On subsequent deploys, you can elect to keep the config settings to avoid having to re-input
+    - Finally we need to restart the puma instance `sudo service puma-{APP_NAME} restart`. This is so the updated database connection settings can be flushed through. It should only be necessary on the first deploy as the connection settings won't change after that
 
 With all this the website should be good to go in production / staging on the webserver
