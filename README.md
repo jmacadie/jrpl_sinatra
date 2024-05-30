@@ -45,7 +45,9 @@ To deploy, it is assumed that you will be following [this bootstrap process](htt
   - Run the `./deploy.sh` script to pull in the latest version of the code and to create a release from it
   - The first time an app is deployed:
     - You need to set up the database. Run the script `scripts/reset_db.sh {APP_NAME}` to deploy a fresh copy from the source script
-    - You need to provide the system settings in `config/database.yml` and `config/general.yml`. This must be done by hand for security.
+    - You need to provide the system settings in `sudo vim current/config/database.yml` and `sudo vim current/config/general.yml`
+      - This must be done by hand for security
+      - It has to be done with sudo permissions
       - The database passwords are provided in the text output of `./create_new_app.sh`
       - On subsequent deploys, you can elect to keep the config settings to avoid having to re-input
 
