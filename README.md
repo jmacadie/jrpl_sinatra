@@ -6,6 +6,8 @@ JRPL was developed using the ruby web application library 'Sinatra'.
 This uses the Rack server interface.
 PostgreSQL is used to store the database behind the application.
 
+## Run locally
+
 To run this application locally on your machine:
   - Copy the files into their own project directory
   - Install [Ruby and Bundler](https://www.jetbrains.com/help/ruby/set-up-a-ruby-development-environment.html), if needed
@@ -32,3 +34,19 @@ To run rubocop (to check for coding style violations):
 
 To run both tests and Rubocop, run the default rake task:
   - `bundle exec rake`
+
+## Deploy
+
+To deploy, it is assumed that you will be following [this bootstrap process](https://github.com/jmacadie/bootstrap-server/tree/main/ruby).
+  - Once all dependencies are installed / set-up, run `./create_new_app.sh` to get the skeleton set up
+    - To reset & start again `./wipe_app.sh` can be run
+    - You can verify this worked by using any browser to navigate to the app domain. You should get a "You rock..." page
+  - Navigate to `/var/www/{APP_NAME}`
+  - Run the `./deploy.sh` script to pull in the latest version of the code and to create a release from it
+  - The first time an app is deployed:
+    - You need to set up the database. Run the script `scripts/reset_db.sh {APP_NAME}` to deploy a fresh copy from the source script
+    - You need to provide the system settings in `config/database.yml` and `config/general.yml`. This must be done by hand for security.
+      - The database passwords are provided in the text output of `./create_new_app.sh`
+      - On subsequent deploys, you can elect to keep the config settings to avoid having to re-input
+
+With all this the website should be good to go in production / staging on the webserver
