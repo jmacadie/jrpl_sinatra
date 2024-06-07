@@ -25,8 +25,8 @@ module Lockdown
     subject = lockdown_email_subject(match)
     body = lockdowm_email_body(match, predictions)
     send_email_all(
-      subject: subject,
-      body: body
+      subject:,
+      body:
     )
   end
 
@@ -37,6 +37,6 @@ module Lockdown
   def lockdowm_email_body(match, predictions)
     erb :'email/prediction',
         layout: false,
-        locals: { match: match, predictions: predictions }
+        locals: { match:, predictions: }
   end
 end

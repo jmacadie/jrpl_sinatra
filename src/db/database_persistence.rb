@@ -8,6 +8,7 @@ require_relative 'matches_full'
 require_relative 'matches'
 require_relative 'points'
 require_relative 'predictions'
+require_relative 'tournament_roles'
 require_relative 'users'
 
 class DatabasePersistence
@@ -19,6 +20,7 @@ class DatabasePersistence
   include DBPersMatches
   include DBPersPoints
   include DBPersPredictions
+  include DBTournamentRoles
   include DBPersUsers
 
   def initialize

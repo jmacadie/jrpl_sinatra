@@ -4,19 +4,19 @@ class CMSTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_view_administer_accounts
-    get '/users/administer_accounts', {}, admin_session
+    get '/admin', {}, admin_session
 
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Clare Mac'
-    assert_includes body_text, 'Administer users'
+    assert_includes body_text, 'Administer Users'
     assert_includes body_html, '<button type="submit">Grant Admin</button>'
     assert_includes body_html, '<button type="submit">Revoke Admin</button>'
     assert_includes body_html, '<button type="submit">Reset password</button>'
   end
 
   def test_view_administer_accounts_not_admin
-    get '/users/administer_accounts', {}, non_admin_session
+    get '/admin', {}, non_admin_session
 
     assert_equal 302, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']

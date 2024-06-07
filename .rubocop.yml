@@ -14,7 +14,7 @@ AllCops:
   StyleGuideBaseURL: https://rubystyle.guide/
   # What version of the Ruby interpreter is the inspected code intended to
   # run on? (If there is more than one, set this to the lowest version.)
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 3.2
   NewCops: enable
 
 Style/BlockComments:
@@ -361,3 +361,4 @@ Style/InverseMethods:
 Style/MixinGrouping:
   Description: 'mixins as separate statements'
   Enabled: false
+

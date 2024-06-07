@@ -4,10 +4,10 @@ module Email
     to = users.reject { |u| mr_men? u }
               .map { |u| "#{u[:user_name]} <#{u[:email]}>" }
               .join(', ')
-    send_email(subject: subject,
-               body: body,
-               to: to,
-               plain_text: plain_text)
+    send_email(subject:,
+               body:,
+               to:,
+               plain_text:)
   end
 
   def send_email(subject: '', body: '', to: nil, plain_text: false)
@@ -34,7 +34,7 @@ module Email
     params = {
       to:      get_to(to, config, sub_to),
       from:    config['from'],
-      subject: subject
+      subject:
     }
     # rubocop:enable Layout/HashAlignment
     if plain_text

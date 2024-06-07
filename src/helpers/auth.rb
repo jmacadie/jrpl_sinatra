@@ -91,14 +91,18 @@ module Loginable
 
   def require_signed_in_as_admin
     return if user_signed_in? && user_is_admin?
-    session[:intended_route] = request.path_info
     session[:message] = 'You must be an administrator to do that.'
     session[:message_level] = 'danger'
+    if !user_signed_in?
+      session[:intended_route] = request.path_info
+      redirect '/users/signin'
+    end
     redirect '/'
   end
 
   def require_signed_in_user
     return if user_signed_in?
+    session[:intended_route] = request.path_info
     session[:message] = 'You must be signed in to do that.'
     session[:message_level] = 'danger'
     redirect '/users/signin'

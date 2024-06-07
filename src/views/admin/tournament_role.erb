@@ -1,0 +1,13 @@
+<form class="form-inline form-tournament-role" method="post" action="/tournament_role">
+  <div class="form-group">
+    <label for="tournamentRole<%== @role_camel %>"><%== @role %></label>
+    <select class="form-control" name="team" id="tournamentRole<%== @role_camel %>">
+      <option value="0"<%== " selected" if @selected == 0 %>>Not yet selected</option>
+      <% @teams.filter{ |t| t[:team_id] > 0 }.each do |t| %>
+      <option value="<%== t[:team_id] %>"<%== " selected" if t[:team_id] == @selected %>><%== t[:team] %></option>
+      <% end %>
+    </select>
+  </div>
+  <input type="hidden" name="role" value="<%== @id %>"></input>
+  <button type="submit" class="btn btn-warning">Update</button>
+</form>

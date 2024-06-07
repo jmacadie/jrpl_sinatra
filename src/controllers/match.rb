@@ -28,7 +28,7 @@ class App < Sinatra::Application
     session[:message] = 'Prediction submitted'
     session[:message_level] = 'success'
     match_id = @next_match[:match_id] if move_next
-    redirect redirect_url(match_id, move_next: move_next)
+    redirect redirect_url(match_id, move_next:)
   end
 
   post '/match/add_result' do
@@ -99,8 +99,8 @@ class App < Sinatra::Application
     subject = result_email_subject(match)
     body = result_email_body(match, predictions, table)
     send_email_all(
-      subject: subject,
-      body: body
+      subject:,
+      body:
     )
     @storage.record_results_email_sent(match_id)
   end
@@ -112,6 +112,6 @@ class App < Sinatra::Application
   def result_email_body(match, predictions, table)
     erb :'email/result',
         layout: false,
-        locals: { match: match, predictions: predictions, table: table }
+        locals: { match:, predictions:, table: }
   end
 end

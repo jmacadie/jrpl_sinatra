@@ -1,0 +1,25 @@
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a <%== 'class="collapsed" ' if !@show %>role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="<%== if @show then 'true' else 'false' end %>" aria-controls="collapseTwo">
+          Tournament Roles
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse<%== ' in' if @show %>" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+        <div class="panel-group" id="tournamentRolesAccordion" role="tablist" aria-multiselectable="true">
+          <% @roles.each do |tr| %>
+            <% stage = camelcase(tr[:stage], :lower) %>
+            <% @id = stage %>
+            <% @body_id = "#{stage}Body" %>
+            <% @tournament_role_group = tr[:stage] %>
+            <% @roles = tr[:roles] %>
+            <% @expand_stage = @roles.map{ |r| r[:id] }.include? @show %>
+            <%== erb :'admin/tournament_role_group' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+

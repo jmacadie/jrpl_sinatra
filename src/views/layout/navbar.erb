@@ -32,9 +32,10 @@
         <li><a href="/users/signup">Create Account</a></li>
         <% end %>
         <% if session[:user_roles]&.include?('Admin') %>
-        <li><a href="/users/administer_accounts">Admin</a></li>
+        <li><a href="/admin">Admin</a></li>
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+

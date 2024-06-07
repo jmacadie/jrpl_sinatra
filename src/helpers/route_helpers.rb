@@ -5,7 +5,7 @@ module RouteHelpers
     end.keys
     { match_status: params[:match_status],
       prediction_status: params[:prediction_status],
-      tournament_stages: tournament_stages }
+      tournament_stages: }
   end
 
   def load_matches

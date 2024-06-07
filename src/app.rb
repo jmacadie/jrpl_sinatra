@@ -7,12 +7,12 @@ require 'tilt/erubis'
 require 'yaml'
 
 # Load up all helpers first
-Dir["#{File.expand_path(__dir__)}/helpers/**/*.rb"].sort.each do |file|
+Dir["#{File.expand_path(__dir__)}/helpers/**/*.rb"].each do |file|
   require file
 end
 
 # Load up all controllers
-Dir["#{File.expand_path(__dir__)}/controllers/**/*.rb"].sort.each do |file|
+Dir["#{File.expand_path(__dir__)}/controllers/**/*.rb"].each do |file|
   require file
 end
 

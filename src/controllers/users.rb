@@ -1,10 +1,4 @@
 class App < Sinatra::Application
-  get '/users/administer_accounts' do
-    require_signed_in_as_admin
-    @users = @storage.load_all_users_details
-    erb :administer_accounts
-  end
-
   get '/users/edit_credentials' do
     require_signed_in_user
     erb :edit_credentials
@@ -22,20 +16,6 @@ class App < Sinatra::Application
       session[:message_level] = 'danger'
       status 422
       erb :edit_credentials
-    end
-  end
-
-  post '/users/reset_pword' do
-    require_signed_in_as_admin
-    user_name = params[:user_name]
-    @storage.reset_pword(user_name)
-    session[:message] =
-      "The password has been reset to 'jrpl' for #{user_name}."
-    session[:message_level] = 'info'
-    if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
-      '/'
-    else
-      redirect '/'
     end
   end
 
@@ -102,6 +82,22 @@ class App < Sinatra::Application
       session[:message_level] = 'danger'
       status 422
       erb :signup
+    end
+  end
+
+  # Admin functions
+
+  post '/users/reset_pword' do
+    require_signed_in_as_admin
+    user_name = params[:user_name]
+    @storage.reset_pword(user_name)
+    session[:message] =
+      "The password has been reset to 'jrpl' for #{user_name}."
+    session[:message_level] = 'info'
+    if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
+      '/'
+    else
+      redirect '/'
     end
   end
 

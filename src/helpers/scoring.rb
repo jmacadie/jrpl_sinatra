@@ -44,8 +44,8 @@ module Scoring
        away_score.nil?
       @storage.match_result(match_id)
     else
-      { home_score: home_score,
-        away_score: away_score }
+      { home_score:,
+        away_score: }
     end
   end
 

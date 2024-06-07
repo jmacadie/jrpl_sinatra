@@ -129,7 +129,7 @@ module DBPersMatchesFull
       final:         "'Final'"
     }
     # rubocop:enable Layout/HashAlignment
-    list = stages.filter { |k, _| k != :group }
+    list = stages.except(:group)
                  .filter { |_, v| v }
                  .map { |k, _| stage_map[k] }
                  .join(', ')

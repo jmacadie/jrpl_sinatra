@@ -164,5 +164,23 @@ module ViewHelpers
     end
   end
   # rubocop:enable Metrics/MethodLength
+
+  # rubocop:disable Metrics/MethodLength
+  def camelcase(string, initial=:ignore)
+    delimiters = Regexp.union(['-', '_', ' ', '/', '\\'])
+    case initial
+    when :upper
+      string.split(delimiters).map(&:capitalize).join
+    when :lower
+      string.split(delimiters).then do |first, *rest|
+        [first.downcase, rest.map(&:capitalize)].join
+      end
+    else
+      string.split(delimiters).then do |first, *rest|
+        [first, rest.map(&:capitalize)].join
+      end
+    end
+  end
+  # rubocop:enable Metrics/MethodLength
 end
 # rubocop:enable Metrics/ModuleLength

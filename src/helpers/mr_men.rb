@@ -20,7 +20,7 @@ module MrMen
            .map { |pred| pred[:away_prediction] }
            .compact
            .sort
-    @preds = { home: home, away: away }
+    @preds = { home:, away: }
   end
 
   def calc_mr_mean(match_id)
