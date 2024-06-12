@@ -13,6 +13,7 @@ To run this application locally on your machine:
   - Install [Ruby and Bundler](https://www.jetbrains.com/help/ruby/set-up-a-ruby-development-environment.html), if needed
   - Install [Postgres](https://www.postgresql.org/docs/14/install-binaries.html), if needed
   - Start the Postgres server: `sudo service postgresql start`
+  - Set up yourself as a postgres superuser: `sudo -u postgres createuser --superuser $USER && sudo -u postgres createdb $USER`
   - Update the gems with `bundle update`
   - If running v0.9.2 of shotgun then we need to [monkey patch the code as it doesn't work with Ruby 3.x](https://github.com/rtomayko/shotgun/issues/76)
   - Also need to monkey patch WEBrick::HTTPServer::run on line 109:
