@@ -29,6 +29,8 @@ Once you open the application:
 
 To run the tests:
   - `bundle exec rake test`
+    - Before you run the tests for the first time, you'll need to create the postgres user, db & run in the schema:
+      `createuser jrpl_test && createdb jrpl_test -O jrpl_test && psql -d jrpl_test -f 'data/schema.sql'`
 
 To run rubocop (to check for coding style violations):
   - `bundle exec rake rubocop`
