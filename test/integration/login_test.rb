@@ -30,6 +30,16 @@ class CMSTest < Minitest::Test
     assert_includes body_text, 'Signed in as Maccas'
   end
 
+  def test_signin_with_email
+    post '/users/signin', { login: 'james.macadie@telerealtrillium.com', pword: 'a' }, {}
+    assert_equal 302, last_response.status
+    assert_equal 'Welcome!', session[:message]
+    assert_equal 'Maccas', session[:user_name]
+
+    get last_response['Location']
+    assert_includes body_text, 'Signed in as Maccas'
+  end
+
   def test_signin_already_signed_in
     post '/users/signin', { login: 'Maccas', pword: 'a' }, non_admin_session
     assert_equal 302, last_response.status
@@ -175,6 +185,46 @@ class CMSTest < Minitest::Test
   def test_signup_duplicate_email
     post '/users/signup',
          { user_name: 'joanna', email: 'clare@macadie.co.uk',
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
+    assert_equal 422, last_response.status
+    assert_includes body_text, 'That email address already exists.'
+  end
+
+  def test_signin_capitalised_email
+    post '/users/signin', { login: 'James.MacAdie@TeLeReAlTrIlLIuM.com', pword: 'a' }, {}
+    assert_equal 302, last_response.status
+    assert_equal 'Welcome!', session[:message]
+    assert_equal 'Maccas', session[:user_name]
+
+    get last_response['Location']
+    assert_includes body_text, 'Signed in as Maccas'
+  end
+
+  def test_signup_capitalised_email
+    post '/users/signup',
+         { user_name: 'joe', email: 'Joe@jOe.com', pword: 'Dfghiewo34334',
+           reenter_pword: 'Dfghiewo34334' }
+
+    post '/users/signout'
+    post '/users/signin', { login: 'joe@joe.com', pword: 'Dfghiewo34334' }, {}
+    assert_equal 302, last_response.status
+    assert_equal 'Welcome!', session[:message]
+    assert_equal 'joe', session[:user_name]
+    get last_response['Location']
+    assert_includes body_text, 'Signed in as joe'
+
+    post '/users/signout'
+    post '/users/signin', { login: 'joE@joE.coM', pword: 'Dfghiewo34334' }, {}
+    assert_equal 302, last_response.status
+    assert_equal 'Welcome!', session[:message]
+    assert_equal 'joe', session[:user_name]
+    get last_response['Location']
+    assert_includes body_text, 'Signed in as joe'
+  end
+
+  def test_signup_duplicate_capitalised_email
+    post '/users/signup',
+         { user_name: 'joanna', email: 'clAre@macadie.co.uk',
            pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
     assert_equal 422, last_response.status
     assert_includes body_text, 'That email address already exists.'

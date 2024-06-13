@@ -1,8 +1,9 @@
 # rubocop:todo Metrics/ModuleLength
 module Loginable
   def change_email(new_email)
-    @storage.change_email(session[:user_name], new_email)
-    session[:user_email] = new_email
+    lowercase_email = new_email.downcase
+    @storage.change_email(session[:user_name], lowercase_email)
+    session[:user_email] = lowercase_email
   end
 
   def change_pword(new_pword)
@@ -46,13 +47,13 @@ module Loginable
 
   def email_list
     @storage.load_user_credentials.values.each_with_object([]) do |hash, arr|
-      arr << hash[:email]
+      arr << hash[:email].downcase
     end
   end
 
   def extract_user_details(params)
     { user_name: params[:user_name].strip,
-      email: params[:email].strip,
+      email: params[:email].strip.downcase,
       pword: params[:pword].strip,
       reenter_pword: params[:reenter_pword].strip }
   end
@@ -66,8 +67,8 @@ module Loginable
       'Email cannot be blank! Please enter an email.'
     elsif email !~ URI::MailTo::EMAIL_REGEXP
       'That is not a valid email address.'
-    elsif email_list.include?(email) &&
-          session[:user_email] != email
+    elsif email_list.include?(email.downcase) &&
+          session[:user_email] != email.downcase
       'That email address already exists.'
     end
   end
@@ -85,7 +86,7 @@ module Loginable
     return unless
       session[:user_name] == user_details[:user_name] &&
       (current_pword == user_details[:pword] || user_details[:pword] == '') &&
-      session[:user_email] == user_details[:email]
+      session[:user_email] == user_details[:email].downcase
     'You have not changed any of your details.'
   end
 
@@ -119,7 +120,7 @@ module Loginable
     user_details = @storage.load_user_details(user_id)
     session[:user_id] = user_id
     session[:user_name] = user_details[:user_name]
-    session[:user_email] = user_details[:email]
+    session[:user_email] = user_details[:email].downcase
     session[:user_roles] = user_details[:roles]
   end
 

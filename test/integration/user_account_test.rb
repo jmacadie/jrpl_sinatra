@@ -374,4 +374,23 @@ class CMSTest < Minitest::Test
     assert_equal 'Welcome!', session[:message]
     assert_equal 'joe', session[:user_name]
   end
+
+  def test_change_email_capitalised
+    post '/users/edit_credentials',
+         { current_pword: 'a',
+           user_name: 'Clare Mac',
+           email: 'nEw@eMail.coM',
+           pword: '',
+           reenter_pword: '' },
+         non_admin_session
+
+    post '/users/signout'
+    post '/users/signin', { login: 'new@email.com', pword: 'a' }, {}
+    assert_equal 302, last_response.status
+    assert_equal 'Welcome!', session[:message]
+    assert_equal 'Clare Mac', session[:user_name]
+    get last_response['Location']
+    assert_includes body_text, 'Signed in as Clare Mac'
+  end
+
 end
