@@ -5,14 +5,14 @@ development:
   port:
   username:
   password:
-  database:
+  database: jrpl_dev
 
 test:
   host:
   port:
   username:
   password:
-  database:
+  database: jrpl_test
 
 staging:
   host:
