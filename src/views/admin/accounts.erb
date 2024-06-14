@@ -43,6 +43,7 @@
                 </td>
                 <td>
                   <form class="form-inline delete-user" method="post" action="/users/delete">
+                    <input type="hidden" name="user_name" value="<%== user[:user_name] %>"/>
                     <input type="hidden" name="user_id" value="<%== user[:user_id] %>"/>
                     <button type="submit">CYA</button>
                   </form>
