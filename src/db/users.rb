@@ -1,22 +1,27 @@
 module DBPersUsers
   def assign_admin(user_id)
-    sql = 'INSERT INTO user_role VALUES ($1, $2);'
+    sql = 'INSERT INTO user_role VALUES ($1::int, $2::int);'
     query(sql, user_id, admin_role_id())
   end
 
   def change_email(old_user_name, new_email)
-    sql = 'UPDATE users SET email = $1 WHERE user_name = $2'
+    sql = 'UPDATE users SET email = $1::text WHERE user_name = $2::text;'
     query(sql, new_email, old_user_name)
+  end
+
+  def delete_user(user_id)
+    sql = 'DELETE FROM users WHERE user_id = $1::int;'
+    query(sql, user_id)
   end
 
   def change_pword(old_user_name, new_pword)
     hashed_pword = BCrypt::Password.create(new_pword).to_s
-    sql = 'UPDATE users SET pword = $1 WHERE user_name = $2'
+    sql = 'UPDATE users SET pword = $1::text WHERE user_name = $2::text;'
     query(sql, hashed_pword, old_user_name)
   end
 
   def change_username(old_user_name, new_user_name)
-    sql = 'UPDATE users SET user_name = $1 WHERE user_name = $2'
+    sql = 'UPDATE users SET user_name = $1::text WHERE user_name = $2::text;'
     query(sql, new_user_name, old_user_name)
   end
 
@@ -38,24 +43,35 @@ module DBPersUsers
   end
 
   def unassign_admin(user_id)
-    sql = 'DELETE FROM user_role WHERE user_id = $1 AND role_id = $2;'
+    sql = 'DELETE FROM user_role WHERE user_id = $1::int AND role_id = $2::int;'
     query(sql, user_id, admin_role_id())
   end
 
   def user_admin?(user_id)
-    sql = 'SELECT * FROM user_role WHERE user_id = $1 AND role_id = $2;'
+    sql = <<~SQL
+    SELECT * FROM user_role
+    WHERE user_id = $1::int AND role_id = $2::int;
+    SQL
     result = query(sql, user_id, admin_role_id())
     !(result.ntuples == 0)
   end
 
   def user_id(user_name)
-    sql = 'SELECT user_id FROM users WHERE user_name = $1'
+    sql = 'SELECT user_id FROM users WHERE user_name = $1::text;'
     result = query(sql, user_name)
+    return nil if result.ntuples == 0
     result.first['user_id'].to_i
   end
 
+  def user_name(user_id)
+    sql = 'SELECT user_name FROM users WHERE user_id = $1::int;'
+    result = query(sql, user_id)
+    return nil if result.ntuples == 0
+    result.first['user_name']
+  end
+
   def user_name_from_email(email)
-    sql = 'SELECT user_name FROM users WHERE lower(email) = lower($1)'
+    sql = 'SELECT user_name FROM users WHERE lower(email) = lower($1::text);'
     result = query(sql, email)
     return nil if result.ntuples == 0
     result.first['user_name']
@@ -64,7 +80,7 @@ module DBPersUsers
   private
 
   def admin_role_id
-    sql = 'SELECT role_id FROM role WHERE name = $1;'
+    sql = 'SELECT role_id FROM role WHERE name = $1::text;'
     result = query(sql, 'Admin')
     result.first['role_id'].to_i
   end
@@ -86,7 +102,7 @@ module DBPersUsers
       FROM users
       FULL OUTER JOIN user_role ON users.user_id = user_role.user_id
       FULL OUTER JOIN role ON user_role.role_id = role.role_id
-      WHERE users.user_id = $1
+      WHERE users.user_id = $1::int
       GROUP BY users.user_id, users.user_name, users.email
       ORDER BY users.user_name;
     SQL

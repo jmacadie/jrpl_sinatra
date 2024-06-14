@@ -111,9 +111,31 @@ class App < Sinatra::Application
       @storage.unassign_admin(user_id)
     end
     if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
-      '/users/administer_accounts'
+      '/admin'
     else
-      redirect '/users/administer_accounts'
+      redirect '/admin'
     end
+  end
+
+  post '/users/delete' do
+    require_signed_in_as_admin
+    user_id = params[:user_id].to_i
+    if user_id == session[:user_id]
+      session[:message] = "You can't delete yourself, you lemon 🍋"
+      session[:message_level] = 'danger'
+      redirect('/admin')
+    end
+
+    user_name = @storage.user_name(user_id)
+    if user_name
+      @storage.delete_user(user_id)
+      session[:message] = "#{user_name} is no longer with us 🕳️"
+      session[:message_level] = 'warn'
+    else
+      session[:message] = "#{params[:user_id]} is not a valid user_id"
+      session[:message_level] = 'danger'
+    end
+
+    redirect('/admin')
   end
 end

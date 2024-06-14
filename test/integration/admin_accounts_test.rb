@@ -10,9 +10,9 @@ class CMSTest < Minitest::Test
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_text, 'Clare Mac'
     assert_includes body_text, 'Administer Users'
-    assert_includes body_html, '<button type="submit">Grant Admin</button>'
-    assert_includes body_html, '<button type="submit">Revoke Admin</button>'
-    assert_includes body_html, '<button type="submit">Reset password</button>'
+    assert_includes body_html, '<button type="submit">Grant</button>'
+    assert_includes body_html, '<button type="submit">Revoke</button>'
+    assert_includes body_html, '<button type="submit">Reset</button>'
   end
 
   def test_view_administer_accounts_not_admin
