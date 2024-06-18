@@ -1,8 +1,6 @@
-require_relative '../db/match_predictions'
-
 module MrMen
   def calc_mr_men(match_id)
-    @predictions = DBMatchPredictions.new.get_match_predictions(match_id)
+    @predictions = @storage.get_match_predictions(match_id)
     prep_predictions()
     calc_mr_mean(match_id)
     calc_mr_median(match_id)

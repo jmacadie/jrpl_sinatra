@@ -1,5 +1,3 @@
-require_relative '../db/match_predictions'
-
 module Lockdown
   def locked_down?(match)
     match[:match_datetime] < Time.now + App::LOCKDOWN_BUFFER
@@ -21,7 +19,7 @@ module Lockdown
 
   def send_lockdown_email(match_id)
     match = @storage.load_single_match(1, match_id)
-    predictions = DBMatchPredictions.new.get_match_predictions(match_id)
+    predictions = @storage.get_match_predictions(match_id)
     subject = lockdown_email_subject(match)
     body = lockdowm_email_body(match, predictions)
     send_email_all(

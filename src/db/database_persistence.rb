@@ -6,6 +6,7 @@ require_relative 'emails'
 require_relative 'login'
 require_relative 'matches_full'
 require_relative 'matches'
+require_relative 'match_predictions'
 require_relative 'points'
 require_relative 'predictions'
 require_relative 'tournament_roles'
@@ -18,6 +19,7 @@ class DatabasePersistence
   include DBPersLogin
   include DBPersMatchesFull
   include DBPersMatches
+  include DBMatchPredictions
   include DBPersPoints
   include DBPersPredictions
   include DBTournamentRoles
@@ -42,8 +44,10 @@ class DatabasePersistence
     result.map { |tuple| tuple['name'] }
   end
 
+  private
+
   # rubocop:disable Metrics/AbcSize
-  def self.connect_db(conf)
+  private_class_method def self.connect_db(conf)
     hash = { dbname: conf['database'] }
     hash[:host] = conf['host'] if !conf['host'].nil?
     hash[:port] = conf['port'] if !conf['port'].nil?
