@@ -13,7 +13,7 @@ git restore --source=stash@{0} -- config/. >/dev/null
 # Run rubocop
 echo -e "\nRunning Rubocop checks"
 echo "---------------------------------------------------------"
-rubocop src
+bundle exec rake rubocop
 RET=$?
 if [[ $RET -ne 0 ]]; then
   echo "Unable to commit. Errors in Rubocop"
@@ -26,7 +26,7 @@ fi
 # Run test suite
 echo -e "\nRunning Tests"
 echo "---------------------------------------------------------"
-rake test
+bundle exec rake test
 RET=$?
 if [[ $RET -ne 0 ]]; then
   echo "Unable to commit. Some tests not passed"

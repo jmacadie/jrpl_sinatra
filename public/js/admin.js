@@ -24,7 +24,8 @@ $(function() {
   $("form.delete-user").submit(function(event) {
     event.preventDefault();
     event.stopPropagation();
-    var ok = confirm("Are you sure you want to delete x? This cannot be undone!");
+    var name = $(this).children('input[name="user_name"]').val()
+    var ok = confirm("Are you sure you want to delete " + name + "? This cannot be undone!");
     if (ok) {
       this.submit();
     }
