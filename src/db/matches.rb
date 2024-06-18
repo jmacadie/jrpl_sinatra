@@ -1,5 +1,5 @@
 # rubocop:todo Metrics/ModuleLength
-module DBPersMatches
+module DBMatches
   def add_result(match_id, home_team_points, away_team_points, user_id)
     sql = update_match_table_query()
     query(sql, home_team_points, away_team_points, user_id, Time.now, match_id)
@@ -153,7 +153,7 @@ module DBPersMatches
       home_team_points,
       away_team_points
     FROM match
-    WHERE match_id = $1;
+    WHERE match_id = $1::int;
     SQL
   end
 
@@ -175,11 +175,11 @@ module DBPersMatches
     <<~SQL
     UPDATE match
     SET
-      home_team_points = $1,
-      away_team_points = $2,
-      result_posted_by = $3,
-      result_posted_on = $4
-    WHERE match_id = $5;
+      home_team_points = $1::int,
+      away_team_points = $2::int,
+      result_posted_by = $3::int,
+      result_posted_on = $4::date
+    WHERE match_id = $5::int;
     SQL
   end
 
@@ -321,7 +321,7 @@ module DBPersMatches
 
   def where_single_match_clause
     <<~SQL
-    WHERE match.match_id = $2
+    WHERE match.match_id = $2::int
     SQL
   end
 

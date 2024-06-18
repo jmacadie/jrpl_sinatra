@@ -13,17 +13,17 @@ require_relative 'tournament_roles'
 require_relative 'users'
 
 class DatabasePersistence
-  include DBPersCookies
-  include DBPersCumPoints
-  include DBPersEmails
-  include DBPersLogin
-  include DBPersMatchesFull
-  include DBPersMatches
+  include DBCookies
+  include DBCumPoints
+  include DBEmails
+  include DBLogin
+  include DBMatchesFull
+  include DBMatches
   include DBMatchPredictions
-  include DBPersPoints
-  include DBPersPredictions
+  include DBPoints
+  include DBPredictions
   include DBTournamentRoles
-  include DBPersUsers
+  include DBUsers
 
   def initialize
     raise("Database connection not initialised") if @@db.nil?
@@ -79,23 +79,25 @@ class DatabasePersistence
     p_text = "'#{p}'"
     p_date = "'#{convert_date(p)}'"
     p_time = "'#{convert_time(p)}'"
-    [p_int, p_text, p_date, p_time]
+    p_dt = "'#{convert_date(p)} #{convert_time(p)}'"
+    [p_int, p_text, p_date, p_time, p_dt]
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def get_sql(statement, params)
     sql = statement
     params.each_with_index do |p, i|
       formatted_param = convert_param(p)
-      sql = sql.gsub("$#{i + 1}::int",  formatted_param[0])
-      sql = sql.gsub("$#{i + 1}::text", formatted_param[1])
-      sql = sql.gsub("$#{i + 1}::date", formatted_param[1])
-      sql = sql.gsub("$#{i + 1}::time", formatted_param[1])
-      sql = sql.gsub("$#{i + 1}",       p.to_s)
+      sql = sql.gsub("$#{i + 1}::int",       formatted_param[0])
+      sql = sql.gsub("$#{i + 1}::text",      formatted_param[1])
+      sql = sql.gsub("$#{i + 1}::date",      formatted_param[2])
+      sql = sql.gsub("$#{i + 1}::time",      formatted_param[3])
+      sql = sql.gsub("$#{i + 1}::timestamp", formatted_param[4])
+      sql = sql.gsub("$#{i + 1}",            p.to_s)
     end
     sql
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def query(statement, *params)
     sql = get_sql(statement, params)

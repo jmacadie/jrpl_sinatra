@@ -9,8 +9,8 @@ module DBTournamentRoles
   def set_tournament_role(role, team)
     sql = <<~SQL
     UPDATE tournament_role
-    SET team_id = $2
-    WHERE tournament_role_id = $1
+    SET team_id = $2::int
+    WHERE tournament_role_id = $1::int
     SQL
     query(sql, role, team)
   end
@@ -19,7 +19,7 @@ module DBTournamentRoles
     sql = <<~SQL
     UPDATE tournament_role
     SET team_id = NULL
-    WHERE tournament_role_id = $1
+    WHERE tournament_role_id = $1::int
     SQL
     query(sql, role)
   end

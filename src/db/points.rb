@@ -1,4 +1,4 @@
-module DBPersPoints
+module DBPoints
   def add_points(pred_id, scoring_system_id, result_pts, score_pts)
     delete_existing_points_entry(pred_id, scoring_system_id)
     sql = insert_into_points_table_query()
@@ -69,7 +69,7 @@ module DBPersPoints
     <<~SQL
       INSERT INTO points
       (prediction_id, scoring_system_id, result_points, score_points, total_points)
-      VALUES ($1, $2, $3, $4, $5);
+      VALUES ($1::int, $2::int, $3::int, $4::int, $5::int);
     SQL
   end
 

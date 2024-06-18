@@ -1,4 +1,4 @@
-module DBPersCumPoints
+module DBCumPoints
   def cum_points
     sql = cum_points_query()
     result = query(sql)
