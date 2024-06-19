@@ -92,7 +92,7 @@ module DBUsers
       FULL OUTER JOIN user_role ON users.user_id = user_role.user_id
       FULL OUTER JOIN role ON user_role.role_id = role.role_id
       GROUP BY users.user_id, users.user_name, users.email
-      ORDER BY users.user_name;
+      ORDER BY UPPER(users.user_name);
     SQL
   end
 
@@ -104,7 +104,6 @@ module DBUsers
       FULL OUTER JOIN role ON user_role.role_id = role.role_id
       WHERE users.user_id = $1::int
       GROUP BY users.user_id, users.user_name, users.email
-      ORDER BY users.user_name;
     SQL
   end
 

@@ -101,7 +101,7 @@ module DBCumPoints
       INNER JOIN users u ON
         pbm.user_id = u.user_id
 
-    ORDER BY sm.match_sort, pbm.user_id;
+    ORDER BY sm.match_sort, UPPER(u.user_name);
     SQL
   end
 end

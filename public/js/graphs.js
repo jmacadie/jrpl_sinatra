@@ -27,18 +27,19 @@ function getSeries() {
   // get all elements in the form
   var series =[];
   var $ckb;
-  var j;
 
   // loop through the elements
   // grab colour if checked or grey if not
   // make sure they're sorted right!
-  $('#collapseUsers').find('[type=checkbox]').each(function( index ) {
+  // This only works because the points data from the sever AND the user select
+  // check boxes are BOTH sorted alphabetically. If they are not sorted the
+  // same, this will break
+  $('#collapseUsers').find('[type=checkbox]').each(function(index) {
     $ckb = $(this);
-    j = ($ckb.attr('value') * 1) - 1;
     if ($ckb.is(':checked')) {
-      series[j] = {visibleInLegend: true, pointSize: 3, lineWidth: 3};
+      series[index] = {visibleInLegend: true, pointSize: 3, lineWidth: 3};
     } else {
-      series[j] = {color: '#dddddd', visibleInLegend: false, pointSize: 0, lineWidth: 1};
+      series[index] = {color: '#dddddd', visibleInLegend: false, pointSize: 0, lineWidth: 1};
     }
   });
 
