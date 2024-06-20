@@ -95,7 +95,7 @@ class App < Sinatra::Application
   def send_result_email(match_id)
     match = @storage.load_single_match(1, match_id)
     predictions = @storage.get_match_predictions(match_id)
-    table = @storage.load_scoreboard_data('Official')
+    table = @storage.load_scoreboard_data('Official')[:overall_table]
     subject = result_email_subject(match)
     body = result_email_body(match, predictions, table)
     send_email_all(

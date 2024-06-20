@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ModuleLength
 module DBPoints
   def add_points(pred_id, scoring_system_id, result_pts, score_pts)
     delete_existing_points_entry(pred_id, scoring_system_id)
@@ -21,13 +22,20 @@ module DBPoints
 
   def load_scoreboard_data(scoring_system)
     scoring_system_id = id_for_scoring_system(scoring_system)
-    sql = select_users_points_query()
+    overall_table = load_one_scoreboard_data(scoring_system_id, :all)
+    group_table = load_one_scoreboard_data(scoring_system_id, :group)
+    knockout_table = load_one_scoreboard_data(scoring_system_id, :knockout)
+    { overall_table:, group_table:, knockout_table: }
+  end
+
+  private
+
+  def load_one_scoreboard_data(scoring_system_id, stage)
+    sql = select_users_points_query(stage)
     result = query(sql, scoring_system_id)
     result = tuple_to_table_hash(result)
     add_rank(result)
   end
-
-  private
 
   # rubocop:disable Metrics/MethodLength
   def add_rank(table)
@@ -73,8 +81,9 @@ module DBPoints
     SQL
   end
 
-  def select_users_points_query
-    <<~SQL
+  # rubocop:disable Metrics/MethodLength
+  def select_users_points_query(stage)
+    sql = <<~SQL
       SELECT
         users.user_id,
         users.user_name,
@@ -83,13 +92,28 @@ module DBPoints
         COALESCE(sum(system_points.total_points), 0) AS total_points
       FROM users
       LEFT OUTER JOIN prediction ON users.user_id = prediction.user_id
+    SQL
+    if stage != :all
+      sql << "LEFT OUTER JOIN match ON match.match_id = prediction.match_id\n"
+    end
+    sql << <<~SQL
       LEFT OUTER JOIN
         (SELECT * FROM points WHERE scoring_system_id = $1::int) AS system_points
         ON prediction.prediction_id = system_points.prediction_id
+    SQL
+    case stage
+    when :group
+      sql << "WHERE match.stage_id = 1\n"
+    when :knockout
+      sql << "WHERE match.stage_id > 1\n"
+    end
+    sql << <<~SQL
       GROUP BY users.user_id
       ORDER BY total_points DESC, score_points DESC, result_points DESC, user_name;
     SQL
+    sql
   end
+  # rubocop:enable Metrics/MethodLength
 
   def update_points_table_query
     <<~SQL
@@ -99,3 +123,4 @@ module DBPoints
     SQL
   end
 end
+# rubocop:enable Metrics/ModuleLength
