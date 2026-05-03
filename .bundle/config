@@ -1,2 +1,9 @@
 ---
 BUNDLE_WITHOUT: "production"
+BUNDLE_SSL_CA_CERT: "/etc/ssl/certs/ca-certificates.crt"
+BUNDLE_DISABLE_ENDPOINT: "true"
+BUNDLE_PATH: "vendor/bundle"
+BUNDLE_FULL_INDEX: "true"
+BUNDLE_JOBS: "1"
+BUNDLE_RETRY: "5"
+BUNDLE_TIMEOUT: "120"

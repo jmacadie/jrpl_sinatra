@@ -25,13 +25,13 @@ task :run, :clean do |_t, args|
     Rake::Task["db:build"].invoke('jrpl_dev')
     Rake::Task["db:seed"].invoke('jrpl_dev')
   end
-  sh "shotgun"
+  sh "bundle exec rackup -s puma -p 4567 config.ru"
 end
 
 task :run_test do
   Rake::Task["db:build"].invoke('jrpl_test')
   Rake::Task["db:seed"].invoke('jrpl_test', 'data/test_data.sql')
-  sh "APP_ENV=test shotgun"
+  sh "APP_ENV=test bundle exec rackup -s puma -p 4567 config.ru"
 end
 
 namespace :db do

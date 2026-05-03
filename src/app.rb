@@ -3,7 +3,7 @@ require 'pony'
 require 'securerandom'
 require 'sinatra'
 require 'sinatra/cookies'
-require 'tilt/erubis'
+require 'tilt/erubi'
 require 'yaml'
 
 # Load up all helpers first

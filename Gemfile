@@ -4,9 +4,10 @@ gem 'base64'
 gem 'bcrypt'
 gem 'bigdecimal'
 gem 'concurrent-ruby'
-gem 'erubis'
+gem 'erubi'
 gem 'pg'
 gem 'pony'
+gem 'puma'
 gem 'securerandom'
 gem 'sinatra'
 gem 'sinatra-contrib'
@@ -23,7 +24,6 @@ group :development do
   # https://dev.to/dnamsons/ruby-debugging-in-vscode-3bkj
   # rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 26162 /path/to/the/file.rb
   gem 'ruby-debug-ide'
-  gem 'shotgun'
 end
 
 group :test do
@@ -35,6 +35,3 @@ group :test do
   gem 'simplecov'
 end
 
-group :production do
-  gem 'puma'
-end
