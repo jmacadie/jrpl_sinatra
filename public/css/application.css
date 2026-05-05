@@ -159,16 +159,25 @@ hr {
  */
 
 .team-flag {
-  width: 60px;
+  width: 90px;
   height: 60px;
   display: inline-block;
+  border: 1px solid #ccc;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
-.flag-ALB {
-    background-image: url("/img/flags/ALB.png");
+.flag-ALG {
+    background-image: url("/img/flags/ALG.png");
+}
+
+.flag-ARG {
+    background-image: url("/img/flags/ARG.png");
+}
+
+.flag-AUS {
+    background-image: url("/img/flags/AUS.png");
 }
 
 .flag-AUT {
@@ -179,16 +188,52 @@ hr {
     background-image: url("/img/flags/BEL.png");
 }
 
+.flag-BIH {
+    background-image: url("/img/flags/BIH.png");
+}
+
+.flag-BRA {
+    background-image: url("/img/flags/BRA.png");
+}
+
+.flag-CAN {
+    background-image: url("/img/flags/CAN.png");
+}
+
+.flag-CIV {
+    background-image: url("/img/flags/CIV.png");
+}
+
+.flag-COD {
+    background-image: url("/img/flags/COD.png");
+}
+
+.flag-COL {
+    background-image: url("/img/flags/COL.png");
+}
+
+.flag-CPV {
+    background-image: url("/img/flags/CPV.png");
+}
+
 .flag-CRO {
     background-image: url("/img/flags/CRO.png");
+}
+
+.flag-CUW {
+    background-image: url("/img/flags/CUW.png");
 }
 
 .flag-CZE {
     background-image: url("/img/flags/CZE.png");
 }
 
-.flag-DEN {
-    background-image: url("/img/flags/DEN.png");
+.flag-ECU {
+    background-image: url("/img/flags/ECU.png");
+}
+
+.flag-EGY {
+    background-image: url("/img/flags/EGY.png");
 }
 
 .flag-ENG {
@@ -203,63 +248,115 @@ hr {
     background-image: url("/img/flags/FRA.png");
 }
 
-.flag-GEO {
-    background-image: url("/img/flags/GEO.png");
-}
-
 .flag-GER {
     background-image: url("/img/flags/GER.png");
 }
 
-.flag-HUN {
-    background-image: url("/img/flags/HUN.png");
+.flag-GHA {
+    background-image: url("/img/flags/GHA.png");
 }
 
-.flag-ITA {
-    background-image: url("/img/flags/ITA.png");
+.flag-HAI {
+    background-image: url("/img/flags/HAI.png");
+}
+
+.flag-IRN {
+    background-image: url("/img/flags/IRN.png");
+}
+
+.flag-IRQ {
+    background-image: url("/img/flags/IRQ.png");
+}
+
+.flag-JOR {
+    background-image: url("/img/flags/JOR.png");
+}
+
+.flag-JPN {
+    background-image: url("/img/flags/JPN.png");
+}
+
+.flag-KOR {
+    background-image: url("/img/flags/KOR.png");
+}
+
+.flag-KSA {
+    background-image: url("/img/flags/KSA.png");
+}
+
+.flag-MAR {
+    background-image: url("/img/flags/MAR.png");
+}
+
+.flag-MEX {
+    background-image: url("/img/flags/MEX.png");
 }
 
 .flag-NED {
     background-image: url("/img/flags/NED.png");
 }
 
-.flag-POL {
-    background-image: url("/img/flags/POL.png");
+.flag-NOR {
+    background-image: url("/img/flags/NOR.png");
+}
+
+.flag-NZL {
+    background-image: url("/img/flags/NZL.png");
+}
+
+.flag-PAN {
+    background-image: url("/img/flags/PAN.png");
+}
+
+.flag-PAR {
+    background-image: url("/img/flags/PAR.png");
 }
 
 .flag-POR {
     background-image: url("/img/flags/POR.png");
 }
 
-.flag-ROM {
-    background-image: url("/img/flags/ROM.png");
+.flag-QAT {
+    background-image: url("/img/flags/QAT.png");
+}
+
+.flag-RSA {
+    background-image: url("/img/flags/RSA.png");
 }
 
 .flag-SCO {
     background-image: url("/img/flags/SCO.png");
 }
 
-.flag-SRB {
-    background-image: url("/img/flags/SRB.png");
+.flag-SEN {
+    background-image: url("/img/flags/SEN.png");
 }
 
 .flag-SUI {
     background-image: url("/img/flags/SUI.png");
 }
 
-.flag-SVK {
-    background-image: url("/img/flags/SVK.png");
+.flag-SWE {
+    background-image: url("/img/flags/SWE.png");
 }
 
-.flag-SVN {
-    background-image: url("/img/flags/SVN.png");
+.flag-TUN {
+    background-image: url("/img/flags/TUN.png");
 }
 
 .flag-TUR {
     background-image: url("/img/flags/TUR.png");
 }
 
-.flag-UKR {
-    background-image: url("/img/flags/UKR.png");
+.flag-URU {
+    background-image: url("/img/flags/URU.png");
+}
+
+.flag-USA {
+    background-image: url("/img/flags/USA.png");
+}
+
+.flag-UZB {
+    background-image: url("/img/flags/UZB.png");
 }
 

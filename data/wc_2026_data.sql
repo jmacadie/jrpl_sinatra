@@ -163,7 +163,7 @@ INSERT INTO meta_group_map (meta_group_id, group_id) VALUES
 
 INSERT INTO team (name, short_name) VALUES
     ('Mexico',                 'MEX'), -- 1, Group A
-    ('South Africa',           'ZAF'), -- 2, Group A
+    ('South Africa',           'RSA'), -- 2, Group A
     ('South Korea',            'KOR'), -- 3, Group A
     ('Czechia',                'CZE'), -- 4, Group A
     ('Canada',                 'CAN'), -- 5, Group B
@@ -172,10 +172,10 @@ INSERT INTO team (name, short_name) VALUES
     ('Switzerland',            'SUI'), -- 8, Group B
     ('Brazil',                 'BRA'), -- 9, Group C
     ('Morocco',                'MAR'), -- 10, Group C
-    ('Haiti',                  'HTI'), -- 11, Group C
+    ('Haiti',                  'HAI'), -- 11, Group C
     ('Scotland',               'SCO'), -- 12, Group C
     ('USA',                    'USA'), -- 13, Group D
-    ('Paraguay',               'PRY'), -- 14, Group D
+    ('Paraguay',               'PAR'), -- 14, Group D
     ('Australia',              'AUS'), -- 15, Group D
     ('Turkey',                 'TUR'), -- 16, Group D
     ('Germany',                'GER'), -- 17, Group E
@@ -199,7 +199,7 @@ INSERT INTO team (name, short_name) VALUES
     ('Iraq',                   'IRQ'), -- 35, Group I
     ('Norway',                 'NOR'), -- 36, Group I
     ('Argentina',              'ARG'), -- 37, Group J
-    ('Algeria',                'DZA'), -- 38, Group J
+    ('Algeria',                'ALG'), -- 38, Group J
     ('Austria',                'AUT'), -- 39, Group J
     ('Jordan',                 'JOR'), -- 40, Group J
     ('Portugal',               'POR'), -- 41, Group K
