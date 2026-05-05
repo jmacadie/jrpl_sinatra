@@ -21,10 +21,10 @@ class App < Sinatra::Application
     # Fortunately this data is global to a whole tournament and shouldn't
     # change which is why I've chanced my arm here rather than validating
     # with another DB call
-    session[:message] = "Invalid role number: #{role}" if !(role in 25..54)
+    session[:message] = "Invalid role number: #{role}" if !(role in 49..112)
 
     # Check team in valid range
-    session[:message] = "Invalid team number: #{team}" if !(team in 0..24)
+    session[:message] = "Invalid team number: #{team}" if !(team in 0..48)
 
     # If we have no message, we must be ok
     return unless session[:message]

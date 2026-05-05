@@ -5,6 +5,16 @@
               <input
                 type="checkbox"
                 id="ckbR16"
+                name="st_r32"
+                <%== 'checked' if session[:criteria][:stages][:round32] %>>
+              Round of 32
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                id="ckbR16"
                 name="st_r16"
                 <%== 'checked' if session[:criteria][:stages][:round16] %>>
               Round of 16

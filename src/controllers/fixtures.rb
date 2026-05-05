@@ -30,6 +30,7 @@ class App < Sinatra::Application
       exclude_predicted: param_posted?('exc_pred'),
       stages: {
         group: param_posted?('st_gr'),
+        round32: param_posted?('st_r32'),
         round16: param_posted?('st_r16'),
         quarter_final: param_posted?('st_qf'),
         semi_final: param_posted?('st_sf'),
@@ -41,7 +42,13 @@ class App < Sinatra::Application
         C: param_posted?('gr_C'),
         D: param_posted?('gr_D'),
         E: param_posted?('gr_E'),
-        F: param_posted?('gr_F')
+        F: param_posted?('gr_F'),
+        G: param_posted?('gr_G'),
+        H: param_posted?('gr_H'),
+        I: param_posted?('gr_I'),
+        J: param_posted?('gr_J'),
+        K: param_posted?('gr_K'),
+        L: param_posted?('gr_L')
       }
     }
   end
@@ -58,6 +65,7 @@ class App < Sinatra::Application
       exclude_predicted: false,
       stages: {
         group: true,
+        round32: true,
         round16: true,
         quarter_final: true,
         semi_final: true,
@@ -69,7 +77,13 @@ class App < Sinatra::Application
         C: true,
         D: true,
         E: true,
-        F: true
+        F: true,
+        G: true,
+        H: true,
+        I: true,
+        J: true,
+        K: true,
+        L: true
       }
     }
   end

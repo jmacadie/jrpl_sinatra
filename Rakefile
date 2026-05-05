@@ -40,12 +40,12 @@ namespace :db do
     shell "psql -c \"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '#{args[:db_name]}';\""
     shell "psql -c \"DROP DATABASE IF EXISTS #{args[:db_name]};\""
     shell "psql -c \"CREATE DATABASE #{args[:db_name]};\""
-    shell "psql -d #{args[:db_name]} -f 'data/schema.sql';"
+    shell "psql -d #{args[:db_name]} -f 'data/schema_wc.sql';"
   end
 
   task :seed, [:db_name, :data_file] do |_t, args|
-    args.with_defaults(data_file: 'data/euro_2024_data.sql')
-    shell "psql -d #{args[:db_name]} -f #{args[:data_file]};"
+    args.with_defaults(data_file: 'data/wc_2026_data.sql')
+    shell "psql -d #{args[:db_name]} -f '#{args[:data_file]}';"
   end
 end
 

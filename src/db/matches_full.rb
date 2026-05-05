@@ -123,10 +123,11 @@ module DBMatchesFull
   def stage_list(stages)
     # rubocop:disable Layout/HashAlignment
     stage_map = {
+      round32:       "'Round of 32'",
       round16:       "'Round of 16'",
       quarter_final: "'Quarter Finals'",
       semi_final:    "'Semi Finals'",
-      final:         "'Final'"
+      final:         "'Third Fourth Place Play-off', 'Final'"
     }
     # rubocop:enable Layout/HashAlignment
     list = stages.except(:group)
