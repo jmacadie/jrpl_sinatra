@@ -17,6 +17,10 @@ module ViewHelpers
     match[:stage] != 'Group Stages'
   end
 
+  def origin?(match)
+    knockout?(match) && match[:stage] != 'Round of 32'
+  end
+
   def home_prediction(match)
     match[:home_prediction] || 'no prediction'
   end

@@ -13,3 +13,23 @@ $("form#prediction_s").ready(function() {
     $('form#prediction_s').submit();
   });
 });
+
+$("#btnHomeOrigin").click(function(e) {
+  e.preventDefault();
+  $("#homeOrigin").fadeToggle();
+});
+
+$("#btnAwayOrigin").click(function(e) {
+  e.preventDefault();
+  $("#awayOrigin").fadeToggle();
+});
+
+$("#btnHomeOriginXS").click(function(e) {
+  e.preventDefault();
+  $("#homeOriginXS").fadeToggle();
+});
+
+$("#btnAwayOriginXS").click(function(e) {
+  e.preventDefault();
+  $("#awayOriginXS").fadeToggle();
+});
