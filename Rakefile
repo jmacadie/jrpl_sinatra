@@ -31,7 +31,7 @@ end
 task :run_test do
   Rake::Task["db:build"].invoke('jrpl_test')
   Rake::Task["db:seed"].invoke('jrpl_test', 'data/test_data.sql')
-  sh "APP_ENV=test bundle exec rackup -s puma -p 4567 config.ru"
+  sh "APP_ENV=test bundle exec rackup -s puma -p 5678 config.ru"
 end
 
 namespace :db do
