@@ -1,7 +1,7 @@
 <!-- Layout for tablets and bigger -->
 <div class="row hidden-xs">
   <div class="col-sm-2 text-center">
-    <span class="team-flag flag-<%== @match[:home_short_name] %>"></span>
+    <span class="team-flag <%== home_flag(@match) %>"></span>
   </div>
   <div class="col-sm-2 text-right">
     <span class="lead"><%== home_name(@match) %></span>
@@ -25,7 +25,7 @@
     <% end %>
   </div>
   <div class="col-sm-2 text-center">
-    <span class="team-flag flag-<%== @match[:away_short_name] %>"></span>
+    <span class="team-flag <%== away_flag(@match) %>"></span>
   </div>
 </div><!-- /row (match result) -->
 <% if knockout?(@match) %>

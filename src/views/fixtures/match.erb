@@ -7,15 +7,15 @@
   <a href="/match/<%== @match[:match_id] %><%== ring_for_url(@ring) %>">
     <div class="row visible-xs">
       <div class="col-xs-4 text-center">
-        <span class="team-flag flag-<%== @match[:home_short_name] %>"></span>
+        <span class="team-flag <%== home_flag(@match) %>"></span>
       </div>
       <div class="col-xs-4 col-xs-offset-4 text-center">
-        <span class="team-flag flag-<%== @match[:away_short_name] %>"></span>
+        <span class="team-flag <%== away_flag(@match) %>"></span>
       </div>
     </div><!-- /row visible-xs -->
     <div class="row">
       <div class="col-sm-2 hidden-xs text-center">
-        <span class="team-flag flag-<%== @match[:home_short_name] %>"></span>
+        <span class="team-flag <%== home_flag(@match) %>"></span>
       </div>
       <div class="col-xs-4 visible-xs text-center matchText"><%== home_name(@match) %></div>
       <div class="col-sm-2 hidden-xs text-right lead matchText"><%== home_name(@match) %></div>
@@ -29,7 +29,7 @@
       <div class="col-sm-2 hidden-xs text-left lead matchText"><%== away_name(@match) %></div>
       <div class="col-xs-4 visible-xs text-center matchText"><%== away_name(@match) %></div>
       <div class="col-sm-2 hidden-xs text-center">
-        <span class="team-flag flag-<%== @match[:away_short_name] %>"></span>
+        <span class="team-flag <%== away_flag(@match) %>"></span>
       </div>
     </div><!-- /row -->
   </a>

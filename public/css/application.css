@@ -168,6 +168,10 @@ hr {
   background-size: cover;
 }
 
+.flag-TMP {
+    background-image: url("/img/flags/TMP.png");
+}
+
 .flag-ALG {
     background-image: url("/img/flags/ALG.png");
 }

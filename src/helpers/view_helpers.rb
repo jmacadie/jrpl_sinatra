@@ -25,6 +25,16 @@ module ViewHelpers
     match[:away_prediction] || 'no prediction'
   end
 
+  def home_flag(match)
+    name = match[:home_short_name] || 'TMP'
+    "flag-#{name}"
+  end
+
+  def away_flag(match)
+    name = match[:away_short_name] || 'TMP'
+    "flag-#{name}"
+  end
+
   def predicted_result(match)
     return 'No prediction' unless predicted?(match)
     if match[:home_prediction] > match[:away_prediction]

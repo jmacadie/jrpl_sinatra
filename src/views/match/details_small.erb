@@ -2,7 +2,7 @@
 <div class="row visible-xs text-left small-match-row">
   <div class="small-match-row">
     <div class="col-xs-2">
-      <span class="team-flag flag-<%== @match[:home_short_name] %>"></span>
+      <span class="team-flag <%== home_flag(@match) %>"></span>
     </div>
     <div class="col-xs-6"><%== home_name(@match) %></div>
     <div class="col-xs-4" id="homeTeamPointsXS"><%== home_score(@match) %></div>
@@ -46,7 +46,7 @@
 <div class="row visible-xs text-left">
   <div class="small-match-row">
     <div class="col-xs-2">
-      <span class="team-flag flag-<%== @match[:away_short_name] %>"></span>
+      <span class="team-flag <%== away_flag(@match) %>"></span>
     </div>
     <div class="col-xs-6"><%== away_name(@match) %></div>
     <div class="col-xs-4" id="awayTeamPointsXS"><%== away_score(@match) %></div>
