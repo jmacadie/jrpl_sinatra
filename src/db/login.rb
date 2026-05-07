@@ -2,10 +2,9 @@ module DBLogin
   def load_user_credentials
     sql = 'SELECT user_name, pword, email FROM users'
     result = query(sql)
-
-    result.each_with_object({}) do |tuple, hash|
-      hash[tuple['user_name']] =
-        { pword: tuple['pword'], email: tuple['email'] }
+    result.to_h do |row|
+      inner = { pword: row['pword'], email: row['email'] }
+      [row['user_name'], inner]
     end
   end
 

@@ -15,10 +15,10 @@ class App < Sinatra::Application
     match_id = params[:match_id].to_i
     home_prediction = params[:home_team_prediction].to_f
     away_prediction = params[:away_team_prediction].to_f
-    move_next = to_bool(params[:next])
+    move_next = to_bool?(params[:next])
     load_match_details(match_id)
     return erb :match unless
-      validate_prediction(home_prediction, away_prediction)
+      validate_prediction?(home_prediction, away_prediction)
     @storage.add_prediction(
       session[:user_id],
       match_id,
@@ -38,7 +38,7 @@ class App < Sinatra::Application
     away_score = params[:away_score].to_f
     load_match_details(match_id)
     return erb :match unless
-      validate_result(home_score, away_score)
+      validate_result?(home_score, away_score)
     home_score = home_score.to_i
     away_score = away_score.to_i
     @storage.add_result(
@@ -53,7 +53,7 @@ class App < Sinatra::Application
 
   private
 
-  def validate_prediction(home, away)
+  def validate_prediction?(home, away)
     session[:message] = prediction_error(@match, home, away)
     if session[:message]
       session[:message_level] = 'danger'
@@ -63,7 +63,7 @@ class App < Sinatra::Application
     true
   end
 
-  def validate_result(home, away)
+  def validate_result?(home, away)
     session[:message] = match_result_error(@match, home, away)
     if session[:message]
       session[:message_level] = 'danger'
@@ -88,7 +88,7 @@ class App < Sinatra::Application
     @next_match = @ring.next_match
   end
 
-  def to_bool(str)
+  def to_bool?(str)
     str == 'true'
   end
 

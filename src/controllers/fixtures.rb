@@ -23,7 +23,7 @@ class App < Sinatra::Application
 
   private
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def process_params
     {
       exclude_played: param_posted?('exc_play'),
@@ -52,7 +52,7 @@ class App < Sinatra::Application
       }
     }
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def param_posted?(param_str)
     params[param_str] == 'on'
