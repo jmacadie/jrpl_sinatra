@@ -13,8 +13,6 @@ end
 RuboCop::RakeTask.new(:rubocop) do |t|
   t.patterns = ['src/**/*.rb']
   t.options = ['--display-cop-names']
-  t.requires << 'rubocop-minitest'
-  t.requires << 'rubocop-rake'
 end
 
 desc 'Run the development server. If pass the paramter \'clean\', will recreate the database before we bgein'
