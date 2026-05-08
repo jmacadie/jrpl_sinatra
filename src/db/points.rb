@@ -15,8 +15,8 @@ module DBPoints
 
   def id_for_scoring_system(scoring_system)
     sql = 'SELECT scoring_system_id FROM scoring_system WHERE name = $1::text;'
-    query(sql, scoring_system).map do |tuple|
-      tuple['scoring_system_id']
+    query(sql, scoring_system).map do |row|
+      row['scoring_system_id']
     end.first.to_i
   end
 
@@ -33,7 +33,7 @@ module DBPoints
   def load_one_scoreboard_data(scoring_system_id, stage)
     sql = select_users_points_query(stage)
     result = query(sql, scoring_system_id)
-    result = tuple_to_table_hash(result)
+    result = row_to_table_hash(result)
     add_rank(result)
   end
 
@@ -55,13 +55,13 @@ module DBPoints
   end
   # rubocop:enable Metrics/MethodLength
 
-  def tuple_to_table_hash(result)
-    result.map do |tuple|
-      { user_id: tuple['user_id'],
-        user_name: tuple['user_name'],
-        result_points: tuple['result_points'].to_i,
-        score_points: tuple['score_points'].to_i,
-        total_points: tuple['result_points'].to_i + tuple['score_points'].to_i }
+  def row_to_table_hash(result)
+    result.map do |row|
+      { user_id: row['user_id'],
+        user_name: row['user_name'],
+        result_points: row['result_points'].to_i,
+        score_points: row['score_points'].to_i,
+        total_points: row['result_points'].to_i + row['score_points'].to_i }
     end
   end
 

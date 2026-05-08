@@ -41,7 +41,7 @@ class DatabasePersistence
   def tournament_stage_names
     sql = 'SELECT name FROM stage;'
     result = query(sql)
-    result.map { |tuple| tuple['name'] }
+    result.map { |row| row['name'] }
   end
 
   private

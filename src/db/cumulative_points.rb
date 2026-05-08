@@ -9,12 +9,12 @@ module DBCumPoints
   private
 
   def map_cum_points(result)
-    result.map do |tuple|
-      { match_id: tuple['match_id'].to_i,
-        match: tuple['match_desc'],
-        user_id: tuple['user_id'].to_i,
-        user_name: tuple['user_name'],
-        cum_points: tuple['cum_points'].to_i }
+    result.map do |row|
+      { match_id: row['match_id'].to_i,
+        match: row['match_desc'],
+        user_id: row['user_id'].to_i,
+        user_name: row['user_name'],
+        cum_points: row['cum_points'].to_i }
     end
   end
 

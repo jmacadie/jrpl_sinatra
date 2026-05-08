@@ -8,10 +8,10 @@ module DBPredictions
   def predictions_for_match(match_id)
     sql = predictions_for_match_query()
     result = query(sql, match_id)
-    result.map do |tuple|
-      { pred_id: tuple['prediction_id'].to_i,
-        home_score: tuple['home_team_points'].to_i,
-        away_score: tuple['away_team_points'].to_i }
+    result.map do |row|
+      { pred_id: row['prediction_id'].to_i,
+        home_score: row['home_team_points'].to_i,
+        away_score: row['away_team_points'].to_i }
     end
   end
 

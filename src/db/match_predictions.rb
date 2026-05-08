@@ -9,17 +9,17 @@ module DBMatchPredictions
 
   # rubocop:disable Metrics/MethodLength
   def map_results(result)
-    result.map do |tuple|
-      { user: tuple['user_name'],
-        home_name: tuple['home_team_name'],
-        home_tournament_role: tuple['home_tournament_role'],
-        away_name: tuple['away_team_name'],
-        away_tournament_role: tuple['away_tournament_role'],
-        home_prediction: convert_str_to_int(tuple['home_team_points']),
-        away_prediction: convert_str_to_int(tuple['away_team_points']),
-        result_points: convert_str_to_int(tuple['result_points']),
-        score_points: convert_str_to_int(tuple['score_points']),
-        total_points: convert_str_to_int(tuple['total_points']) }
+    result.map do |row|
+      { user: row['user_name'],
+        home_name: row['home_team_name'],
+        home_tournament_role: row['home_tournament_role'],
+        away_name: row['away_team_name'],
+        away_tournament_role: row['away_tournament_role'],
+        home_prediction: convert_str_to_int(row['home_team_points']),
+        away_prediction: convert_str_to_int(row['away_team_points']),
+        result_points: convert_str_to_int(row['result_points']),
+        score_points: convert_str_to_int(row['score_points']),
+        total_points: convert_str_to_int(row['total_points']) }
     end
   end
   # rubocop:enable Metrics/MethodLength

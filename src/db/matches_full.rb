@@ -10,23 +10,23 @@ module DBMatchesFull
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def map_full_results(result)
-    result.map do |tuple|
-      { match_id: tuple['match_id'].to_i,
-        match_date: tuple['date'],
-        kick_off: tuple['kick_off'],
-        match_datetime: to_datetime(tuple['date'], tuple['kick_off']),
-        home_score: convert_str_to_int(tuple['home_team_points']),
-        away_score: convert_str_to_int(tuple['away_team_points']),
-        home_prediction: convert_str_to_int(tuple['home_team_prediction']),
-        away_prediction: convert_str_to_int(tuple['away_team_prediction']),
-        home_name: tuple['home_team_name'],
-        home_tournament_role: tuple['home_tournament_role'],
-        home_short_name: tuple['home_team_short_name'],
-        away_name: tuple['away_team_name'],
-        away_tournament_role: tuple['away_tournament_role'],
-        away_short_name: tuple['away_team_short_name'],
-        stage: tuple['stage'],
-        venue: tuple['venue'] }
+    result.map do |row|
+      { match_id: row['match_id'].to_i,
+        match_date: row['date'],
+        kick_off: row['kick_off'],
+        match_datetime: to_datetime(row['date'], row['kick_off']),
+        home_score: convert_str_to_int(row['home_team_points']),
+        away_score: convert_str_to_int(row['away_team_points']),
+        home_prediction: convert_str_to_int(row['home_team_prediction']),
+        away_prediction: convert_str_to_int(row['away_team_prediction']),
+        home_name: row['home_team_name'],
+        home_tournament_role: row['home_tournament_role'],
+        home_short_name: row['home_team_short_name'],
+        away_name: row['away_team_name'],
+        away_tournament_role: row['away_tournament_role'],
+        away_short_name: row['away_team_short_name'],
+        stage: row['stage'],
+        venue: row['venue'] }
     end
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize

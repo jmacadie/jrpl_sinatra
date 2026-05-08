@@ -28,8 +28,8 @@ module DBUsers
   def load_all_users_details
     sql = select_query_all_users()
     result = query(sql)
-    result.map do |tuple|
-      tuple_to_users_details_hash(tuple)
+    result.map do |row|
+      row_to_users_details_hash(row)
     end
   end
 
@@ -37,8 +37,8 @@ module DBUsers
     sql = select_query_single_user()
     result = query(sql, user_id)
     return nil if result.ntuples == 0
-    result.map do |tuple|
-      tuple_to_users_details_hash(tuple)
+    result.map do |row|
+      row_to_users_details_hash(row)
     end.first
   end
 
@@ -107,10 +107,10 @@ module DBUsers
     SQL
   end
 
-  def tuple_to_users_details_hash(tuple)
-    { user_id: tuple['user_id'].to_i,
-      user_name: tuple['user_name'],
-      email: tuple['email'],
-      roles: tuple['roles'] }
+  def row_to_users_details_hash(row)
+    { user_id: row['user_id'].to_i,
+      user_name: row['user_name'],
+      email: row['email'],
+      roles: row['roles'] }
   end
 end

@@ -27,14 +27,14 @@ module DBTournamentRoles
   private
 
   def map_tournament_roles(result)
-    result.map do |tuple|
+    result.map do |row|
       {
-        stage: tuple['stage'],
-        role: tuple['tournament_role'],
-        id: tuple['tournament_role_id'],
-        selected_team_id: tuple['selected_team_id'].to_i,
-        team_id: tuple['team_id'].to_i,
-        team: tuple['team']
+        stage: row['stage'],
+        role: row['tournament_role'],
+        id: row['tournament_role_id'],
+        selected_team_id: row['selected_team_id'].to_i,
+        team_id: row['team_id'].to_i,
+        team: row['team']
       }
     end
   end

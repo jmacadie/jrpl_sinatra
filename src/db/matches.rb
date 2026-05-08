@@ -24,8 +24,8 @@ module DBMatches
       user_id
     )
 
-    result.map do |tuple|
-      tuple['match_id'].to_i
+    result.map do |row|
+      row['match_id'].to_i
     end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
@@ -49,8 +49,8 @@ module DBMatches
       user_id
     )
 
-    result.map do |tuple|
-      tuple_to_matches_details_hash(tuple)
+    result.map do |row|
+      row_to_matches_details_hash(row)
     end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
@@ -58,25 +58,25 @@ module DBMatches
   def load_all_matches(user_id)
     sql = construct_all_matches_query()
     result = query(sql, user_id)
-    result.map do |tuple|
-      tuple_to_matches_details_hash(tuple)
+    result.map do |row|
+      row_to_matches_details_hash(row)
     end
   end
 
   def load_single_match(user_id, match_id)
     sql = construct_single_match_query()
     result = query(sql, user_id, match_id)
-    result.map do |tuple|
-      tuple_to_matches_details_hash(tuple)
+    result.map do |row|
+      row_to_matches_details_hash(row)
     end.first
   end
 
   def match_result(match_id)
     sql = match_result_query()
     result = query(sql, match_id)
-    result.map do |tuple|
-      { home_score: tuple['home_team_points'].to_i,
-        away_score: tuple['away_team_points'].to_i }
+    result.map do |row|
+      { home_score: row['home_team_points'].to_i,
+        away_score: row['away_team_points'].to_i }
     end.first
   end
 
@@ -93,11 +93,11 @@ module DBMatches
   def lockdown_matches
     sql = lockdown_match_query()
     result = query(sql)
-    result.map do |tuple|
-      { match_id: tuple['match_id'].to_i,
-        match_date: tuple['date'],
-        kick_off: tuple['kick_off'],
-        match_datetime: to_datetime(tuple['date'], tuple['kick_off']) }
+    result.map do |row|
+      { match_id: row['match_id'].to_i,
+        match_date: row['date'],
+        kick_off: row['kick_off'],
+        match_datetime: to_datetime(row['date'], row['kick_off']) }
     end
   end
 
@@ -122,25 +122,25 @@ module DBMatches
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-  def tuple_to_matches_details_hash(tuple)
-    { match_id: tuple['match_id'].to_i,
-      match_date: tuple['date'],
-      kick_off: tuple['kick_off'],
-      match_datetime: to_datetime(tuple['date'], tuple['kick_off']),
-      home_score: convert_str_to_int(tuple['home_team_points']),
-      away_score: convert_str_to_int(tuple['away_team_points']),
-      home_prediction: convert_str_to_int(tuple['home_team_prediction']),
-      away_prediction: convert_str_to_int(tuple['away_team_prediction']),
-      home_name: tuple['home_team_name'],
-      home_tournament_role: tuple['home_tournament_role'],
-      home_short_name: tuple['home_team_short_name'],
-      away_name: tuple['away_team_name'],
-      away_tournament_role: tuple['away_tournament_role'],
-      away_short_name: tuple['away_team_short_name'],
-      stage: tuple['stage'],
-      venue: tuple['venue'],
-      city: tuple['city'],
-      broadcaster: tuple['broadcaster'] }
+  def row_to_matches_details_hash(row)
+    { match_id: row['match_id'].to_i,
+      match_date: row['date'],
+      kick_off: row['kick_off'],
+      match_datetime: to_datetime(row['date'], row['kick_off']),
+      home_score: convert_str_to_int(row['home_team_points']),
+      away_score: convert_str_to_int(row['away_team_points']),
+      home_prediction: convert_str_to_int(row['home_team_prediction']),
+      away_prediction: convert_str_to_int(row['away_team_prediction']),
+      home_name: row['home_team_name'],
+      home_tournament_role: row['home_tournament_role'],
+      home_short_name: row['home_team_short_name'],
+      away_name: row['away_team_name'],
+      away_tournament_role: row['away_tournament_role'],
+      away_short_name: row['away_team_short_name'],
+      stage: row['stage'],
+      venue: row['venue'],
+      city: row['city'],
+      broadcaster: row['broadcaster'] }
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 

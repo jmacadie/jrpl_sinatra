@@ -29,7 +29,7 @@ module DBCookies
     sql = 'SELECT series_id FROM remember_me;'
     result = query(sql)
     return [] if result.ntuples == 0
-    result.map { |tuple| tuple['series_id'] }
+    result.map { |row| row['series_id'] }
   end
 
   def user_id_from_cookies(series_id, token)
