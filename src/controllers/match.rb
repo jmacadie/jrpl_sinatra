@@ -7,6 +7,9 @@ class App < Sinatra::Application
     load_match_details(match_id)
     @match[:locked_down] = match_locked_down?(@match)
     @predictions = @storage.get_match_predictions(match_id, 1)
+    if origin?(@match)
+      @origin = @storage.match_origin(match_id)
+    end
     erb :match
   end
 
@@ -82,6 +85,9 @@ class App < Sinatra::Application
 
   def load_match_details(match_id)
     @match = @storage.load_single_match(session[:user_id], match_id)
+    if origin?(@match)
+      @origin = @storage.match_origin(match_id)
+    end
     return unless !params[:ring].nil? && params[:ring] != ""
     @ring = Ring.new({ ring: params[:ring] })
     @prev_match = @ring.prev_match

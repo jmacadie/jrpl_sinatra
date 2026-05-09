@@ -30,13 +30,20 @@ module ViewHelpers
   end
 
   def home_flag(match)
-    name = match[:home_short_name] || 'TMP'
-    "flag-#{name}"
+    flag_css(match[:home_short_name], false)
   end
 
   def away_flag(match)
-    name = match[:away_short_name] || 'TMP'
-    "flag-#{name}"
+    flag_css(match[:away_short_name], false)
+  end
+
+  def flag_css(name, small)
+    name ||= 'TMP'
+    if small
+      "team-flag-sm flag-#{name}"
+    else
+      "team-flag flag-#{name}"
+    end
   end
 
   def predicted_result(match)

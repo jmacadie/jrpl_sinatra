@@ -1,7 +1,7 @@
 <!-- Layout for tablets and bigger -->
 <div class="row hidden-xs">
   <div class="col-sm-2 text-center">
-    <span class="team-flag <%== home_flag(@match) %>"></span>
+    <span class="<%== home_flag(@match) %>"></span>
   </div>
   <div class="col-sm-2 text-right">
     <span class="lead"><%== home_name(@match) %></span>
@@ -25,29 +25,31 @@
     <% end %>
   </div>
   <div class="col-sm-2 text-center">
-    <span class="team-flag <%== away_flag(@match) %>"></span>
+    <span class="<%== away_flag(@match) %>"></span>
   </div>
 </div><!-- /row (match result) -->
 <% if origin?(@match) %>
 <!-- Team origin details for tablets and bigger -->
 <div class="row hidden-xs text-left">
   <div class="col-sm-5">
-    <div id="homeOrigin" class="panel panel-default" style="display: none;">
+    <div id="homeOrigin" class="panel panel-default panel-origin" style="display: none;">
       <div class="panel-body">
-      <a href="../match/?id=&ring=">
+      <a href="../match/<%== @origin[:ht_match_id] %>">
       <div class="row text-center"><p>
-        <div class="col-xs-12"></div>
+        <div class="col-xs-12">
+          <strong><%== @origin[:ht_stage] %></strong>
+        </div>
       </p></div>
       <small>
         <div class="row"><p>
-          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
-          <div class="col-xs-6"></div>
-          <div class="col-xs-3 text-left"></div>
+          <div class="col-xs-3 text-right"><span class="<%== flag_css(@origin[:ht_home_team_s], true) %>"></span></div>
+          <div class="col-xs-6"><%== @origin[:ht_home_team] %></div>
+          <div class="col-xs-3"><%== @origin[:ht_home_team_points] %></div>
         </p></div>
         <div class="row"><p>
-          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
-          <div class="col-xs-6"></div>
-          <div class="col-xs-3"></div>
+          <div class="col-xs-3 text-right"><span class="<%== flag_css(@origin[:ht_away_team_s], true) %>"></span></div>
+          <div class="col-xs-6"><%== @origin[:ht_away_team] %></div>
+          <div class="col-xs-3"><%== @origin[:ht_away_team_points] %></div>
         </p></div>
       </small>
       </a>
@@ -55,22 +57,24 @@
     </div>
   </div>
   <div class="col-sm-5 col-sm-offset-2">
-    <div id="awayOrigin" class="panel panel-default" style="display: none;">
+    <div id="awayOrigin" class="panel panel-default panel-origin" style="display: none;">
       <div class="panel-body">
-      <a href="../match/?id=&ring=">
+      <a href="../match/<%== @origin[:at_match_id] %>">
       <div class="row text-center"><p>
-        <div class="col-xs-12"></div>
+        <div class="col-xs-12">
+          <strong><%== @origin[:at_stage] %></strong>
+        </div>
       </p></div>
       <small>
         <div class="row"><p>
-          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
-          <div class="col-xs-6"></div>
-          <div class="col-xs-3"></div>
+          <div class="col-xs-3 text-rigat"><span class="<%== flag_css(@origin[:at_home_team_s], true) %>"></span></div>
+          <div class="col-xs-6"><%== @origin[:at_home_team] %></div>
+          <div class="col-xs-3"><%== @origin[:at_home_team_points] %></div>
         </p></div>
         <div class="row"><p>
-          <div class="col-xs-3 text-right"><span class="team-flag flag-TMP"></span></div>
-          <div class="col-xs-6"></div>
-          <div class="col-xs-3"></div>
+          <div class="col-xs-3 text-rigat"><span class="<%== flag_css(@origin[:at_away_team_s], true) %>"></span></div>
+          <div class="col-xs-6"><%== @origin[:at_away_team] %></div>
+          <div class="col-xs-3"><%== @origin[:at_away_team_points] %></div>
         </p></div>
       </small>
       </a>
