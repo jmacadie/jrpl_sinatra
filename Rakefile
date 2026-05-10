@@ -19,6 +19,7 @@ desc 'Run the development server. If pass the paramter \'clean\', will recreate 
 task :run, :clean do |_t, args|
   args.with_defaults(clean: false)
   sh "bundle install"
+  sh "scripts/restore_configs.rb"
   if args[:clean]
     Rake::Task["db:build"].invoke('jrpl_dev')
     Rake::Task["db:seed"].invoke('jrpl_dev')
@@ -27,6 +28,7 @@ task :run, :clean do |_t, args|
 end
 
 task :run_test do
+  sh "scripts/restore_configs.rb"
   Rake::Task["db:build"].invoke('jrpl_test')
   Rake::Task["db:seed"].invoke('jrpl_test', 'data/test_data.sql')
   sh "APP_ENV=test bundle exec rackup -s puma -p 5678 config.ru"
