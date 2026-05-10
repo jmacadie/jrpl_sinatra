@@ -18,7 +18,29 @@ class CMSTest < Minitest::Test
   def test_signup_signed_out
     post '/users/signup',
          { user_name: 'joe', email: 'joe@joe.com', pword: 'Dfghiewo34334',
-           reenter_pword: 'Dfghiewo34334' }
+           reenter_pword: 'Dfghiewo34334', bot_check: 'JRPL' }
+    assert_equal 302, last_response.status
+    assert_equal 'Your account has been created.', session[:message]
+
+    get '/'
+    assert_includes body_text, 'Signed in as joe'
+  end
+
+  def test_signup_lowercase_botcheck
+    post '/users/signup',
+         { user_name: 'joe', email: 'joe@joe.com', pword: 'Dfghiewo34334',
+           reenter_pword: 'Dfghiewo34334', bot_check: 'jrpl' }
+    assert_equal 302, last_response.status
+    assert_equal 'Your account has been created.', session[:message]
+
+    get '/'
+    assert_includes body_text, 'Signed in as joe'
+  end
+
+  def test_signup_mixed_case_botcheck
+    post '/users/signup',
+         { user_name: 'joe', email: 'joe@joe.com', pword: 'Dfghiewo34334',
+           reenter_pword: 'Dfghiewo34334', bot_check: 'jRPl' }
     assert_equal 302, last_response.status
     assert_equal 'Your account has been created.', session[:message]
 
@@ -29,7 +51,8 @@ class CMSTest < Minitest::Test
   def test_signup_signed_out_strip_input
     post '/users/signup',
          { user_name: '   joe  ', email: 'joe@joe.com',
-           pword: ' Dfghiewo34334    ', reenter_pword: '  Dfghiewo34334 ' }
+           pword: ' Dfghiewo34334    ', reenter_pword: '  Dfghiewo34334 ',
+           bot_check: 'JRPL' }
     assert_equal 302, last_response.status
     assert_equal 'Your account has been created.', session[:message]
 
@@ -39,7 +62,8 @@ class CMSTest < Minitest::Test
 
   def test_signup_signed_in
     post '/users/signup',
-         { user_name: 'joe', email: 'joe@joe.com', pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }, admin_session
+         { user_name: 'joe', email: 'joe@joe.com', pword: 'dfghiewo34334',
+           reenter_pword: 'dfghiewo34334', bot_check: 'JRPL' }, admin_session
     assert_equal 302, last_response.status
     assert_equal 'You must be signed out to do that.', session[:message]
   end
@@ -47,7 +71,8 @@ class CMSTest < Minitest::Test
   def test_signup_existing_username
     post '/users/signup',
          { user_name: 'Clare Mac', email: 'joe@joe.com',
-           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334',
+           bot_check: 'JRPL' }
     assert_equal 422, last_response.status
     assert_includes body_text, 'That username already exists.'
   end
@@ -55,7 +80,7 @@ class CMSTest < Minitest::Test
   def test_signup_blank_username
     post '/users/signup',
          { user_name: '', email: 'joe@joe.com', pword: 'dfghiewo34334',
-           reenter_pword: 'dfghiewo34334' }
+           reenter_pword: 'dfghiewo34334', bot_check: 'JRPL' }
     assert_equal 422, last_response.status
     assert_includes body_text,
                     'Username cannot be blank! Please enter a username.'
@@ -64,7 +89,7 @@ class CMSTest < Minitest::Test
   def test_signup_blank_pword
     post '/users/signup',
          { user_name: 'joanna', email: 'joe@joe.com', pword: '',
-           reenter_pword: '' }
+           reenter_pword: '', bot_check: 'JRPL' }
     assert_equal 422, last_response.status
     assert_includes body_text,
                     'Password cannot be blank! Please enter a password.'
@@ -73,7 +98,7 @@ class CMSTest < Minitest::Test
   def test_signup_blank_username_and_pword
     post '/users/signup',
          { user_name: '', email: 'joe@joe.com', pword: '',
-           reenter_pword: '' }
+           reenter_pword: '', bot_check: 'JRPL' }
     assert_equal 422, last_response.status
     assert_includes body_text,
                     'Username cannot be blank! Please enter a username. Password cannot be blank! Please enter a password.'
@@ -82,7 +107,8 @@ class CMSTest < Minitest::Test
   def test_signup_mismatched_pwords
     post '/users/signup',
          { user_name: 'joanna', email: 'joe@joe.com',
-           pword: 'dfghiewo34334', reenter_pword: 'mismatched' }
+           pword: 'dfghiewo34334', reenter_pword: 'mismatched',
+           bot_check: 'JRPL' }
     assert_equal 422, last_response.status
     assert_includes body_text, 'The passwords do not match.'
   end
@@ -90,7 +116,7 @@ class CMSTest < Minitest::Test
   def test_signup_invalid_email
     post '/users/signup',
          { user_name: 'joanna', email: 'joe', pword: 'dfghiewo34334',
-           reenter_pword: 'dfghiewo34334' }
+           reenter_pword: 'dfghiewo34334', bot_check: 'JRPL' }
     assert_equal 422, last_response.status
     assert_includes body_text, 'That is not a valid email address.'
   end
@@ -98,7 +124,7 @@ class CMSTest < Minitest::Test
   def test_signup_blank_email
     post '/users/signup',
          { user_name: 'joanna', email: '', pword: 'dfghiewo34334',
-           reenter_pword: 'dfghiewo34334' }
+           reenter_pword: 'dfghiewo34334', bot_check: 'JRPL' }
     assert_equal 422, last_response.status
     assert_includes body_text,
                     'Email cannot be blank! Please enter an email.'
@@ -107,7 +133,8 @@ class CMSTest < Minitest::Test
   def test_signup_duplicate_email
     post '/users/signup',
          { user_name: 'joanna', email: 'clare@macadie.co.uk',
-           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334',
+           bot_check: 'JRPL' }
     assert_equal 422, last_response.status
     assert_includes body_text, 'That email address already exists.'
   end
@@ -115,7 +142,7 @@ class CMSTest < Minitest::Test
   def test_signup_capitalised_email
     post '/users/signup',
          { user_name: 'joe', email: 'Joe@jOe.com', pword: 'Dfghiewo34334',
-           reenter_pword: 'Dfghiewo34334' }
+           reenter_pword: 'Dfghiewo34334', bot_check: 'JRPL' }
 
     post '/users/signout'
     post '/users/signin', { login: 'joe@joe.com', pword: 'Dfghiewo34334' }, {}
@@ -137,9 +164,48 @@ class CMSTest < Minitest::Test
   def test_signup_duplicate_capitalised_email
     post '/users/signup',
          { user_name: 'joanna', email: 'clAre@macadie.co.uk',
-           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334',
+           bot_check: 'JRPL' }
     assert_equal 422, last_response.status
     assert_includes body_text, 'That email address already exists.'
   end
-end
 
+  def test_signup_missing_botcheck
+    post '/users/signup',
+         { user_name: 'Clare Mac', email: 'joe@joe.com',
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334' }
+    assert_equal 422, last_response.status
+    assert_includes body_text,
+                    'You did not enter the magic four letters correctly.'
+  end
+
+  def test_signup_blank_botcheck
+    post '/users/signup',
+         { user_name: 'Clare Mac', email: 'joe@joe.com',
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334',
+           bot_check: '' }
+    assert_equal 422, last_response.status
+    assert_includes body_text,
+                    'You did not enter the magic four letters correctly.'
+  end
+
+  def test_signup_bad_botcheck
+    post '/users/signup',
+         { user_name: 'Clare Mac', email: 'joe@joe.com',
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334',
+           bot_check: 'abcd' }
+    assert_equal 422, last_response.status
+    assert_includes body_text,
+                    'You did not enter the magic four letters correctly.'
+  end
+
+  def test_signup_botcheck_with_extra
+    post '/users/signup',
+         { user_name: 'Clare Mac', email: 'joe@joe.com',
+           pword: 'dfghiewo34334', reenter_pword: 'dfghiewo34334',
+           bot_check: 'JRPLa' }
+    assert_equal 422, last_response.status
+    assert_includes body_text,
+                    'You did not enter the magic four letters correctly.'
+  end
+end

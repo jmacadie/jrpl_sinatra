@@ -52,10 +52,14 @@ module Loginable
   end
 
   def extract_user_details(params)
-    { user_name: params[:user_name].strip,
+    bot_check = params[:bot_check] || ''
+    {
+      user_name: params[:user_name].strip,
       email: params[:email].strip.downcase,
       pword: params[:pword].strip,
-      reenter_pword: params[:reenter_pword].strip }
+      reenter_pword: params[:reenter_pword].strip,
+      bot_check: bot_check.strip
+    }
   end
 
   def extract_user_name(login)
@@ -80,6 +84,14 @@ module Loginable
     elsif user_name == ''
       'Username cannot be blank! Please enter a username.'
     end
+  end
+
+  def input_botcheck_error(bot_check)
+    return if bot_check.downcase == 'jrpl'
+    'You did not enter the magic four letters correctly. ' \
+      'Either you are a bot, ' \
+      'or your intelligence level is not sufficient to play here. ' \
+      'Goodbye'
   end
 
   def no_change_error(user_details, current_pword)
@@ -129,6 +141,7 @@ module Loginable
     error << input_username_error(user_details[:user_name])
     error << signup_pword_error(user_details)
     error << input_email_error(user_details[:email])
+    error << input_botcheck_error(user_details[:bot_check])
     error.delete(nil)
     error.empty? ? '' : error.join(' ')
   end
