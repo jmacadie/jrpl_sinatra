@@ -15,16 +15,17 @@ class App < Sinatra::Application
   private
 
   def validate_tournament_role(role, team)
-    # Check role in valid range
-    # TODO: this is bad it's a hard-coded range that references data in the
-    # database
-    # Fortunately this data is global to a whole tournament and shouldn't
-    # change which is why I've chanced my arm here rather than validating
-    # with another DB call
-    session[:message] = "Invalid role number: #{role}" if !(role in 49..112)
+    numbers = @storage.tournament_role_numbers()
 
-    # Check team in valid range
-    session[:message] = "Invalid team number: #{team}" if !(team in 0..48)
+    if team < 0 || team > numbers[0]
+      session[:message] =
+        "Invalid team number: #{team}"
+    end
+
+    if role <= numbers[0] || role > numbers[1]
+      session[:message] =
+        "Invalid role number: #{role}"
+    end
 
     # If we have no message, we must be ok
     return unless session[:message]

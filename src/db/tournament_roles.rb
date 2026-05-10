@@ -10,7 +10,7 @@ module DBTournamentRoles
     sql = <<~SQL
     UPDATE tournament_role
     SET team_id = $2::int
-    WHERE tournament_role_id = $1::int
+    WHERE tournament_role_id = $1::int;
     SQL
     query(sql, role, team)
   end
@@ -19,9 +19,19 @@ module DBTournamentRoles
     sql = <<~SQL
     UPDATE tournament_role
     SET team_id = NULL
-    WHERE tournament_role_id = $1::int
+    WHERE tournament_role_id = $1::int;
     SQL
     query(sql, role)
+  end
+
+  def tournament_role_numbers
+    sql = <<~SQL
+    SELECT MAX(team_id) AS max FROM team
+    UNION ALL
+    SELECT MAX(tournament_role_id) as max FROM tournament_role;
+    SQL
+    result = query(sql)
+    result.map { |row| row['max'].to_i }
   end
 
   private
