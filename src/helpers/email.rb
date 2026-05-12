@@ -13,9 +13,10 @@ module Email
   def send_email(subject: '', body: '', to: nil, plain_text: false)
     config = App.settings.email
     env = App.settings.environment
-    sub_to = !(env == 'production' || env == 'test')
-    params = get_params(subject, body, to, config, sub_to, env, plain_text)
-             .merge(get_transport(config))
+    transport = get_transport(config, env)
+    to = get_to(to, config, env)
+    params = get_params(subject, body, to, config, plain_text)
+             .merge(transport)
     Pony.mail(params)
   end
 
@@ -28,24 +29,28 @@ module Email
       user[:roles].include?("Mr Mode")
   end
 
-  # rubocop:disable Metrics/ParameterLists
-  def get_params(subject, body, to, config, sub_to, env, plain_text)
-    # rubocop:disable Layout/HashAlignment
+  def get_params(subject, body, to, config, plain_text)
     params = {
-      to:      get_to(to, config, sub_to),
-      from:    config['from'],
+      to: to,
+      from: config['from'],
       subject:
     }
-    # rubocop:enable Layout/HashAlignment
     if plain_text
-      params.merge({ body: get_body(body, to, env) })
+      params.merge({ body: body })
     else
-      params.merge({ html_body: get_body(body, to, env) })
+      params.merge({ html_body: body })
     end
   end
-  # rubocop:enable Metrics/ParameterLists
 
-  def get_transport(config)
+  def get_transport(config, env)
+    if env == 'development'
+      dev_transport()
+    else
+      prod_transport(config)
+    end
+  end
+
+  def prod_transport(config)
     {
       via: :smtp,
       # rubocop:disable Layout/HashAlignment
@@ -63,16 +68,19 @@ module Email
     }
   end
 
-  def get_body(body, to, env)
-    if env == 'production'
-      body
-    else
-      "App sending to: #{to}\n#{body}"
-    end
+  def dev_transport
+    {
+      via: :smtp,
+      via_options: {
+        address: 'localhost',
+        port: 1025, # 8025 is the port for seeing the webmail
+        enable_starttls_auto: false
+      }
+    }
   end
 
-  def get_to(to, config, sub_to)
-    return config['sub_to'] if sub_to
+  def get_to(to, config, env)
+    return config['sub_to'] if env == 'staging'
     to || config['default_to']
   end
 end

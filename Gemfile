@@ -34,4 +34,3 @@ group :test do
   gem 'rubocop-rake'
   gem 'simplecov'
 end
-
