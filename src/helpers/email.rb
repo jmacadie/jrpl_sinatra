@@ -45,7 +45,6 @@ module Email
   end
   # rubocop:enable Metrics/ParameterLists
 
-  # rubocop:disable Metrics/MethodLength
   def get_transport(config)
     {
       via: :smtp,
@@ -63,7 +62,6 @@ module Email
       # rubocop:enable Layout/HashAlignment
     }
   end
-  # rubocop:enable Metrics/MethodLength
 
   def get_body(body, to, env)
     if env == 'production'

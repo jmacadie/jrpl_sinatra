@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ModuleLength
 module DBPoints
   def add_points(pred_id, scoring_system_id, result_pts, score_pts)
     delete_existing_points_entry(pred_id, scoring_system_id)
@@ -37,7 +36,6 @@ module DBPoints
     add_rank(result)
   end
 
-  # rubocop:disable Metrics/MethodLength
   def add_rank(table)
     rank_str = ''
     last_points = -1
@@ -53,7 +51,6 @@ module DBPoints
       user[:rank] = rank_str
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def row_to_table_hash(result)
     result.map do |row|
@@ -123,4 +120,3 @@ module DBPoints
     SQL
   end
 end
-# rubocop:enable Metrics/ModuleLength

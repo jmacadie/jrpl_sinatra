@@ -1,4 +1,3 @@
-# rubocop:todo Metrics/ModuleLength
 module Loginable
   def change_email(new_email)
     lowercase_email = new_email.downcase
@@ -190,4 +189,3 @@ module Loginable
     end
   end
 end
-# rubocop:enable Metrics/ModuleLength

@@ -5,7 +5,7 @@ module DBMatches
     query(sql, home_team_points, away_team_points, user_id, Time.now, match_id)
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def filter_matches_list(user_id, criteria, lockdown)
     add_empty_strings_for_stages_for_exec_params(criteria)
 
@@ -28,9 +28,9 @@ module DBMatches
       row['match_id'].to_i
     end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def filter_matches(user_id, criteria, lockdown)
     add_empty_strings_for_stages_for_exec_params(criteria)
 
@@ -53,7 +53,7 @@ module DBMatches
       row_to_matches_details_hash(row)
     end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   def load_all_matches(user_id)
     sql = construct_all_matches_query()
@@ -123,7 +123,7 @@ module DBMatches
     end
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
   def row_to_matches_details_hash(row)
     { match_id: row['match_id'].to_i,
       match_date: row['date'],
@@ -144,9 +144,8 @@ module DBMatches
       city: row['city'],
       broadcaster: row['broadcaster'] }
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize
 
-  # rubocop:disable Metrics/MethodLength
   def row_to_origin_details_hash(row)
     {
       ht_home_team: row['ht_home_team'],
@@ -167,8 +166,6 @@ module DBMatches
       at_stage: row['at_stage']
     }
   end
-  # rubocop:enable Metrics/MethodLength
-
   # Standalone SQL
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -412,7 +409,6 @@ module DBMatches
     SQL
   end
 
-  # rubocop:disable Metrics/MethodLength
   def lockdown_clause(match_status)
     case match_status
     when 'locked_down'
@@ -429,9 +425,7 @@ module DBMatches
       SQL
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
-  # rubocop:disable Metrics/MethodLength
   def predictions_clause(prediction_status)
     case prediction_status
     when 'predicted'
@@ -446,8 +440,6 @@ module DBMatches
       ''
     end
   end
-  # rubocop:enable Metrics/MethodLength
-
   # ORDER BY clauses
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

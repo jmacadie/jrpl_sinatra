@@ -59,7 +59,7 @@ class Ring
     Base64.urlsafe_encode64 compressed
   end
 
-  # rubocop:disable Metrics/MethodLength, Layout/LineLength
+  # rubocop:disable Layout/LineLength
   def check_args(args)
     return unless args[:ring].nil?
     if args[:match_ids].nil?
@@ -76,7 +76,7 @@ class Ring
             "Invalid arguments. Must provide either a current match_id or an index"
     end
   end
-  # rubocop:enable Metrics/MethodLength, Layout/LineLength
+  # rubocop:enable Layout/LineLength
 
   def build_from_string(ring_str)
     ring_str = decompress(ring_str)

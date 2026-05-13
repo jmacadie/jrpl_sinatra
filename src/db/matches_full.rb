@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ModuleLength
 module DBMatchesFull
   def get_matches_full(criteria, user_id=1)
     sql = matches_full_query(criteria)
@@ -8,7 +7,7 @@ module DBMatchesFull
 
   private
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
   def map_full_results(result)
     result.map do |row|
       { match_id: row['match_id'].to_i,
@@ -29,7 +28,7 @@ module DBMatchesFull
         venue: row['venue'] }
     end
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize
 
   def matches_full_query(criteria)
     out = []
@@ -119,7 +118,6 @@ module DBMatchesFull
     end
   end
 
-  # rubocop:disable Metrics/MethodLength
   def stage_list(stages)
     # rubocop:disable Layout/HashAlignment
     stage_map = {
@@ -137,7 +135,6 @@ module DBMatchesFull
     return nil if list.empty?
     "(stage.name IN (#{list}))"
   end
-  # rubocop:enable Metrics/MethodLength
 
   def groups_list(stages, groups)
     return nil if !stages[:group]
@@ -148,4 +145,3 @@ module DBMatchesFull
     "(stage.name = 'Group Stages' AND g.name IN (#{list}))"
   end
 end
-# rubocop:enable Metrics/ModuleLength

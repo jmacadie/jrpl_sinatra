@@ -83,7 +83,7 @@ class DatabasePersistence
     [p_int, p_text, p_date, p_time, p_dt]
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def get_sql(statement, params)
     sql = statement
     params.each_with_index do |p, i|
@@ -97,7 +97,7 @@ class DatabasePersistence
     end
     sql
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   def query(statement, *params)
     sql = get_sql(statement, params)

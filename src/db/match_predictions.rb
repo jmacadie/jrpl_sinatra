@@ -7,7 +7,6 @@ module DBMatchPredictions
 
   private
 
-  # rubocop:disable Metrics/MethodLength
   def map_results(result)
     result.map do |row|
       { user: row['user_name'],
@@ -22,7 +21,6 @@ module DBMatchPredictions
         total_points: convert_str_to_int(row['total_points']) }
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def match_predictions_query
     <<~SQL

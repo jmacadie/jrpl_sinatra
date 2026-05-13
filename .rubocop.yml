@@ -244,10 +244,15 @@ Layout/LineLength:
   - https
 
 Metrics/MethodLength:
-  Description: 'Avoid methods longer than 10 lines of code.'
+  Description: 'Avoid methods longer than 20 lines of code.'
   Enabled: true
   CountComments: false  # count full line comments?
-  Max: 10
+  Max: 20
+
+Metrics/ModuleLength:
+  Description: 'Avoid modules longer than 250 lines of code'
+  Enabled: true
+  Max: 250
 
 Lint/LiteralInInterpolation:
   Description: 'Avoid interpolating literals in strings'

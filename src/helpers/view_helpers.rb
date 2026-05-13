@@ -1,4 +1,3 @@
-# rubocop:todo Metrics/ModuleLength
 module ViewHelpers
   def home_name(match)
     match[:home_name] || match[:home_tournament_role]
@@ -95,7 +94,6 @@ module ViewHelpers
     end
   end
 
-  # rubocop:disable Metrics/MethodLength
   def date_for_print(match)
     dt = Date.parse(match[:match_date])
     suffix =
@@ -111,7 +109,6 @@ module ViewHelpers
       end
     dt.strftime("%A, %-d<sup>#{suffix}</sup> %B %Y")
   end
-  # rubocop:enable Metrics/MethodLength
 
   def ring_for_url(ring)
     "?ring=#{ring}"
@@ -165,7 +162,6 @@ module ViewHelpers
     points_for_print(prediction[:total_points])
   end
 
-  # rubocop:disable Metrics/MethodLength
   def page
     case request.path_info
     when %r(^/fixtures)
@@ -184,9 +180,7 @@ module ViewHelpers
       ""
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
-  # rubocop:disable Metrics/MethodLength
   def camelcase(string, initial=:ignore)
     delimiters = Regexp.union(['-', '_', ' ', '/', '\\'])
     case initial
@@ -202,6 +196,4 @@ module ViewHelpers
       end
     end
   end
-  # rubocop:enable Metrics/MethodLength
 end
-# rubocop:enable Metrics/ModuleLength
