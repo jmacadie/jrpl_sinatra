@@ -11,7 +11,7 @@
       <div class="panel-body">
         <% users = locals[:users] %>
         <% while !users.empty? %>
-          <%== erb :'graphs/pick_user_row', locals: { users: users.shift(4) } %>
+          <%== erb :'graphs/pick_user_row', locals: { users: users.shift(3) } %>
         <% end %>
       </div> <!-- /.panel-body -->
     </div> <!-- /#collapseUsers.panel-collapse -->
