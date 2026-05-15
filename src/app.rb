@@ -26,7 +26,6 @@ class App < Sinatra::Application
   configure do
     # rubocop:disable Layout/SpaceBeforeComma, Layout/ExtraSpacing
     enable :sessions
-    set :session_secret, ENV.fetch('SESSION_SECRET') { SecureRandom.hex(64) }
     set :erb           , escape_html: true
 
     set :environment   , ENV.fetch('APP_ENV', 'development')
@@ -50,10 +49,12 @@ class App < Sinatra::Application
     end
   end
 
+  configure :staging, :production do
+    set :session_secret, ENV.fetch('SESSION_SECRET')
+  end
+
   configure :development, :test do
-    # rubocop:disable Layout/LineLength
-    set :session_secret, 'qwertyuiopasdfghjklzxcvbnmsssssssssssrpppppppppppppppppppppppppppppppppppppppppppppppp'
-    # rubocop:enable Layout/LineLength
+    set :session_secret, SecureRandom.hex(64)
   end
 
   configure :development, :test, :staging do
