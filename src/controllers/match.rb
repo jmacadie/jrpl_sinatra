@@ -88,7 +88,7 @@ class App < Sinatra::Application
     if origin?(@match)
       @origin = @storage.match_origin(match_id)
     end
-    return unless !params[:ring].nil? && params[:ring] != ""
+    return if params[:ring].nil? || params[:ring] == ""
     @ring = Ring.new({ ring: params[:ring] })
     @prev_match = @ring.prev_match
     @next_match = @ring.next_match
