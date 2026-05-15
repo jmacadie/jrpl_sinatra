@@ -15,12 +15,29 @@ module Email
     env = App.settings.environment
     transport = get_transport(config, env)
     to = get_to(to, config, env)
+    body = replace_urls(body, env)
     params = get_params(subject, body, to, config, plain_text)
              .merge(transport)
     Pony.mail(params)
   end
 
+  DOMAINS = {
+    'development' => 'localhost:4567',
+    'test' => 'localhost',
+    'staging' => 'staging.julianrimet.com',
+    'production' => 'julianrimet.com'
+  }
+
   private
+
+  def env_to_domain(env)
+    DOMAINS[env]
+  end
+
+  def replace_urls(body, env)
+    domain = env_to_domain(env)
+    body.gsub('{URL}', domain)
+  end
 
   def mr_men?(user)
     return false if user[:roles].nil?
