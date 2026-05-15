@@ -37,7 +37,7 @@ class App < Sinatra::Application
       end
       session[:message] = 'Welcome!'
       session[:message_level] = 'success'
-      redirect(session[:intended_route])
+      redirect_user_input()
     else
       session[:message] = 'Invalid credentials.'
       session[:message_level] = 'danger'
@@ -77,7 +77,7 @@ class App < Sinatra::Application
         implement_cookies()
       end
       session[:message] = 'Your account has been created.'
-      redirect(session[:intended_route])
+      redirect_user_input()
     else
       session[:message_level] = 'danger'
       status 422
@@ -137,5 +137,13 @@ class App < Sinatra::Application
     end
 
     redirect('/admin')
+  end
+
+  private
+
+  def redirect_user_input
+    route = session.delete(:intended_route)
+    route = '/' unless route&.start_with?('/') && !route.start_with?('//')
+    redirect route
   end
 end
