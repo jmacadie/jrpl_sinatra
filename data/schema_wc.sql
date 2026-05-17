@@ -31,7 +31,7 @@ CREATE TABLE users (
 CREATE TABLE remember_me (
   user_id    int         NOT NULL REFERENCES users ON DELETE CASCADE ON UPDATE CASCADE,
   series_id  varchar(64) NOT NULL UNIQUE,
-  token      varchar(64) NOT NULL,
+  token      varchar(120) NOT NULL,
   date_added timestamp   NOT NULL
 );
 
