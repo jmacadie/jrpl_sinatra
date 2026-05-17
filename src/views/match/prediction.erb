@@ -52,6 +52,7 @@
         </button>
       </div>
     </div>
+    <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
     <input type="hidden" id="next" name="next" value="false">
     <input type="hidden" name="ring" value="<%== "#{@ring}" %>">
     <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
@@ -104,6 +105,7 @@
         </button>
       </div>
     </div>
+    <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
     <input type="hidden" id="next_s" name="next" value="false">
     <input type="hidden" name="ring" value="<%== "#{@ring}" %>">
     <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">

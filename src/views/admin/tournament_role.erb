@@ -9,5 +9,6 @@
     </select>
   </div>
   <input type="hidden" name="role" value="<%== @id %>"></input>
+  <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
   <button type="submit" class="btn btn-warning">Update</button>
 </form>

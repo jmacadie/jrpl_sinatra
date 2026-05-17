@@ -26,7 +26,8 @@ class CMSTest < Minitest::Test
     assert_includes body_text,
                     'Spain Spain vs. Croatia Croatia Not yet predicted'
     assert_includes body_text,
-                    'Slovenia Slovenia vs. Denmark Denmark Predicted: Denmark Win Predicted: Denmark Win 71 - 72'
+                    'Slovenia Slovenia vs. Denmark Denmark Predicted: ' \
+                    'Denmark Win Predicted: Denmark Win 71 - 72'
   end
 
   def test_select_deselect_all_on_match_filter_form

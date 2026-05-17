@@ -25,6 +25,7 @@
                 <td>
                   <form class="form-inline reset-pword" action="/users/reset_pword" method="post">
                     <input type="hidden" name="user_name" value="<%== user[:user_name] %>"/>
+                    <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
                     <button type="submit">Reset</button>
                   </form>
                 </td>
@@ -34,9 +35,11 @@
                     <input type="hidden" name="user_id" value="<%== user[:user_id] %>"/>
                     <% if user[:roles]&.include?('Admin') %>
                       <input type="hidden" name="button" value="revoke_admin"/>
+                      <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
                       <button type="submit">Revoke</button>
                     <% else %>
                       <input type="hidden" name="button" value="grant_admin"/>
+                      <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
                       <button type="submit">Grant</button>
                     <% end %>
                   </form>
@@ -45,6 +48,7 @@
                   <form class="form-inline delete-user" method="post" action="/users/delete">
                     <input type="hidden" name="user_name" value="<%== user[:user_name] %>"/>
                     <input type="hidden" name="user_id" value="<%== user[:user_id] %>"/>
+                    <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
                     <button type="submit">CYA</button>
                   </form>
                 </td>

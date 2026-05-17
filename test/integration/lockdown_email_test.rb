@@ -4,6 +4,7 @@ class CMSTest < Minitest::Test
   include TestIntegrationMethods
   include TestEmailMethods
 
+  # rubocop: disable Metrics/AbcSize
   def test_lockdown_emails
     Mail::TestMailer.deliveries.clear
     assert_equal 0, Mail::TestMailer.deliveries.length
@@ -20,4 +21,5 @@ class CMSTest < Minitest::Test
     assert_includes body_text, 'Binary Boy Croatia Win 20 - 3'
     Mail::TestMailer.deliveries.clear
   end
+  # rubocop: enable Metrics/AbcSize
 end

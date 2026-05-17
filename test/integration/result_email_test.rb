@@ -4,6 +4,7 @@ class CMSTest < Minitest::Test
   include TestIntegrationMethods
   include TestEmailMethods
 
+  # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
   def test_result_email
     Mail::TestMailer.deliveries.clear
     assert_equal 0, Mail::TestMailer.deliveries.length
@@ -13,8 +14,12 @@ class CMSTest < Minitest::Test
     Mail::TestMailer.deliveries.clear
     assert_equal 0, Mail::TestMailer.deliveries.length
 
+    get '/match/6', {}, admin_session
     post '/match/add_result',
-         { match_id: 6, home_score: 81, away_score: 82 },
+         { match_id: 6,
+           home_score: 81,
+           away_score: 82,
+           authenticity_token: csrf_token },
          admin_session
     assert_equal 1, Mail::TestMailer.deliveries.length
 
@@ -44,8 +49,12 @@ class CMSTest < Minitest::Test
     Mail::TestMailer.deliveries.clear
     assert_equal 0, Mail::TestMailer.deliveries.length
 
+    get '/match/6', {}, admin_session
     post '/match/add_result',
-         { match_id: 6, home_score: 71, away_score: 72 },
+         { match_id: 6,
+           home_score: 71,
+           away_score: 72,
+           authenticity_token: csrf_token },
          admin_session
     assert_equal 1, Mail::TestMailer.deliveries.length
 
@@ -71,14 +80,23 @@ class CMSTest < Minitest::Test
     get '/'
     Mail::TestMailer.deliveries.clear
 
+    get '/match/6', {}, admin_session
     post '/match/add_result',
-         { match_id: 6, home_score: 81, away_score: 82 },
+         { match_id: 6,
+           home_score: 81,
+           away_score: 82,
+           authenticity_token: csrf_token },
          admin_session
     assert_equal 1, Mail::TestMailer.deliveries.length
     Mail::TestMailer.deliveries.clear
     assert_equal 0, Mail::TestMailer.deliveries.length
+
+    get '/match/6', {}, admin_session
     post '/match/add_result',
-         { match_id: 6, home_score: 81, away_score: 82 },
+         { match_id: 6,
+           home_score: 81,
+           away_score: 82,
+           authenticity_token: csrf_token },
          admin_session
     assert_equal 1, Mail::TestMailer.deliveries.length
 
@@ -98,4 +116,5 @@ class CMSTest < Minitest::Test
     assert_includes body_text, '6=3D Sammie - - -'
     Mail::TestMailer.deliveries.clear
   end
+  # rubocop: enable Metrics/MethodLength, Metrics/AbcSize
 end

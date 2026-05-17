@@ -12,7 +12,7 @@ Rake::TestTask.new do |t|
 end
 
 RuboCop::RakeTask.new(:rubocop) do |t|
-  t.patterns = ['src/**/*.rb']
+  t.patterns = ['src/**/*.rb', 'test/**/*.rb', 'Rakefile', 'Gemfile']
   t.options = ['--display-cop-names']
 end
 

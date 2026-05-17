@@ -14,9 +14,14 @@ class CMSTest < Minitest::Test
     assert_includes body_text, 'Mr. Mean - - -'
   end
 
+  # rubocop: disable Metrics/AbcSize
   def test_scoreboard_change_result
+    get '/match/7', {}, admin_session
     post '/match/add_result',
-         { match_id: 7, home_score: '4', away_score: '2' },
+         { match_id: 7,
+           home_score: '4',
+           away_score: '2',
+           authenticity_token: csrf_token },
          admin_session
     get '/tables'
 
@@ -29,8 +34,12 @@ class CMSTest < Minitest::Test
   end
 
   def test_scoreboard_add_result
+    get '/match/6', {}, admin_session
     post '/match/add_result',
-         { match_id: 6, home_score: '76', away_score: '77' },
+         { match_id: 6,
+           home_score: '76',
+           away_score: '77',
+           authenticity_token: csrf_token },
          admin_session
     get '/tables'
 
@@ -41,4 +50,5 @@ class CMSTest < Minitest::Test
     assert_includes body_text, 'Maccas 2 - 2'
     assert_includes body_text, 'Mr. Mean 1 2 3'
   end
+  # rubocop: enable Metrics/AbcSize
 end

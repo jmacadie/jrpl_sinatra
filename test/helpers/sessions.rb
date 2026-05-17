@@ -6,6 +6,10 @@ def nil_session
   } }
 end
 
+def signed_out_session
+  {}
+end
+
 def admin_session
   { 'rack.session' => {
     user_name: 'Maccas',

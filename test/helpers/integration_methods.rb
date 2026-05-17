@@ -14,7 +14,7 @@ module TestIntegrationMethods
 
   def refresh_test_db
     sql = File.read("#{App.settings.root}/data/test_data.sql")
-    $stderr.reopen("/dev/null", "w")
+    $stderr.reopen(File::NULL, "w")
     $stderr.sync = true
     PG.connect(dbname: App.settings.dbconf['database']).exec(sql)
     $stderr = STDERR
@@ -36,10 +36,14 @@ module TestIntegrationMethods
 
   def html_to_text(html)
     html
-      .gsub(/\s/, ' ') # remove newlines, tabs etc
-      .gsub(%r(<head>.*</head>), '') # remove the head: it's not printed
-      .gsub(%r(<script[^(</script>)]*</script>), '') # remove any javascript
-      .gsub(/<input[^>]*value="([0-9]*)">/, ' \1 ') # Convert inputs with a value to just thier value
+      # remove newlines, tabs etc
+      .gsub(/\s/, ' ')
+      # remove the head: it's not printed
+      .gsub(%r(<head>.*</head>), '')
+      # remove any javascript
+      .gsub(%r(<script[^(</script>)]*</script>), '')
+      # Convert inputs with a value to just thier value
+      .gsub(/<input[^>]*value="([0-9]*)">/, ' \1 ')
       .gsub(/<[^>]*>/, ' ') # Remove all other tags
       .gsub("&lt;", '<')    # Switch out encoded symbol
       .gsub("&gt;", '>')    # Switch out encoded symbol
@@ -47,5 +51,9 @@ module TestIntegrationMethods
       .gsub("&pound;", '£') # Switch out encoded symbol
       .gsub("&nbsp;", ' ')  # Switch out encoded symbol
       .squeeze(' ') # collapse out multiple spaces
+  end
+
+  def csrf_token
+    last_response.body.match(/name="authenticity_token" value="([^"]+)"/)[1]
   end
 end

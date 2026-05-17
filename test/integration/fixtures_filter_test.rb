@@ -6,9 +6,18 @@ class CMSTest < Minitest::Test
   def test_filter_matches_all
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
-         { st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+         { st_gr: 'on',
+           st_r16: 'on',
+           st_qf: 'on',
+           st_sf: 'on',
+           st_f: 'on',
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -21,9 +30,18 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { exc_pred: 'on',
-           st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+           st_gr: 'on',
+           st_r16: 'on',
+           st_qf: 'on',
+           st_sf: 'on',
+           st_f: 'on',
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -36,9 +54,18 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { exc_play: 'on',
-           st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+           st_gr: 'on',
+           st_r16: 'on',
+           st_qf: 'on',
+           st_sf: 'on',
+           st_f: 'on',
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -50,10 +77,20 @@ class CMSTest < Minitest::Test
   def test_filter_matches_not_played_not_predicted
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
-         { exc_pred: 'on', exc_play: 'on',
-           st_gr: 'on', st_r16: 'on', st_qf: 'on', st_sf: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+         { exc_pred: 'on',
+           exc_play: 'on',
+           st_gr: 'on',
+           st_r16: 'on',
+           st_qf: 'on',
+           st_sf: 'on',
+           st_f: 'on',
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -66,8 +103,13 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_gr: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -76,12 +118,17 @@ class CMSTest < Minitest::Test
     fixtures_page_parts(inc_matches, exc_matches)
   end
 
-  def test_filter_matches_round_of_16
+  def test_filter_matches_round_of_sixteen
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_r16: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -94,8 +141,13 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_qf: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -108,8 +160,13 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_sf: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -122,8 +179,13 @@ class CMSTest < Minitest::Test
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -135,9 +197,15 @@ class CMSTest < Minitest::Test
   def test_filter_matches_group_stages_and_final
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
-         { st_gr: 'on', st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+         { st_gr: 'on',
+           st_f: 'on',
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -146,12 +214,12 @@ class CMSTest < Minitest::Test
     fixtures_page_parts(inc_matches, exc_matches)
   end
 
-  def test_filter_matches_group_C
+  def test_filter_matches_group_c
     get '/fixtures', {}, non_admin_session
     post '/fixtures',
          { st_gr: 'on',
-           gr_C: 'on' }
-    non_admin_session
+           gr_C: 'on',
+           authenticity_token: csrf_token }
 
     assert_equal 200, last_response.status
 
@@ -165,8 +233,13 @@ class CMSTest < Minitest::Test
     post '/fixtures',
          { exc_pred: 'on',
            st_f: 'on',
-           gr_A: 'on', gr_B: 'on', gr_C: 'on', gr_D: 'on', gr_E: 'on', gr_F: 'on' }
-    non_admin_session
+           gr_A: 'on',
+           gr_B: 'on',
+           gr_C: 'on',
+           gr_D: 'on',
+           gr_E: 'on',
+           gr_F: 'on',
+           authenticity_token: csrf_token }
 
     assert_includes body_text,
                     'No matches meet your criteria, please try again!'

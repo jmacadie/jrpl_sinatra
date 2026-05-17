@@ -1,5 +1,7 @@
 require 'bcrypt'
 require 'pony'
+require 'rack/protection'
+require 'rack/session'
 require 'securerandom'
 require 'sinatra'
 require 'sinatra/cookies'
@@ -27,6 +29,7 @@ class App < Sinatra::Application
     # rubocop:disable Layout/SpaceBeforeComma, Layout/ExtraSpacing
     enable :sessions
     set :erb           , escape_html: true
+    use Rack::Protection::AuthenticityToken
 
     set :environment   , ENV.fetch('APP_ENV', 'development')
 

@@ -83,8 +83,9 @@ class CMSTest < Minitest::Test
 
   def test_create_with_index_into_hex
     ring = Ring.new({
-                      match_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-                                  16], match_id: 14
+                      match_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9,
+                                  10, 11, 12, 13, 14, 15, 16],
+                      match_id: 14
                     })
     assert_equal 'eJwVyskBwBAAALCV4qjWOBT7j4C8wyAQSWQeCi8flUbnd9tknbsBFcsLKA==',
                  ring.to_s

@@ -4,6 +4,7 @@ require "#{App.settings.src}/helpers/email"
 class CMSTest < Minitest::Test
   include Email
 
+  # rubocop: disable Metrics/AbcSize
   def test_plain_email
     Mail::TestMailer.deliveries.clear
     assert_equal 0, Mail::TestMailer.deliveries.length
@@ -19,6 +20,7 @@ class CMSTest < Minitest::Test
     Mail::TestMailer.deliveries.clear
   end
 
+  # rubocop: disable Metrics/MethodLength
   def test_html_email
     Mail::TestMailer.deliveries.clear
     assert_equal 0, Mail::TestMailer.deliveries.length
@@ -44,6 +46,7 @@ class CMSTest < Minitest::Test
                  m.html_part.body.raw_source
     Mail::TestMailer.deliveries.clear
   end
+  # rubocop: enable Metrics/MethodLength
 
   def test_email_to
     Mail::TestMailer.deliveries.clear
@@ -89,4 +92,5 @@ class CMSTest < Minitest::Test
     assert_equal config['default_to'], m.to[0]
     Mail::TestMailer.deliveries.clear
   end
+  # rubocop: enable Metrics/AbcSize
 end

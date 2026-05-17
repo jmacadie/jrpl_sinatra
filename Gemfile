@@ -22,7 +22,8 @@ group :development do
   gem 'rackup'
   gem 'rake'
   # https://dev.to/dnamsons/ruby-debugging-in-vscode-3bkj
-  # rdebug-ide --host 0.0.0.0 --port 1234 --dispatcher-port 26162 /path/to/the/file.rb
+  # rdebug-ide --host 0.0.0.0 --port 1234
+  # --dispatcher-port 26162 /path/to/the/file.rb
   gem 'ruby-debug-ide'
 end
 

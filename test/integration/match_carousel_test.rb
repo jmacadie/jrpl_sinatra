@@ -9,9 +9,11 @@ class CMSTest < Minitest::Test
     assert_equal 200, last_response.status
     assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes body_html,
-                    '<a href="/match/3?ring=eJwzMAACYwMDQwMDEwAOyQJJ">&lt; Previous match</a>'
+                    '<a href="/match/3?ring=eJwzMAACYwMDQwMDEwAOyQJJ">' \
+                    '&lt; Previous match</a>'
     assert_includes body_html,
-                    '<a href="/match/4?ring=eJwzMDAyMDA2MDA0MDABAA7dAks=">Next match &gt;</a>'
+                    '<a href="/match/4?ring=eJwzMDAyMDA2MDA0MDABAA7dAks=">' \
+                    'Next match &gt;</a>'
   end
 
   def test_carousel_below_minimum

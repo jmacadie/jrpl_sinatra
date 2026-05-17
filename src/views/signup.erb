@@ -41,5 +41,6 @@
         Remember me
     </label>
   </div>
+  <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
   <button class="btn btn-lg btn-primary btn-block" type="submit" id="logInBtn">Sign Up</button>
 </form>
