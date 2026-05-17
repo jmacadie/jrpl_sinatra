@@ -100,8 +100,11 @@ class DatabasePersistence
   # rubocop:enable Metrics/AbcSize
 
   def query(statement, *params)
-    sql = get_sql(statement, params)
-    @@logger.info "\n#{sql}"
+    env = App.settings.environment
+    if env == 'development'
+      sql = get_sql(statement, params)
+      @@logger.info "\n#{sql}"
+    end
     @@db.exec_params(statement, params)
   end
 end
