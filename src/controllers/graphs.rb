@@ -1,8 +1,14 @@
+require_relative '../db/cumulative_points'
+require_relative '../db/users'
+
 class App < Sinatra::Application
+  include DBCumPoints
+  include DBUsers
+
   get '/graphs' do
     user_signed_in?
-    @users = @storage.load_all_users_details
-    @points = @storage.cum_points
+    @users = load_all_users_details
+    @points = cum_points
     relative_points()
     position_points()
     @points = default_data if @points == []

@@ -1,7 +1,15 @@
+require_relative '../db/matches'
+require_relative '../db/match_predictions'
+require_relative '../db/points'
+
 module Scoring
+  include DBMatches
+  include DBMatchPredictions
+  include DBPoints
+
   def update_scoreboard(match_id, home_score=nil, away_score=nil)
     result = get_result(home_score, away_score)
-    predictions = @storage.predictions_for_match(match_id)
+    predictions = predictions_for_match(match_id)
     update_official_scoring(result, predictions)
     update_autoquiz_scoring(predictions)
   end
@@ -9,12 +17,12 @@ module Scoring
   private
 
   def update_official_scoring(result, predictions)
-    scoring_id = 1 # @storage.id_for_scoring_system('Official')
+    scoring_id = 1 # id_for_scoring_system('Official')
     match_type = result_type(result[:home_score], result[:away_score])
     predictions.each do |pred|
       result_pts = official_result_points(match_type, pred)
       score_pts = official_score_points(result, pred)
-      @storage.add_points(pred[:pred_id], scoring_id, result_pts, score_pts)
+      add_points(pred[:pred_id], scoring_id, result_pts, score_pts)
     end
   end
 
@@ -33,7 +41,7 @@ module Scoring
   end
 
   def update_autoquiz_scoring(predictions)
-    # scoring_id = 2 # @storage.id_for_scoring_system('AutoQuiz')
+    # scoring_id = 2 # id_for_scoring_system('AutoQuiz')
     predictions.each do |pred|
       # TODO: implement me!
     end
@@ -42,7 +50,7 @@ module Scoring
   def get_result(home_score, away_score)
     if home_score.nil? ||
        away_score.nil?
-      @storage.match_result(match_id)
+      match_result(match_id)
     else
       { home_score:,
         away_score: }

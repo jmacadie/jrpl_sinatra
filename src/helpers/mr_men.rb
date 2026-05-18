@@ -1,6 +1,12 @@
+require_relative '../db/match_predictions'
+require_relative '../db/predictions'
+
 module MrMen
+  include DBMatchPredictions
+  include DBPredictions
+
   def calc_mr_men(match_id)
-    @predictions = @storage.get_match_predictions(match_id)
+    @predictions = get_match_predictions(match_id)
     prep_predictions()
     calc_mr_mean(match_id)
     calc_mr_median(match_id)
@@ -24,7 +30,7 @@ module MrMen
   def calc_mr_mean(match_id)
     home = mean(@preds[:home])
     away = mean(@preds[:away])
-    @storage.add_prediction(1, match_id, home, away)
+    add_prediction(1, match_id, home, away)
   end
 
   def mean(array)
@@ -35,7 +41,7 @@ module MrMen
   def calc_mr_median(match_id)
     home = median(@preds[:home])
     away = median(@preds[:away])
-    @storage.add_prediction(2, match_id, home, away)
+    add_prediction(2, match_id, home, away)
   end
 
   def median(array)
@@ -51,7 +57,7 @@ module MrMen
   def calc_mr_mode(match_id)
     home = mode(@preds[:home])
     away = mode(@preds[:away])
-    @storage.add_prediction(3, match_id, home, away)
+    add_prediction(3, match_id, home, away)
   end
 
   def mode(array)

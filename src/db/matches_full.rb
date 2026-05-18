@@ -1,7 +1,7 @@
 module DBMatchesFull
   def get_matches_full(criteria, user_id=1)
     sql = matches_full_query(criteria)
-    result = query(sql, user_id)
+    result = run_query(sql, user_id)
     map_full_results(result)
   end
 

@@ -1,6 +1,10 @@
+require_relative '../db/users'
+
 module Email
+  include DBUsers
+
   def send_email_all(subject: '', body: '', plain_text: false)
-    users = @storage.load_all_users_details()
+    users = load_all_users_details()
     to = users.reject { |u| mr_men? u }
               .map { |u| "#{u[:user_name]} <#{u[:email]}>" }
               .join(', ')

@@ -1,33 +1,33 @@
 module DBUsers
   def assign_admin(user_id)
     sql = 'INSERT INTO user_role VALUES ($1::int, $2::int);'
-    query(sql, user_id, admin_role_id())
+    run_query(sql, user_id, admin_role_id())
   end
 
-  def change_email(old_user_name, new_email)
+  def change_email_query(old_user_name, new_email)
     sql = 'UPDATE users SET email = $1::text WHERE user_name = $2::text;'
-    query(sql, new_email, old_user_name)
+    run_query(sql, new_email, old_user_name)
   end
 
   def delete_user(user_id)
     sql = 'DELETE FROM users WHERE user_id = $1::int;'
-    query(sql, user_id)
+    run_query(sql, user_id)
   end
 
-  def change_pword(old_user_name, new_pword)
+  def change_pword_query(old_user_name, new_pword)
     hashed_pword = BCrypt::Password.create(new_pword).to_s
     sql = 'UPDATE users SET pword = $1::text WHERE user_name = $2::text;'
-    query(sql, hashed_pword, old_user_name)
+    run_query(sql, hashed_pword, old_user_name)
   end
 
-  def change_username(old_user_name, new_user_name)
+  def change_username_query(old_user_name, new_user_name)
     sql = 'UPDATE users SET user_name = $1::text WHERE user_name = $2::text;'
-    query(sql, new_user_name, old_user_name)
+    run_query(sql, new_user_name, old_user_name)
   end
 
   def load_all_users_details
     sql = select_query_all_users()
-    result = query(sql)
+    result = run_query(sql)
     result.map do |row|
       row_to_users_details_hash(row)
     end
@@ -35,7 +35,7 @@ module DBUsers
 
   def load_user_details(user_id)
     sql = select_query_single_user()
-    result = query(sql, user_id)
+    result = run_query(sql, user_id)
     return nil if result.ntuples == 0
     result.map do |row|
       row_to_users_details_hash(row)
@@ -44,7 +44,7 @@ module DBUsers
 
   def unassign_admin(user_id)
     sql = 'DELETE FROM user_role WHERE user_id = $1::int AND role_id = $2::int;'
-    query(sql, user_id, admin_role_id())
+    run_query(sql, user_id, admin_role_id())
   end
 
   def user_admin?(user_id)
@@ -52,27 +52,27 @@ module DBUsers
     SELECT * FROM user_role
     WHERE user_id = $1::int AND role_id = $2::int;
     SQL
-    result = query(sql, user_id, admin_role_id())
+    result = run_query(sql, user_id, admin_role_id())
     !(result.ntuples == 0)
   end
 
   def user_id(user_name)
     sql = 'SELECT user_id FROM users WHERE user_name = $1::text;'
-    result = query(sql, user_name)
+    result = run_query(sql, user_name)
     return nil if result.ntuples == 0
     result.first['user_id'].to_i
   end
 
   def user_name(user_id)
     sql = 'SELECT user_name FROM users WHERE user_id = $1::int;'
-    result = query(sql, user_id)
+    result = run_query(sql, user_id)
     return nil if result.ntuples == 0
     result.first['user_name']
   end
 
   def user_name_from_email(email)
     sql = 'SELECT user_name FROM users WHERE lower(email) = lower($1::text);'
-    result = query(sql, email)
+    result = run_query(sql, email)
     return nil if result.ntuples == 0
     result.first['user_name']
   end
@@ -81,7 +81,7 @@ module DBUsers
 
   def admin_role_id
     sql = 'SELECT role_id FROM role WHERE name = $1::text;'
-    result = query(sql, 'Admin')
+    result = run_query(sql, 'Admin')
     result.first['role_id'].to_i
   end
 

@@ -1,5 +1,6 @@
 require 'bcrypt'
 require 'pony'
+require 'connection_pool'
 require 'rack/protection'
 require 'rack/session'
 require 'securerandom'
@@ -17,9 +18,6 @@ end
 Dir["#{File.expand_path(__dir__)}/controllers/**/*.rb"].each do |file|
   require file
 end
-
-# Load database (model)
-require_relative 'db/database_persistence'
 
 class App < Sinatra::Application
   # Constant definitions
@@ -41,9 +39,6 @@ class App < Sinatra::Application
     set :views         , "#{settings.src}/views"
     set :helpers       , "#{settings.src}/helpers"
     set :tests         , "#{settings.root}/test"
-
-    dbconf = YAML.load_file("#{settings.config}/database.yml")
-    set :dbconf        , dbconf[settings.environment]
     # rubocop:enable Layout/SpaceBeforeComma, Layout/ExtraSpacing
 
     # Load general settings
@@ -54,10 +49,20 @@ class App < Sinatra::Application
 
   configure :staging, :production do
     set :session_secret, ENV.fetch('SESSION_SECRET')
+
+    conf = YAML.load_file("#{settings.config}/database.yml")
+    set :db_pool, ConnectionPool.new(size: 5, timeout: 5) {
+      DatabaseHelpers.connect(conf[settings.environment])
+    }
   end
 
   configure :development, :test do
     set :session_secret, SecureRandom.hex(64)
+
+    conf = YAML.load_file("#{settings.config}/database.yml")
+    set :db_pool, ConnectionPool.new(size: 1, timeout: 5) {
+      DatabaseHelpers.connect(conf[settings.environment])
+    }
   end
 
   configure :development, :test, :staging do
@@ -70,6 +75,7 @@ class App < Sinatra::Application
 
   before do
     # Add in all the helper modules
+    extend DatabaseHelpers
     extend Email
     extend Lockdown
     extend Loginable
@@ -80,13 +86,6 @@ class App < Sinatra::Application
     extend Scoring
     extend ViewHelpers
 
-    DatabasePersistence.create(logger, settings.dbconf)
-    @storage = DatabasePersistence.new
-
     check_lockdown()
-  end
-
-  after do
-    DatabasePersistence.disconnect
   end
 end

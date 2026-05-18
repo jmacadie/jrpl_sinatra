@@ -2,7 +2,8 @@
 module DBMatches
   def add_result(match_id, home_team_points, away_team_points, user_id)
     sql = update_match_table_query()
-    query(sql, home_team_points, away_team_points, user_id, Time.now, match_id)
+    run_query(sql, home_team_points, away_team_points, user_id, Time.now,
+              match_id)
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -11,7 +12,7 @@ module DBMatches
 
     sql = construct_filter_matches_list_query(criteria)
 
-    result = query(
+    result = run_query(
       sql,
       lockdown[:date],
       lockdown[:time],
@@ -36,7 +37,7 @@ module DBMatches
 
     sql = construct_filter_matches_details_query(criteria)
 
-    result = query(
+    result = run_query(
       sql,
       lockdown[:date],
       lockdown[:time],
@@ -55,21 +56,27 @@ module DBMatches
   end
   # rubocop:enable Metrics/AbcSize
 
+  def tournament_stage_names_query
+    sql = 'SELECT name FROM stage;'
+    result = run_query(sql)
+    result.map { |row| row['name'] }
+  end
+
   def load_all_matches(user_id)
     sql = construct_all_matches_query()
-    result = query(sql, user_id)
+    result = run_query(sql, user_id)
     result.map { |row| row_to_matches_details_hash(row) }
   end
 
   def load_single_match(user_id, match_id)
     sql = construct_single_match_query()
-    result = query(sql, user_id, match_id)
+    result = run_query(sql, user_id, match_id)
     result.map { |row| row_to_matches_details_hash(row) }.first
   end
 
   def match_result(match_id)
     sql = match_result_query()
-    result = query(sql, match_id)
+    result = run_query(sql, match_id)
     result.map do |row|
       { home_score: row['home_team_points'].to_i,
         away_score: row['away_team_points'].to_i }
@@ -78,17 +85,17 @@ module DBMatches
 
   def max_match_id
     sql = 'SELECT max(match_id) FROM match;'
-    query(sql).first['max'].to_i
+    run_query(sql).first['max'].to_i
   end
 
   def min_match_id
     sql = 'SELECT min(match_id) FROM match;'
-    query(sql).first['min'].to_i
+    run_query(sql).first['min'].to_i
   end
 
   def lockdown_matches
     sql = lockdown_match_query()
-    result = query(sql)
+    result = run_query(sql)
     result.map do |row|
       { match_id: row['match_id'].to_i,
         match_date: row['date'],
@@ -99,7 +106,7 @@ module DBMatches
 
   def match_origin(match_id)
     sql = match_origin_query()
-    result = query(sql, match_id)
+    result = run_query(sql, match_id)
     result.map { |row| row_to_origin_details_hash(row) }.first
   end
 

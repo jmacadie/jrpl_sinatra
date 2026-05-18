@@ -1,16 +1,22 @@
+require_relative '../db/users'
+require_relative '../db/login'
+
 module Loginable
+  include DBUsers
+  include DBLogin
+
   def change_email(new_email)
     lowercase_email = new_email.downcase
-    @storage.change_email(session[:user_name], lowercase_email)
+    change_email_query(session[:user_name], lowercase_email)
     session[:user_email] = lowercase_email
   end
 
   def change_pword(new_pword)
-    @storage.change_pword(session[:user_name], new_pword)
+    change_pword_query(session[:user_name], new_pword)
   end
 
   def change_username(new_user_name)
-    @storage.change_username(session[:user_name], new_user_name)
+    change_username_query(session[:user_name], new_user_name)
     session[:user_name] = new_user_name
   end
 
@@ -45,7 +51,7 @@ module Loginable
   end
 
   def email_list
-    @storage.load_user_credentials.values.each_with_object([]) do |hash, arr|
+    load_user_credentials.values.each_with_object([]) do |hash, arr|
       arr << hash[:email].downcase
     end
   end
@@ -62,7 +68,7 @@ module Loginable
   end
 
   def extract_user_name(login)
-    @storage.user_name_from_email(login) || login
+    user_name_from_email(login) || login
   end
 
   def input_email_error(email)
@@ -77,7 +83,7 @@ module Loginable
   end
 
   def input_username_error(user_name)
-    if @storage.load_user_credentials.keys.include?(user_name) &&
+    if load_user_credentials.keys.include?(user_name) &&
        session[:user_name] != user_name
       'That username already exists. Please choose a different username.'
     elsif user_name == ''
@@ -128,7 +134,7 @@ module Loginable
   end
 
   def setup_user_session_data(user_id)
-    user_details = @storage.load_user_details(user_id)
+    user_details = load_user_details(user_id)
     session[:user_id] = user_id
     session[:user_name] = user_details[:user_name]
     session[:user_email] = user_details[:email].downcase
@@ -180,7 +186,7 @@ module Loginable
   end
 
   def valid_credentials?(user_name, pword)
-    credentials = @storage.load_user_credentials
+    credentials = load_user_credentials
     if credentials.key?(user_name)
       bcrypt_pword = BCrypt::Password.new(credentials[user_name][:pword])
       bcrypt_pword == pword

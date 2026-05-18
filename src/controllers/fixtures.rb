@@ -1,8 +1,12 @@
+require_relative '../db/matches_full'
+
 class App < Sinatra::Application
+  include DBMatchesFull
+
   get '/fixtures' do
     require_signed_in_user
     session[:criteria] ||= default_criteria
-    @matches = @storage.get_matches_full(session[:criteria], session[:user_id])
+    @matches = get_matches_full(session[:criteria], session[:user_id])
     @stage_names = tournament_stage_names()
     @match_ids = @matches.map { |m| m[:match_id] }
     erb :fixtures
@@ -12,7 +16,7 @@ class App < Sinatra::Application
     require_signed_in_user
     @stage_names = tournament_stage_names()
     session[:criteria] = process_params()
-    @matches = @storage.get_matches_full(session[:criteria], session[:user_id])
+    @matches = get_matches_full(session[:criteria], session[:user_id])
     @match_ids = @matches.map { |m| m[:match_id] }
     if @matches.empty?
       session[:message] = 'No matches meet your criteria, please try again!'

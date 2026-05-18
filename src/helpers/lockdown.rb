@@ -1,10 +1,18 @@
+require_relative '../db/emails'
+require_relative '../db/matches'
+require_relative '../db/match_predictions'
+
 module Lockdown
+  include DBEmails
+  include DBMatches
+  include DBMatchPredictions
+
   def locked_down?(match)
     match[:match_datetime] < Time.now + App::LOCKDOWN_BUFFER
   end
 
   def check_lockdown
-    matches = @storage.lockdown_matches()
+    matches = lockdown_matches()
     matches.each { |m| check_one_match(m) }
   end
 
@@ -14,12 +22,12 @@ module Lockdown
     return unless locked_down?(match)
     calc_mr_men(match[:match_id])
     send_lockdown_email(match[:match_id])
-    @storage.record_predictions_email_sent(match[:match_id])
+    record_predictions_email_sent(match[:match_id])
   end
 
   def send_lockdown_email(match_id)
-    match = @storage.load_single_match(1, match_id)
-    predictions = @storage.get_match_predictions(match_id)
+    match = load_single_match(1, match_id)
+    predictions = get_match_predictions(match_id)
     subject = lockdown_email_subject(match)
     body = lockdowm_email_body(match, predictions)
     send_email_all(

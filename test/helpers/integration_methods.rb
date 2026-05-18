@@ -1,8 +1,10 @@
 require 'rack/test'
 require_relative 'sessions'
+require_relative '../../src/helpers/query'
 
 module TestIntegrationMethods
   include Rack::Test::Methods
+  include DatabaseHelpers
 
   def setup
     refresh_test_db
@@ -16,7 +18,7 @@ module TestIntegrationMethods
     sql = File.read("#{App.settings.root}/data/test_data.sql")
     $stderr.reopen(File::NULL, "w")
     $stderr.sync = true
-    PG.connect(dbname: App.settings.dbconf['database']).exec(sql)
+    run_script(sql)
     $stderr = STDERR
   end
 

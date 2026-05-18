@@ -1,4 +1,10 @@
+require_relative '../db/login'
+require_relative '../db/users'
+
 class App < Sinatra::Application
+  include DBLogin
+  include DBUsers
+
   get '/users/edit_credentials' do
     require_signed_in_user
     erb :edit_credentials
@@ -30,7 +36,7 @@ class App < Sinatra::Application
     user_name = extract_user_name(params[:login].strip)
     pword = params[:pword].strip
     if valid_credentials?(user_name, pword)
-      user_id = @storage.user_id(user_name)
+      user_id = user_id(user_name)
       setup_user_session_data(user_id)
       if params.keys.include?('remember_me')
         implement_cookies()
@@ -70,8 +76,8 @@ class App < Sinatra::Application
     new_user_details = extract_user_details(params)
     session[:message] = signup_input_error(new_user_details)
     if session[:message].empty?
-      @storage.upload_new_user_credentials(new_user_details)
-      user_id = @storage.user_id(new_user_details[:user_name])
+      upload_new_user_credentials(new_user_details)
+      user_id = user_id(new_user_details[:user_name])
       setup_user_session_data(user_id)
       if params.keys.include?('remember_me')
         implement_cookies()
@@ -90,7 +96,7 @@ class App < Sinatra::Application
   post '/users/reset_pword' do
     require_signed_in_as_admin
     user_name = params[:user_name]
-    @storage.reset_pword(user_name)
+    reset_pword(user_name)
     session[:message] =
       "The password has been reset to 'jrpl' for #{user_name}."
     session[:message_level] = 'info'
@@ -105,10 +111,10 @@ class App < Sinatra::Application
     require_signed_in_as_admin
     user_id = params[:user_id].to_i
     button = params[:button]
-    if button == 'grant_admin' && !@storage.user_admin?(user_id)
-      @storage.assign_admin(user_id)
-    elsif button == 'revoke_admin' && @storage.user_admin?(user_id)
-      @storage.unassign_admin(user_id)
+    if button == 'grant_admin' && !user_admin?(user_id)
+      assign_admin(user_id)
+    elsif button == 'revoke_admin' && user_admin?(user_id)
+      unassign_admin(user_id)
     end
     if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
       '/admin'
@@ -126,9 +132,9 @@ class App < Sinatra::Application
       redirect('/admin')
     end
 
-    user_name = @storage.user_name(user_id)
+    user_name = user_name(user_id)
     if user_name
-      @storage.delete_user(user_id)
+      delete_user(user_id)
       session[:message] = "#{user_name} is no longer with us 🕳️"
       session[:message_level] = 'warn'
     else

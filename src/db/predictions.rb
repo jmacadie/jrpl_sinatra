@@ -2,12 +2,12 @@ module DBPredictions
   def add_prediction(user_id, match_id, home_team_points, away_team_points)
     delete_prediction(user_id, match_id)
     sql = insert_prediction_query()
-    query(sql, user_id, match_id, home_team_points, away_team_points)
+    run_query(sql, user_id, match_id, home_team_points, away_team_points)
   end
 
   def predictions_for_match(match_id)
     sql = predictions_for_match_query()
-    result = query(sql, match_id)
+    result = run_query(sql, match_id)
     result.map do |row|
       { pred_id: row['prediction_id'].to_i,
         home_score: row['home_team_points'].to_i,
@@ -22,7 +22,7 @@ module DBPredictions
     DELETE FROM prediction
     WHERE user_id = $1::int AND match_id = $2::int;
     SQL
-    query(sql, user_id, match_id)
+    run_query(sql, user_id, match_id)
   end
 
   def insert_prediction_query

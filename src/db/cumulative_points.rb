@@ -1,7 +1,7 @@
 module DBCumPoints
   def cum_points
     sql = cum_points_query()
-    result = query(sql)
+    result = run_query(sql)
     result = map_cum_points(result)
     transform_cum_points(result)
   end

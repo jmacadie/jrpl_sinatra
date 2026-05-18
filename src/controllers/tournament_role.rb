@@ -1,13 +1,17 @@
+require_relative '../db/tournament_roles'
+
 class App < Sinatra::Application
+  include DBTournamentRoles
+
   post '/tournament_role' do
     require_signed_in_as_admin
     role = params[:role].to_i
     team = params[:team].to_i
     validate_tournament_role(role, team)
     if team == 0
-      @storage.reset_tournament_role(role)
+      reset_tournament_role(role)
     else
-      @storage.set_tournament_role(role, team)
+      set_tournament_role(role, team)
     end
     redirect "/admin?show=#{role}"
   end
@@ -15,7 +19,7 @@ class App < Sinatra::Application
   private
 
   def validate_tournament_role(role, team)
-    numbers = @storage.tournament_role_numbers()
+    numbers = tournament_role_numbers()
 
     if team < 0 || team > numbers[0]
       session[:message] =

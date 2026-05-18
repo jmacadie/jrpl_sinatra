@@ -2,7 +2,7 @@ module DBPoints
   def add_points(pred_id, scoring_system_id, result_pts, score_pts)
     delete_existing_points_entry(pred_id, scoring_system_id)
     sql = insert_into_points_table_query()
-    query(
+    run_query(
       sql,
       pred_id,
       scoring_system_id,
@@ -14,7 +14,7 @@ module DBPoints
 
   def id_for_scoring_system(scoring_system)
     sql = 'SELECT scoring_system_id FROM scoring_system WHERE name = $1::text;'
-    query(sql, scoring_system).map do |row|
+    run_query(sql, scoring_system).map do |row|
       row['scoring_system_id']
     end.first.to_i
   end
@@ -31,7 +31,7 @@ module DBPoints
 
   def load_one_scoreboard_data(scoring_system_id, stage)
     sql = select_users_points_query(stage)
-    result = query(sql, scoring_system_id)
+    result = run_query(sql, scoring_system_id)
     result = row_to_table_hash(result)
     add_rank(result)
   end
@@ -67,7 +67,7 @@ module DBPoints
       DELETE FROM points
       WHERE prediction_id = $1::int AND scoring_system_id = $2::int;
     SQL
-    query(sql, pred_id, scoring_system_id)
+    run_query(sql, pred_id, scoring_system_id)
   end
 
   def insert_into_points_table_query

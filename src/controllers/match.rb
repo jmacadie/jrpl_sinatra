@@ -1,17 +1,27 @@
+require_relative '../db/emails'
+require_relative '../db/matches'
 require_relative '../db/match_predictions'
+require_relative '../db/predictions'
+require_relative '../db/users'
 
 class App < Sinatra::Application
+  extend DBEmails
+  extend DBMatches
+  extend DBMatchPredictions
+  extend DBPredictions
+  extend DBUsers
+
   get '/match/:match_id' do
     require_signed_in_user
     match_id = params[:match_id].to_i
     load_match_details(match_id)
     @match[:locked_down] = match_locked_down?(@match)
     if @match[:locked_down]
-      @users = @storage.load_all_users_details
-      @predictions = @storage.get_match_predictions(match_id, 1)
+      @users = load_all_users_details
+      @predictions = get_match_predictions(match_id, 1)
     end
     if origin?(@match)
-      @origin = @storage.match_origin(match_id)
+      @origin = match_origin(match_id)
     end
     erb :match
   end
@@ -25,7 +35,7 @@ class App < Sinatra::Application
     load_match_details(match_id)
     return erb :match unless
       validate_prediction?(home_prediction, away_prediction)
-    @storage.add_prediction(
+    add_prediction(
       session[:user_id],
       match_id,
       home_prediction.to_i,
@@ -47,7 +57,7 @@ class App < Sinatra::Application
       validate_result?(home_score, away_score)
     home_score = home_score.to_i
     away_score = away_score.to_i
-    @storage.add_result(
+    add_result(
       match_id, home_score, away_score, session[:user_id]
     )
     update_scoreboard(match_id, home_score, away_score)
@@ -87,11 +97,11 @@ class App < Sinatra::Application
   end
 
   def load_match_details(match_id)
-    @match = @storage.load_single_match(session[:user_id], match_id)
+    @match = load_single_match(session[:user_id], match_id)
     @result = !@match[:home_score].nil?
     load_ring
     return unless origin?(@match)
-    @origin = @storage.match_origin(match_id)
+    @origin = match_origin(match_id)
   end
 
   def load_ring
@@ -106,16 +116,16 @@ class App < Sinatra::Application
   end
 
   def send_result_email(match_id)
-    match = @storage.load_single_match(1, match_id)
-    predictions = @storage.get_match_predictions(match_id)
-    table = @storage.load_scoreboard_data('Official')[:overall_table]
+    match = load_single_match(1, match_id)
+    predictions = get_match_predictions(match_id)
+    table = load_scoreboard_data('Official')[:overall_table]
     subject = result_email_subject(match)
     body = result_email_body(match, predictions, table)
     send_email_all(
       subject:,
       body:
     )
-    @storage.record_results_email_sent(match_id)
+    record_results_email_sent(match_id)
   end
 
   def result_email_subject(match)

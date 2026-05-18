@@ -1,7 +1,7 @@
 module DBMatchPredictions
   def get_match_predictions(match_id, scoring_system=1)
     sql = match_predictions_query()
-    result = query(sql, match_id, scoring_system)
+    result = run_query(sql, match_id, scoring_system)
     map_results(result)
   end
 

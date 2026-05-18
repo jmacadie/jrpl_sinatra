@@ -1,7 +1,7 @@
 module DBTournamentRoles
   def tournament_roles
     sql = tournament_roles_query()
-    result = query(sql)
+    result = run_query(sql)
     result = map_tournament_roles(result)
     transform_tournament_roles(result)
   end
@@ -12,7 +12,7 @@ module DBTournamentRoles
     SET team_id = $2::int
     WHERE tournament_role_id = $1::int;
     SQL
-    query(sql, role, team)
+    run_query(sql, role, team)
   end
 
   def reset_tournament_role(role)
@@ -21,7 +21,7 @@ module DBTournamentRoles
     SET team_id = NULL
     WHERE tournament_role_id = $1::int;
     SQL
-    query(sql, role)
+    run_query(sql, role)
   end
 
   def tournament_role_numbers
@@ -30,7 +30,7 @@ module DBTournamentRoles
     UNION ALL
     SELECT MAX(tournament_role_id) as max FROM tournament_role;
     SQL
-    result = query(sql)
+    result = run_query(sql)
     result.map { |row| row['max'].to_i }
   end
 

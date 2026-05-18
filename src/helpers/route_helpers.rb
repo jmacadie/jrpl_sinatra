@@ -1,4 +1,8 @@
+require_relative '../db/matches'
+
 module RouteHelpers
+  extend DBMatches
+
   def extract_search_criteria(params)
     tournament_stages = params.select do |_, v|
       v == 'tournament_stage'
@@ -10,12 +14,12 @@ module RouteHelpers
 
   def load_matches
     lockdown = calculate_lockdown()
-    @storage.filter_matches(session[:user_id], session[:criteria], lockdown)
+    filter_matches(session[:user_id], session[:criteria], lockdown)
   end
 
   def load_match_list
     lockdown = calculate_lockdown()
-    @storage.filter_matches_list(
+    filter_matches_list(
       session[:user_id],
       session[:criteria],
       lockdown
@@ -36,6 +40,6 @@ module RouteHelpers
   end
 
   def tournament_stage_names
-    @tournament_stage_names ||= @storage.tournament_stage_names
+    @tournament_stage_names ||= tournament_stage_names_query
   end
 end
