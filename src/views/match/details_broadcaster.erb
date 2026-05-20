@@ -1,0 +1,17 @@
+<% if user_is_admin? %>
+<form class="form-inline form-tournament-role" method="post" action="/match/broadcaster/edit">
+  <div class="form-group">
+    <select class="form-control" name="broadcaster" id="broadcaster">
+      <% @broadcasters.each do |b| %>
+        <option value="<%== b[:id] %>"<%== " selected" if b[:name] == @match[:broadcaster] %>>
+          <%== b[:name] %>
+        </option>
+      <% end %>
+    </select>
+  </div>
+  <input type="hidden" name="match_id" value="<%== @match[:match_id] %>" />
+  <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
+</form>
+<% else %>
+<%== @match[:broadcaster] %>
+<% end %>

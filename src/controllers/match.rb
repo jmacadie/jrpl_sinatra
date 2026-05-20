@@ -14,16 +14,7 @@ class App < Sinatra::Application
   get '/match/:match_id' do
     require_signed_in_user
     match_id = params[:match_id].to_i
-    load_match_details(match_id)
-    @match[:locked_down] = match_locked_down?(@match)
-    if @match[:locked_down]
-      @users = load_all_users_details
-      @predictions = get_match_predictions(match_id, 1)
-    end
-    if origin?(@match)
-      @origin = match_origin(match_id)
-    end
-    erb :match
+    render_match(match_id)
   end
 
   post '/match/add_prediction' do
@@ -33,8 +24,8 @@ class App < Sinatra::Application
     away_prediction = params[:away_team_prediction].to_f
     move_next = to_bool?(params[:next])
     load_match_details(match_id)
-    return erb :match unless
-      validate_prediction?(home_prediction, away_prediction)
+    return render_match(match_id) unless validate_prediction?(home_prediction,
+                                                              away_prediction)
     add_prediction(
       session[:user_id],
       match_id,
@@ -53,8 +44,8 @@ class App < Sinatra::Application
     home_score = params[:home_score].to_f
     away_score = params[:away_score].to_f
     load_match_details(match_id)
-    return erb :match unless
-      validate_result?(home_score, away_score)
+    return render_match(match_id) unless validate_result?(home_score,
+                                                          away_score)
     home_score = home_score.to_i
     away_score = away_score.to_i
     add_result(
@@ -67,7 +58,32 @@ class App < Sinatra::Application
     redirect redirect_url(match_id)
   end
 
+  post '/match/broadcaster/edit' do
+    require_signed_in_as_admin
+    match_id = params[:match_id].to_i
+    broacaster_id = params[:broadcaster].to_i
+    change_broadcaster(match_id, broacaster_id)
+    data = { message: "Broadcaster changed", status: "success" }
+    data.to_json
+  end
+
   private
+
+  def render_match(match_id)
+    load_match_details(match_id)
+    @match[:locked_down] = match_locked_down?(@match)
+    if @match[:locked_down]
+      @users = load_all_users_details
+      @predictions = get_match_predictions(match_id, 1)
+    end
+    if origin?(@match)
+      @origin = match_origin(match_id)
+    end
+    if user_is_admin?
+      @broadcasters = broadcasters_query
+    end
+    erb :match
+  end
 
   def validate_prediction?(home, away)
     session[:message] = prediction_error(@match, home, away)

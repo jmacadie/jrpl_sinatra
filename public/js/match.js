@@ -74,3 +74,67 @@ function init_data() {
   // Draw the charts
   draw();
 }
+
+function add_message(content, type) {
+  const page = document.querySelector(".page-content");
+  if (!page) {
+    return;
+  }
+
+  const messagePara = document.createElement("p");
+  messagePara.classList = "alert";
+  messagePara.classList.add(`alert-${type}`);
+  messagePara.classList.add("alert-dismissable");
+
+  const messageButton = document.createElement("button");
+  messageButton.classList = "close";
+  messageButton.setAttribute("type", "button");
+  messageButton.setAttribute("data-dismiss", "alert");
+  messageButton.setAttribute("aria-label", "Close");
+
+  const messageButtonSpan = document.createElement("span");
+  messageButtonSpan.setAttribute("aria-hidden", "true");
+  messageButtonSpan.innerText = "×";
+
+  messageButton.appendChild(messageButtonSpan);
+  messagePara.appendChild(messageButton);
+
+  const messageText = document.createTextNode(content);
+  messagePara.appendChild(messageText);
+
+  page.insertAdjacentElement("afterbegin", messagePara);
+}
+
+function addListeners() {
+  // tree dropdown
+  document.getElementById('broadcaster').addEventListener('change', async (e) => {
+    let node = e.target.parentElement;
+    while (node && node.nodeName != 'FORM') {
+      node = node.parentElement;
+    }
+    if (!node) {
+      return;
+    }
+    const formData = new FormData(node);
+    try {
+      const response = await fetch(node.action, {
+        method: 'POST',
+        body: formData
+      });
+      const content = await response.json();
+      if (content.status === "success") {
+        add_message(content.message, "info");
+      } else {
+        add_message(content.message, "danger");
+      }
+    } catch (error) {
+      const message = `Something went wrong :(\n\n${error.message}`;
+      add_message(message, "danger");
+    }
+  });
+}
+
+/* ────────────────────  bootstrap  ──────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  addListeners();
+});
