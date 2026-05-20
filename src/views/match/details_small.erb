@@ -1,10 +1,10 @@
 <!-- Layout for phones -->
 <div class="row visible-xs text-left small-match-row">
   <div class="small-match-row">
-    <div class="col-xs-2">
+    <div class="col-xs-4">
       <span class="<%== home_flag(@match) %>"></span>
     </div>
-    <div class="col-xs-6"><%== home_name(@match) %></div>
+    <div class="col-xs-4"><strong><%== home_name(@match) %></strong></div>
     <div class="col-xs-4" id="homeTeamPointsXS"><%== home_score(@match) %></div>
   </div>
 </div>
@@ -43,14 +43,14 @@
 </div>
 <% end %>
 <div class="row visible-xs text-left">
-  <div class="col-xs-6 col-xs-offset-2"><small>vs.</small></div>
+  <div class="col-xs-4 col-xs-offset-4"><small>vs.</small></div>
 </div>
 <div class="row visible-xs text-left">
   <div class="small-match-row">
-    <div class="col-xs-2">
+    <div class="col-xs-4">
       <span class="<%== away_flag(@match) %>"></span>
     </div>
-    <div class="col-xs-6"><%== away_name(@match) %></div>
+    <div class="col-xs-4"><strong><%== away_name(@match) %></strong></div>
     <div class="col-xs-4" id="awayTeamPointsXS"><%== away_score(@match) %></div>
   </div>
 </div>
