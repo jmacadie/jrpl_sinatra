@@ -79,19 +79,12 @@ function initPredictions() {
 
   // Build up series array for
   function getSeries() {
-    // get all elements in the form
     var series = [];
-    var $ckb;
-    var j;
     var max = 0;
-    // loop through the elements
-    // grab colour if checked or grey if not
-    // make sure they're sorted right!
-    $('#collapseUsers').find('[type=checkbox]').each(function (index) {
-      $ckb = $(this);
-      j = $ckb.attr('value') * 1 - 1;
+    document.querySelectorAll('#collapseUsers [type=checkbox]').forEach(function(checkbox) {
+      var j = Number(checkbox.value) - 1;
       max = (j > max) ? j : max;
-      if ($ckb.is(':checked')) {
+      if (checkbox.checked) {
         series[j] = { visibleInLegend: true, pointSize: 6 };
       } else {
         series[j] = { color: '#888', visibleInLegend: false, pointSize: 2 };
@@ -110,23 +103,17 @@ function initPredictions() {
 
    // Callback that creates the options for the chart and then draws it
   function drawChart(data, scale, id) {
-
-    // Determine the dimensions
-    var h = $(window).height();
-    var w = $(window).width();
-    // Max width
+    var h = window.innerHeight;
+    var w = window.innerWidth;
     w = Math.min(w, 700);
-    // Padding
     h -= 90;
     w -= 30;
-    // Keep 9 x 5 dimensions
     if (h > w) {
       h = w;
     } else {
       w = h;
     }
 
-    // Set the options
     var options = {
       height: h,
       width: w,
@@ -157,7 +144,6 @@ function initPredictions() {
       series: getSeries()
     };
 
-    // Draw the chart
     var chart = new google.visualization.LineChart(document.getElementById(id));
     chart.draw(data, options);
   }

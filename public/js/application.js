@@ -1,11 +1,169 @@
-$(function() {
-  $("form.signout").submit(function(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    var ok = confirm("Are you sure you want to sign out?");
-    if (ok) {
-      this.submit();
+function closest(element, selector) {
+  if (!element) {
+    return null;
+  }
+  if (element.closest) {
+    return element.closest(selector);
+  }
+  var node = element;
+  while (node) {
+    if (node.matches && node.matches(selector)) {
+      return node;
+    }
+    node = node.parentElement;
+  }
+  return null;
+}
+
+function getCollapseTarget(trigger) {
+  var selector = trigger.getAttribute('data-target') || trigger.getAttribute('href');
+  if (!selector || selector.charAt(0) !== '#') {
+    return null;
+  }
+  return document.querySelector(selector);
+}
+
+function syncCollapseTrigger(trigger, expanded) {
+  if (!trigger) {
+    return;
+  }
+  trigger.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  if (expanded) {
+    trigger.classList.remove('collapsed');
+  } else {
+    trigger.classList.add('collapsed');
+  }
+}
+
+function showAlertMessage(content, type) {
+  var page = document.querySelector('.page-content');
+  if (!page) {
+    return;
+  }
+
+  var messagePara = document.createElement('p');
+  messagePara.className = 'alert alert-' + type + ' alert-dismissable';
+
+  var messageButton = document.createElement('button');
+  messageButton.className = 'close';
+  messageButton.setAttribute('type', 'button');
+  messageButton.setAttribute('data-dismiss', 'alert');
+  messageButton.setAttribute('aria-label', 'Close');
+
+  var messageButtonSpan = document.createElement('span');
+  messageButtonSpan.setAttribute('aria-hidden', 'true');
+  messageButtonSpan.textContent = '×';
+
+  messageButton.appendChild(messageButtonSpan);
+  messagePara.appendChild(messageButton);
+  messagePara.appendChild(document.createTextNode(content));
+  page.insertAdjacentElement('afterbegin', messagePara);
+}
+
+function toggleCollapse(trigger) {
+  var target = getCollapseTarget(trigger);
+  if (!target) {
+    return;
+  }
+
+  var parentSelector = trigger.getAttribute('data-parent');
+  var isOpen = target.classList.contains('in');
+
+  if (parentSelector) {
+    var parent = document.querySelector(parentSelector);
+    if (parent) {
+      parent.querySelectorAll('.collapse.in').forEach(function(openPanel) {
+        if (openPanel !== target) {
+          openPanel.classList.remove('in');
+          var openTrigger = parent.querySelector(
+            '[data-toggle="collapse"][href="#' + openPanel.id + '"],' +
+            '[data-toggle="collapse"][data-target="#' + openPanel.id + '"]'
+          );
+          syncCollapseTrigger(openTrigger, false);
+        }
+      });
+    }
+  }
+
+  target.classList.toggle('in');
+  syncCollapseTrigger(trigger, !isOpen);
+}
+
+function toggleDropdown(trigger) {
+  var parent = closest(trigger, '.dropdown');
+  if (!parent) {
+    return;
+  }
+  parent.classList.toggle('open');
+  trigger.setAttribute(
+    'aria-expanded',
+    parent.classList.contains('open') ? 'true' : 'false'
+  );
+}
+
+function closeDropdowns() {
+  document.querySelectorAll('.dropdown.open').forEach(function(dropdown) {
+    dropdown.classList.remove('open');
+    var trigger = dropdown.querySelector('[data-toggle="dropdown"]');
+    if (trigger) {
+      trigger.setAttribute('aria-expanded', 'false');
     }
   });
-});
+}
 
+function confirmFormSubmit(event) {
+  var form = closest(event.target, 'form');
+  if (!form) {
+    return;
+  }
+
+  var message;
+  if (form.classList.contains('signout')) {
+    message = 'Are you sure you want to sign out?';
+  } else if (form.classList.contains('reset-pword')) {
+    message = 'Are you sure you want to reset the password? This cannot be undone!';
+  } else if (form.classList.contains('toggle-admin')) {
+    message = 'Are you sure you want to change admin permissions?';
+  } else if (form.classList.contains('delete-user')) {
+    var input = form.querySelector('input[name="user_name"]');
+    var name = input ? input.value : '';
+    message = 'Are you sure you want to delete ' + name + '? This cannot be undone!';
+  }
+
+  if (!message) {
+    return;
+  }
+
+  if (!window.confirm(message)) {
+    event.preventDefault();
+  }
+}
+
+function handleDocumentClick(event) {
+  var trigger = closest(event.target, '[data-toggle="collapse"], [data-toggle="dropdown"]');
+  if (trigger) {
+    event.preventDefault();
+    if (trigger.getAttribute('data-toggle') === 'collapse') {
+      toggleCollapse(trigger);
+    } else {
+      toggleDropdown(trigger);
+    }
+    return;
+  }
+
+  var dismiss = closest(event.target, '[data-dismiss="alert"]');
+  if (dismiss) {
+    var alert = closest(dismiss, '.alert');
+    if (alert) {
+      alert.remove();
+    }
+    return;
+  }
+
+  if (!closest(event.target, '.dropdown')) {
+    closeDropdowns();
+  }
+}
+
+document.addEventListener('submit', confirmFormSubmit, true);
+document.addEventListener('click', handleDocumentClick);

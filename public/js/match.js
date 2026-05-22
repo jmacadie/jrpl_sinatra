@@ -1,81 +1,74 @@
-$("form#prediction").ready(function() {
-  $('#btn_submit_pred_next').click(function(e) {
-    e.preventDefault();
-    $('input#next').val('true');
-    $('form#prediction').submit();
-  });
-});
+/*
+ * Submit & move next buttons
+ */
 
-$("form#prediction_s").ready(function() {
-  $('#btn_submit_pred_next_s').click(function(e) {
-    e.preventDefault();
-    $('input#next_s').val('true');
-    $('form#prediction_s').submit();
-  });
-});
-
-$("#btnHomeOrigin").click(function(e) {
-  e.preventDefault();
-  $("#homeOrigin").fadeToggle();
-});
-
-$("#btnAwayOrigin").click(function(e) {
-  e.preventDefault();
-  $("#awayOrigin").fadeToggle();
-});
-
-$("#btnHomeOriginXS").click(function(e) {
-  e.preventDefault();
-  $("#homeOriginXS").fadeToggle();
-});
-
-$("#btnAwayOriginXS").click(function(e) {
-  e.preventDefault();
-  $("#awayOriginXS").fadeToggle();
-});
-
-var data;
-var scale;
-
-$(document).ready(function() {
-  google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(init_data);
-
-  // Add click hanlder for the user checkboxes
-  $('#collapseUsers').find('[type=checkbox]').click(function(e) {
-    draw();
-  });
-});
-
- // Create trigger to resizeEnd event
-$(window).resize(function() {
-  if(this.resizeTo) clearTimeout(this.resizeTo);
-  this.resizeTo = setTimeout(function() {
-    $(this).trigger('resizeEnd');
-  }, 500);
-});
-
-// Redraw graph when window resize is completed
-$(window).on('resizeEnd', function() {
-  draw();
-});
-
-function draw() {
-  drawChart(data, scale, 'chartMatch')
+function submitPredictionNext(formSelector, nextSelector) {
+  const form = document.querySelector(formSelector);
+  const next = document.querySelector(nextSelector);
+  if (!form || !next) {
+    return;
+  }
+  next.value = 'true';
+  form.submit();
 }
 
-function init_data() {
-  // Load the data - only need do this once
-  var tmp = initPredictions();
-  console.log(tmp);
-  data = tmp.data;
-  scale = tmp.maxScale;
+function addSubmitListeners() {
+  const nextButton = document.getElementById('btn_submit_pred_next');
+  if (nextButton) {
+    nextButton.addEventListener('click', function(event) {
+      event.preventDefault();
+      submitPredictionNext('form#prediction', 'input#next');
+    });
+  }
 
-  // Draw the charts
-  draw();
+  const nextButtonSmall = document.getElementById('btn_submit_pred_next_s');
+  if (nextButtonSmall) {
+    nextButtonSmall.addEventListener('click', function(event) {
+      event.preventDefault();
+      submitPredictionNext('form#prediction_s', 'input#next_s');
+    });
+  }
 }
 
-function add_message(content, type) {
+/*
+ * Show match origin buttons
+ */
+
+function togglePanel(panelId) {
+  const panel = document.getElementById(panelId);
+  if (!panel) {
+    return;
+  }
+  if (panel.style.display === 'none' || !panel.style.display) {
+    panel.style.display = 'block';
+  } else {
+    panel.style.display = 'none';
+  }
+}
+
+function addOriginListener(button, panel) {
+  const originButton = document.getElementById(button);
+  if (originButton) {
+    originButton.addEventListener('click', function(event) {
+      event.preventDefault();
+      togglePanel(panel);
+    });
+  }
+
+}
+
+function addOriginListeners() {
+  addOriginListener('btnHomeOrigin', 'homeOrigin');
+  addOriginListener('btnAwayOrigin', 'awayOrigin');
+  addOriginListener('btnHomeOriginXS', 'homeOriginXS');
+  addOriginListener('btnAwayOriginXS', 'awayOriginXS');
+}
+
+/*
+ * Change broadcaster
+ */
+
+function addMessage(content, type) {
   const page = document.querySelector(".page-content");
   if (!page) {
     return;
@@ -105,36 +98,42 @@ function add_message(content, type) {
   page.insertAdjacentElement("afterbegin", messagePara);
 }
 
-function addListeners() {
-  // tree dropdown
-  document.getElementById('broadcaster').addEventListener('change', async (e) => {
-    let node = e.target.parentElement;
-    while (node && node.nodeName != 'FORM') {
-      node = node.parentElement;
+async function changeBroadcaster(event) {
+  const form = event.target.form;
+  if (!form) {
+    return;
+  }
+
+  const formData = new FormData(form);
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: formData
+    });
+    const content = await response.json();
+    if (content.status === 'success') {
+      addMessage(content.message, 'info');
+    } else {
+      addMessage(content.message, 'danger');
     }
-    if (!node) {
-      return;
-    }
-    const formData = new FormData(node);
-    try {
-      const response = await fetch(node.action, {
-        method: 'POST',
-        body: formData
-      });
-      const content = await response.json();
-      if (content.status === "success") {
-        add_message(content.message, "info");
-      } else {
-        add_message(content.message, "danger");
-      }
-    } catch (error) {
-      const message = `Something went wrong :(\n\n${error.message}`;
-      add_message(message, "danger");
-    }
-  });
+  } catch (error) {
+    addMessage('Something went wrong :(\n\n' + error.message, 'danger');
+  }
 }
 
-/* ────────────────────  bootstrap  ──────────────────── */
-document.addEventListener('DOMContentLoaded', () => {
-  addListeners();
+function addBroadcasterListener() {
+  const broadcaster = document.getElementById('broadcaster');
+  if (broadcaster) {
+    broadcaster.addEventListener('change', changeBroadcaster);
+  }
+}
+
+/*
+ * Load the listeners, after page load
+ */
+
+document.addEventListener('DOMContentLoaded', function() {
+  addSubmitListeners();
+  addOriginListeners();
+  addBroadcasterListener();
 });
