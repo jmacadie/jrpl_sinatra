@@ -1,23 +1,38 @@
-// Do stuff when page is ready
-$(document).ready(function() {
-  // Add click handler to select / unselect all group stages button
-  $("#btnSelectGroup").click(function(e) {
-    e.preventDefault();
-    selectAllGroups($(this).attr('data-mode'));
+function updateGroupButton(text, mode) {
+  var button = document.getElementById('btnSelectGroup');
+  if (!button) {
+    return;
+  }
+  button.textContent = text;
+  button.setAttribute('data-mode', mode);
+}
+
+function selectAllGroups (mode) {
+  var collapse = document.getElementById('collapseGroup');
+  if (!collapse) {
+    return;
+  }
+  if (mode === 'unselect') {
+    collapse.querySelectorAll('[type=checkbox]').forEach(function(checkbox) {
+      checkbox.checked = false;
+    });
+    updateGroupButton('Select All', 'select');
+  } else {
+    collapse.querySelectorAll('[type=checkbox]').forEach(function(checkbox) {
+      checkbox.checked = true;
+    });
+    updateGroupButton('Unselect All', 'unselect');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const button = document.getElementById('btnSelectGroup');
+  if (!button) {
+    return;
+  }
+  button.addEventListener('click', function(event) {
+    event.preventDefault();
+    selectAllGroups(button.getAttribute('data-mode'));
   });
 });
 
-function selectAllGroups (mode) {
-  // see if we're selecting or unselecting
-  if (mode === 'unselect') {
-    // Change all the checkbox states to unchecked
-    $('#collapseGroup').find('[type=checkbox]').prop('checked', false);
-    // Change button text back to select all
-    $("#btnSelectGroup").text('Select All').attr('data-mode', 'select');
-  } else {
-    // Change all the checkbox states to checked
-    $('#collapseGroup').find('[type=checkbox]').prop('checked', true);
-    // Change button text back to unselect all
-    $("#btnSelectGroup").text('Unselect All').attr('data-mode', 'unselect');
-  }
-}
