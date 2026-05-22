@@ -6,6 +6,10 @@ JRPL was developed using the ruby web application library 'Sinatra'.
 This uses the Rack server interface.
 PostgreSQL is used to store the database behind the application.
 
+## Documentation
+
+- [Architecture overview](docs/architecture.md)
+
 ## Run locally
 
 To run this application locally on your machine:
