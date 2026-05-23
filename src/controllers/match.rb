@@ -67,6 +67,15 @@ class App < Sinatra::Application
     data.to_json
   end
 
+  get '/match/:match_id/predictions' do
+    require_signed_in_user
+    match_id = params[:match_id].to_i
+    payload = match_predictions_payload(match_id)
+    halt 404 if payload.nil?
+    content_type :json
+    payload.to_json
+  end
+
   private
 
   def render_match(match_id)
@@ -152,5 +161,26 @@ class App < Sinatra::Application
     erb :'email/result',
         layout: false,
         locals: { match:, predictions:, table: }
+  end
+
+  def match_predictions_payload(match_id)
+    load_match_details(match_id)
+    return nil unless @match[:locked_down] || match_locked_down?(@match)
+
+    {
+      match: {
+        home_name: home_name(@match),
+        away_name: away_name(@match),
+        home_score: @match[:home_score],
+        away_score: @match[:away_score]
+      },
+      predictions: get_match_predictions(match_id, 1).map do |prediction|
+        {
+          name: prediction[:user],
+          home: prediction[:home_prediction],
+          away: prediction[:away_prediction]
+        }
+      end
+    }
   end
 end
