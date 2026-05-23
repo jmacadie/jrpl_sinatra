@@ -1,11 +1,10 @@
-<!-- Admin post result section -->
 <h4 class="form-heading">Post Result</h4>
-<!-- Layout for tablets and bigger -->
-<form class="hidden-xs" role="form" action="/match/add_result" method="post">
+
+<form class="d-none d-sm-block" role="form" action="/match/add_result" method="post">
   <fieldset <%== 'disabled' if !@match[:locked_down] %>>
-    <div class="row form-group">
-      <div class="col-sm-4 text-right">
-        <label for="home_pts"><%== home_name(@match) %></label>
+    <div class="row g-2 align-items-center mb-3">
+      <div class="col-sm-4 text-sm-end">
+        <label for="home_score"><%== home_name(@match) %></label>
       </div>
       <div class="col-sm-2">
         <input
@@ -25,13 +24,13 @@
           name="away_score"
           value="<%== away_score(@match) %>">
       </div>
-      <div class="col-sm-4 text-left">
-        <label for="away_pts"><%== away_name(@match) %></label>
+      <div class="col-sm-4">
+        <label for="away_score"><%== away_name(@match) %></label>
       </div>
     </div>
-    <div class="row form-group">
-      <div class="col-sm-12 text-center">
-        <button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res">Submit</button>
+    <div class="row">
+      <div class="col-12 text-center">
+        <button class="btn btn-sm btn-primary w-100" type="submit" id="btn_submit_res">Submit</button>
       </div>
     </div>
     <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
@@ -39,12 +38,14 @@
     <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
   </fieldset>
 </form>
-<!-- Layout for phones -->
-<form class="form-horizontal visible-xs" role="form" action="/match/add_result" method="post">
+
+<form class="d-block d-sm-none" role="form" action="/match/add_result" method="post">
   <fieldset <%== 'disabled' if !@match[:locked_down] %>>
-    <div class="form-group">
-      <label for="home_pts_s" class="col-xs-8 control-label"><%== home_name(@match) %></label>
-      <div class="col-xs-4">
+    <div class="row g-2 align-items-center mb-3">
+      <div class="col-8">
+        <label for="home_score_s"><%== home_name(@match) %></label>
+      </div>
+      <div class="col-4">
         <input
           type="number"
           min="0"
@@ -54,9 +55,11 @@
           value="<%== home_score(@match) %>">
       </div>
     </div>
-    <div class="form-group">
-      <label for="away_pts_s" class="col-xs-8 control-label"><%== away_name(@match) %></label>
-      <div class="col-xs-4">
+    <div class="row g-2 align-items-center mb-3">
+      <div class="col-8">
+        <label for="away_score_s"><%== away_name(@match) %></label>
+      </div>
+      <div class="col-4">
         <input
           type="number"
           min="0"
@@ -66,7 +69,7 @@
           value="<%== away_score(@match) %>">
       </div>
     </div>
-    <button class="btn btn-sm btn-primary" type="submit" id="btn_submit_res_s">Submit</button>
+    <button class="btn btn-sm btn-primary w-100" type="submit" id="btn_submit_res_s">Submit</button>
     <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
     <input type="hidden" name="ring" value="<%== "#{@ring}" %>">
     <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">

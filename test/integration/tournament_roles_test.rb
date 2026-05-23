@@ -12,7 +12,8 @@ class CMSTest < Minitest::Test
     assert_includes body_text, 'Tournament Roles'
     assert_includes body_text, 'Round of 16'
     assert_includes body_html,
-                    '<form class="form-inline form-tournament-role" ' \
+                    '<form class="form-tournament-role d-flex ' \
+                    'align-items-end gap-2 flex-wrap" ' \
                     'method="post" action="/tournament_role">'
     assert_includes body_html,
                     '<option value="0" selected>Not yet selected</option>'

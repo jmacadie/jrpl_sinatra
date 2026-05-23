@@ -1,21 +1,32 @@
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingOne">
-      <h4 class="panel-title">
-        <a <%== 'class="collapsed" ' if @show %>role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="<%== if !@show then 'true' else 'false' end %>" aria-controls="collapseOne">
-          Administer Users
-        </a>
-      </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse<%== ' in' if !@show %>" role="tabpanel" aria-labelledby="headingOne">
-      <div class="panel-body">
-        <table>
+<div class="accordion-item">
+  <h2 class="accordion-header" id="headingOne">
+    <button
+      class="accordion-button<%== ' collapsed' if @show %>"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#collapseOne"
+      aria-expanded="<%== !@show %>"
+      aria-controls="collapseOne">
+      Administer Users
+    </button>
+  </h2>
+  <div
+    id="collapseOne"
+    class="accordion-collapse collapse<%== ' show' if !@show %>"
+    aria-labelledby="headingOne"
+    data-bs-parent="#accordion">
+    <div class="accordion-body">
+      <div class="table-responsive">
+        <table class="table align-middle">
           <thead>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Password?</th>
-            <th>Roles</th>
-            <th>Admin?</th>
-            <th>Delete?</th>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Password?</th>
+              <th>Roles</th>
+              <th>Admin?</th>
+              <th>Delete?</th>
+            </tr>
           </thead>
           <tbody>
             <% @users.each do |user| %>
@@ -23,33 +34,33 @@
                 <td><%== user[:user_name] %></td>
                 <td><%== user[:email] %></td>
                 <td>
-                  <form class="form-inline reset-pword" action="/users/reset_pword" method="post">
+                  <form class="d-inline reset-pword" action="/users/reset_pword" method="post">
                     <input type="hidden" name="user_name" value="<%== user[:user_name] %>"/>
                     <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-                    <button type="submit">Reset</button>
+                    <button class="btn btn-sm btn-outline-secondary" type="submit">Reset</button>
                   </form>
                 </td>
                 <td><%== user[:roles] %></td>
                 <td>
-                  <form class="form-inline toggle-admin" action="/users/toggle_admin" method="post">
+                  <form class="d-inline toggle-admin" action="/users/toggle_admin" method="post">
                     <input type="hidden" name="user_id" value="<%== user[:user_id] %>"/>
                     <% if user[:roles]&.include?('Admin') %>
                       <input type="hidden" name="button" value="revoke_admin"/>
                       <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-                      <button type="submit">Revoke</button>
+                      <button class="btn btn-sm btn-outline-warning" type="submit">Revoke</button>
                     <% else %>
                       <input type="hidden" name="button" value="grant_admin"/>
                       <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-                      <button type="submit">Grant</button>
+                      <button class="btn btn-sm btn-outline-success" type="submit">Grant</button>
                     <% end %>
                   </form>
                 </td>
                 <td>
-                  <form class="form-inline delete-user" method="post" action="/users/delete">
+                  <form class="d-inline delete-user" method="post" action="/users/delete">
                     <input type="hidden" name="user_name" value="<%== user[:user_name] %>"/>
                     <input type="hidden" name="user_id" value="<%== user[:user_id] %>"/>
                     <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-                    <button type="submit">CYA</button>
+                    <button class="btn btn-sm btn-outline-danger" type="submit">CYA</button>
                   </form>
                 </td>
               </tr>
@@ -59,4 +70,4 @@
       </div>
     </div>
   </div>
-
+</div>

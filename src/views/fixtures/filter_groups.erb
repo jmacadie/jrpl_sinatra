@@ -1,162 +1,62 @@
-          <div class="panel-group" id="accordionGroup">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <div class="checkbox">
-                  <label>
-                    <input
-                      type="checkbox"
-                      id="ckbGroupStage"
-                      name="st_gr"
-                      <%== 'checked' if session[:criteria][:stages][:group] %>>
-                    Group Stage
-                  </label>
-                </div>
-                <a data-toggle="collapse" data-parent="#accordionGroup" href="#collapseGroup">
-                  Hide / unhide
-                </a>
-              </div><!-- /.panel-heading -->
-              <div id="collapseGroup" class="panel-collapse collapse">
-                <div class="panel-body">
-                  <button class="btn btn-sm btn-primary"
-                          type="submit"
-                          id="btnSelectGroup"
-                          data-mode="unselect">
-                    Unselect all
-                  </button>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupA"
-                        name="gr_A"
-                        <%== 'checked' if session[:criteria][:groups][:A] %>>
-                      <strong>Group A</strong><br>
-                      Mexico, South Africa, South Korea, Czech Republic
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupB"
-                        name="gr_B"
-                        <%== 'checked' if session[:criteria][:groups][:B] %>>
-                      <strong>Group B</strong><br>
-                      Canada, Bosnia and Herzegovina, Qatar, Switzerland
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupC"
-                        name="gr_C"
-                        <%== 'checked' if session[:criteria][:groups][:C] %>>
-                      <strong>Group C</strong><br>
-                      Brazil, Morocco, Haiti, Scotland
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupD"
-                        name="gr_D"
-                        <%== 'checked' if session[:criteria][:groups][:D] %>>
-                      <strong>Group D</strong><br>
-                      United States, Paraguay, Australia, Turkey
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupE"
-                        name="gr_E"
-                        <%== 'checked' if session[:criteria][:groups][:E] %>>
-                      <strong>Group E</strong><br>
-                      Germany, Curaçao, Ivory Coast, Ecuador
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupF"
-                        name="gr_F"
-                        <%== 'checked' if session[:criteria][:groups][:F] %>>
-                      <strong>Group F</strong><br>
-                      Netherlands, Japan, Sweden, Tunisia
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupG"
-                        name="gr_G"
-                        <%== 'checked' if session[:criteria][:groups][:G] %>>
-                      <strong>Group G</strong><br>
-                      Belgium, Egypt, Iran, New Zealand
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupH"
-                        name="gr_H"
-                        <%== 'checked' if session[:criteria][:groups][:H] %>>
-                      <strong>Group H</strong><br>
-                      Spain, Cape Verde, Saudi Arabia, Uruguay
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupI"
-                        name="gr_I"
-                        <%== 'checked' if session[:criteria][:groups][:I] %>>
-                      <strong>Group I</strong><br>
-                      France, Senegal, Iraq, Norway
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupJ"
-                        name="gr_J"
-                        <%== 'checked' if session[:criteria][:groups][:J] %>>
-                      <strong>Group J</strong><br>
-                      Argentina, Algeria, Austria, Jordan
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupK"
-                        name="gr_K"
-                        <%== 'checked' if session[:criteria][:groups][:K] %>>
-                      <strong>Group K</strong><br>
-                      Portugal, DR Congo, Uzbekistan, Colombia
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input
-                        type="checkbox"
-                        id="ckbGroupL"
-                        name="gr_L"
-                        <%== 'checked' if session[:criteria][:groups][:L] %>>
-                      <strong>Group L</strong><br>
-                      England, Croatia, Ghana, Panama
-                    </label>
-                  </div>
-                </div><!-- /.panel-body -->
-              </div><!-- /#collapseGroup.panel-collapse -->
-            </div><!-- /.panel-default -->
-          </div><!-- /#accordionGroup.panel-group -->
+<div class="border rounded mb-3" id="groupStagePanel">
+  <div class="d-flex align-items-center justify-content-between gap-3 p-3 border-bottom">
+    <div class="form-check mb-0">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="ckbGroupStage"
+        name="st_gr"
+        <%== 'checked' if session[:criteria][:stages][:group] %>>
+      <label class="form-check-label fw-semibold" for="ckbGroupStage">
+        Group Stage
+      </label>
+    </div>
+    <button
+      class="btn btn-link btn-sm p-0 text-decoration-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#collapseGroup"
+      aria-expanded="false"
+      aria-controls="collapseGroup">
+      Hide / unhide
+    </button>
+  </div>
+  <div id="collapseGroup" class="collapse">
+    <div class="p-3">
+      <button class="btn btn-sm btn-primary mb-3"
+              type="button"
+              id="btnSelectGroup"
+              data-mode="unselect">
+        Unselect all
+      </button>
 
+      <% {
+        'A' => 'Mexico, South Africa, South Korea, Czech Republic',
+        'B' => 'Canada, Bosnia and Herzegovina, Qatar, Switzerland',
+        'C' => 'Brazil, Morocco, Haiti, Scotland',
+        'D' => 'United States, Paraguay, Australia, Turkey',
+        'E' => 'Germany, Curaçao, Ivory Coast, Ecuador',
+        'F' => 'Netherlands, Japan, Sweden, Tunisia',
+        'G' => 'Belgium, Egypt, Iran, New Zealand',
+        'H' => 'Spain, Cape Verde, Saudi Arabia, Uruguay',
+        'I' => 'France, Senegal, Iraq, Norway',
+        'J' => 'Argentina, Algeria, Austria, Jordan',
+        'K' => 'Portugal, DR Congo, Uzbekistan, Colombia',
+        'L' => 'England, Croatia, Ghana, Panama'
+      }.each do |group, teams| %>
+        <div class="form-check mb-2">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="ckbGroup<%== group %>"
+            name="gr_<%== group %>"
+            <%== 'checked' if session[:criteria][:groups][group.to_sym] %>>
+          <label class="form-check-label" for="ckbGroup<%== group %>">
+            <strong>Group <%== group %></strong><br>
+            <%== teams %>
+          </label>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

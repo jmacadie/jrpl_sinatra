@@ -1,5 +1,6 @@
 <%== erb :'fixtures/filter_form' %>
 <% unless @matches.empty? %>
+  <br />
   <% @matches.map { |m| m[:match_date] }.uniq.sort.each do |d| %>
     <% @day_matches = @matches.filter { |m| m[:match_date] == d } %>
     <% @day = d %>

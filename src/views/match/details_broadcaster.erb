@@ -1,7 +1,7 @@
 <% if user_is_admin? %>
-<form class="form-inline form-tournament-role" method="post" action="/match/broadcaster/edit">
-  <div class="form-group">
-    <select class="form-control" name="broadcaster" id="broadcaster">
+<form class="form-tournament-role d-flex align-items-end gap-2 flex-wrap" method="post" action="/match/broadcaster/edit">
+  <div>
+    <select class="form-select" name="broadcaster" id="broadcaster">
       <% @broadcasters.each do |b| %>
         <option value="<%== b[:id] %>"<%== " selected" if b[:name] == @match[:broadcaster] %>>
           <%== b[:name] %>

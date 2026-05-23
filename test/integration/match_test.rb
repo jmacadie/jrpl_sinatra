@@ -19,14 +19,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value='
     refute_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     refute_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     refute_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -36,8 +36,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="no prediction">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_not_lockdown_no_pred_admin
@@ -55,14 +55,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value='
     refute_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     refute_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     refute_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -72,8 +72,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="no prediction">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_not_lockdown_prediction_not_admin
@@ -89,14 +89,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value='
     refute_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     refute_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     refute_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -106,8 +106,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="78">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_not_lockdown_prediction_admin
@@ -123,14 +123,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value='
     refute_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     refute_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     refute_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -140,8 +140,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="89">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_lockdown_no_pred_no_result_not_admin
@@ -157,14 +157,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value='
     refute_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     assert_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -174,8 +174,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="no prediction">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_lockdown_no_pred_no_result_admin
@@ -191,14 +191,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value="">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     assert_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -208,8 +208,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="no prediction">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_lockdown_prediction_no_result_not_admin
@@ -225,14 +225,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value='
     refute_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     assert_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -242,8 +242,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="72">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_lockdown_prediction_no_result_admin
@@ -259,14 +259,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value="">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     assert_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -276,8 +276,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="82">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_lockdown_no_pred_result_not_admin
@@ -293,14 +293,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value='
     refute_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     assert_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -310,8 +310,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="no prediction">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_lockdown_no_pred_result_admin
@@ -327,14 +327,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value="3">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     assert_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -344,8 +344,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="no prediction">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_lockdown_prediction_result_not_admin
@@ -361,14 +361,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value='
     refute_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     assert_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -378,8 +378,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="74">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
 
   def test_view_match_lockdown_prediction_result_admin
@@ -395,14 +395,14 @@ class CMSTest < Minitest::Test
                     '<input type="number" min="0" class="form-control" ' \
                     'id="away_score" name="away_score" value="64">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_res">Submit</button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_res">Submit</button>'
     assert_includes body_text,
                     'Match locked down. No more updates to predictions possible'
     assert_includes body_html,
-                    '<form class="hidden-xs" id="prediction" role="form" ' \
-                    'action="/match/add_prediction" method="post"> ' \
-                    '<fieldset disabled>'
+                    '<form class="d-none d-sm-block" id="prediction" ' \
+                    'role="form" action="/match/add_prediction" ' \
+                    'method="post"> <fieldset disabled>'
     assert_includes body_html,
                     '<input type="number" min="0" class="form-control" ' \
                     'id="home_team_prediction" name="home_team_prediction" ' \
@@ -412,8 +412,8 @@ class CMSTest < Minitest::Test
                     'id="away_team_prediction" name="away_team_prediction" ' \
                     'value="84">'
     assert_includes body_html,
-                    '<button class="btn btn-sm btn-primary" type="submit" ' \
-                    'id="btn_submit_pred"> Submit </button>'
+                    '<button class="btn btn-sm btn-primary w-100" ' \
+                    'type="submit" id="btn_submit_pred">Submit</button>'
   end
   # rubocop: enable Metrics/MethodLength, Metrics/AbcSize
 

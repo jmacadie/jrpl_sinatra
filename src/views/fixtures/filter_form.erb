@@ -1,56 +1,51 @@
-<div
-  class="panel-group"
-  id="accordionFilters"
-  role="tablist"
-  aria-multiselectable="true">
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingFilters">
-      <h4 class="panel-title">
-        <a
-          class="collapsed"
-          role="button"
-          data-toggle="collapse"
-          data-parent="#accordionFilters"
-          href="#collapseFilters"
-          aria-expanded="false"
-          aria-controls="collapseFilters">
-          Filters
-        </a>
-      </h4>
-    </div><!-- /#headingFilters.panel-heading -->
+<div class="accordion" id="accordionFilters">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingFilters">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseFilters"
+        aria-expanded="false"
+        aria-controls="collapseFilters">
+        Filters
+      </button>
+    </h2>
     <div
       id="collapseFilters"
-      class="panel-collapse collapse"
-      role="tabpanel"
-      aria-labelledby="headingFilters">
-      <div class="panel-body">
+      class="accordion-collapse collapse"
+      aria-labelledby="headingFilters"
+      data-bs-parent="#accordionFilters">
+      <div class="accordion-body">
         <form class="filter_form" action="/fixtures" method="post">
-          <div class="checkbox">
-            <label>
-              <input
-                type="checkbox"
-                id="ckbPlayedMatches"
-                name="exc_play"
-                <%== 'checked' if session[:criteria][:exclude_played] %>>
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="ckbPlayedMatches"
+              name="exc_play"
+              <%== 'checked' if session[:criteria][:exclude_played] %>>
+            <label class="form-check-label" for="ckbPlayedMatches">
               Exclude played matches
             </label>
           </div>
-          <div class="checkbox">
-            <label>
-              <input
-                type="checkbox"
-                id="ckbPredictedMatches"
-                name="exc_pred"
-                <%== 'checked' if session[:criteria][:exclude_predicted] %>>
+          <div class="form-check mb-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="ckbPredictedMatches"
+              name="exc_pred"
+              <%== 'checked' if session[:criteria][:exclude_predicted] %>>
+            <label class="form-check-label" for="ckbPredictedMatches">
               Exclude predicted matches
             </label>
           </div>
           <hr>
           <%== erb :'fixtures/filter_stages' %>
           <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-          <button class="btn btn-lg btn-primary btn-block" type="submit" id="btnUpdateMatches">Update</button>
+          <button class="btn btn-lg btn-primary w-100" type="submit" id="btnUpdateMatches">Update</button>
         </form>
-      </div><!-- /.panel-body -->
-    </div><!-- /#collapseFilters.panel-collapse -->
-  </div><!-- /.panel-default -->
-</div><!-- /#accordionFilters.panel-group -->
+      </div>
+    </div>
+  </div>
+</div>

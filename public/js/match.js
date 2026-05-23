@@ -31,40 +31,6 @@ function addSubmitListeners() {
 }
 
 /*
- * Show match origin buttons
- */
-
-function togglePanel(panelId) {
-  const panel = document.getElementById(panelId);
-  if (!panel) {
-    return;
-  }
-  if (panel.style.display === 'none' || !panel.style.display) {
-    panel.style.display = 'block';
-  } else {
-    panel.style.display = 'none';
-  }
-}
-
-function addOriginListener(button, panel) {
-  const originButton = document.getElementById(button);
-  if (originButton) {
-    originButton.addEventListener('click', function(event) {
-      event.preventDefault();
-      togglePanel(panel);
-    });
-  }
-
-}
-
-function addOriginListeners() {
-  addOriginListener('btnHomeOrigin', 'homeOrigin');
-  addOriginListener('btnAwayOrigin', 'awayOrigin');
-  addOriginListener('btnHomeOriginXS', 'homeOriginXS');
-  addOriginListener('btnAwayOriginXS', 'awayOriginXS');
-}
-
-/*
  * Change broadcaster
  */
 
@@ -104,6 +70,5 @@ function addBroadcasterListener() {
 
 document.addEventListener('DOMContentLoaded', function() {
   addSubmitListeners();
-  addOriginListeners();
   addBroadcasterListener();
 });
