@@ -1,32 +1,48 @@
 <h1>Tables</h1>
 <h2>Overall</h2>
 <%== erb :'tables/table', locals: { table: @tables[:overall_table] } %>
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingGroup">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseGroup" aria-expanded="false" aria-controls="collapseGroup">
-          Group Stages
-        </a>
-      </h4>
-    </div>
-    <div id="collapseGroup" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingGroup">
-      <div class="panel-body">
-        <%== erb :'tables/table', locals: { table: @tables[:group_table] } %>
+<div class="accordion" id="tablesAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingGroup">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseGroup"
+        aria-expanded="false"
+        aria-controls="collapseGroup">
+        Group Tables
+      </button>
+    </h2>
+    <div
+      id="collapseGroup"
+      class="accordion-collapse collapse"
+      aria-labelledby="headingGroup"
+      data-bs-parent="#tablesAccordion">
+      <div class="accordion-body">
+        <%== erb :'tables/table', locals: { title: 'Group Stage', table: @tables[:group_table] } %>
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingKnockout">
-      <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseKnockout" aria-expanded="false" aria-controls="collapseKnockout">
-          Knockout Matches
-        </a>
-      </h4>
-    </div>
-    <div id="collapseKnockout" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingKnockout">
-      <div class="panel-body">
-        <%== erb :'tables/table', locals: { table: @tables[:knockout_table] } %>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingKnockout">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseKnockout"
+        aria-expanded="false"
+        aria-controls="collapseKnockout">
+        Knockout Tables
+      </button>
+    </h2>
+    <div
+      id="collapseKnockout"
+      class="accordion-collapse collapse"
+      aria-labelledby="headingKnockout"
+      data-bs-parent="#tablesAccordion">
+      <div class="accordion-body">
+        <%== erb :'tables/table', locals: { title: 'Knockout', table: @tables[:knockout_table] } %>
       </div>
     </div>
   </div>

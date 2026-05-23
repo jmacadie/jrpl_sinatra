@@ -1,63 +1,64 @@
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-12">
     <h3><%== kick_off_for_print(@match) %></h3>
   </div>
 </div>
 <div class="matchRow">
   <a href="/match/<%== @match[:match_id] %><%== ring_for_url(@ring) %>">
-    <div class="row visible-xs">
-      <div class="col-xs-4 text-center">
+    <div class="row d-flex d-sm-none">
+      <div class="col-4 text-center">
         <span class="<%== home_flag(@match) %>"></span>
       </div>
-      <div class="col-xs-4 col-xs-offset-4 text-center">
+      <div class="col-4 text-center"></div>
+      <div class="col-4 text-center">
         <span class="<%== away_flag(@match) %>"></span>
       </div>
-    </div><!-- /row visible-xs -->
-    <div class="row">
-      <div class="col-sm-2 hidden-xs text-center">
+    </div>
+    <div class="row align-items-center">
+      <div class="col-sm-2 d-none d-sm-block text-center">
         <span class="<%== home_flag(@match) %>"></span>
       </div>
-      <div class="col-xs-4 visible-xs text-center matchText"><%== home_name(@match) %></div>
-      <div class="col-sm-2 hidden-xs text-right lead matchText"><%== home_name(@match) %></div>
-      <div class="col-xs-1 text-center lead matchText">
-        <b><%== home_score(@match) %></b>
+      <div class="col-4 d-sm-none text-center matchText"><%== home_name(@match) %></div>
+      <div class="col-sm-2 d-none d-sm-block text-end lead matchText"><%== home_name(@match) %></div>
+      <div class="col-1 text-center lead matchText">
+        <strong><%== home_score(@match) %></strong>
       </div>
-      <div class="col-xs-2 text-center matchText">vs.</div>
-      <div class="col-xs-1 text-center lead matchText">
-        <b><%== away_score(@match) %></b>
+      <div class="col-2 text-center matchText">vs.</div>
+      <div class="col-1 text-center lead matchText">
+        <strong><%== away_score(@match) %></strong>
       </div>
-      <div class="col-sm-2 hidden-xs text-left lead matchText"><%== away_name(@match) %></div>
-      <div class="col-xs-4 visible-xs text-center matchText"><%== away_name(@match) %></div>
-      <div class="col-sm-2 hidden-xs text-center">
+      <div class="col-sm-2 d-none d-sm-block text-start lead matchText"><%== away_name(@match) %></div>
+      <div class="col-4 d-sm-none text-center matchText"><%== away_name(@match) %></div>
+      <div class="col-sm-2 d-none d-sm-block text-center">
         <span class="<%== away_flag(@match) %>"></span>
       </div>
-    </div><!-- /row -->
+    </div>
   </a>
-</div><!-- /matchRow -->
+</div>
 <% if predicted?(@match) %>
 <div class="alert alert-success">
   <div class="row">
-    <div class="col-xs-3 visible-xs text-left"><i>Predicted:</i></div>
-    <div class="col-xs-6 visible-xs text-center">
-      <b><%== predicted_result(@match) %></b>
+    <div class="col-3 d-sm-none text-start"><i>Predicted:</i></div>
+    <div class="col-6 d-sm-none text-center">
+      <strong><%== predicted_result(@match) %></strong>
     </div>
-    <div class="col-sm-2 hidden-xs text-left"><i>Predicted:</i></div>
-    <div class="col-sm-8 hidden-xs text-center">
-      <b><%== predicted_result(@match) %></b>
+    <div class="col-sm-2 d-none d-sm-block text-start"><i>Predicted:</i></div>
+    <div class="col-sm-8 d-none d-sm-block text-center">
+      <strong><%== predicted_result(@match) %></strong>
     </div>
-  </div><!-- /row -->
+  </div>
   <div class="row">
-    <div class="col-xs-1 col-xs-offset-4 text-center"><%== home_prediction(@match) %></div>
-    <div class="col-xs-2 text-center">-</div>
-    <div class="col-xs-1 text-center"><%== away_prediction(@match) %></div>
-  </div><!-- /row -->
-</div><!-- /alert -->
+    <div class="col-1 offset-4 text-center"><%== home_prediction(@match) %></div>
+    <div class="col-2 text-center">-</div>
+    <div class="col-1 text-center"><%== away_prediction(@match) %></div>
+  </div>
+</div>
 <% else %>
 <div class="alert alert-danger">
   <div class="row">
-    <div class="col-xs-12 text-left">
+    <div class="col-12 text-start">
       <i>Not yet predicted</i>
     </div>
-  </div><!-- /row -->
-</div><!-- /alert -->
+  </div>
+</div>
 <% end %>

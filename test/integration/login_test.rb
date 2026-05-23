@@ -13,7 +13,7 @@ class CMSTest < Minitest::Test
                     '<input type="password" class="form-control" ' \
                     'id="pword" name="pword"'
     assert_includes body_html,
-                    '<button class="btn btn-lg btn-primary btn-block" ' \
+                    '<button class="btn btn-lg btn-primary w-100" ' \
                     'type="submit" id="logInBtn">Log in</button>'
   end
 

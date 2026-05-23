@@ -4,3 +4,6 @@
 config/*.sc
 tmp/
 vendor/
+node_modules/
+playwright-report/
+test-results/

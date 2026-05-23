@@ -1,19 +1,27 @@
-<div class="panel-group" id="accordion">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseUsers">
-          Select Users
-        </a>
-      </h4>
-    </div> <!-- /.panel-heading -->
-    <div id="collapseUsers" class="panel-collapse collapse">
-      <div class="panel-body">
+<div class="accordion" id="graphsUsersAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingUsers">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseUsers"
+        aria-expanded="false"
+        aria-controls="collapseUsers">
+        Select Users
+      </button>
+    </h2>
+    <div
+      id="collapseUsers"
+      class="accordion-collapse collapse"
+      aria-labelledby="headingUsers"
+      data-bs-parent="#graphsUsersAccordion">
+      <div class="accordion-body">
         <% users = locals[:users] %>
         <% while !users.empty? %>
           <%== erb :'graphs/pick_user_row', locals: { users: users.shift(3) } %>
         <% end %>
-      </div> <!-- /.panel-body -->
-    </div> <!-- /#collapseUsers.panel-collapse -->
-  </div><!-- /.panel-default -->
-</div><!-- /#accordion.panel-group -->
+      </div>
+    </div>
+  </div>
+</div>

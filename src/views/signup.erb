@@ -33,14 +33,13 @@
          name="bot_check"
          placeholder="Stop the bots: enter THE four letters"
          required>
-  <div class="checkbox">
-    <label>
-      <input type="checkbox"
-             id="remember_me"
-             name="remember_me">
-        Remember me
-    </label>
+  <div class="form-check mb-3">
+    <input class="form-check-input"
+           type="checkbox"
+           id="remember_me"
+           name="remember_me">
+    <label class="form-check-label" for="remember_me">Remember me</label>
   </div>
   <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-  <button class="btn btn-lg btn-primary btn-block" type="submit" id="logInBtn">Sign Up</button>
+  <button class="btn btn-lg btn-primary w-100" type="submit" id="logInBtn">Sign Up</button>
 </form>
