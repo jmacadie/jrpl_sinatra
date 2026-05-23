@@ -8,14 +8,24 @@ class App < Sinatra::Application
   get '/graphs' do
     user_signed_in?
     @users = load_all_users_details
-    @points = cum_points
-    relative_points()
-    position_points()
-    @points = default_data if @points == []
     erb :graphs
   end
 
+  get '/graphs/data' do
+    user_signed_in?
+    content_type :json
+    { points: graph_points }.to_json
+  end
+
   private
+
+  def graph_points
+    @points = cum_points
+    @points = default_data if @points.empty?
+    relative_points
+    position_points
+    @points
+  end
 
   def default_data
     [{

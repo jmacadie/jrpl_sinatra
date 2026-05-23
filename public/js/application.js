@@ -5,7 +5,7 @@ function closest(element, selector) {
   if (element.closest) {
     return element.closest(selector);
   }
-  var node = element;
+  let node = element;
   while (node) {
     if (node.matches && node.matches(selector)) {
       return node;
@@ -16,7 +16,7 @@ function closest(element, selector) {
 }
 
 function getCollapseTarget(trigger) {
-  var selector = trigger.getAttribute('data-target') || trigger.getAttribute('href');
+  const selector = trigger.getAttribute('data-target') || trigger.getAttribute('href');
   if (!selector || selector.charAt(0) !== '#') {
     return null;
   }
@@ -36,21 +36,21 @@ function syncCollapseTrigger(trigger, expanded) {
 }
 
 function showAlertMessage(content, type) {
-  var page = document.querySelector('.page-content');
+  const page = document.querySelector('.page-content');
   if (!page) {
     return;
   }
 
-  var messagePara = document.createElement('p');
+  const messagePara = document.createElement('p');
   messagePara.className = 'alert alert-' + type + ' alert-dismissable';
 
-  var messageButton = document.createElement('button');
+  const messageButton = document.createElement('button');
   messageButton.className = 'close';
   messageButton.setAttribute('type', 'button');
   messageButton.setAttribute('data-dismiss', 'alert');
   messageButton.setAttribute('aria-label', 'Close');
 
-  var messageButtonSpan = document.createElement('span');
+  const messageButtonSpan = document.createElement('span');
   messageButtonSpan.setAttribute('aria-hidden', 'true');
   messageButtonSpan.textContent = '×';
 
@@ -61,21 +61,21 @@ function showAlertMessage(content, type) {
 }
 
 function toggleCollapse(trigger) {
-  var target = getCollapseTarget(trigger);
+  const target = getCollapseTarget(trigger);
   if (!target) {
     return;
   }
 
-  var parentSelector = trigger.getAttribute('data-parent');
-  var isOpen = target.classList.contains('in');
+  const parentSelector = trigger.getAttribute('data-parent');
+  const isOpen = target.classList.contains('in');
 
   if (parentSelector) {
-    var parent = document.querySelector(parentSelector);
+    const parent = document.querySelector(parentSelector);
     if (parent) {
       parent.querySelectorAll('.collapse.in').forEach(function(openPanel) {
         if (openPanel !== target) {
           openPanel.classList.remove('in');
-          var openTrigger = parent.querySelector(
+          const openTrigger = parent.querySelector(
             '[data-toggle="collapse"][href="#' + openPanel.id + '"],' +
             '[data-toggle="collapse"][data-target="#' + openPanel.id + '"]'
           );
@@ -90,7 +90,7 @@ function toggleCollapse(trigger) {
 }
 
 function toggleDropdown(trigger) {
-  var parent = closest(trigger, '.dropdown');
+  const parent = closest(trigger, '.dropdown');
   if (!parent) {
     return;
   }
@@ -104,7 +104,7 @@ function toggleDropdown(trigger) {
 function closeDropdowns() {
   document.querySelectorAll('.dropdown.open').forEach(function(dropdown) {
     dropdown.classList.remove('open');
-    var trigger = dropdown.querySelector('[data-toggle="dropdown"]');
+    const trigger = dropdown.querySelector('[data-toggle="dropdown"]');
     if (trigger) {
       trigger.setAttribute('aria-expanded', 'false');
     }
@@ -112,12 +112,12 @@ function closeDropdowns() {
 }
 
 function confirmFormSubmit(event) {
-  var form = closest(event.target, 'form');
+  const form = closest(event.target, 'form');
   if (!form) {
     return;
   }
 
-  var message;
+  let message;
   if (form.classList.contains('signout')) {
     message = 'Are you sure you want to sign out?';
   } else if (form.classList.contains('reset-pword')) {
@@ -125,8 +125,8 @@ function confirmFormSubmit(event) {
   } else if (form.classList.contains('toggle-admin')) {
     message = 'Are you sure you want to change admin permissions?';
   } else if (form.classList.contains('delete-user')) {
-    var input = form.querySelector('input[name="user_name"]');
-    var name = input ? input.value : '';
+    const input = form.querySelector('input[name="user_name"]');
+    const name = input ? input.value : '';
     message = 'Are you sure you want to delete ' + name + '? This cannot be undone!';
   }
 
@@ -140,7 +140,7 @@ function confirmFormSubmit(event) {
 }
 
 function handleDocumentClick(event) {
-  var trigger = closest(event.target, '[data-toggle="collapse"], [data-toggle="dropdown"]');
+  const trigger = closest(event.target, '[data-toggle="collapse"], [data-toggle="dropdown"]');
   if (trigger) {
     event.preventDefault();
     if (trigger.getAttribute('data-toggle') === 'collapse') {
@@ -151,9 +151,9 @@ function handleDocumentClick(event) {
     return;
   }
 
-  var dismiss = closest(event.target, '[data-dismiss="alert"]');
+  const dismiss = closest(event.target, '[data-dismiss="alert"]');
   if (dismiss) {
-    var alert = closest(dismiss, '.alert');
+    const alert = closest(dismiss, '.alert');
     if (alert) {
       alert.remove();
     }

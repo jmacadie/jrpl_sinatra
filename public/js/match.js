@@ -68,36 +68,6 @@ function addOriginListeners() {
  * Change broadcaster
  */
 
-function addMessage(content, type) {
-  const page = document.querySelector(".page-content");
-  if (!page) {
-    return;
-  }
-
-  const messagePara = document.createElement("p");
-  messagePara.classList = "alert";
-  messagePara.classList.add(`alert-${type}`);
-  messagePara.classList.add("alert-dismissable");
-
-  const messageButton = document.createElement("button");
-  messageButton.classList = "close";
-  messageButton.setAttribute("type", "button");
-  messageButton.setAttribute("data-dismiss", "alert");
-  messageButton.setAttribute("aria-label", "Close");
-
-  const messageButtonSpan = document.createElement("span");
-  messageButtonSpan.setAttribute("aria-hidden", "true");
-  messageButtonSpan.innerText = "×";
-
-  messageButton.appendChild(messageButtonSpan);
-  messagePara.appendChild(messageButton);
-
-  const messageText = document.createTextNode(content);
-  messagePara.appendChild(messageText);
-
-  page.insertAdjacentElement("afterbegin", messagePara);
-}
-
 async function changeBroadcaster(event) {
   const form = event.target.form;
   if (!form) {
@@ -112,12 +82,12 @@ async function changeBroadcaster(event) {
     });
     const content = await response.json();
     if (content.status === 'success') {
-      addMessage(content.message, 'info');
+      showAlertMessage(content.message, 'info');
     } else {
-      addMessage(content.message, 'danger');
+      showAlertMessage(content.message, 'danger');
     }
   } catch (error) {
-    addMessage('Something went wrong :(\n\n' + error.message, 'danger');
+    showAlertMessage('Something went wrong :(\n\n' + error.message, 'danger');
   }
 }
 

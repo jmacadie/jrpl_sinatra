@@ -1,5 +1,5 @@
 function updateGroupButton(text, mode) {
-  var button = document.getElementById('btnSelectGroup');
+  const button = document.getElementById('btnSelectGroup');
   if (!button) {
     return;
   }
@@ -8,7 +8,7 @@ function updateGroupButton(text, mode) {
 }
 
 function selectAllGroups (mode) {
-  var collapse = document.getElementById('collapseGroup');
+  const collapse = document.getElementById('collapseGroup');
   if (!collapse) {
     return;
   }

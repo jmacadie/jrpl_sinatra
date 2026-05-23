@@ -1,106 +1,26 @@
+require 'json'
 require_relative '../helpers/test_helpers'
 
 class CMSTest < Minitest::Test
   include TestIntegrationMethods
 
-  # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop: disable Metrics/AbcSize
   def test_graphs_data
-    get '/graphs', {}, non_admin_session
+    get '/graphs/data', {}, non_admin_session
 
     assert_equal 200, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
+    assert_equal 'application/json', last_response['Content-Type']
 
-    assert_includes body_html,
-                    "var data = new google.visualization.DataTable(); " \
-                    "data.addColumn('string', 'Match'); " \
-                    "data.addColumn('number', 'Archie'); " \
-                    "data.addColumn('number', 'Ben'); " \
-                    "data.addColumn('number', 'Binary Boy'); " \
-                    "data.addColumn('number', 'Clare Mac'); " \
-                    "data.addColumn('number', 'Coups'); " \
-                    "data.addColumn('number', 'David'); " \
-                    "data.addColumn('number', 'Diego'); " \
-                    "data.addColumn('number', 'DTM'); " \
-                    "data.addColumn('number', 'Fi Mac'); " \
-                    "data.addColumn('number', 'G.Mozz'); " \
-                    "data.addColumn('number', 'galsnakes'); " \
-                    "data.addColumn('number', 'Gen'); " \
-                    "data.addColumn('number', 'Haller'); " \
-                    "data.addColumn('number', 'Jonny'); " \
-                    "data.addColumn('number', 'Kov'); " \
-                    "data.addColumn('number', 'Lady Peck'); " \
-                    "data.addColumn('number', 'Lottie'); " \
-                    "data.addColumn('number', 'Maccas'); " \
-                    "data.addColumn('number', 'Manon'); " \
-                    "data.addColumn('number', 'Mark S'); " \
-                    "data.addColumn('number', 'Matt'); " \
-                    "data.addColumn('number', 'Mond'); " \
-                    "data.addColumn('number', 'Mr. Mean'); " \
-                    "data.addColumn('number', 'Mr. Median'); " \
-                    "data.addColumn('number', 'Mr. Mode'); " \
-                    "data.addColumn('number', 'Ollie'); " \
-                    "data.addColumn('number', 'Peck'); " \
-                    "data.addColumn('number', 'Rosa'); " \
-                    "data.addColumn('number', 'Ross'); " \
-                    "data.addColumn('number', 'Sammie'); " \
-                    "data.addColumn('number', 'Sven'); " \
-                    "data.addColumn('number', 'Tom Mac'); " \
-                    "data.addColumn('number', 'Uwe'); " \
-                    "data.addColumn('number', 'Will Mac');"
+    points = graphs_points
 
-    assert_includes body_html, "function initOverallPoints() {"
-    assert_includes body_html,
-                    "['Germany vs Scotland', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0],"
-    assert_includes body_html,
-                    "['Hungary vs Switzerland', 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 0],"
-    assert_includes body_html,
-                    "['Serbia vs England', 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0],"
-    assert_includes body_html,
-                    "['Romania vs Ukraine', 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0],"
-
-    assert_includes body_html, "function initRelativePoints() {"
-    assert_includes body_html,
-                    "['Germany vs Scotland', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0],"
-    assert_includes body_html,
-                    "['Hungary vs Switzerland', 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 0],"
-    assert_includes body_html,
-                    "['Serbia vs England', 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 3],"
-    assert_includes body_html,
-                    "['Romania vs Ukraine', 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 3, 3],"
-
-    assert_includes body_html, "function initPosition() {"
-    assert_includes body_html,
-                    "['Germany vs Scotland', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " \
-                    "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " \
-                    "1, 1, 1, 1, 1, 1],"
-    assert_includes body_html,
-                    "['Hungary vs Switzerland', 1, 1, 1, 1, 1, 1, 1, 1, 1, " \
-                    "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " \
-                    "1, 1, 1, 1, 1, 1, 1],"
-    assert_includes body_html,
-                    "['Serbia vs England', 3, 3, 3, 1, 3, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 3],"
-    assert_includes body_html,
-                    "['Romania vs Ukraine', 3, 3, 3, 1, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 3, 3],"
+    assert_equal 'Germany vs Scotland', points.first.fetch('match')
+    assert_equal 34, points.first.fetch('users').length
+    assert_equal(Array.new(34, 0),
+                 points.first['users'].map { |user| user['cum_points'] })
+    assert_equal(Array.new(34, 0),
+                 points.first['users'].map { |user| user['rel_points'] })
+    assert_equal(Array.new(34, 1),
+                 points.first['users'].map { |user| user['rank'] })
   end
 
   def test_graphs_data_after_post_result
@@ -111,64 +31,41 @@ class CMSTest < Minitest::Test
            match_id: 2,
            authenticity_token: csrf_token },
          admin_session
-    get '/graphs', {}, non_admin_session
+
+    get '/graphs/data', {}, non_admin_session
 
     assert_equal 200, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
+    assert_equal 'application/json', last_response['Content-Type']
 
-    assert_includes body_html, "function initOverallPoints() {"
-    assert_includes body_html,
-                    "['Germany vs Scotland', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0],"
-    assert_includes body_html,
-                    "['Hungary vs Switzerland', 0, 0, 1, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, " \
-                    "0, 0, 1, 0, 1, 3, 0],"
-    assert_includes body_html,
-                    "['Serbia vs England', 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, " \
-                    "1, 0, 1, 3, 0],"
-    assert_includes body_html,
-                    "['Romania vs Ukraine', 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, " \
-                    "1, 0, 1, 3, 0],"
+    match = match_point_row('Hungary vs Switzerland')
 
-    assert_includes body_html, "function initRelativePoints() {"
-    assert_includes body_html,
-                    "['Germany vs Scotland', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " \
-                    "0, 0, 0, 0, 0, 0],"
-    assert_includes body_html,
-                    "['Hungary vs Switzerland', 3, 3, 2, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, " \
-                    "3, 3, 2, 3, 2, 0, 3],"
-    assert_includes body_html,
-                    "['Serbia vs England', 3, 3, 2, 0, 3, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 2, 3, 3, 2, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, " \
-                    "2, 3, 2, 0, 3],"
-    assert_includes body_html,
-                    "['Romania vs Ukraine', 3, 3, 2, 0, 3, 3, 3, 3, 3, 3, " \
-                    "3, 3, 3, 3, 2, 3, 3, 2, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, " \
-                    "3, 2, 3, 2, 0, 3],"
+    assert_equal 1, user_value(match, 'Tom Mac', 'cum_points')
+    assert_equal 2, user_value(match, 'Tom Mac', 'rel_points')
+    assert_equal 2, user_value(match, 'Tom Mac', 'rank')
 
-    assert_includes body_html, "function initPosition() {"
-    assert_includes body_html,
-                    "['Germany vs Scotland', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " \
-                    "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " \
-                    "1, 1, 1, 1, 1, 1],"
-    assert_includes body_html,
-                    "['Hungary vs Switzerland', 8, 8, 2, 8, 8, 8, 8, 8, 8, " \
-                    "8, 8, 8, 8, 8, 2, 8, 8, 8, 8, 8, 8, 8, 8, 2, 2, 8, 8, " \
-                    "8, 8, 2, 8, 2, 1, 8],"
-    assert_includes body_html,
-                    "['Serbia vs England', 10, 10, 3, 1, 10, 10, 10, 10, " \
-                    "10, 10, 10, 10, 10, 10, 3, 10, 10, 3, 10, 10, 10, 10, " \
-                    "10, 3, 3, 10, 10, 10, 10, 3, 10, 3, 1, 10],"
-    assert_includes body_html,
-                    "['Romania vs Ukraine', 10, 10, 3, 1, 10, 10, 10, 10, " \
-                    "10, 10, 10, 10, 10, 10, 3, 10, 10, 3, 10, 10, 10, 10, " \
-                    "10, 3, 3, 10, 10, 10, 10, 3, 10, 3, 1, 10],"
+    assert_equal 3, user_value(match, 'Uwe', 'cum_points')
+    assert_equal 0, user_value(match, 'Uwe', 'rel_points')
+    assert_equal 1, user_value(match, 'Uwe', 'rank')
+
+    assert_equal 0, user_value(match, 'Maccas', 'cum_points')
+    assert_equal 3, user_value(match, 'Maccas', 'rel_points')
+    assert_equal 8, user_value(match, 'Maccas', 'rank')
   end
-  # rubocop: enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop: enable Metrics/AbcSize
+
+  private
+
+  def graphs_points
+    JSON.parse(last_response.body).fetch('points')
+  end
+
+  def match_point_row(match_name)
+    graphs_points.find { |match| match['match'] == match_name }
+  end
+
+  def user_value(match, user_name, key)
+    match.fetch('users')
+         .find { |user| user['user_name'] == user_name }
+         .fetch(key)
+  end
 end
