@@ -1,14 +1,17 @@
-<form class="form-tournament-role d-flex align-items-end gap-2 flex-wrap" method="post" action="/tournament_role">
-  <div>
-    <label class="form-label" for="tournamentRole<%== @role_camel %>"><%== @role %></label>
-    <select class="form-select" name="team" id="tournamentRole<%== @role_camel %>">
-      <option value="0"<%== " selected" if @selected == 0 %>>Not yet selected</option>
-      <% @teams.filter{ |t| t[:team_id] > 0 }.each do |t| %>
-      <option value="<%== t[:team_id] %>"<%== " selected" if t[:team_id] == @selected %>><%== t[:team] %></option>
-      <% end %>
-    </select>
+<form class="form-tournament-role" method="post" action="/tournament_role">
+  <div class="row mb-3">
+    <label class="col-sm-6 col-form-label text-sm-end" for="tournamentRole<%== @role_camel %>">
+      <%== @role %>
+    </label>
+    <div class="col-sm-6">
+      <select class="form-select js-tournament-role-select" name="team" id="tournamentRole<%== @role_camel %>">
+        <option value="0"<%== " selected" if @selected == 0 %>>Not yet selected</option>
+        <% @teams.filter{ |t| t[:team_id] > 0 }.each do |t| %>
+        <option value="<%== t[:team_id] %>"<%== " selected" if t[:team_id] == @selected %>><%== t[:team] %></option>
+        <% end %>
+      </select>
+      <input type="hidden" name="role" value="<%== @id %>">
+      <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
+    </div>
   </div>
-  <input type="hidden" name="role" value="<%== @id %>">
-  <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-  <button type="submit" class="btn btn-warning">Update</button>
 </form>

@@ -63,8 +63,8 @@ class App < Sinatra::Application
     match_id = params[:match_id].to_i
     broacaster_id = params[:broadcaster].to_i
     change_broadcaster(match_id, broacaster_id)
-    data = { message: "Broadcaster changed", status: "success" }
-    data.to_json
+    content_type :json
+    { message: "Broadcaster changed", status: "success" }.to_json
   end
 
   get '/match/:match_id/predictions' do

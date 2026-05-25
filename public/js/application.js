@@ -4,9 +4,15 @@ function showAlertMessage(content, type) {
     return;
   }
 
+  const existingMessage = page.querySelector('.alert[data-js-alert="true"]');
+  if (existingMessage) {
+    existingMessage.remove();
+  }
+
   const messagePara = document.createElement('div');
   messagePara.className = 'alert alert-' + type + ' alert-dismissible fade show';
   messagePara.setAttribute('role', 'alert');
+  messagePara.setAttribute('data-js-alert', 'true');
 
   const messageButton = document.createElement('button');
   messageButton.className = 'btn-close';
@@ -18,6 +24,22 @@ function showAlertMessage(content, type) {
   messagePara.appendChild(document.createTextNode(content));
   page.insertAdjacentElement('afterbegin', messagePara);
 }
+
+async function postJsonForm(form) {
+  const formData = new FormData(form);
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: formData
+    });
+    const content = await response.json();
+    const messageType = response.ok && content.status === 'success' ? 'info' : 'danger';
+    showAlertMessage(content.message, messageType);
+  } catch (error) {
+    showAlertMessage('Something went wrong :(\n\n' + error.message, 'danger');
+  }
+}
+
 
 function confirmFormSubmit(event) {
   const form = event.target.closest('form');

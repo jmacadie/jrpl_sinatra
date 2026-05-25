@@ -34,6 +34,26 @@ module DBTournamentRoles
     result.map { |row| row['max'].to_i }
   end
 
+  def tournament_role_name(role_id)
+    sql = <<~SQL
+    SELECT name
+    FROM tournament_role
+    WHERE tournament_role_id = $1::int;
+    SQL
+    result = run_query(sql, role_id)
+    result.map { |row| row['name'] }.first
+  end
+
+  def team_name(team_id)
+    sql = <<~SQL
+    SELECT name
+    FROM team
+    WHERE team_id = $1::int;
+    SQL
+    result = run_query(sql, team_id)
+    result.map { |row| row['name'] }.first
+  end
+
   private
 
   def map_tournament_roles(result)

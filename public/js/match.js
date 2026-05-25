@@ -39,22 +39,7 @@ async function changeBroadcaster(event) {
   if (!form) {
     return;
   }
-
-  const formData = new FormData(form);
-  try {
-    const response = await fetch(form.action, {
-      method: 'POST',
-      body: formData
-    });
-    const content = await response.json();
-    if (content.status === 'success') {
-      showAlertMessage(content.message, 'info');
-    } else {
-      showAlertMessage(content.message, 'danger');
-    }
-  } catch (error) {
-    showAlertMessage('Something went wrong :(\n\n' + error.message, 'danger');
-  }
+  await postJsonForm(form);
 }
 
 function addBroadcasterListener() {

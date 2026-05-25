@@ -7,13 +7,24 @@ class App < Sinatra::Application
     require_signed_in_as_admin
     role = params[:role].to_i
     team = params[:team].to_i
-    validate_tournament_role(role, team)
+    error = validate_tournament_role(role, team)
+    if error
+      content_type :json
+      status 422
+      return { status: 'danger', message: error }.to_json
+    end
+
+    name = tournament_role_name(role)
     if team == 0
       reset_tournament_role(role)
+      message = "#{name} reset"
     else
       set_tournament_role(role, team)
+      team_name = team_name(team)
+      message = "#{name} set to #{team_name}"
     end
-    redirect "/admin?show=#{role}"
+    content_type :json
+    { message: message, status: 'success' }.to_json
   end
 
   private
@@ -21,22 +32,10 @@ class App < Sinatra::Application
   def validate_tournament_role(role, team)
     numbers = tournament_role_numbers()
 
-    if team < 0 || team > numbers[0]
-      session[:message] =
-        "Invalid team number: #{team}"
-    end
+    return "Invalid team number: #{team}" if team.negative? || team > numbers[0]
+    return "Invalid role number: #{role}" if
+      role <= numbers[0] || role > numbers[1]
 
-    if role <= numbers[0] || role > numbers[1]
-      session[:message] =
-        "Invalid role number: #{role}"
-    end
-
-    # If we have no message, we must be ok
-    return unless session[:message]
-
-    # Otherwise do bad stuff
-    session[:message_level] = 'danger'
-    status 422
-    redirect '/admin'
+    nil
   end
 end

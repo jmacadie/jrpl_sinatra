@@ -1,3 +1,4 @@
+require 'json'
 require_relative '../helpers/test_helpers'
 
 class CMSTest < Minitest::Test
@@ -15,13 +16,10 @@ class CMSTest < Minitest::Test
                     '<form class="form-tournament-role d-flex ' \
                     'align-items-end gap-2 flex-wrap" ' \
                     'method="post" action="/tournament_role">'
+    assert_includes body_html, 'js-tournament-role-select'
     assert_includes body_html,
                     '<option value="0" selected>Not yet selected</option>'
     assert_includes body_html, '<input type="hidden" name="role" value="25">'
-    assert_includes body_html,
-                    '<button type="submit" class="btn btn-warning">' \
-                    'Update' \
-                    '</button>'
   end
   # rubocop: enable Metrics/AbcSize
 
@@ -60,8 +58,15 @@ class CMSTest < Minitest::Test
     get '/admin'
     post '/tournament_role',
          { role: '25', team: '4', authenticity_token: csrf_token }
-    assert_equal 302, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
+    assert_equal 200, last_response.status
+    assert_equal 'application/json', last_response['Content-Type']
+    assert_equal(
+      {
+        'message' => 'Winner Group A set to Switzerland',
+        'status' => 'success'
+      },
+      JSON.parse(last_response.body)
+    )
 
     get '/fixtures'
     post '/fixtures', { st_r16: 'on', authenticity_token: csrf_token }
@@ -89,9 +94,15 @@ class CMSTest < Minitest::Test
     post '/tournament_role',
          { role: '24', team: '4', authenticity_token: csrf_token }
 
-    assert_equal 302, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_equal 'Invalid role number: 24', session[:message]
+    assert_equal 422, last_response.status
+    assert_equal 'application/json', last_response['Content-Type']
+    assert_equal(
+      {
+        'status' => 'danger',
+        'message' => 'Invalid role number: 24'
+      },
+      JSON.parse(last_response.body)
+    )
   end
 
   def test_post_tournament_roles_role_too_high
@@ -99,19 +110,32 @@ class CMSTest < Minitest::Test
     post '/tournament_role',
          { role: '55', team: '4', authenticity_token: csrf_token }
 
-    assert_equal 302, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_equal 'Invalid role number: 55', session[:message]
+    assert_equal 422, last_response.status
+    assert_equal 'application/json', last_response['Content-Type']
+    assert_equal(
+      {
+        'status' => 'danger',
+        'message' => 'Invalid role number: 55'
+      },
+      JSON.parse(last_response.body)
+    )
   end
 
+  # rubocop: disable Metrics/AbcSize
   def test_post_tournament_roles_team_too_low
     get '/admin', {}, admin_session
     post '/tournament_role',
          { role: '25', team: '-1', authenticity_token: csrf_token }
 
-    assert_equal 302, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_equal 'Invalid team number: -1', session[:message]
+    assert_equal 422, last_response.status
+    assert_equal 'application/json', last_response['Content-Type']
+    assert_equal(
+      {
+        'status' => 'danger',
+        'message' => 'Invalid team number: -1'
+      },
+      JSON.parse(last_response.body)
+    )
 
     get '/fixtures'
     post '/fixtures', { st_r16: 'on', authenticity_token: csrf_token }
@@ -123,12 +147,19 @@ class CMSTest < Minitest::Test
     post '/tournament_role',
          { role: '25', team: '25', authenticity_token: csrf_token }
 
-    assert_equal 302, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
-    assert_equal 'Invalid team number: 25', session[:message]
+    assert_equal 422, last_response.status
+    assert_equal 'application/json', last_response['Content-Type']
+    assert_equal(
+      {
+        'status' => 'danger',
+        'message' => 'Invalid team number: 25'
+      },
+      JSON.parse(last_response.body)
+    )
 
     get '/fixtures'
     post '/fixtures', { st_r16: 'on', authenticity_token: csrf_token }
     assert_includes body_text, 'Winner Group A'
   end
+  # rubocop: enable Metrics/AbcSize
 end
