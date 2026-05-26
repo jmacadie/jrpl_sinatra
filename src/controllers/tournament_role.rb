@@ -14,17 +14,11 @@ class App < Sinatra::Application
       return { status: 'danger', message: error }.to_json
     end
 
-    name = tournament_role_name(role)
-    if team == 0
-      reset_tournament_role(role)
-      message = "#{name} reset"
-    else
-      set_tournament_role(role, team)
-      team_name = team_name(team)
-      message = "#{name} set to #{team_name}"
-    end
+    message, reset = update_data(role, team)
     content_type :json
-    { message: message, status: 'success' }.to_json
+    { message: message,
+      status: 'success',
+      reset: reset }.to_json
   end
 
   private
@@ -37,5 +31,17 @@ class App < Sinatra::Application
       role <= numbers[0] || role > numbers[1]
 
     nil
+  end
+
+  def update_data(role, team)
+    name = tournament_role_name(role)
+    if team == 0
+      reset_tournament_role(role)
+      return "#{name} reset", true
+    end
+
+    set_tournament_role(role, team)
+    team_name = team_name(team)
+    return "#{name} set to #{team_name}", false
   end
 end

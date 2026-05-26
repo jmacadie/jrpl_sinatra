@@ -73,7 +73,7 @@ module DBTournamentRoles
     stages = unique_stages(result)
     stages.each do |stage|
       roles = tournament_roles_for_stage(result, stage[:stage])
-      stage[:roles] = add_teams_to_role(result, roles)
+      stage[:group_roles] = add_teams_to_role(result, roles)
     end
   end
 
@@ -84,28 +84,34 @@ module DBTournamentRoles
   def tournament_roles_for_stage(result, stage)
     result.filter { |row| row[:stage] == stage }
           .map do |row|
-      {
-        role: row[:role],
-        id: row[:id],
-        selected: row[:selected_team_id]
-      }
-    end.uniq
+            {
+              role: row[:role],
+              id: row[:id],
+              selected: row[:selected_team_id]
+            }
+          end.uniq
   end
 
   def add_teams_to_role(result, roles)
     roles.each do |role|
-      role[:teams] = teams_for_role(result, role[:id])
+      other_selected = roles.filter { |other| other[:id] != role[:id] }
+                            .filter { |other| other[:selected] > 0 }
+                            .map { |other| other[:selected] }
+                            .uniq
+      role[:teams] = teams_for_role(result, role[:id], other_selected)
     end
   end
 
-  def teams_for_role(result, role_id)
+  def teams_for_role(result, role_id, other_selected)
     result.filter { |row| row[:id] == role_id }
-          .map do |teams|
-      {
-        team_id: teams[:team_id],
-        team: teams[:team]
-      }
-    end
+          .map do |row|
+            id = row[:team_id]
+            {
+              team_id: id,
+              team_name: row[:team],
+              disabled: other_selected.include?(id)
+            }
+          end
   end
 
   def tournament_roles_query
