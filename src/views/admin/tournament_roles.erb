@@ -17,14 +17,14 @@
     data-bs-parent="#accordion">
     <div class="accordion-body">
       <div class="accordion" id="tournamentRolesAccordion">
-        <% @roles.each do |tr| %>
-          <% stage = camelcase(tr[:stage], :lower) %>
-          <% @id = stage %>
-          <% @body_id = "#{stage}Body" %>
-          <% @tournament_role_group = tr[:stage] %>
-          <% @roles = tr[:roles] %>
-          <% @expand_stage = @roles.map{ |r| r[:id] }.include? @show %>
-          <%== erb :'admin/tournament_role_group' %>
+        <% @roles.each do |stage| %>
+          <% stage_name = camelcase(stage[:stage], :lower) %>
+          <% body_id = "#{stage_name}Body" %>
+          <%== erb :'admin/tournament_role_group',
+            locals: { id: stage_name,
+                      body_id: body_id,
+                      group: stage[:stage],
+                      roles: stage[:group_roles] } %>
         <% end %>
       </div>
     </div>

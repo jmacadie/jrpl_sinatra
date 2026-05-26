@@ -9,7 +9,6 @@ class App < Sinatra::Application
     require_signed_in_as_admin
     @users = load_all_users_details
     @roles = tournament_roles
-    @show = params[:show]
     erb :admin
   end
 end

@@ -1,16 +1,28 @@
+<% role_camel = camelcase(locals[:role], :upper) %>
+<% selected = locals[:selected] %>
+<% picked = selected > 0 %>
 <form class="form-tournament-role" method="post" action="/tournament_role">
-  <div class="row mb-3">
-    <label class="col-sm-6 col-form-label text-sm-end" for="tournamentRole<%== @role_camel %>">
-      <%== @role %>
+  <% format_not_picked = "fst-italic fw-light text-body-tertiary" %>
+  <% format_picked = "fw-bold text-primary-emphasis" %>
+  <% formatting = picked ? format_picked : format_not_picked %>
+  <div class="row mb-3 <%== formatting %>">
+    <label class="col-sm-6 col-form-label text-sm-end" for="tournamentRole<%== role_camel %>">
+      <%== locals[:role] %>
     </label>
     <div class="col-sm-6">
-      <select class="form-select js-tournament-role-select" name="team" id="tournamentRole<%== @role_camel %>">
-        <option value="0"<%== " selected" if @selected == 0 %>>Not yet selected</option>
-        <% @teams.filter{ |t| t[:team_id] > 0 }.each do |t| %>
-        <option value="<%== t[:team_id] %>"<%== " selected" if t[:team_id] == @selected %>><%== t[:team] %></option>
+      <select class="form-select tournament-role-select" name="team" id="tournamentRole<%== role_camel %>">
+        <option value="0" class="<%== format_not_picked %>"<%== " selected" if !picked %>>Not yet selected</option>
+        <% locals[:teams].filter{ |t| t[:team_id] > 0 }.each do |t| %>
+        <% id = t[:team_id] %>
+        <% attributes = "" %>
+        <% attributes += " selected" if id == selected %>
+        <% attributes += " disabled" if t[:disabled] %>
+        <option value="<%== id %>"<%== attributes %>>
+          <%== t[:team_name] %>
+        </option>
         <% end %>
       </select>
-      <input type="hidden" name="role" value="<%== @id %>">
+      <input type="hidden" name="role" value="<%== locals[:id] %>">
       <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
     </div>
   </div>

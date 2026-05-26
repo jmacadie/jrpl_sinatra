@@ -35,6 +35,7 @@ async function postJsonForm(form) {
     const content = await response.json();
     const messageType = response.ok && content.status === 'success' ? 'info' : 'danger';
     showAlertMessage(content.message, messageType);
+    return content;
   } catch (error) {
     showAlertMessage('Something went wrong :(\n\n' + error.message, 'danger');
   }

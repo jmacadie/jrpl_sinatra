@@ -14,17 +14,16 @@ class App < Sinatra::Application
       return { status: 'danger', message: error }.to_json
     end
 
-    name = tournament_role_name(role)
-    if team == 0
-      reset_tournament_role(role)
-      message = "#{name} reset"
-    else
-      set_tournament_role(role, team)
-      team_name = team_name(team)
-      message = "#{name} set to #{team_name}"
-    end
+    message, reset = update_data(role, team)
     content_type :json
-    { message: message, status: 'success' }.to_json
+    { message: message,
+      status: 'success',
+      reset: reset }.to_json
+  rescue PG::UniqueViolation
+    content_type :json
+    status 422
+    return { status: 'danger',
+             message: team_already_selected_message(team) }.to_json
   end
 
   private
@@ -35,7 +34,25 @@ class App < Sinatra::Application
     return "Invalid team number: #{team}" if team.negative? || team > numbers[0]
     return "Invalid role number: #{role}" if
       role <= numbers[0] || role > numbers[1]
+    return team_already_selected_message(team) if
+      team.positive? && tournament_role_team_selected_in_stage?(role, team)
 
     nil
+  end
+
+  def team_already_selected_message(team)
+    "#{team_name(team)} is already selected for this stage"
+  end
+
+  def update_data(role, team)
+    name = tournament_role_name(role)
+    if team == 0
+      reset_tournament_role(role)
+      return "#{name} reset", true
+    end
+
+    set_tournament_role(role, team)
+    team_name = team_name(team)
+    return "#{name} set to #{team_name}", false
   end
 end

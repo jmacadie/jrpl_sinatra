@@ -143,3 +143,7 @@ CREATE TABLE points (
 ALTER TABLE tournament_role
 ADD FOREIGN KEY (from_match_id)
 REFERENCES match(match_id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE UNIQUE INDEX tournament_role_stage_team_idx
+ON tournament_role (stage_id, team_id)
+WHERE team_id IS NOT NULL;

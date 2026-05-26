@@ -13,12 +13,12 @@ class CMSTest < Minitest::Test
     assert_includes body_text, 'Tournament Roles'
     assert_includes body_text, 'Round of 16'
     assert_includes body_html,
-                    '<form class="form-tournament-role d-flex ' \
-                    'align-items-end gap-2 flex-wrap" ' \
+                    '<form class="form-tournament-role" ' \
                     'method="post" action="/tournament_role">'
-    assert_includes body_html, 'js-tournament-role-select'
+    assert_includes body_html, 'tournament-role-select'
     assert_includes body_html,
-                    '<option value="0" selected>Not yet selected</option>'
+                    '<option value="0" class="fst-italic fw-light ' \
+                    'text-body-tertiary" selected>Not yet selected</option>'
     assert_includes body_html, '<input type="hidden" name="role" value="25">'
   end
   # rubocop: enable Metrics/AbcSize
@@ -49,6 +49,7 @@ class CMSTest < Minitest::Test
     refute_includes body_text, 'Switzerland vs. Winner Group E'
   end
 
+  # rubocop: disable Metrics/MethodLength
   def test_post_tournament_roles_admin
     get '/fixtures', {}, admin_session
     post '/fixtures', { st_r16: 'on', authenticity_token: csrf_token }
@@ -63,7 +64,8 @@ class CMSTest < Minitest::Test
     assert_equal(
       {
         'message' => 'Winner Group A set to Switzerland',
-        'status' => 'success'
+        'status' => 'success',
+        'reset' => false
       },
       JSON.parse(last_response.body)
     )
@@ -73,7 +75,7 @@ class CMSTest < Minitest::Test
     refute_includes body_text, 'Winner Group A'
     assert_includes body_text, 'Switzerland vs. Winner Group E'
   end
-  # rubocop: enable Metrics/AbcSize
+  # rubocop: enable Metrics/AbcSize, Metrics/MethodLength
 
   def test_set_and_unset_tournament_roles
     get '/admin', {}, admin_session
@@ -88,6 +90,40 @@ class CMSTest < Minitest::Test
     assert_includes body_text, 'Winner Group A'
     refute_includes body_text, 'Switzerland vs. Winner Group E'
   end
+
+  # rubocop: disable Metrics/MethodLength, Metrics/AbcSize
+  def test_post_tournament_roles_duplicate_team_in_stage
+    get '/admin', {}, admin_session
+    post '/tournament_role',
+         { role: '25', team: '4', authenticity_token: csrf_token }
+    get '/admin', {}, admin_session
+    post '/tournament_role',
+         { role: '26', team: '4', authenticity_token: csrf_token }
+
+    assert_equal 422, last_response.status
+    assert_equal 'application/json', last_response['Content-Type']
+    assert_equal(
+      {
+        'status' => 'danger',
+        'message' => 'Switzerland is already selected for this stage'
+      },
+      JSON.parse(last_response.body)
+    )
+
+    assert_equal 4,
+                 run_query(
+                   'SELECT team_id FROM tournament_role ' \
+                   'WHERE tournament_role_id = $1::int;',
+                   25
+                 ).first['team_id'].to_i
+    assert_equal 0,
+                 run_query(
+                   'SELECT team_id FROM tournament_role ' \
+                   'WHERE tournament_role_id = $1::int;',
+                   26
+                 ).first['team_id'].to_i
+  end
+  # rubocop: enable Metrics/MethodLength, Metrics/AbcSize
 
   def test_post_tournament_roles_role_too_low
     get '/admin', {}, admin_session
