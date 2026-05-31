@@ -8,14 +8,7 @@
   </thead>
   <tbody>
     <% locals[:table].each do |user_data|%>
-      <tr>
-        <td><%== user_data[:rank] %></td>
-        <td><%== user_data[:user_name] %></td>
-        <td><%== points_for_print(user_data[:result_points]) %></td>
-        <td><%== points_for_print(user_data[:score_points]) %></td>
-        <td><%== points_for_print(user_data[:total_points]) %></td>
-      </tr>
+      <%== erb :'tables/table_row', locals: { user_data: user_data } %>
     <% end %>
   </tbody>
 </table>
-

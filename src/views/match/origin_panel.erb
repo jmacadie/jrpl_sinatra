@@ -1,0 +1,23 @@
+<div class="<%== locals[:row_class] %>">
+  <% locals[:panels].each do |panel| %>
+  <div class="<%== panel[:column_class] %>">
+    <div id="<%== panel[:id] %>" class="collapse">
+      <div class="border rounded p-3">
+        <a href="../match/<%== panel[:origin][:match_id] %>" class="text-decoration-none text-body">
+          <div class="text-center mb-2"><strong><%== panel[:origin][:stage] %></strong></div>
+          <div class="row g-2 small align-items-center">
+            <div class="col-3 text-end"><span class="<%== flag_css(panel[:origin][:home_team_short_name], true) %>"></span></div>
+            <div class="col-6"><%== panel[:origin][:home_team] %></div>
+            <div class="col-3"><%== panel[:origin][:home_team_points] %></div>
+          </div>
+          <div class="row g-2 small align-items-center">
+            <div class="col-3 text-end"><span class="<%== flag_css(panel[:origin][:away_team_short_name], true) %>"></span></div>
+            <div class="col-6"><%== panel[:origin][:away_team] %></div>
+            <div class="col-3"><%== panel[:origin][:away_team_points] %></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>

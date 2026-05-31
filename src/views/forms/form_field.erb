@@ -1,0 +1,11 @@
+<input type="<%== locals[:type] || 'text' %>"
+       class="form-control"
+       id="<%== locals[:id] %>"
+       name="<%== locals[:name] || locals[:id] %>"
+       <% if locals[:placeholder] %>
+       placeholder="<%== locals[:placeholder] %>"
+       <% end %>
+       <% if locals.key?(:value) %>
+       value="<%== locals[:value] %>"
+       <% end %>
+       <%== 'required' if locals[:required] %><%== ' autofocus' if locals[:autofocus] %>>

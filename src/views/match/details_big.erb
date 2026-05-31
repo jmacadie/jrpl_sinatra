@@ -6,16 +6,8 @@
     <span class="lead"><%== home_name(@match) %></span>
     <% if origin?(@match) %>
     <br />
-    <button
-      id="btnHomeOrigin"
-      type="button"
-      class="btn btn-info btn-sm"
-      data-bs-toggle="collapse"
-      data-bs-target="#homeOrigin"
-      aria-expanded="false"
-      aria-controls="homeOrigin">
-      Show Origin
-    </button>
+    <%== erb :'match/origin_button',
+             locals: { id: 'btnHomeOrigin', target: 'homeOrigin' } %>
     <% end %>
   </div>
   <div class="col-sm-1 text-center lead">
@@ -29,16 +21,8 @@
     <span><%== away_name(@match) %></span>
     <% if origin?(@match) %>
     <br />
-    <button
-      id="btnAwayOrigin"
-      type="button"
-      class="btn btn-info btn-sm"
-      data-bs-toggle="collapse"
-      data-bs-target="#awayOrigin"
-      aria-expanded="false"
-      aria-controls="awayOrigin">
-      Show Origin
-    </button>
+    <%== erb :'match/origin_button',
+             locals: { id: 'btnAwayOrigin', target: 'awayOrigin' } %>
     <% end %>
   </div>
   <div class="col-sm-2 text-center">
@@ -46,44 +30,16 @@
   </div>
 </div>
 <% if origin?(@match) %>
-<div class="row d-none d-sm-flex text-start mt-3">
-  <div class="col-sm-5">
-    <div id="homeOrigin" class="collapse">
-      <div class="border rounded p-3">
-        <a href="../match/<%== @origin[:ht_match_id] %>" class="text-decoration-none text-body">
-          <div class="text-center mb-2"><strong><%== @origin[:ht_stage] %></strong></div>
-          <div class="row g-2 small align-items-center">
-            <div class="col-3 text-end"><span class="<%== flag_css(@origin[:ht_home_team_s], true) %>"></span></div>
-            <div class="col-6"><%== @origin[:ht_home_team] %></div>
-            <div class="col-3"><%== @origin[:ht_home_team_points] %></div>
-          </div>
-          <div class="row g-2 small align-items-center">
-            <div class="col-3 text-end"><span class="<%== flag_css(@origin[:ht_away_team_s], true) %>"></span></div>
-            <div class="col-6"><%== @origin[:ht_away_team] %></div>
-            <div class="col-3"><%== @origin[:ht_away_team_points] %></div>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-5 offset-sm-2">
-    <div id="awayOrigin" class="collapse">
-      <div class="border rounded p-3">
-        <a href="../match/<%== @origin[:at_match_id] %>" class="text-decoration-none text-body">
-          <div class="text-center mb-2"><strong><%== @origin[:at_stage] %></strong></div>
-          <div class="row g-2 small align-items-center">
-            <div class="col-3 text-end"><span class="<%== flag_css(@origin[:at_home_team_s], true) %>"></span></div>
-            <div class="col-6"><%== @origin[:at_home_team] %></div>
-            <div class="col-3"><%== @origin[:at_home_team_points] %></div>
-          </div>
-          <div class="row g-2 small align-items-center">
-            <div class="col-3 text-end"><span class="<%== flag_css(@origin[:at_away_team_s], true) %>"></span></div>
-            <div class="col-6"><%== @origin[:at_away_team] %></div>
-            <div class="col-3"><%== @origin[:at_away_team_points] %></div>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
+<%== erb :'match/origin_panel',
+         locals: {
+           row_class: 'row d-none d-sm-flex text-start mt-3',
+           panels: [
+             { column_class: 'col-sm-5',
+               id: 'homeOrigin',
+               origin: origin_details(@origin, 'ht') },
+             { column_class: 'col-sm-5 offset-sm-2',
+               id: 'awayOrigin',
+               origin: origin_details(@origin, 'at') }
+           ]
+         } %>
 <% end %>

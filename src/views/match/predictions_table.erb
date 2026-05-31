@@ -9,11 +9,8 @@
   </thead>
   <tbody>
     <% @predictions.each do |prediction| %>
-    <tr>
-      <td><%== prediction[:user] %></td>
-      <td><%== prediction_for_print(prediction) %></td>
-      <td><%== prediction_points_for_print(prediction) %></td>
-    </tr>
+      <%== erb :'match/predictions_table_row',
+               locals: { prediction: prediction } %>
     <% end %>
   </tbody>
 </table>

@@ -4,7 +4,8 @@
            type="checkbox"
            value="<%== locals[:user][:user_id] %>"
            id="user_<%== locals[:user][:user_id] %>"
-           <%== 'checked' if locals[:user][:user_id] == session[:user_id] %>>
+           <%== checked_if(locals[:user][:user_id],
+                            expected: session[:user_id]) %>>
     <label class="form-check-label" for="user_<%== locals[:user][:user_id] %>">
       <%== locals[:user][:user_name] %>
     </label>

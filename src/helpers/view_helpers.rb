@@ -64,6 +64,43 @@ module ViewHelpers
     match[:away_score] || ''
   end
 
+  def authenticity_token
+    Rack::Protection::AuthenticityToken.token(env['rack.session'])
+  end
+
+  def checked_if(actual, expected: true)
+    attribute_if(actual == expected, ' checked')
+  end
+
+  def selected_if(actual, expected: true)
+    attribute_if(actual == expected, ' selected')
+  end
+
+  def disabled_if(condition)
+    attribute_if(condition, ' disabled')
+  end
+
+  def active_if(actual, expected)
+    attribute_if(actual == expected, ' active')
+  end
+
+  def attribute_if(condition, attribute)
+    condition ? attribute : nil
+  end
+
+  def origin_details(origin, prefix)
+    {
+      match_id: origin[:"#{prefix}_match_id"],
+      stage: origin[:"#{prefix}_stage"],
+      home_team_short_name: origin[:"#{prefix}_home_team_s"],
+      home_team: origin[:"#{prefix}_home_team"],
+      home_team_points: origin[:"#{prefix}_home_team_points"],
+      away_team_short_name: origin[:"#{prefix}_away_team_s"],
+      away_team: origin[:"#{prefix}_away_team"],
+      away_team_points: origin[:"#{prefix}_away_team_points"]
+    }
+  end
+
   def match_locked_down?(match)
     match_date_time = "#{match[:match_date]} #{match[:kick_off]}"
     (Time.now + App::LOCKDOWN_BUFFER) > Time.parse(match_date_time)

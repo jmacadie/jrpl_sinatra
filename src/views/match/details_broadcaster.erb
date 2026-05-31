@@ -3,14 +3,14 @@
   <div>
     <select class="form-select" name="broadcaster" id="broadcaster">
       <% @broadcasters.each do |b| %>
-        <option value="<%== b[:id] %>"<%== " selected" if b[:name] == @match[:broadcaster] %>>
+        <option value="<%== b[:id] %>"<%== selected_if(b[:name], expected: @match[:broadcaster]) %>>
           <%== b[:name] %>
         </option>
       <% end %>
     </select>
   </div>
   <input type="hidden" name="match_id" value="<%== @match[:match_id] %>" />
-  <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
+  <%== erb :'forms/authenticity_token' %>
 </form>
 <% else %>
 <%== @match[:broadcaster] %>

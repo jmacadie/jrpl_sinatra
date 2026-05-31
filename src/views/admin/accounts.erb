@@ -30,40 +30,7 @@
           </thead>
           <tbody>
             <% @users.each do |user| %>
-              <tr>
-                <td><%== user[:user_name] %></td>
-                <td><%== user[:email] %></td>
-                <td>
-                  <form class="d-inline reset-pword" action="/users/reset_pword" method="post">
-                    <input type="hidden" name="user_name" value="<%== user[:user_name] %>"/>
-                    <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-                    <button class="btn btn-sm btn-outline-secondary" type="submit">Reset</button>
-                  </form>
-                </td>
-                <td><%== user[:roles] %></td>
-                <td>
-                  <form class="d-inline toggle-admin" action="/users/toggle_admin" method="post">
-                    <input type="hidden" name="user_id" value="<%== user[:user_id] %>"/>
-                    <% if user[:roles]&.include?('Admin') %>
-                      <input type="hidden" name="button" value="revoke_admin"/>
-                      <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-                      <button class="btn btn-sm btn-outline-warning" type="submit">Revoke</button>
-                    <% else %>
-                      <input type="hidden" name="button" value="grant_admin"/>
-                      <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-                      <button class="btn btn-sm btn-outline-success" type="submit">Grant</button>
-                    <% end %>
-                  </form>
-                </td>
-                <td>
-                  <form class="d-inline delete-user" method="post" action="/users/delete">
-                    <input type="hidden" name="user_name" value="<%== user[:user_name] %>"/>
-                    <input type="hidden" name="user_id" value="<%== user[:user_id] %>"/>
-                    <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-                    <button class="btn btn-sm btn-outline-danger" type="submit">CYA</button>
-                  </form>
-                </td>
-              </tr>
+              <%== erb :'admin/account_row', locals: { user: user } %>
             <% end %>
           </tbody>
         </table>

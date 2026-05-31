@@ -2,44 +2,28 @@
   <h2 class="form-login-heading">Create a new account</h2>
   <p>Provide a username (you will be referred to as this by the website) and an e-mail</p>
   <div id="logInMessage"></div>
-  <input type="text"
-         class="form-control"
-         id="user_name"
-         name="user_name"
-         placeholder="Username"
-         required
-         autofocus>
-  <input type="text"
-         class="form-control"
-         id="email"
-         name="email"
-         placeholder="E-mail address"
-         required>
-  <input type="password"
-         class="form-control"
-         id="pword"
-         name="pword"
-         placeholder="Password"
-         required>
-  <input type="password"
-         class="form-control"
-         id="reenter_pword"
-         name="reenter_pword"
-         placeholder="Re-enter Password"
-         required>
-  <input type="text"
-         class="form-control"
-         id="bot_check"
-         name="bot_check"
-         placeholder="Stop the bots: enter THE four letters"
-         required>
-  <div class="form-check mb-3">
-    <input class="form-check-input"
-           type="checkbox"
-           id="remember_me"
-           name="remember_me">
-    <label class="form-check-label" for="remember_me">Remember me</label>
-  </div>
-  <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-  <button class="btn btn-lg btn-primary w-100" type="submit" id="logInBtn">Sign Up</button>
+  <%== erb :'forms/form_field',
+           locals: { id: 'user_name',
+                     placeholder: 'Username',
+                     required: true,
+                     autofocus: true } %>
+  <%== erb :'forms/form_field',
+           locals: { id: 'email',
+                     placeholder: 'E-mail address',
+                     required: true } %>
+  <%== erb :'forms/password_field',
+           locals: { id: 'pword',
+                     placeholder: 'Password',
+                     required: true } %>
+  <%== erb :'forms/password_field',
+           locals: { id: 'reenter_pword',
+                     placeholder: 'Re-enter Password',
+                     required: true } %>
+  <%== erb :'forms/form_field',
+           locals: { id: 'bot_check',
+                     placeholder: 'Stop the bots: enter THE four letters',
+                     required: true } %>
+  <%== erb :'forms/remember_me' %>
+  <%== erb :'forms/authenticity_token' %>
+  <%== erb :'forms/submit_button', locals: { label: 'Sign Up' } %>
 </form>
