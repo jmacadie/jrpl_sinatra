@@ -26,17 +26,17 @@
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
               <form class="signout" method="post" action="/users/signout">
-                <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
+                <%== erb :'forms/authenticity_token' %>
                 <button type="submit" class="dropdown-item">Sign Out</button>
               </form>
             </li>
             <li><a class="dropdown-item" href="/users/edit_credentials">Edit Details</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a class="nav-link<%== ' active' if page == 'fixtures' %>" href="/fixtures">Fixtures</a></li>
-        <li class="nav-item"><a class="nav-link<%== ' active' if page == 'tables' %>" href="/tables">Tables</a></li>
-        <li class="nav-item"><a class="nav-link<%== ' active' if page == 'graphs' %>" href="/graphs">Graphs</a></li>
-        <li class="nav-item"><a class="nav-link<%== ' active' if page == 'rules' %>" href="/rules">Rules</a></li>
+        <li class="nav-item"><a class="nav-link<%== active_if(page, 'fixtures') %>" href="/fixtures">Fixtures</a></li>
+        <li class="nav-item"><a class="nav-link<%== active_if(page, 'tables') %>" href="/tables">Tables</a></li>
+        <li class="nav-item"><a class="nav-link<%== active_if(page, 'graphs') %>" href="/graphs">Graphs</a></li>
+        <li class="nav-item"><a class="nav-link<%== active_if(page, 'rules') %>" href="/rules">Rules</a></li>
         <% else %>
         <li class="nav-item"><a class="nav-link" href="/users/signin">Sign In</a></li>
         <li class="nav-item"><a class="nav-link" href="/users/signup">Create Account</a></li>

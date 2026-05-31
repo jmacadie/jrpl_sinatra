@@ -1,0 +1,9 @@
+<div class="form-check mb-2">
+  <input
+    class="form-check-input"
+    type="checkbox"
+    id="<%== locals[:id] %>"
+    name="<%== locals[:name] %>"
+    <%== checked_if(locals[:checked]) %>>
+  <label class="form-check-label" for="<%== locals[:id] %>"><%== locals[:label] %></label>
+</div>

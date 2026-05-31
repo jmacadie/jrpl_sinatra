@@ -1,22 +1,16 @@
 <form class="form-login" role="form" method="post" action="/users/signin">
   <h2 class="form-login-heading">Please log in</h2>
   <div id="logInMessage"></div>
-  <input type="text"
-         class="form-control"
-         id="login"
-         name="login"
-         placeholder="Username / E-mail address"
-         required autofocus>
-  <input type="password"
-         class="form-control"
-         id="pword"
-         name="pword"
-         placeholder="Password"
-         required>
-  <div class="form-check mb-3">
-    <input class="form-check-input" type="checkbox" id="remember_me" name="remember_me">
-    <label class="form-check-label" for="remember_me">Remember me</label>
-  </div>
-  <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
-  <button class="btn btn-lg btn-primary w-100" type="submit" id="logInBtn">Log in</button>
+  <%== erb :'forms/form_field',
+           locals: { id: 'login',
+                     placeholder: 'Username / E-mail address',
+                     required: true,
+                     autofocus: true } %>
+  <%== erb :'forms/password_field',
+           locals: { id: 'pword',
+                     placeholder: 'Password',
+                     required: true } %>
+  <%== erb :'forms/remember_me' %>
+  <%== erb :'forms/authenticity_token' %>
+  <%== erb :'forms/submit_button', locals: { label: 'Log in' } %>
 </form>

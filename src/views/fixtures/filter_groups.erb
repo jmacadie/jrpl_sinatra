@@ -6,7 +6,7 @@
         type="checkbox"
         id="ckbGroupStage"
         name="st_gr"
-        <%== 'checked' if session[:criteria][:stages][:group] %>>
+        <%== checked_if(session[:criteria][:stages][:group]) %>>
       <label class="form-check-label fw-semibold" for="ckbGroupStage">
         Group Stage
       </label>
@@ -44,18 +44,10 @@
         'K' => 'Portugal, DR Congo, Uzbekistan, Colombia',
         'L' => 'England, Croatia, Ghana, Panama'
       }.each do |group, teams| %>
-        <div class="form-check mb-2">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            id="ckbGroup<%== group %>"
-            name="gr_<%== group %>"
-            <%== 'checked' if session[:criteria][:groups][group.to_sym] %>>
-          <label class="form-check-label" for="ckbGroup<%== group %>">
-            <strong>Group <%== group %></strong><br>
-            <%== teams %>
-          </label>
-        </div>
+        <%== erb :'fixtures/filter_group_checkbox',
+                 locals: { group: group,
+                           teams: teams,
+                           checked: session[:criteria][:groups][group.to_sym] } %>
       <% end %>
     </div>
   </div>

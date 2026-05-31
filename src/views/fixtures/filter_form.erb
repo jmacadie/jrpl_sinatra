@@ -18,31 +18,19 @@
       data-bs-parent="#accordionFilters">
       <div class="accordion-body">
         <form class="filter_form" action="/fixtures" method="post">
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="ckbPlayedMatches"
-              name="exc_play"
-              <%== 'checked' if session[:criteria][:exclude_played] %>>
-            <label class="form-check-label" for="ckbPlayedMatches">
-              Exclude played matches
-            </label>
-          </div>
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="ckbPredictedMatches"
-              name="exc_pred"
-              <%== 'checked' if session[:criteria][:exclude_predicted] %>>
-            <label class="form-check-label" for="ckbPredictedMatches">
-              Exclude predicted matches
-            </label>
-          </div>
+          <%== erb :'fixtures/filter_checkbox',
+                   locals: { id: 'ckbPlayedMatches',
+                             name: 'exc_play',
+                             checked: session[:criteria][:exclude_played],
+                             label: 'Exclude played matches' } %>
+          <%== erb :'fixtures/filter_checkbox',
+                   locals: { id: 'ckbPredictedMatches',
+                             name: 'exc_pred',
+                             checked: session[:criteria][:exclude_predicted],
+                             label: 'Exclude predicted matches' } %>
           <hr>
           <%== erb :'fixtures/filter_stages' %>
-          <input type="hidden" name="authenticity_token" value="<%== Rack::Protection::AuthenticityToken.token(env['rack.session']) %>" />
+          <%== erb :'forms/authenticity_token' %>
           <button class="btn btn-lg btn-primary w-100" type="submit" id="btnUpdateMatches">Update</button>
         </form>
       </div>
