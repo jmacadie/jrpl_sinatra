@@ -1,4 +1,4 @@
-require_relative '../db/tournament_roles'
+require_relative '../repositories/tournament_roles'
 
 class App < Sinatra::Application
   include DBTournamentRoles

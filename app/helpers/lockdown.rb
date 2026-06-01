@@ -1,6 +1,6 @@
-require_relative '../db/emails'
-require_relative '../db/matches'
-require_relative '../db/match_predictions'
+require_relative '../repositories/emails'
+require_relative '../repositories/matches'
+require_relative '../repositories/match_predictions'
 
 module Lockdown
   include DBEmails

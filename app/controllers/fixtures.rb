@@ -1,4 +1,4 @@
-require_relative '../db/matches_full'
+require_relative '../repositories/matches_full'
 
 class App < Sinatra::Application
   include DBMatchesFull

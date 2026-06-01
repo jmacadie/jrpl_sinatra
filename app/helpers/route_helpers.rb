@@ -1,4 +1,4 @@
-require_relative '../db/matches'
+require_relative '../repositories/matches'
 
 module RouteHelpers
   extend DBMatches

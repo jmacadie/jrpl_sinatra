@@ -1,5 +1,5 @@
-require_relative '../db/match_predictions'
-require_relative '../db/predictions'
+require_relative '../repositories/match_predictions'
+require_relative '../repositories/predictions'
 
 module MrMen
   include DBMatchPredictions

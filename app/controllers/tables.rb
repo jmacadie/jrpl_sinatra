@@ -1,4 +1,4 @@
-require_relative '../db/points'
+require_relative '../repositories/points'
 
 class App < Sinatra::Application
   include DBPoints
