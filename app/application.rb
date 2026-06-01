@@ -9,7 +9,12 @@ require 'sinatra/cookies'
 require 'tilt/erubi'
 require 'yaml'
 
-# Load up all helpers first
+# Load application services before helpers and controllers
+Dir["#{File.expand_path(__dir__)}/services/**/*.rb"].each do |file|
+  require file
+end
+
+# Load up all helpers
 Dir["#{File.expand_path(__dir__)}/helpers/**/*.rb"].each do |file|
   require file
 end

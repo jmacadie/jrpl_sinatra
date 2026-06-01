@@ -33,6 +33,11 @@ module RouteHelpers
     { date: lockdown_date, time: lockdown_time }
   end
 
+  def match_locked_down?(match)
+    match_date_time = "#{match[:match_date]} #{match[:kick_off]}"
+    (Time.now + App::LOCKDOWN_BUFFER) > Time.parse(match_date_time)
+  end
+
   def set_criteria_to_all_matches
     { match_status: 'all',
       prediction_status: 'all',
