@@ -40,6 +40,21 @@ class CMSTest < Minitest::Test
     refute_includes body_text, '99'
   end
 
+  def test_add_result_keeps_ring_navigation
+    ring = Ring.new(match_ids: [1, 3, 4], match_id: 3).to_s
+    get "/match/3?ring=#{ring}", {}, admin_session
+    post '/match/add_result',
+         { match_id: '3',
+           home_score: '98',
+           away_score: '99',
+           ring:,
+           authenticity_token: csrf_token },
+         admin_session
+
+    assert_equal 302, last_response.status
+    assert_includes last_response['Location'], '/match/3?ring='
+  end
+
   # rubocop: disable Metrics/MethodLength
   def test_change_result
     get '/match/2', {}, admin_session

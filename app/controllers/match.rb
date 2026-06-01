@@ -41,18 +41,18 @@ class App < Sinatra::Application
   post '/match/add_result' do
     require_signed_in_as_admin
     match_id = params[:match_id].to_i
-    home_score = params[:home_score].to_f
-    away_score = params[:away_score].to_f
-    load_match_details(match_id)
-    return render_match(match_id) unless validate_result?(home_score,
-                                                          away_score)
-    home_score = home_score.to_i
-    away_score = away_score.to_i
-    add_result(
-      match_id, home_score, away_score, session[:user_id]
-    )
-    update_scoreboard(match_id, home_score, away_score)
-    send_result_email(match_id)
+    home_score = params[:home_score]
+    away_score = params[:away_score]
+    result = MatchResultService.new(
+      match_id:,
+      home_score:,
+      away_score:,
+      user_id: session[:user_id],
+      operations: MatchResultOperations.new(self)
+    ).call
+    return render_result_error(match_id, result) unless result.success?
+
+    load_ring
     session[:message] = 'Result submitted'
     session[:message_level] = 'success'
     redirect redirect_url(match_id)
@@ -104,14 +104,11 @@ class App < Sinatra::Application
     true
   end
 
-  def validate_result?(home, away)
-    session[:message] = match_result_error(@match, home, away)
-    if session[:message]
-      session[:message_level] = 'danger'
-      status 422
-      return false
-    end
-    true
+  def render_result_error(match_id, result)
+    session[:message] = result.message
+    session[:message_level] = 'danger'
+    status 422
+    render_match(match_id)
   end
 
   def redirect_url(match_id, move_next: false)

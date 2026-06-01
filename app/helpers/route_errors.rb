@@ -1,23 +1,4 @@
 module RouteErrors
-  def match_result_type_error(home_points, away_points)
-    error = []
-    error << 'integers' if
-      not_integer?(home_points) || not_integer?(away_points)
-    error << 'non-negative' if
-      home_points < 0 || away_points < 0
-    return nil if error.empty?
-    "Match results must be #{error.join(' and ')}."
-  end
-
-  def match_result_error(match, home_points, away_points)
-    if match_locked_down?(match)
-      match_result_type_error(home_points, away_points)
-    else
-      'You cannot add or change the match result because ' \
-        'this match has not yet been played.'
-    end
-  end
-
   def not_integer?(num)
     !(num.floor - num).zero?
   end
