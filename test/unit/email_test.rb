@@ -1,5 +1,5 @@
 require_relative '../helpers/test_helpers'
-require "#{App.settings.src}/helpers/email"
+require_relative '../../app/helpers/email'
 
 class CMSTest < Minitest::Test
   include Email

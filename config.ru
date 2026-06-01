@@ -1,2 +1,2 @@
-require_relative 'src/app'
+require_relative 'app/application'
 run App
