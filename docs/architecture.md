@@ -38,17 +38,22 @@ Routes are usually short. They validate access, load the relevant data, set a sm
 
 ### Helpers
 
-Shared behaviour lives under [`app/helpers`](../app/helpers). These modules provide the non-HTTP logic that controllers depend on:
+Route and view helper behaviour lives under [`app/helpers`](../app/helpers). These modules provide request/session support for controllers and presentation helpers for ERB:
 
 - [`auth.rb`](../app/helpers/auth.rb): login state, account validation, admin checks
 - [`login_cookies.rb`](../app/helpers/login_cookies.rb): remember-me cookies and token rotation
 - [`route_helpers.rb`](../app/helpers/route_helpers.rb): fixture criteria and lockdown timing
 - [`route_errors.rb`](../app/helpers/route_errors.rb): user-facing validation messages
-- [`scoring.rb`](../app/helpers/scoring.rb): official points calculation
-- [`lockdown.rb`](../app/helpers/lockdown.rb): lock-window checks and notifications
-- [`email.rb`](../app/helpers/email.rb): Pony integration and environment-specific mail config
 - [`view_helpers.rb`](../app/helpers/view_helpers.rb): display formatting for ERB
-- [`ring.rb`](../app/helpers/ring.rb): compact match navigation token
+
+Application services and utilities live under [`app/services`](../app/services):
+
+- [`query.rb`](../app/services/query.rb): PostgreSQL connection and query helpers used by repositories
+- [`scoring.rb`](../app/services/scoring.rb): official points calculation
+- [`lockdown.rb`](../app/services/lockdown.rb): lock-window checks and notifications
+- [`email.rb`](../app/services/email.rb): Pony integration and environment-specific mail config
+- [`mr_men.rb`](../app/services/mr_men.rb): aggregate Mr Mean, Mr Median, and Mr Mode predictions
+- [`ring.rb`](../app/services/ring.rb): compact match navigation token
 
 This split keeps controllers focused on orchestration while the reusable rules stay in one place.
 

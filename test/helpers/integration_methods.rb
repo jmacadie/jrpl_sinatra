@@ -1,6 +1,6 @@
 require 'rack/test'
 require_relative 'sessions'
-require_relative '../../app/helpers/query'
+require_relative '../../app/services/query'
 
 module TestIntegrationMethods
   include Rack::Test::Methods
