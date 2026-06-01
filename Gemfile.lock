@@ -116,8 +116,6 @@ GEM
     rubocop-rake (0.7.1)
       lint_roller (~> 1.1)
       rubocop (>= 1.72.1)
-    ruby-debug-ide (0.7.5)
-      rake (>= 0.8.1)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
     simplecov (0.22.0)
@@ -175,7 +173,6 @@ DEPENDENCIES
   rubocop
   rubocop-minitest
   rubocop-rake
-  ruby-debug-ide
   securerandom
   simplecov
   sinatra
