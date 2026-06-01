@@ -23,6 +23,17 @@ class App < Sinatra::Application
   # Constant definitions
   LOCKDOWN_BUFFER = 30 * 60 # 30 minutes
 
+  helpers DatabaseHelpers
+  helpers Email
+  helpers Lockdown
+  helpers Loginable
+  helpers LoginCookies
+  helpers RouteErrors
+  helpers RouteHelpers
+  helpers MrMen
+  helpers Scoring
+  helpers ViewHelpers
+
   configure do
     # rubocop:disable Layout/SpaceBeforeComma, Layout/ExtraSpacing
     enable :sessions
@@ -37,7 +48,6 @@ class App < Sinatra::Application
     set :public_folder , "#{settings.root}/public"
     set :config        , "#{settings.root}/config"
     set :views         , "#{settings.src}/views"
-    set :helpers       , "#{settings.src}/helpers"
     set :tests         , "#{settings.root}/test"
     # rubocop:enable Layout/SpaceBeforeComma, Layout/ExtraSpacing
 
@@ -74,18 +84,6 @@ class App < Sinatra::Application
   end
 
   before do
-    # Add in all the helper modules
-    extend DatabaseHelpers
-    extend Email
-    extend Lockdown
-    extend Loginable
-    extend LoginCookies
-    extend RouteErrors
-    extend RouteHelpers
-    extend MrMen
-    extend Scoring
-    extend ViewHelpers
-
     check_lockdown()
   end
 end
