@@ -4,9 +4,9 @@ JRPL is a Sinatra application backed by PostgreSQL. The codebase is organised ar
 
 ## Boot Sequence
 
-The Rack entrypoint is [`config.ru`](../config.ru), which loads [`src/app.rb`](../src/app.rb) and runs `App`.
+The Rack entrypoint is [`config.ru`](../config.ru), which loads [`app/application.rb`](../app/application.rb) and runs `App`.
 
-`src/app.rb` does the framework setup:
+`app/application.rb` does the framework setup:
 
 - enables sessions and CSRF protection
 - sets the app paths for views, helpers, config, tests, and public assets
@@ -22,56 +22,56 @@ The app boot path is intentionally simple. Most behaviour is pushed into helper 
 
 ### Routes
 
-Controllers under [`src/controllers`](../src/controllers) define Sinatra routes for the major screens and actions:
+Controllers under [`app/controllers`](../app/controllers) define Sinatra routes for the major screens and actions:
 
-- [`home.rb`](../src/controllers/home.rb): homepage and fallback redirect
-- [`users.rb`](../src/controllers/users.rb): sign in, sign out, sign up, and account changes
-- [`match.rb`](../src/controllers/match.rb): match details, predictions, results, and broadcaster updates
-- [`fixtures.rb`](../src/controllers/fixtures.rb): fixture filtering and session-backed criteria
-- [`tables.rb`](../src/controllers/tables.rb): scoreboard tables
-- [`graphs.rb`](../src/controllers/graphs.rb): cumulative points graphs
-- [`rules.rb`](../src/controllers/rules.rb): rules page
-- [`admin.rb`](../src/controllers/admin.rb): admin dashboard
-- [`tournament_role.rb`](../src/controllers/tournament_role.rb): tournament role assignment
+- [`home.rb`](../app/controllers/home.rb): homepage and fallback redirect
+- [`users.rb`](../app/controllers/users.rb): sign in, sign out, sign up, and account changes
+- [`match.rb`](../app/controllers/match.rb): match details, predictions, results, and broadcaster updates
+- [`fixtures.rb`](../app/controllers/fixtures.rb): fixture filtering and session-backed criteria
+- [`tables.rb`](../app/controllers/tables.rb): scoreboard tables
+- [`graphs.rb`](../app/controllers/graphs.rb): cumulative points graphs
+- [`rules.rb`](../app/controllers/rules.rb): rules page
+- [`admin.rb`](../app/controllers/admin.rb): admin dashboard
+- [`tournament_role.rb`](../app/controllers/tournament_role.rb): tournament role assignment
 
 Routes are usually short. They validate access, load the relevant data, set a small number of instance variables, and render an ERB template or redirect.
 
 ### Helpers
 
-Shared behaviour lives under [`src/helpers`](../src/helpers). These modules provide the non-HTTP logic that controllers depend on:
+Shared behaviour lives under [`app/helpers`](../app/helpers). These modules provide the non-HTTP logic that controllers depend on:
 
-- [`auth.rb`](../src/helpers/auth.rb): login state, account validation, admin checks
-- [`login_cookies.rb`](../src/helpers/login_cookies.rb): remember-me cookies and token rotation
-- [`route_helpers.rb`](../src/helpers/route_helpers.rb): fixture criteria and lockdown timing
-- [`route_errors.rb`](../src/helpers/route_errors.rb): user-facing validation messages
-- [`scoring.rb`](../src/helpers/scoring.rb): official points calculation
-- [`lockdown.rb`](../src/helpers/lockdown.rb): lock-window checks and notifications
-- [`email.rb`](../src/helpers/email.rb): Pony integration and environment-specific mail config
-- [`view_helpers.rb`](../src/helpers/view_helpers.rb): display formatting for ERB
-- [`ring.rb`](../src/helpers/ring.rb): compact match navigation token
+- [`auth.rb`](../app/helpers/auth.rb): login state, account validation, admin checks
+- [`login_cookies.rb`](../app/helpers/login_cookies.rb): remember-me cookies and token rotation
+- [`route_helpers.rb`](../app/helpers/route_helpers.rb): fixture criteria and lockdown timing
+- [`route_errors.rb`](../app/helpers/route_errors.rb): user-facing validation messages
+- [`scoring.rb`](../app/helpers/scoring.rb): official points calculation
+- [`lockdown.rb`](../app/helpers/lockdown.rb): lock-window checks and notifications
+- [`email.rb`](../app/helpers/email.rb): Pony integration and environment-specific mail config
+- [`view_helpers.rb`](../app/helpers/view_helpers.rb): display formatting for ERB
+- [`ring.rb`](../app/helpers/ring.rb): compact match navigation token
 
 This split keeps controllers focused on orchestration while the reusable rules stay in one place.
 
 ### Database Modules
 
-The files in [`src/db`](../src/db) are the persistence boundary. Each file groups SQL around one concern:
+The files in [`app/db`](../app/db) are the persistence boundary. Each file groups SQL around one concern:
 
-- [`users.rb`](../src/db/users.rb): users and admin role links
-- [`login.rb`](../src/db/login.rb): credential persistence
-- [`cookies.rb`](../src/db/cookies.rb): remember-me persistence
-- [`matches.rb`](../src/db/matches.rb): match detail queries and writes
-- [`matches_full.rb`](../src/db/matches_full.rb): fixture listing queries
-- [`match_predictions.rb`](../src/db/match_predictions.rb): per-match prediction views
-- [`points.rb`](../src/db/points.rb): scoreboard persistence and aggregation
-- [`cumulative_points.rb`](../src/db/cumulative_points.rb): graph data
-- [`tournament_roles.rb`](../src/db/tournament_roles.rb): tournament bracket and role mapping
-- [`emails.rb`](../src/db/emails.rb): email sent flags
+- [`users.rb`](../app/db/users.rb): users and admin role links
+- [`login.rb`](../app/db/login.rb): credential persistence
+- [`cookies.rb`](../app/db/cookies.rb): remember-me persistence
+- [`matches.rb`](../app/db/matches.rb): match detail queries and writes
+- [`matches_full.rb`](../app/db/matches_full.rb): fixture listing queries
+- [`match_predictions.rb`](../app/db/match_predictions.rb): per-match prediction views
+- [`points.rb`](../app/db/points.rb): scoreboard persistence and aggregation
+- [`cumulative_points.rb`](../app/db/cumulative_points.rb): graph data
+- [`tournament_roles.rb`](../app/db/tournament_roles.rb): tournament bracket and role mapping
+- [`emails.rb`](../app/db/emails.rb): email sent flags
 
 The controllers and helpers call these modules directly rather than introducing a separate service layer. That keeps the data access patterns explicit and easy to trace.
 
 ### Views and Assets
 
-Templates live under [`src/views`](../src/views). The app uses ERB with shared layout fragments for:
+Templates live under [`app/views`](../app/views). The app uses ERB with shared layout fragments for:
 
 - the main site chrome
 - match detail subviews
@@ -94,4 +94,3 @@ Client-side behaviour lives in [`public/js`](../public/js), with styling and ima
 - Scoreboard data is derived from the stored predictions and points rows rather than being cached in a separate read model.
 - The match navigation ring is encoded into a compact string so the current match and surrounding order can be preserved in URLs.
 - Mail delivery is synchronous and happens inside the request path for lockdown and result actions.
-

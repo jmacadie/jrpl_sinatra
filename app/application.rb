@@ -42,12 +42,12 @@ class App < Sinatra::Application
 
     set :environment   , ENV.fetch('APP_ENV', 'development')
 
-    set :src           , File.expand_path(__dir__)
-    set :root          , File.expand_path('..', settings.src)
+    set :app_dir       , File.expand_path(__dir__)
+    set :root          , File.expand_path('..', settings.app_dir)
     set :app_file      , File.expand_path(__FILE__)
     set :public_folder , "#{settings.root}/public"
     set :config        , "#{settings.root}/config"
-    set :views         , "#{settings.src}/views"
+    set :views         , "#{settings.app_dir}/views"
     set :tests         , "#{settings.root}/test"
     # rubocop:enable Layout/SpaceBeforeComma, Layout/ExtraSpacing
 

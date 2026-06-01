@@ -1,5 +1,5 @@
 require_relative '../helpers/test_helpers'
-require "#{App.settings.src}/helpers/ring"
+require_relative '../../app/helpers/ring'
 
 class CMSTest < Minitest::Test
   def test_create_with_ring
