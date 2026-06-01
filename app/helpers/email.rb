@@ -1,4 +1,4 @@
-require_relative '../db/users'
+require_relative '../repositories/users'
 
 module Email
   include DBUsers

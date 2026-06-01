@@ -1,8 +1,8 @@
-require_relative '../db/emails'
-require_relative '../db/matches'
-require_relative '../db/match_predictions'
-require_relative '../db/predictions'
-require_relative '../db/users'
+require_relative '../repositories/emails'
+require_relative '../repositories/matches'
+require_relative '../repositories/match_predictions'
+require_relative '../repositories/predictions'
+require_relative '../repositories/users'
 
 class App < Sinatra::Application
   extend DBEmails

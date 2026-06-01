@@ -1,5 +1,5 @@
-require_relative '../db/login'
-require_relative '../db/users'
+require_relative '../repositories/login'
+require_relative '../repositories/users'
 
 class App < Sinatra::Application
   include DBLogin

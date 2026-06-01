@@ -54,18 +54,18 @@ This split keeps controllers focused on orchestration while the reusable rules s
 
 ### Database Modules
 
-The files in [`app/db`](../app/db) are the persistence boundary. Each file groups SQL around one concern:
+The files in [`app/repositories`](../app/repositories) are the persistence boundary. Each file groups SQL around one concern:
 
-- [`users.rb`](../app/db/users.rb): users and admin role links
-- [`login.rb`](../app/db/login.rb): credential persistence
-- [`cookies.rb`](../app/db/cookies.rb): remember-me persistence
-- [`matches.rb`](../app/db/matches.rb): match detail queries and writes
-- [`matches_full.rb`](../app/db/matches_full.rb): fixture listing queries
-- [`match_predictions.rb`](../app/db/match_predictions.rb): per-match prediction views
-- [`points.rb`](../app/db/points.rb): scoreboard persistence and aggregation
-- [`cumulative_points.rb`](../app/db/cumulative_points.rb): graph data
-- [`tournament_roles.rb`](../app/db/tournament_roles.rb): tournament bracket and role mapping
-- [`emails.rb`](../app/db/emails.rb): email sent flags
+- [`users.rb`](../app/repositories/users.rb): users and admin role links
+- [`login.rb`](../app/repositories/login.rb): credential persistence
+- [`cookies.rb`](../app/repositories/cookies.rb): remember-me persistence
+- [`matches.rb`](../app/repositories/matches.rb): match detail queries and writes
+- [`matches_full.rb`](../app/repositories/matches_full.rb): fixture listing queries
+- [`match_predictions.rb`](../app/repositories/match_predictions.rb): per-match prediction views
+- [`points.rb`](../app/repositories/points.rb): scoreboard persistence and aggregation
+- [`cumulative_points.rb`](../app/repositories/cumulative_points.rb): graph data
+- [`tournament_roles.rb`](../app/repositories/tournament_roles.rb): tournament bracket and role mapping
+- [`emails.rb`](../app/repositories/emails.rb): email sent flags
 
 The controllers and helpers call these modules directly rather than introducing a separate service layer. That keeps the data access patterns explicit and easy to trace.
 

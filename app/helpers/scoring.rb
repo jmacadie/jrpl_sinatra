@@ -1,6 +1,6 @@
-require_relative '../db/matches'
-require_relative '../db/match_predictions'
-require_relative '../db/points'
+require_relative '../repositories/matches'
+require_relative '../repositories/match_predictions'
+require_relative '../repositories/points'
 
 module Scoring
   include DBMatches

@@ -1,4 +1,4 @@
-require_relative '../db/cookies'
+require_relative '../repositories/cookies'
 
 module LoginCookies
   include DBCookies

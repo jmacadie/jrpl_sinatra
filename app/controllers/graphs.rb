@@ -1,5 +1,5 @@
-require_relative '../db/cumulative_points'
-require_relative '../db/users'
+require_relative '../repositories/cumulative_points'
+require_relative '../repositories/users'
 
 class App < Sinatra::Application
   include DBCumPoints
