@@ -2,7 +2,7 @@ email:
   gmail_username:
   app_password:
   app_domain:
-  from:
-  default_to:
-  sub_to:
+  from: Jules <julian@julianrimet.com>
+  default_to: test@example.com
+  sub_to: test@example.com
 
