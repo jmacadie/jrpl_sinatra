@@ -48,7 +48,10 @@ class App < Sinatra::Application
       home_score:,
       away_score:,
       user_id: session[:user_id],
-      operations: MatchResultOperations.new(self)
+      operations: MatchResultOperations.new(
+        app_context: self,
+        match_repository: settings.match_repository
+      )
     ).call
     return render_result_error(match_id, result) unless result.success?
 

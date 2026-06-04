@@ -1,11 +1,5 @@
 # rubocop:todo Metrics/ModuleLength
 module DBMatches
-  def add_result(match_id, home_team_points, away_team_points, user_id)
-    sql = update_match_table_query()
-    run_query(sql, home_team_points, away_team_points, user_id, Time.now,
-              match_id)
-  end
-
   # rubocop:disable Metrics/AbcSize
   def filter_matches_list(user_id, criteria, lockdown)
     add_empty_strings_for_stages_for_exec_params(criteria)
@@ -213,18 +207,6 @@ module DBMatches
         e.match_id = m.match_id
     WHERE e.predictions_sent = false
     ORDER BY m.match_id ASC;
-    SQL
-  end
-
-  def update_match_table_query
-    <<~SQL
-    UPDATE match
-    SET
-      home_team_points = $1::int,
-      away_team_points = $2::int,
-      result_posted_by = $3::int,
-      result_posted_on = $4::date
-    WHERE match_id = $5::int;
     SQL
   end
 
