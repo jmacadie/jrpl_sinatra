@@ -9,6 +9,9 @@ require 'sinatra/cookies'
 require 'tilt/erubi'
 require 'yaml'
 
+require_relative 'services/query_runner'
+require_relative 'repositories/match'
+
 # Load application services before helpers and controllers
 Dir["#{File.expand_path(__dir__)}/services/**/*.rb"].each do |file|
   require file
@@ -86,6 +89,19 @@ class App < Sinatra::Application
 
   configure :test do
     Pony.override_options = { via: :test }
+  end
+
+  configure do
+    set :app_logger, Logger.new($stdout)
+    set :query_runner, QueryRunner.new(
+      db_pool: settings.db_pool,
+      logger: settings.app_logger,
+      environment: environment
+    )
+
+    set :match_repository, MatchRepository.new(
+      query_runner: settings.query_runner
+    )
   end
 
   before do
