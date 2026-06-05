@@ -35,7 +35,6 @@ class App < Sinatra::Application
   helpers Lockdown
   helpers Loginable
   helpers LoginCookies
-  helpers RouteErrors
   helpers RouteHelpers
   helpers MrMen
   helpers ViewHelpers
