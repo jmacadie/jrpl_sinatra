@@ -84,15 +84,6 @@ module DBMatches
     result.map { |row| row_to_matches_details_hash(row) }.first
   end
 
-  def match_result(match_id)
-    sql = match_result_query()
-    result = run_query(sql, match_id)
-    result.map do |row|
-      { home_score: row['home_team_points'].to_i,
-        away_score: row['away_team_points'].to_i }
-    end.first
-  end
-
   def max_match_id
     sql = 'SELECT max(match_id) FROM match;'
     run_query(sql).first['max'].to_i
@@ -185,16 +176,6 @@ module DBMatches
   end
   # Standalone SQL
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  def match_result_query
-    <<~SQL
-    SELECT
-      home_team_points,
-      away_team_points
-    FROM match
-    WHERE match_id = $1::int;
-    SQL
-  end
 
   def lockdown_match_query
     <<~SQL

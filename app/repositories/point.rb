@@ -1,9 +1,18 @@
-module DBPoints
-  def id_for_scoring_system(scoring_system)
-    sql = 'SELECT scoring_system_id FROM scoring_system WHERE name = $1::text;'
-    run_query(sql, scoring_system).map do |row|
-      row['scoring_system_id']
-    end.first.to_i
+class PointRepository
+  def initialize(query_runner:)
+    @query_runner = query_runner
+  end
+
+  def add_points(pred_id, scoring_system_id, result_pts, score_pts)
+    delete_existing_points_entry(pred_id, scoring_system_id)
+    @query_runner.run_query(
+      insert_into_points_table_query,
+      pred_id,
+      scoring_system_id,
+      result_pts,
+      score_pts,
+      result_pts + score_pts
+    )
   end
 
   def load_scoreboard_data(scoring_system)
@@ -16,9 +25,16 @@ module DBPoints
 
   private
 
+  def id_for_scoring_system(scoring_system)
+    sql = 'SELECT scoring_system_id FROM scoring_system WHERE name = $1::text;'
+    @query_runner.run_query(sql, scoring_system).map do |row|
+      row['scoring_system_id']
+    end.first.to_i
+  end
+
   def load_one_scoreboard_data(scoring_system_id, stage)
-    sql = select_users_points_query(stage)
-    result = run_query(sql, scoring_system_id)
+    result = @query_runner.run_query(select_users_points_query(stage),
+                                     scoring_system_id)
     result = row_to_table_hash(result)
     add_rank(result)
   end
@@ -47,6 +63,22 @@ module DBPoints
         score_points: row['score_points'].to_i,
         total_points: row['result_points'].to_i + row['score_points'].to_i }
     end
+  end
+
+  def delete_existing_points_entry(pred_id, scoring_system_id)
+    sql = <<~SQL
+      DELETE FROM points
+      WHERE prediction_id = $1::int AND scoring_system_id = $2::int;
+    SQL
+    @query_runner.run_query(sql, pred_id, scoring_system_id)
+  end
+
+  def insert_into_points_table_query
+    <<~SQL
+      INSERT INTO points
+      (prediction_id, scoring_system_id, result_points, score_points, total_points)
+      VALUES ($1::int, $2::int, $3::int, $4::int, $5::int);
+    SQL
   end
 
   # rubocop:disable Metrics/MethodLength
