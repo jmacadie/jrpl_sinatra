@@ -9,6 +9,7 @@ module ApplicationServices
     register_shared_services(app)
     register_repositories(app)
     register_match_result_services(app)
+    register_match_prediction_services(app)
   end
 
   def self.register_shared_services(app)
@@ -79,6 +80,13 @@ module ApplicationServices
       match_repository: app.settings.match_repository,
       scoreboard_service: app.settings.scoreboard_service,
       result_mailer: app.settings.match_result_mailer
+    )
+  end
+
+  def self.register_match_prediction_services(app)
+    app.set :match_prediction_operations, MatchPredictionOperations.new(
+      match_repository: app.settings.match_repository,
+      prediction_repository: app.settings.prediction_repository
     )
   end
 end
