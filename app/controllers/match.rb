@@ -48,10 +48,7 @@ class App < Sinatra::Application
       home_score:,
       away_score:,
       user_id: session[:user_id],
-      operations: MatchResultOperations.new(
-        app_context: self,
-        match_repository: settings.match_repository
-      )
+      operations: settings.match_result_operations
     ).call
     return render_result_error(match_id, result) unless result.success?
 
@@ -138,29 +135,6 @@ class App < Sinatra::Application
 
   def to_bool?(str)
     str == 'true'
-  end
-
-  def send_result_email(match_id)
-    match = load_single_match(1, match_id)
-    predictions = get_match_predictions(match_id)
-    table = load_scoreboard_data('Official')[:overall_table]
-    subject = result_email_subject(match)
-    body = result_email_body(match, predictions, table)
-    send_email_all(
-      subject:,
-      body:
-    )
-    record_results_email_sent(match_id)
-  end
-
-  def result_email_subject(match)
-    "Results for #{home_name(match)} vs. #{away_name(match)}"
-  end
-
-  def result_email_body(match, predictions, table)
-    erb :'email/result',
-        layout: false,
-        locals: { match:, predictions:, table: }
   end
 
   def match_predictions_payload(match_id)
