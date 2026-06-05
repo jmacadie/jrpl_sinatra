@@ -12,6 +12,7 @@ module ApplicationServices
     register_match_result_services(app)
     register_match_prediction_services(app)
     register_match_page_services(app)
+    register_match_broadcaster_services(app)
   end
 
   def self.register_shared_services(app)
@@ -103,6 +104,12 @@ module ApplicationServices
     )
     app.set :match_page_service, MatchPageService.new(
       operations: app.settings.match_page_operations
+    )
+  end
+
+  def self.register_match_broadcaster_services(app)
+    app.set :match_broadcaster_service, MatchBroadcasterService.new(
+      match_repository: app.settings.match_repository
     )
   end
 end

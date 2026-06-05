@@ -34,6 +34,14 @@ class MatchRepository
     end
   end
 
+  def change_broadcaster(match_id, broadcaster_id)
+    @query_runner.run_query(
+      change_broadcaster_query,
+      broadcaster_id,
+      match_id
+    )
+  end
+
   private
 
   def convert_str_to_int(str)
@@ -112,6 +120,10 @@ class MatchRepository
 
   def broadcasters_query
     'SELECT broadcaster_id, name FROM broadcaster;'
+  end
+
+  def change_broadcaster_query
+    'UPDATE match SET broadcaster_id = $1::int WHERE match_id = $2::int;'
   end
 
   def match_origin_query
