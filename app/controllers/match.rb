@@ -1,13 +1,9 @@
 require_relative '../repositories/emails'
 require_relative '../repositories/matches'
-require_relative '../repositories/match_predictions'
-require_relative '../repositories/users'
 
 class App < Sinatra::Application
   extend DBEmails
   extend DBMatches
-  extend DBMatchPredictions
-  extend DBUsers
 
   get '/match/:match_id' do
     require_signed_in_user
@@ -78,19 +74,24 @@ class App < Sinatra::Application
   private
 
   def render_match(match_id)
-    load_match_details(match_id)
-    @match[:locked_down] = match_locked_down?(@match)
-    if @match[:locked_down]
-      @users = load_all_users_details
-      @predictions = get_match_predictions(match_id, 1)
-    end
-    if origin?(@match)
-      @origin = match_origin(match_id)
-    end
-    if user_is_admin?
-      @broadcasters = broadcasters_query
-    end
+    load_ring
+    assign_match_page(
+      settings.match_page_service.call(
+        match_id:,
+        user_id: session[:user_id],
+        admin: user_is_admin?
+      )
+    )
     erb :match
+  end
+
+  def assign_match_page(page)
+    @match = page.match
+    @result = page.result
+    @users = page.users
+    @predictions = page.predictions
+    @origin = page.origin
+    @broadcasters = page.broadcasters
   end
 
   def render_error(match_id, result)
@@ -107,14 +108,6 @@ class App < Sinatra::Application
     "#{root}?ring=#{@next_match[:ring]}"
   end
 
-  def load_match_details(match_id)
-    @match = load_single_match(session[:user_id], match_id)
-    @result = !@match[:home_score].nil?
-    load_ring
-    return unless origin?(@match)
-    @origin = match_origin(match_id)
-  end
-
   def load_ring
     return if params[:ring].nil? || params[:ring] == ""
     @ring = Ring.new({ ring: params[:ring] })
@@ -127,23 +120,32 @@ class App < Sinatra::Application
   end
 
   def match_predictions_payload(match_id)
-    load_match_details(match_id)
-    return nil unless @match[:locked_down] || match_locked_down?(@match)
+    page = settings.match_page_service.call(
+      match_id:,
+      user_id: session[:user_id],
+      admin: false
+    )
+    match = page.match
+    return nil unless match[:locked_down]
 
     {
       match: {
-        home_name: home_name(@match),
-        away_name: away_name(@match),
-        home_score: @match[:home_score],
-        away_score: @match[:away_score]
+        home_name: home_name(match),
+        away_name: away_name(match),
+        home_score: match[:home_score],
+        away_score: match[:away_score]
       },
-      predictions: get_match_predictions(match_id, 1).map do |prediction|
-        {
-          name: prediction[:user],
-          home: prediction[:home_prediction],
-          away: prediction[:away_prediction]
-        }
-      end
+      predictions: predictions_payload(page.predictions)
     }
+  end
+
+  def predictions_payload(predictions)
+    predictions.map do |prediction|
+      {
+        name: prediction[:user],
+        home: prediction[:home_prediction],
+        away: prediction[:away_prediction]
+      }
+    end
   end
 end
