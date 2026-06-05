@@ -56,11 +56,6 @@ module DBMatches
     result.map { |row| row['name'] }
   end
 
-  def change_broadcaster(match_id, broacaster_id)
-    sql = 'UPDATE match SET broadcaster_id = $1::int WHERE match_id = $2::int;'
-    run_query(sql, broacaster_id, match_id)
-  end
-
   def load_all_matches(user_id)
     sql = construct_all_matches_query()
     result = run_query(sql, user_id)

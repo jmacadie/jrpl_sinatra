@@ -56,10 +56,13 @@ class App < Sinatra::Application
   post '/match/broadcaster/edit' do
     require_signed_in_as_admin
     match_id = params[:match_id].to_i
-    broacaster_id = params[:broadcaster].to_i
-    change_broadcaster(match_id, broacaster_id)
+    broadcaster_id = params[:broadcaster].to_i
+    result = settings.match_broadcaster_service.call(
+      match_id:,
+      broadcaster_id:
+    )
     content_type :json
-    { message: "Broadcaster changed", status: "success" }.to_json
+    { message: result.message, status: result.status }.to_json
   end
 
   get '/match/:match_id/predictions' do
