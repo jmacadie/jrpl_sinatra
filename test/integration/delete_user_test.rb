@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class DeleteUserIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_delete_user

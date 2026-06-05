@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class LoginIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_signin_form

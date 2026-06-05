@@ -1,7 +1,7 @@
 require 'json'
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class TournamentRolesIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   # rubocop: disable Metrics/AbcSize

@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class TablesIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_scoreboard

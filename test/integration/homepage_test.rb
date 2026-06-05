@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class HomepageIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_homepage_signed_out

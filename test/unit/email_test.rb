@@ -1,7 +1,7 @@
 require_relative '../helpers/test_helpers'
 require_relative '../../app/services/email'
 
-class CMSTest < Minitest::Test
+class EmailTest < Minitest::Test
   include Email
 
   # rubocop: disable Metrics/AbcSize

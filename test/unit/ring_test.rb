@@ -1,7 +1,7 @@
 require_relative '../helpers/test_helpers'
 require_relative '../../app/services/ring'
 
-class CMSTest < Minitest::Test
+class RingTest < Minitest::Test
   def test_create_with_ring
     ring = Ring.new({ ring: 'eJwzMDA0ACEjAwNjAA7IAkg=' })
     assert_equal 'eJwzMDA0ACEjAwNjAA7IAkg=', ring.to_s

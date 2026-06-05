@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class MrMenIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_calc_mr_men

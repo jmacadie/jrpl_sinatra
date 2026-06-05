@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class AdminAccountsIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_view_administer_accounts

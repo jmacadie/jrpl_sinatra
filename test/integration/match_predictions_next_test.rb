@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class MatchPredictionsNextIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   # rubocop: disable Metrics/AbcSize

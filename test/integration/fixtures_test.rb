@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class FixturesIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_view_matches_list_signed_in

@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class MatchResultIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
   def test_view_match_not_lockdown_not_admin

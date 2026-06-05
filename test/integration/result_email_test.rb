@@ -1,6 +1,6 @@
 require_relative '../helpers/test_helpers'
 
-class CMSTest < Minitest::Test
+class ResultEmailIntegrationTest < Minitest::Test
   include TestIntegrationMethods
   include TestEmailMethods
 
