@@ -3,6 +3,7 @@ require_relative '../repositories/match'
 require_relative '../repositories/match_prediction'
 require_relative '../repositories/point'
 require_relative '../repositories/prediction'
+require_relative '../repositories/user'
 
 module ApplicationServices
   def self.register(app)
@@ -10,6 +11,7 @@ module ApplicationServices
     register_repositories(app)
     register_match_result_services(app)
     register_match_prediction_services(app)
+    register_match_page_services(app)
   end
 
   def self.register_shared_services(app)
@@ -22,16 +24,19 @@ module ApplicationServices
   end
 
   def self.register_repositories(app)
-    app.set :match_repository, MatchRepository.new(
-      query_runner: app.settings.query_runner
+    register_repository(app, :match_repository, MatchRepository)
+    register_repository(
+      app,
+      :match_prediction_repository,
+      MatchPredictionRepository
     )
-    app.set :match_prediction_repository, MatchPredictionRepository.new(
-      query_runner: app.settings.query_runner
-    )
-    app.set :prediction_repository, PredictionRepository.new(
-      query_runner: app.settings.query_runner
-    )
-    app.set :point_repository, PointRepository.new(
+    register_repository(app, :prediction_repository, PredictionRepository)
+    register_repository(app, :user_repository, UserRepository)
+    register_repository(app, :point_repository, PointRepository)
+  end
+
+  def self.register_repository(app, name, repository_class)
+    app.set name, repository_class.new(
       query_runner: app.settings.query_runner
     )
   end
@@ -87,6 +92,17 @@ module ApplicationServices
     app.set :match_prediction_operations, MatchPredictionOperations.new(
       match_repository: app.settings.match_repository,
       prediction_repository: app.settings.prediction_repository
+    )
+  end
+
+  def self.register_match_page_services(app)
+    app.set :match_page_operations, MatchPageOperations.new(
+      match_repository: app.settings.match_repository,
+      match_prediction_repository: app.settings.match_prediction_repository,
+      user_repository: app.settings.user_repository
+    )
+    app.set :match_page_service, MatchPageService.new(
+      operations: app.settings.match_page_operations
     )
   end
 end

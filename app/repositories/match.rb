@@ -19,6 +19,21 @@ class MatchRepository
     result.map { |row| row_to_matches_details_hash(row) }.first
   end
 
+  def match_origin(match_id)
+    result = @query_runner.run_query(match_origin_query, match_id)
+    result.map { |row| row_to_origin_details_hash(row) }.first
+  end
+
+  def broadcasters
+    result = @query_runner.run_query(broadcasters_query)
+    result.map do |row|
+      {
+        id: row['broadcaster_id'],
+        name: row['name']
+      }
+    end
+  end
+
   private
 
   def convert_str_to_int(str)
@@ -59,6 +74,27 @@ class MatchRepository
   end
   # rubocop:enable Metrics/AbcSize
 
+  def row_to_origin_details_hash(row)
+    {
+      ht_home_team: row['ht_home_team'],
+      ht_away_team: row['ht_away_team'],
+      ht_home_team_s: row['ht_home_team_s'],
+      ht_away_team_s: row['ht_away_team_s'],
+      ht_home_team_points: row['ht_home_team_points'],
+      ht_away_team_points: row['ht_away_team_points'],
+      ht_match_id: row['ht_match_id'],
+      ht_stage: row['ht_stage'],
+      at_home_team: row['at_home_team'],
+      at_away_team: row['at_away_team'],
+      at_home_team_s: row['at_home_team_s'],
+      at_away_team_s: row['at_away_team_s'],
+      at_home_team_points: row['at_home_team_points'],
+      at_away_team_points: row['at_away_team_points'],
+      at_match_id: row['at_match_id'],
+      at_stage: row['at_stage']
+    }
+  end
+
   # Standalone SQL
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -71,6 +107,66 @@ class MatchRepository
       result_posted_by = $3::int,
       result_posted_on = $4::date
     WHERE match_id = $5::int;
+    SQL
+  end
+
+  def broadcasters_query
+    'SELECT broadcaster_id, name FROM broadcaster;'
+  end
+
+  def match_origin_query
+    <<~SQL
+    SELECT
+      COALESCE(htht.name, httrht.name) AS ht_home_team,
+      COALESCE(htat.name, httrat.name) AS ht_away_team,
+      htht.short_name AS ht_home_team_s,
+      htat.short_name AS ht_away_team_s,
+      htm.home_team_points AS ht_home_team_points,
+      htm.away_team_points AS ht_away_team_points,
+      htm.match_id AS ht_match_id,
+      hts.name AS ht_stage,
+      COALESCE(atht.name, attrht.name) AS at_home_team,
+      COALESCE(atat.name, attrat.name) AS at_away_team,
+      atht.short_name AS at_home_team_s,
+      atat.short_name AS at_away_team_s,
+      atm.home_team_points AS at_home_team_points,
+      atm.away_team_points AS at_away_team_points,
+      atm.match_id AS at_match_id,
+      ats.name AS at_stage
+
+    FROM match m
+
+      INNER JOIN tournament_role trht ON
+        trht.tournament_role_id = m.home_team_id
+      LEFT JOIN match htm ON
+        htm.match_id = trht.from_match_id
+      LEFT JOIN stage hts ON
+        hts.stage_id = htm.stage_id
+      LEFT JOIN tournament_role httrht ON
+        httrht.tournament_role_id = htm.home_team_id
+      LEFT JOIN team htht ON
+        htht.team_id = httrht.team_id
+      LEFT JOIN tournament_role httrat ON
+        httrat.tournament_role_id = htm.away_team_id
+      LEFT JOIN team htat ON
+        htat.team_id = httrat.team_id
+
+      INNER JOIN tournament_role trat ON
+        trat.tournament_role_id = m.away_team_id
+      LEFT JOIN match atm ON
+        atm.match_id = trat.from_match_id
+      LEFT JOIN stage ats ON
+        ats.stage_id = atm.stage_id
+      LEFT JOIN tournament_role attrht ON
+        attrht.tournament_role_id = atm.home_team_id
+      LEFT JOIN team atht ON
+        atht.team_id = attrht.team_id
+      LEFT JOIN tournament_role attrat ON
+        attrat.tournament_role_id = atm.away_team_id
+      LEFT JOIN team atat ON
+        atat.team_id = attrat.team_id
+
+    WHERE m.match_id = $1::int;
     SQL
   end
 
