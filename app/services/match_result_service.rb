@@ -12,27 +12,25 @@ class MatchResultService
     end
   end
 
-  def initialize(attributes)
-    @match_id = attributes.fetch(:match_id)
-    @home_score = attributes.fetch(:home_score)
-    @away_score = attributes.fetch(:away_score)
-    @user_id = attributes.fetch(:user_id)
-    @operations = attributes.fetch(:operations)
+  def initialize(match_repository:, scoreboard_service:, result_mailer:)
+    @match_repository = match_repository
+    @scoreboard_service = scoreboard_service
+    @result_mailer = result_mailer
   end
 
-  def call
-    home_score = @home_score.to_f
-    away_score = @away_score.to_f
-    match = @operations.load_match(@match_id)
+  def call(match_id:, home_score:, away_score:, user_id:)
+    home_score = home_score.to_f
+    away_score = away_score.to_f
+    match = @match_repository.load_match(match_id)
     message = match_result_error(match, home_score, away_score)
     return failure(message, home_score, away_score) if message
 
     home_score = home_score.to_i
     away_score = away_score.to_i
 
-    @operations.add_result(@match_id, home_score, away_score, @user_id)
-    @operations.update_scoreboard(@match_id, home_score, away_score)
-    @operations.send_result_email(@match_id)
+    @match_repository.add_result(match_id, home_score, away_score, user_id)
+    @scoreboard_service.update_scoreboard(match_id, home_score, away_score)
+    @result_mailer.send_result_email(match_id)
 
     Result.new(
       success: true,

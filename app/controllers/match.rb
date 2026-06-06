@@ -1,10 +1,4 @@
-require_relative '../repositories/emails'
-require_relative '../repositories/matches'
-
 class App < Sinatra::Application
-  extend DBEmails
-  extend DBMatches
-
   get '/match/:match_id' do
     require_signed_in_user
     match_id = params[:match_id].to_i
@@ -17,13 +11,12 @@ class App < Sinatra::Application
     home_prediction = params[:home_team_prediction]
     away_prediction = params[:away_team_prediction]
     move_next = to_bool?(params[:next])
-    result = MatchPredictionService.new(
+    result = settings.match_prediction_service.call(
       match_id:,
       home_prediction:,
       away_prediction:,
-      user_id: session[:user_id],
-      operations: settings.match_prediction_operations
-    ).call
+      user_id: session[:user_id]
+    )
     return render_error(match_id, result) unless result.success?
 
     load_ring
@@ -38,13 +31,12 @@ class App < Sinatra::Application
     match_id = params[:match_id].to_i
     home_score = params[:home_score]
     away_score = params[:away_score]
-    result = MatchResultService.new(
+    result = settings.match_result_service.call(
       match_id:,
       home_score:,
       away_score:,
-      user_id: session[:user_id],
-      operations: settings.match_result_operations
-    ).call
+      user_id: session[:user_id]
+    )
     return render_error(match_id, result) unless result.success?
 
     load_ring
@@ -125,7 +117,7 @@ class App < Sinatra::Application
   def match_predictions_payload(match_id)
     page = settings.match_page_service.call(
       match_id:,
-      user_id: session[:user_id],
+      user_id: 1,
       admin: false
     )
     match = page.match

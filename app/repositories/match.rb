@@ -13,13 +13,17 @@ class MatchRepository
                             match_id)
   end
 
-  def load_single_match(user_id, match_id)
+  def load_match(match_id)
+    load_match_with_user(1, match_id)
+  end
+
+  def load_match_with_user(user_id, match_id)
     sql = single_match_query()
     result = @query_runner.run_query(sql, user_id, match_id)
     result.map { |row| row_to_matches_details_hash(row) }.first
   end
 
-  def match_origin(match_id)
+  def origin(match_id)
     result = @query_runner.run_query(match_origin_query, match_id)
     result.map { |row| row_to_origin_details_hash(row) }.first
   end

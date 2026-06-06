@@ -2,56 +2,64 @@ require_relative '../helpers/test_helpers'
 
 class MatchPredictionServiceTest < Minitest::Test
   def test_records_a_prediction
-    operations = FakeMatchPredictionOperations.new
-    result = build_service(operations:).call
+    match_repository, prediction_repository, service = build_service()
+    result = service.call(match_id: 6,
+                          home_prediction: 81,
+                          away_prediction: 82,
+                          user_id: 4)
 
     assert_predicate result, :success?
     assert_equal 6, result.match_id
     assert_equal 81, result.home_prediction
     assert_equal 82, result.away_prediction
     assert_equal [
-      [:load_match, 4, 6],
+      [:load_match, 6]
+    ], match_repository.calls
+    assert_equal [
       [:add_prediction, 4, 6, 81, 82]
-    ], operations.calls
+    ], prediction_repository.calls
   end
 
   def test_decimal_prediction_returns_failure_without_adding_prediction
-    operations = FakeMatchPredictionOperations.new
-    result = build_service(
-      operations:,
-      home_prediction: 2.3,
-      away_prediction: 3.0
-    ).call
+    match_repository, _, service = build_service()
+    result = service.call(match_id: 6,
+                          home_prediction: '2.3',
+                          away_prediction: '3',
+                          user_id: 4)
 
     refute_predicate result, :success?
     assert_equal 'Your predictions must be integers.', result.message
-    assert_equal 2.3, result.home_prediction
-    assert_equal 3.0, result.away_prediction
+    assert_equal '2.3', result.home_prediction
+    assert_equal '3', result.away_prediction
     assert_equal [
-      [:load_match, 4, 6]
-    ], operations.calls
+      [:load_match, 6]
+    ], match_repository.calls
   end
 
   def test_negative_prediction_returns_failure_without_adding_prediction
-    operations = FakeMatchPredictionOperations.new
-    result = build_service(
-      operations:,
-      home_prediction: -2.0,
-      away_prediction: 3.0
-    ).call
+    match_repository, _, service = build_service()
+    result = service.call(match_id: 6,
+                          home_prediction: -2,
+                          away_prediction: 3,
+                          user_id: 4)
 
     refute_predicate result, :success?
     assert_equal 'Your predictions must be non-negative.', result.message
+    assert_equal (-2), result.home_prediction
+    assert_equal 3, result.away_prediction
     assert_equal [
-      [:load_match, 4, 6]
-    ], operations.calls
+      [:load_match, 6]
+    ], match_repository.calls
   end
 
   def test_locked_down_match_returns_failure_without_adding_prediction
-    operations = FakeMatchPredictionOperations.new(
+    match_repository, _, service = build_service(
       match: { match_datetime: Time.now - 60 }
     )
-    result = build_service(operations:).call
+    result = service.call(match_id: 6,
+                          home_prediction: 81,
+                          away_prediction: 82,
+                          user_id: 4)
 
     refute_predicate result, :success?
     assert_equal(
@@ -60,23 +68,25 @@ class MatchPredictionServiceTest < Minitest::Test
       result.message
     )
     assert_equal [
-      [:load_match, 4, 6]
-    ], operations.calls
+      [:load_match, 6]
+    ], match_repository.calls
   end
 
   private
 
-  def build_service(operations:, home_prediction: 81.0, away_prediction: 82.0)
-    MatchPredictionService.new(
-      match_id: 6,
-      home_prediction:,
-      away_prediction:,
-      user_id: 4,
-      operations:
+  def build_service(
+    match: { match_datetime: Time.now + App::LOCKDOWN_BUFFER + 60 }
+  )
+    match_repository = FakeMatchRepository.new(match:)
+    prediction_repository = FakePredictionRepository.new()
+    service = MatchPredictionService.new(
+      match_repository:,
+      prediction_repository:
     )
+    return match_repository, prediction_repository, service
   end
 
-  class FakeMatchPredictionOperations
+  class FakeMatchRepository
     attr_reader :calls
 
     def initialize(
@@ -86,9 +96,17 @@ class MatchPredictionServiceTest < Minitest::Test
       @calls = []
     end
 
-    def load_match(user_id, match_id)
-      calls << [:load_match, user_id, match_id]
+    def load_match(match_id)
+      calls << [:load_match, match_id]
       @match
+    end
+  end
+
+  class FakePredictionRepository
+    attr_reader :calls
+
+    def initialize
+      @calls = []
     end
 
     def add_prediction(user_id, match_id, home_prediction, away_prediction)
