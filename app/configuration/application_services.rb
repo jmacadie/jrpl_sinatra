@@ -20,6 +20,7 @@ module ApplicationServices
     register_fixtures_page_service(app)
     register_graphs_page_service(app)
     register_tournament_role_services(app)
+    register_edit_user_services(app)
   end
 
   def self.register_shared_services(app)
@@ -138,6 +139,15 @@ module ApplicationServices
     )
     app.set :tournament_role_service, TournamentRoleService.new(
       tournament_role_repository: repository
+    )
+  end
+
+  def self.register_edit_user_services(app)
+    app.set :edit_user_page_service, EditUserPageService.new(
+      user_repository: app.settings.user_repository
+    )
+    app.set :edit_user_service, EditUserService.new(
+      user_repository: app.settings.user_repository
     )
   end
 end

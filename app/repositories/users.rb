@@ -4,25 +4,9 @@ module DBUsers
     run_query(sql, user_id, admin_role_id())
   end
 
-  def change_email_query(old_user_name, new_email)
-    sql = 'UPDATE users SET email = $1::text WHERE user_name = $2::text;'
-    run_query(sql, new_email, old_user_name)
-  end
-
   def delete_user(user_id)
     sql = 'DELETE FROM users WHERE user_id = $1::int;'
     run_query(sql, user_id)
-  end
-
-  def change_pword_query(old_user_name, new_pword)
-    hashed_pword = BCrypt::Password.create(new_pword).to_s
-    sql = 'UPDATE users SET pword = $1::text WHERE user_name = $2::text;'
-    run_query(sql, hashed_pword, old_user_name)
-  end
-
-  def change_username_query(old_user_name, new_user_name)
-    sql = 'UPDATE users SET user_name = $1::text WHERE user_name = $2::text;'
-    run_query(sql, new_user_name, old_user_name)
   end
 
   def load_all_users_details
