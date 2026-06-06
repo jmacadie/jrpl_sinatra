@@ -1,4 +1,5 @@
 require_relative '../services/query_runner'
+require_relative '../repositories/fixtures'
 require_relative '../repositories/match'
 require_relative '../repositories/point'
 require_relative '../repositories/prediction'
@@ -14,6 +15,7 @@ module ApplicationServices
     register_match_prediction_service(app)
     register_match_page_service(app)
     register_match_broadcaster_service(app)
+    register_fixtures_page_service(app)
   end
 
   def self.register_shared_services(app)
@@ -26,6 +28,7 @@ module ApplicationServices
   end
 
   def self.register_repositories(app)
+    register_repository(app, :fixtures_repository, FixturesRepository)
     register_repository(app, :match_repository, MatchRepository)
     register_repository(app, :prediction_repository, PredictionRepository)
     register_repository(app, :user_repository, UserRepository)
@@ -97,6 +100,12 @@ module ApplicationServices
   def self.register_match_broadcaster_service(app)
     app.set :match_broadcaster_service, MatchBroadcasterService.new(
       match_repository: app.settings.match_repository
+    )
+  end
+
+  def self.register_fixtures_page_service(app)
+    app.set :fixtures_page_service, FixturesPageService.new(
+      fixtures_repository: app.settings.fixtures_repository
     )
   end
 end
