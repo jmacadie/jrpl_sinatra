@@ -1,4 +1,5 @@
 require_relative '../services/query_runner'
+require_relative '../repositories/cumulative_points'
 require_relative '../repositories/fixtures'
 require_relative '../repositories/match'
 require_relative '../repositories/point'
@@ -16,6 +17,7 @@ module ApplicationServices
     register_match_page_service(app)
     register_match_broadcaster_service(app)
     register_fixtures_page_service(app)
+    register_graphs_page_service(app)
   end
 
   def self.register_shared_services(app)
@@ -28,6 +30,11 @@ module ApplicationServices
   end
 
   def self.register_repositories(app)
+    register_repository(
+      app,
+      :cumulative_points_repository,
+      CumulativePointsRepository
+    )
     register_repository(app, :fixtures_repository, FixturesRepository)
     register_repository(app, :match_repository, MatchRepository)
     register_repository(app, :prediction_repository, PredictionRepository)
@@ -106,6 +113,14 @@ module ApplicationServices
   def self.register_fixtures_page_service(app)
     app.set :fixtures_page_service, FixturesPageService.new(
       fixtures_repository: app.settings.fixtures_repository
+    )
+  end
+
+  def self.register_graphs_page_service(app)
+    app.set :graphs_page_service, GraphsPageService.new(
+      cumulative_points_repository:
+        app.settings.cumulative_points_repository,
+      user_repository: app.settings.user_repository
     )
   end
 end
