@@ -1,8 +1,8 @@
 class MatchResultMailer
   def initialize(dependencies)
     @match_repository = dependencies.fetch(:match_repository)
-    @match_prediction_repository =
-      dependencies.fetch(:match_prediction_repository)
+    @prediction_repository =
+      dependencies.fetch(:prediction_repository)
     @scoreboard_service = dependencies.fetch(:scoreboard_service)
     @renderer = dependencies.fetch(:renderer)
     @email_sender = dependencies.fetch(:email_sender)
@@ -10,8 +10,8 @@ class MatchResultMailer
   end
 
   def send_result_email(match_id)
-    match = @match_repository.load_single_match(1, match_id)
-    predictions = @match_prediction_repository.get_match_predictions(match_id)
+    match = @match_repository.load_match(match_id)
+    predictions = @prediction_repository.get_predictions_results(match_id)
     table = @scoreboard_service.scoreboard_data('Official')[:overall_table]
     @email_sender.send_email_all(
       subject: result_email_subject(match),

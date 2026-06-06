@@ -7,9 +7,9 @@ class MatchResultMailerTest < Minitest::Test
 
     mailer.send_result_email(6)
 
-    assert_equal [[:load_single_match, 1, 6]], collaborators[:match].calls
+    assert_equal [[:load_match, 6]], collaborators[:match].calls
     assert_equal [
-      [:get_match_predictions, 6]
+      [:get_predictions_results, 6]
     ], collaborators[:predictions].calls
     assert_equal [[:scoreboard_data, 'Official']],
                  collaborators[:scoreboard].calls
@@ -42,7 +42,7 @@ class MatchResultMailerTest < Minitest::Test
   def build_mailer(collaborators)
     MatchResultMailer.new(
       match_repository: collaborators[:match],
-      match_prediction_repository: collaborators[:predictions],
+      prediction_repository: collaborators[:predictions],
       scoreboard_service: collaborators[:scoreboard],
       renderer: collaborators[:renderer],
       email_sender: collaborators[:email_sender],
@@ -93,9 +93,9 @@ class MatchResultMailerTest < Minitest::Test
       @calls = []
     end
 
-    def load_single_match(user_id, match_id)
-      calls << [:load_single_match, user_id, match_id]
-      match
+    def load_match(match_id)
+      calls << [:load_match, match_id]
+      @match
     end
   end
 
@@ -107,8 +107,8 @@ class MatchResultMailerTest < Minitest::Test
       @calls = []
     end
 
-    def get_match_predictions(match_id)
-      calls << [:get_match_predictions, match_id]
+    def get_predictions_results(match_id)
+      calls << [:get_predictions_results, match_id]
       @predictions
     end
   end

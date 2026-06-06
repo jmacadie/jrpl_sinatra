@@ -1,6 +1,5 @@
 require_relative '../services/query_runner'
 require_relative '../repositories/match'
-require_relative '../repositories/match_prediction'
 require_relative '../repositories/point'
 require_relative '../repositories/prediction'
 require_relative '../repositories/user'
@@ -9,10 +8,12 @@ module ApplicationServices
   def self.register(app)
     register_shared_services(app)
     register_repositories(app)
-    register_match_result_services(app)
-    register_match_prediction_services(app)
-    register_match_page_services(app)
-    register_match_broadcaster_services(app)
+    register_template_renderer(app)
+    register_email_sender(app)
+    register_match_result_service(app)
+    register_match_prediction_service(app)
+    register_match_page_service(app)
+    register_match_broadcaster_service(app)
   end
 
   def self.register_shared_services(app)
@@ -26,11 +27,6 @@ module ApplicationServices
 
   def self.register_repositories(app)
     register_repository(app, :match_repository, MatchRepository)
-    register_repository(
-      app,
-      :match_prediction_repository,
-      MatchPredictionRepository
-    )
     register_repository(app, :prediction_repository, PredictionRepository)
     register_repository(app, :user_repository, UserRepository)
     register_repository(app, :point_repository, PointRepository)
@@ -42,24 +38,8 @@ module ApplicationServices
     )
   end
 
-  def self.register_match_result_services(app)
-    register_scoreboard_service(app)
-    register_result_mailer(app)
-    register_match_result_operations(app)
-  end
-
-  def self.register_scoreboard_service(app)
-    app.set :scoreboard_service, ScoreboardService.new(
-      match_repository: app.settings.match_repository,
-      prediction_repository: app.settings.prediction_repository,
-      point_repository: app.settings.point_repository
-    )
-  end
-
-  def self.register_result_mailer(app)
-    register_email_sender(app)
+  def self.register_template_renderer(app)
     app.set :template_renderer, SinatraTemplateRenderer.new(app: app.new!)
-    register_match_result_mailer(app)
   end
 
   def self.register_email_sender(app)
@@ -70,44 +50,51 @@ module ApplicationServices
     )
   end
 
-  def self.register_match_result_mailer(app)
-    app.set :match_result_mailer, MatchResultMailer.new(
+  def self.register_match_result_service(app)
+    scoreboard_service = get_scoreboard_service(app)
+    result_mailer = get_result_mailer(app, scoreboard_service)
+    app.set :match_result_service, MatchResultService.new(
       match_repository: app.settings.match_repository,
-      match_prediction_repository: app.settings.match_prediction_repository,
-      scoreboard_service: app.settings.scoreboard_service,
+      scoreboard_service:,
+      result_mailer:
+    )
+  end
+
+  def self.get_scoreboard_service(app)
+    ScoreboardService.new(
+      match_repository: app.settings.match_repository,
+      prediction_repository: app.settings.prediction_repository,
+      point_repository: app.settings.point_repository
+    )
+  end
+
+  def self.get_result_mailer(app, scoreboard_service)
+    MatchResultMailer.new(
+      match_repository: app.settings.match_repository,
+      prediction_repository: app.settings.prediction_repository,
+      scoreboard_service:,
       renderer: app.settings.template_renderer,
       email_sender: app.settings.email_sender,
       query_runner: app.settings.query_runner
     )
   end
 
-  def self.register_match_result_operations(app)
-    app.set :match_result_operations, MatchResultOperations.new(
-      match_repository: app.settings.match_repository,
-      scoreboard_service: app.settings.scoreboard_service,
-      result_mailer: app.settings.match_result_mailer
-    )
-  end
-
-  def self.register_match_prediction_services(app)
-    app.set :match_prediction_operations, MatchPredictionOperations.new(
+  def self.register_match_prediction_service(app)
+    app.set :match_prediction_service, MatchPredictionService.new(
       match_repository: app.settings.match_repository,
       prediction_repository: app.settings.prediction_repository
     )
   end
 
-  def self.register_match_page_services(app)
-    app.set :match_page_operations, MatchPageOperations.new(
-      match_repository: app.settings.match_repository,
-      match_prediction_repository: app.settings.match_prediction_repository,
-      user_repository: app.settings.user_repository
-    )
+  def self.register_match_page_service(app)
     app.set :match_page_service, MatchPageService.new(
-      operations: app.settings.match_page_operations
+      match_repository: app.settings.match_repository,
+      prediction_repository: app.settings.prediction_repository,
+      user_repository: app.settings.user_repository
     )
   end
 
-  def self.register_match_broadcaster_services(app)
+  def self.register_match_broadcaster_service(app)
     app.set :match_broadcaster_service, MatchBroadcasterService.new(
       match_repository: app.settings.match_repository
     )

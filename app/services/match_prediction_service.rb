@@ -12,34 +12,31 @@ class MatchPredictionService
     end
   end
 
-  def initialize(attributes)
-    @match_id = attributes.fetch(:match_id)
-    @home_prediction = attributes.fetch(:home_prediction)
-    @away_prediction = attributes.fetch(:away_prediction)
-    @user_id = attributes.fetch(:user_id)
-    @operations = attributes.fetch(:operations)
+  def initialize(match_repository:, prediction_repository:)
+    @match_repository = match_repository
+    @prediction_repository = prediction_repository
   end
 
-  def call
-    home_prediction = @home_prediction.to_f
-    away_prediction = @away_prediction.to_f
-    match = @operations.load_match(@user_id, @match_id)
-    message = prediction_error(match, home_prediction, away_prediction)
-    return failure(message) if message
+  def call(match_id:, home_prediction:, away_prediction:, user_id:)
+    message = prediction_error(match_id, home_prediction, away_prediction)
+    if message
+      return failure(message:, match_id:, home_prediction:,
+                     away_prediction:)
+    end
 
     home_prediction = home_prediction.to_i
     away_prediction = away_prediction.to_i
 
-    @operations.add_prediction(
-      @user_id,
-      @match_id,
+    @prediction_repository.add_prediction(
+      user_id,
+      match_id,
       home_prediction,
       away_prediction
     )
 
     Result.new(
       success: true,
-      match_id: @match_id,
+      match_id:,
       home_prediction:,
       away_prediction:
     )
@@ -47,7 +44,8 @@ class MatchPredictionService
 
   private
 
-  def prediction_error(match, home_prediction, away_prediction)
+  def prediction_error(match_id, home_prediction, away_prediction)
+    match = @match_repository.load_match(match_id)
     if match_locked_down?(match)
       'You cannot add or change your prediction because ' \
         'this match is already locked down!'
@@ -57,6 +55,8 @@ class MatchPredictionService
   end
 
   def prediction_type_error(home_prediction, away_prediction)
+    home_prediction = home_prediction.to_f
+    away_prediction = away_prediction.to_f
     error = []
     error << 'integers' if
       not_integer?(home_prediction) || not_integer?(away_prediction)
@@ -75,13 +75,13 @@ class MatchPredictionService
     !(num.floor - num).zero?
   end
 
-  def failure(message)
+  def failure(message:, match_id:, home_prediction:, away_prediction:)
     Result.new(
       success: false,
       message:,
-      match_id: @match_id,
-      home_prediction: @home_prediction,
-      away_prediction: @away_prediction
+      match_id:,
+      home_prediction:,
+      away_prediction:
     )
   end
 end
