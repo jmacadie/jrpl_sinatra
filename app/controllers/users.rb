@@ -38,23 +38,16 @@ class App < Sinatra::Application
   post '/users/signin' do
     require_signed_out_user
     session[:intended_route] ||= params['intended_route'] || '/'
-    user_name = extract_user_name(params[:login].strip)
-    pword = params[:pword].strip
-    if valid_credentials?(user_name, pword)
-      user_id = user_id(user_name)
-      setup_user_session_data(user_id)
-      if params.keys.include?('remember_me')
-        implement_cookies()
-      end
-      session[:message] = 'Welcome!'
-      session[:message_level] = 'success'
-      redirect_user_input()
-    else
-      session[:message] = 'Invalid credentials.'
-      session[:message_level] = 'danger'
-      status 422
-      erb :signin
-    end
+    result = settings.sign_in_service.call(
+      login: params[:login],
+      password: params[:pword]
+    )
+    return apply_sign_in_result(result) if result.success?
+
+    session[:message] = 'Invalid credentials.'
+    session[:message_level] = 'danger'
+    status 422
+    erb :signin
   end
 
   post '/users/signout' do
@@ -151,6 +144,21 @@ class App < Sinatra::Application
   end
 
   private
+
+  def apply_sign_in_result(result)
+    assign_signed_in_session(result)
+    implement_cookies() if params.key?('remember_me')
+    session[:message] = 'Welcome!'
+    session[:message_level] = 'success'
+    redirect_user_input
+  end
+
+  def assign_signed_in_session(result)
+    session[:user_id] = result.user_id
+    session[:user_name] = result.user_name
+    session[:user_email] = result.email
+    session[:user_roles] = result.roles
+  end
 
   def apply_edit_user_result(result)
     session[:user_name] = result.user_name

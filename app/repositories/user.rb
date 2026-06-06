@@ -63,6 +63,20 @@ class UserRepository
     @query_runner.run_query(sql, email, user_id)
   end
 
+  def find_sign_in_user(login)
+    result = @query_runner.run_query(sign_in_user_query, login)
+    return nil if result.ntuples.zero?
+
+    row = result.first
+    {
+      user_id: row['user_id'].to_i,
+      user_name: row['user_name'],
+      email: row['email'],
+      pword: row['pword'],
+      roles: row['roles']
+    }
+  end
+
   private
 
   def select_query_all_users
@@ -84,6 +98,36 @@ class UserRepository
       FULL OUTER JOIN role ON user_role.role_id = role.role_id
       WHERE users.user_id = $1::int
       GROUP BY users.user_id, users.user_name, users.email
+    SQL
+  end
+
+  def sign_in_user_query
+    <<~SQL
+      WITH selected_user AS (
+        SELECT COALESCE(
+          (
+            SELECT user_id FROM users
+            WHERE lower(email) = lower($1::text)
+            LIMIT 1
+          ),
+          (
+            SELECT user_id FROM users
+            WHERE user_name = $1::text
+            LIMIT 1
+          )
+        ) AS user_id
+      )
+      SELECT
+        users.user_id,
+        users.user_name,
+        users.email,
+        users.pword,
+        string_agg(role.name, ', ') AS roles
+      FROM users
+      INNER JOIN selected_user ON users.user_id = selected_user.user_id
+      LEFT JOIN user_role ON users.user_id = user_role.user_id
+      LEFT JOIN role ON user_role.role_id = role.role_id
+      GROUP BY users.user_id, users.user_name, users.email, users.pword;
     SQL
   end
 

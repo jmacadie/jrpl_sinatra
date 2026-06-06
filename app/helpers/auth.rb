@@ -22,10 +22,6 @@ module Loginable
     }
   end
 
-  def extract_user_name(login)
-    user_name_from_email(login) || login
-  end
-
   def input_email_error(email)
     if email == ''
       'Email cannot be blank! Please enter an email.'
@@ -114,15 +110,5 @@ module Loginable
 
   def user_signed_in?
     session.key?(:user_name) || signin_with_cookie()
-  end
-
-  def valid_credentials?(user_name, pword)
-    credentials = load_user_credentials
-    if credentials.key?(user_name)
-      bcrypt_pword = BCrypt::Password.new(credentials[user_name][:pword])
-      bcrypt_pword == pword
-    else
-      false
-    end
   end
 end
