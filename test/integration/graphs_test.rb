@@ -4,6 +4,14 @@ require_relative '../helpers/test_helpers'
 class GraphsIntegrationTest < Minitest::Test
   include TestIntegrationMethods
 
+  def test_graphs_page
+    get '/graphs', {}, non_admin_session
+
+    assert_equal 200, last_response.status
+    assert_includes body_text, 'Graphs'
+    assert_includes body_text, 'Maccas'
+  end
+
   # rubocop: disable Metrics/AbcSize
   def test_graphs_data
     get '/graphs/data', {}, non_admin_session
