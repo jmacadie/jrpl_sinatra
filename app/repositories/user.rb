@@ -10,6 +10,59 @@ class UserRepository
     end
   end
 
+  def load_user_details(user_id)
+    result = @query_runner.run_query(select_query_single_user, user_id)
+    result.map { |row| row_to_users_details_hash(row) }.first
+  end
+
+  def load_user_credentials(user_id)
+    sql = 'SELECT user_name, email, pword FROM users WHERE user_id = $1::int;'
+    row = @query_runner.run_query(sql, user_id).first
+    {
+      user_name: row['user_name'],
+      email: row['email'],
+      pword: row['pword']
+    }
+  end
+
+  def username_exists?(user_name, except_user_id:)
+    sql = <<~SQL
+      SELECT EXISTS (
+        SELECT 1 FROM users
+        WHERE user_name = $1::text AND user_id <> $2::int
+      ) AS exists;
+    SQL
+    @query_runner.run_query(sql, user_name, except_user_id)
+                 .first['exists'] == 't'
+  end
+
+  def email_exists?(email, except_user_id:)
+    sql = <<~SQL
+      SELECT EXISTS (
+        SELECT 1 FROM users
+        WHERE lower(email) = lower($1::text) AND user_id <> $2::int
+      ) AS exists;
+    SQL
+    @query_runner.run_query(sql, email, except_user_id)
+                 .first['exists'] == 't'
+  end
+
+  def change_username(user_id, user_name)
+    sql = 'UPDATE users SET user_name = $1::text WHERE user_id = $2::int;'
+    @query_runner.run_query(sql, user_name, user_id)
+  end
+
+  def change_password(user_id, password)
+    hashed_password = BCrypt::Password.create(password).to_s
+    sql = 'UPDATE users SET pword = $1::text WHERE user_id = $2::int;'
+    @query_runner.run_query(sql, hashed_password, user_id)
+  end
+
+  def change_email(user_id, email)
+    sql = 'UPDATE users SET email = $1::text WHERE user_id = $2::int;'
+    @query_runner.run_query(sql, email, user_id)
+  end
+
   private
 
   def select_query_all_users
@@ -20,6 +73,17 @@ class UserRepository
       FULL OUTER JOIN role ON user_role.role_id = role.role_id
       GROUP BY users.user_id, users.user_name, users.email
       ORDER BY UPPER(users.user_name);
+    SQL
+  end
+
+  def select_query_single_user
+    <<~SQL
+      SELECT users.user_id, users.user_name, users.email, string_agg(role.name, ', ') AS roles
+      FROM users
+      FULL OUTER JOIN user_role ON users.user_id = user_role.user_id
+      FULL OUTER JOIN role ON user_role.role_id = role.role_id
+      WHERE users.user_id = $1::int
+      GROUP BY users.user_id, users.user_name, users.email
     SQL
   end
 

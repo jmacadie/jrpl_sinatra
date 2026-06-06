@@ -5,51 +5,6 @@ module Loginable
   include DBUsers
   include DBLogin
 
-  def change_email(new_email)
-    lowercase_email = new_email.downcase
-    change_email_query(session[:user_name], lowercase_email)
-    session[:user_email] = lowercase_email
-  end
-
-  def change_pword(new_pword)
-    change_pword_query(session[:user_name], new_pword)
-  end
-
-  def change_username(new_user_name)
-    change_username_query(session[:user_name], new_user_name)
-    session[:user_name] = new_user_name
-  end
-
-  def credentials_error(current_pword)
-    return unless !valid_credentials?(session[:user_name], current_pword)
-    'That is not the correct current password. Try again!'
-  end
-
-  def details_changed(new_user_details)
-    changes = []
-    changes << 'username' if session[:user_name] != new_user_details[:user_name]
-    changes << 'password' if new_user_details[:pword] != ''
-    changes << 'email' if session[:user_email] != new_user_details[:email]
-    changes.empty? ? 'none' : changes.join(', ')
-  end
-
-  def edit_login_error(user_details, current_pword)
-    error = []
-    error << input_username_error(user_details[:user_name])
-    error << edit_pword_error(user_details[:pword],
-                              user_details[:reenter_pword])
-    error << input_email_error(user_details[:email])
-    error << credentials_error(current_pword)
-    error << no_change_error(user_details, current_pword)
-    error.delete(nil)
-    error.empty? ? '' : error.join(' ')
-  end
-
-  def edit_pword_error(pword, reenter_pword)
-    return unless pword != reenter_pword && pword != ''
-    'The passwords do not match.'
-  end
-
   def email_list
     load_user_credentials.values.each_with_object([]) do |hash, arr|
       arr << hash[:email].downcase
@@ -97,14 +52,6 @@ module Loginable
       'Either you are a bot, ' \
       'or your intelligence level is not sufficient to play here. ' \
       'Goodbye'
-  end
-
-  def no_change_error(user_details, current_pword)
-    return unless
-      session[:user_name] == user_details[:user_name] &&
-      (current_pword == user_details[:pword] || user_details[:pword] == '') &&
-      session[:user_email] == user_details[:email].downcase
-    'You have not changed any of your details.'
   end
 
   def require_signed_in_as_admin
@@ -158,22 +105,6 @@ module Loginable
     elsif user_details[:pword] == ''
       'Password cannot be blank! Please enter a password.'
     end
-  end
-
-  def update_user_credentials(new_user_details)
-    changed_details = details_changed(new_user_details)
-
-    change_username(new_user_details[:user_name]) if
-      changed_details.include?('username')
-
-    change_pword(new_user_details[:pword]) if
-      changed_details.include?('password')
-
-    change_email(new_user_details[:email]) if
-      changed_details.include?('email')
-
-    session[:message] = "The following have been updated: #{changed_details}."
-    session[:message_level] = 'info'
   end
 
   def user_is_admin?

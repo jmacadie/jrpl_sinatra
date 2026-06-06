@@ -17,6 +17,9 @@ class UserAccountIntegrationTest < Minitest::Test
     assert_includes body_text, 'Change username / e-mail:'
     assert_includes body_text, 'Change password: Leave blank to keep current'
     assert_includes body_text, 'Current password required for any changes:'
+    assert_includes body_html, 'name="user_name" value="Maccas"'
+    assert_includes body_html,
+                    'name="email" value="james.macadie@telerealtrillium.com"'
   end
 
   def test_change_username

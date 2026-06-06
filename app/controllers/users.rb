@@ -7,22 +7,27 @@ class App < Sinatra::Application
 
   get '/users/edit_credentials' do
     require_signed_in_user
-    erb :edit_credentials
+    render_edit_user_page
   end
 
   post '/users/edit_credentials' do
     require_signed_in_user
-    current_pword = params[:current_pword].strip
-    new_user_details = extract_user_details(params)
-    session[:message] = edit_login_error(new_user_details, current_pword)
-    if session[:message].empty?
-      update_user_credentials(new_user_details)
-      redirect '/'
-    else
-      session[:message_level] = 'danger'
-      status 422
-      erb :edit_credentials
-    end
+    result = settings.edit_user_service.call(
+      user_id: session[:user_id],
+      current_password: params[:current_pword],
+      details: {
+        user_name: params[:user_name],
+        email: params[:email],
+        password: params[:pword],
+        password_confirmation: params[:reenter_pword]
+      }
+    )
+    return apply_edit_user_result(result) if result.success?
+
+    session[:message] = result.message
+    session[:message_level] = 'danger'
+    status 422
+    render_edit_user_page
   end
 
   get '/users/signin' do
@@ -146,6 +151,22 @@ class App < Sinatra::Application
   end
 
   private
+
+  def apply_edit_user_result(result)
+    session[:user_name] = result.user_name
+    session[:user_email] = result.email
+    session[:message] = result.message
+    session[:message_level] = 'info'
+    redirect '/'
+  end
+
+  def render_edit_user_page
+    page = settings.edit_user_page_service.call(
+      user_id: session[:user_id]
+    )
+    @user = page.user
+    erb :edit_credentials
+  end
 
   def redirect_user_input
     route = session.delete(:intended_route)
