@@ -31,7 +31,41 @@ class MatchPageService
     )
   end
 
+  def predictions_payload(match_id)
+    match = @match_repository.load_match(match_id)
+    return nil unless match_locked_down?(match)
+
+    {
+      match: {
+        home_name: home_name(match),
+        away_name: away_name(match),
+        home_score: match[:home_score],
+        away_score: match[:away_score]
+      },
+      predictions: get_predictions(match_id)
+    }
+  end
+
   private
+
+  def get_predictions(match_id)
+    @prediction_repository.get_predictions_results(match_id)
+                          .map do |prediction|
+      {
+        name: prediction[:user],
+        home: prediction[:home_prediction],
+        away: prediction[:away_prediction]
+      }
+    end
+  end
+
+  def home_name(match)
+    match[:home_name] || match[:home_tournament_role]
+  end
+
+  def away_name(match)
+    match[:away_name] || match[:away_tournament_role]
+  end
 
   def users(match)
     return nil unless match[:locked_down]

@@ -60,7 +60,7 @@ class App < Sinatra::Application
   get '/match/:match_id/predictions' do
     require_signed_in_user
     match_id = params[:match_id].to_i
-    payload = match_predictions_payload(match_id)
+    payload = settings.match_page_service.predictions_payload(match_id)
     halt 404 if payload.nil?
     content_type :json
     payload.to_json
@@ -112,35 +112,5 @@ class App < Sinatra::Application
 
   def to_bool?(str)
     str == 'true'
-  end
-
-  def match_predictions_payload(match_id)
-    page = settings.match_page_service.call(
-      match_id:,
-      user_id: 1,
-      admin: false
-    )
-    match = page.match
-    return nil unless match[:locked_down]
-
-    {
-      match: {
-        home_name: home_name(match),
-        away_name: away_name(match),
-        home_score: match[:home_score],
-        away_score: match[:away_score]
-      },
-      predictions: predictions_payload(page.predictions)
-    }
-  end
-
-  def predictions_payload(predictions)
-    predictions.map do |prediction|
-      {
-        name: prediction[:user],
-        home: prediction[:home_prediction],
-        away: prediction[:away_prediction]
-      }
-    end
   end
 end
