@@ -4,6 +4,7 @@ require_relative '../repositories/fixtures'
 require_relative '../repositories/match'
 require_relative '../repositories/point'
 require_relative '../repositories/prediction'
+require_relative '../repositories/tournament_role'
 require_relative '../repositories/user'
 
 module ApplicationServices
@@ -18,6 +19,7 @@ module ApplicationServices
     register_match_broadcaster_service(app)
     register_fixtures_page_service(app)
     register_graphs_page_service(app)
+    register_tournament_role_services(app)
   end
 
   def self.register_shared_services(app)
@@ -38,6 +40,11 @@ module ApplicationServices
     register_repository(app, :fixtures_repository, FixturesRepository)
     register_repository(app, :match_repository, MatchRepository)
     register_repository(app, :prediction_repository, PredictionRepository)
+    register_repository(
+      app,
+      :tournament_role_repository,
+      TournamentRoleRepository
+    )
     register_repository(app, :user_repository, UserRepository)
     register_repository(app, :point_repository, PointRepository)
   end
@@ -121,6 +128,16 @@ module ApplicationServices
       cumulative_points_repository:
         app.settings.cumulative_points_repository,
       user_repository: app.settings.user_repository
+    )
+  end
+
+  def self.register_tournament_role_services(app)
+    repository = app.settings.tournament_role_repository
+    app.set :tournament_roles_page_service, TournamentRolesPageService.new(
+      tournament_role_repository: repository
+    )
+    app.set :tournament_role_service, TournamentRoleService.new(
+      tournament_role_repository: repository
     )
   end
 end
