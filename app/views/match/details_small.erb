@@ -1,9 +1,9 @@
 <%== erb :'match/small_team_score_row',
-         locals: { flag: home_flag(@match),
-                   name: home_name(@match),
+         locals: { flag: home_flag(match),
+                   name: home_name(match),
                    score_id: 'homeTeamPointsXS',
-                   score: home_score(@match) } %>
-<% if origin?(@match) %>
+                   score: home_score(match) } %>
+<% if origin?(match) %>
 <div class="row d-flex d-sm-none text-start mt-2">
   <div class="col-12">
     <%== erb :'match/origin_button',
@@ -15,18 +15,18 @@
                    panels: [
                      { column_class: 'col-12',
                        id: 'homeOriginXS',
-                       origin: origin_details(@origin, 'ht') }
+                       origin: origin_details(origin, 'ht') }
                    ] } %>
 <% end %>
 <div class="row d-flex d-sm-none text-start">
   <div class="col-4 offset-4"><small>vs.</small></div>
 </div>
 <%== erb :'match/small_team_score_row',
-         locals: { flag: away_flag(@match),
-                   name: away_name(@match),
+         locals: { flag: away_flag(match),
+                   name: away_name(match),
                    score_id: 'awayTeamPointsXS',
-                   score: away_score(@match) } %>
-<% if origin?(@match) %>
+                   score: away_score(match) } %>
+<% if origin?(match) %>
 <div class="row d-flex d-sm-none text-start mt-2">
   <div class="col-12">
     <%== erb :'match/origin_button',
@@ -38,6 +38,6 @@
                    panels: [
                      { column_class: 'col-12',
                        id: 'awayOriginXS',
-                       origin: origin_details(@origin, 'at') }
+                       origin: origin_details(origin, 'at') }
                    ] } %>
 <% end %>

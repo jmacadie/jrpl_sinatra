@@ -1,5 +1,5 @@
 <h5>Graph</h5>
-<%== erb :'graphs/pick_users', locals: { users: @users } %>
+<%== erb :'graphs/pick_users', locals: { users: } %>
 <div
   id="chartMatch"
-  data-predictions-url="/match/<%== @match[:match_id] %>/predictions"></div>
+  data-predictions-url="/match/<%== match[:match_id] %>/predictions"></div>

@@ -70,23 +70,22 @@ class App < Sinatra::Application
 
   def render_match(match_id)
     load_ring
-    assign_match_page(
-      settings.match_page_service.call(
-        match_id:,
-        user_id: session[:user_id],
-        admin: user_is_admin?
-      )
+    page = settings.match_page_service.call(
+      match_id:,
+      user_id: session[:user_id],
+      admin: user_is_admin?
     )
-    erb :match
-  end
-
-  def assign_match_page(page)
-    @match = page.match
-    @result = page.result
-    @users = page.users
-    @predictions = page.predictions
-    @origin = page.origin
-    @broadcasters = page.broadcasters
+    erb :match,
+        locals: {
+          match: page.match,
+          users: page.users,
+          predictions: page.predictions,
+          origin: page.origin,
+          broadcasters: page.broadcasters,
+          ring: @ring,
+          prev_match: @prev_match,
+          next_match: @next_match
+        }
   end
 
   def render_error(match_id, result)

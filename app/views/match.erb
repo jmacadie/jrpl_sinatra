@@ -1,14 +1,15 @@
-<%== erb :'match/navigation' %>
-<%== erb :'match/details' %>
-<% if @match[:locked_down] && session[:user_roles]&.include?('Admin') %>
+<%== erb :'match/navigation', locals: { prev_match:, next_match: } %>
+<%== erb :'match/details', locals: { match:, origin:, broadcasters: } %>
+<% if match[:locked_down] && session[:user_roles]&.include?('Admin') %>
   <hr />
-  <%== erb :'match/post_result' %>
+  <%== erb :'match/post_result', locals: { match:, ring: } %>
 <% end %>
 <hr />
-<%== erb :'match/prediction' %>
-<% if @match[:locked_down] %>
+<%== erb :'match/prediction', locals: { match:, ring:, next_match: } %>
+<% if match[:locked_down] %>
   <hr />
-  <%== erb :'match/predictions' %>
+  <%== erb :'match/predictions',
+           locals: { match:, users:, predictions: } %>
 <% end %>
-<%== erb :'match/navigation' %>
-<%== erb :'match/js' %>
+<%== erb :'match/navigation', locals: { prev_match:, next_match: } %>
+<%== erb :'match/js', locals: { match: } %>

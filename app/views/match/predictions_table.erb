@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @predictions.each do |prediction| %>
+    <% predictions.each do |prediction| %>
       <%== erb :'match/predictions_table_row',
                locals: { prediction: prediction } %>
     <% end %>
