@@ -1,9 +1,6 @@
 require_relative '../helpers/test_helpers'
-require_relative '../../app/services/email'
 
-class EmailTest < Minitest::Test
-  include Email
-
+class EmailSenderTest < Minitest::Test
   # rubocop: disable Metrics/AbcSize
   def test_plain_email
     Mail::TestMailer.deliveries.clear
@@ -93,4 +90,10 @@ class EmailTest < Minitest::Test
     Mail::TestMailer.deliveries.clear
   end
   # rubocop: enable Metrics/AbcSize
+
+  private
+
+  def send_email(**args)
+    App.settings.email_sender.send_email(**args)
+  end
 end

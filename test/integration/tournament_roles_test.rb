@@ -111,13 +111,13 @@ class TournamentRolesIntegrationTest < Minitest::Test
     )
 
     assert_equal 4,
-                 run_query(
+                 App.settings.query_runner.run_query(
                    'SELECT team_id FROM tournament_role ' \
                    'WHERE tournament_role_id = $1::int;',
                    25
                  ).first['team_id'].to_i
     assert_equal 0,
-                 run_query(
+                 App.settings.query_runner.run_query(
                    'SELECT team_id FROM tournament_role ' \
                    'WHERE tournament_role_id = $1::int;',
                    26

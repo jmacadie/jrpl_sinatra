@@ -15,13 +15,8 @@ class MatchResultMailerTest < Minitest::Test
                  collaborators[:scoreboard].calls
     assert_rendered_result(collaborators)
     assert_email_sent(collaborators)
-    assert_equal [
-      [
-        :run_query,
-        'UPDATE emails SET results_sent = true WHERE match_id = $1::int',
-        6
-      ]
-    ], collaborators[:query_runner].calls
+    assert_equal [[:record_results_sent, 6]],
+                 collaborators[:emails_sent_repository].calls
   end
 
   def build_collaborators
@@ -35,7 +30,7 @@ class MatchResultMailerTest < Minitest::Test
       ),
       renderer: FakeRenderer.new(body: '<html>result</html>'),
       email_sender: FakeEmailSender.new,
-      query_runner: FakeQueryRunner.new
+      emails_sent_repository: FakeEmailsSentRepository.new
     }
   end
 
@@ -46,7 +41,7 @@ class MatchResultMailerTest < Minitest::Test
       scoreboard_service: collaborators[:scoreboard],
       renderer: collaborators[:renderer],
       email_sender: collaborators[:email_sender],
-      query_runner: collaborators[:query_runner]
+      emails_sent_repository: collaborators[:emails_sent_repository]
     )
   end
 
@@ -153,15 +148,15 @@ class MatchResultMailerTest < Minitest::Test
     end
   end
 
-  class FakeQueryRunner
+  class FakeEmailsSentRepository
     attr_reader :calls
 
     def initialize
       @calls = []
     end
 
-    def run_query(statement, *params)
-      calls << [:run_query, statement, *params]
+    def record_results_sent(match_id)
+      calls << [:record_results_sent, match_id]
     end
   end
 end

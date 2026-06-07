@@ -6,7 +6,7 @@ class MatchResultMailer
     @scoreboard_service = dependencies.fetch(:scoreboard_service)
     @renderer = dependencies.fetch(:renderer)
     @email_sender = dependencies.fetch(:email_sender)
-    @query_runner = dependencies.fetch(:query_runner)
+    @emails_sent_repository = dependencies.fetch(:emails_sent_repository)
   end
 
   def send_result_email(match_id)
@@ -40,7 +40,6 @@ class MatchResultMailer
   end
 
   def record_results_email_sent(match_id)
-    sql = 'UPDATE emails SET results_sent = true WHERE match_id = $1::int'
-    @query_runner.run_query(sql, match_id)
+    @emails_sent_repository.record_results_sent(match_id)
   end
 end
