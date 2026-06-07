@@ -19,7 +19,8 @@ module ApplicationServices
     register_match_broadcaster_service(app)
     register_fixtures_page_service(app)
     register_graphs_page_service(app)
-    register_tournament_role_services(app)
+    register_admin_page_service(app)
+    register_tournament_role_service(app)
     register_edit_user_services(app)
     register_sign_in_service(app)
     register_sign_up_service(app)
@@ -137,13 +138,16 @@ module ApplicationServices
     )
   end
 
-  def self.register_tournament_role_services(app)
-    repository = app.settings.tournament_role_repository
-    app.set :tournament_roles_page_service, TournamentRolesPageService.new(
-      tournament_role_repository: repository
+  def self.register_admin_page_service(app)
+    app.set :admin_page_service, AdminPageService.new(
+      user_repository: app.settings.user_repository,
+      tournament_role_repository: app.settings.tournament_role_repository
     )
+  end
+
+  def self.register_tournament_role_service(app)
     app.set :tournament_role_service, TournamentRoleService.new(
-      tournament_role_repository: repository
+      tournament_role_repository: app.settings.tournament_role_repository
     )
   end
 
