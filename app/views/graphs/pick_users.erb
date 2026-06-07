@@ -17,11 +17,9 @@
       aria-labelledby="headingUsers"
       data-bs-parent="#graphsUsersAccordion">
       <div class="accordion-body">
-        <% users = locals[:users] %>
         <% while !users.empty? %>
           <%== erb :'graphs/pick_user_row',
-                   locals: { users: users.shift(3),
-                             current_user_id: locals[:current_user_id] } %>
+                   locals: { users: users.shift(3), current_user_id: } %>
         <% end %>
       </div>
     </div>

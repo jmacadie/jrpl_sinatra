@@ -2,11 +2,11 @@
   <input
     class="form-check-input"
     type="checkbox"
-    id="ckbGroup<%== locals[:group] %>"
-    name="gr_<%== locals[:group] %>"
-    <%== checked_if(locals[:checked]) %>>
-  <label class="form-check-label" for="ckbGroup<%== locals[:group] %>">
-    <strong>Group <%== locals[:group] %></strong><br>
-    <%== locals[:teams] %>
+    id="ckbGroup<%== group %>"
+    name="gr_<%== group %>"
+    <%== checked_if(checked) %>>
+  <label class="form-check-label" for="ckbGroup<%== group %>">
+    <strong>Group <%== group %></strong><br>
+    <%== teams %>
   </label>
 </div>

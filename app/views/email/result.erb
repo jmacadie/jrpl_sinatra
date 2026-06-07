@@ -5,11 +5,11 @@
 </head>
 <body>
   <%== erb :'email/common/separator' %>
-  <%== erb :'email/result/heading', locals: { match: locals[:match] } %>
+  <%== erb :'email/result/heading', locals: { match: } %>
   <%== erb :'email/common/visible_separator' %>
-  <%== erb :'email/result/match_result', locals: { predictions: locals[:predictions] } %>
+  <%== erb :'email/result/match_result', locals: { predictions: } %>
   <%== erb :'email/common/visible_separator' %>
-  <%== erb :'email/result/table', locals: { table: locals[:table] } %>
+  <%== erb :'email/result/table', locals: { table: } %>
   <%== erb :'email/common/separator' %>
   <%== erb :'email/common/footer' %>
 </body>

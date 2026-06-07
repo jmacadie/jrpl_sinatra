@@ -5,7 +5,7 @@
          style="vertical-align: middle;"
          width="90"
          height="60"
-         src="http://{URL}/img/flags/<%= locals[:match][:home_short_name].upcase %>.png">
+         src="http://{URL}/img/flags/<%= match[:home_short_name].upcase %>.png">
   </td>
   <td width="48%"
       style="white-space: nowrap;
@@ -15,7 +15,7 @@
              text-align:right;
              line-height: 30px;"
       st-content="fulltext-content">
-    <%= locals[:match][:home_name] %>
+    <%= match[:home_name] %>
   </td>
   <td style="white-space: nowrap;
              font-family: Helvetica, arial, sans-serif;
@@ -24,7 +24,7 @@
              text-align:center;
              line-height: 30px;"
       st-content="fulltext-content">
-    <%== locals[:match][:home_score] %>&nbsp;-&nbsp;<%== locals[:match][:away_score] %>
+    <%== match[:home_score] %>&nbsp;-&nbsp;<%== match[:away_score] %>
   </td>
   <td width="48%"
       style="white-space: nowrap;
@@ -34,15 +34,14 @@
              text-align:left;
              line-height: 30px;"
       st-content="fulltext-content">
-    <%= locals[:match][:away_name] %>
+    <%= match[:away_name] %>
   </td>
   <td>
     <img border="0"
          style="vertical-align: middle;"
          width="90"
          height="60"
-         src="http://{URL}/img/flags/<%= locals[:match][:away_short_name].upcase %>.png">
+         src="http://{URL}/img/flags/<%= match[:away_short_name].upcase %>.png">
   </td>
 </tr>
 <!-- End of content -->
-

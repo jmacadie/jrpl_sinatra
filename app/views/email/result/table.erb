@@ -13,7 +13,7 @@
             align="left"
             class="devicewidth">
         <%== erb :'email/result/table/header' %>
-        <% locals[:table].each_with_index do |user, index| %>
+        <% table.each_with_index do |user, index| %>
           <%== erb :'email/result/table/row', locals: { user: user, shade: index.odd? } %>
         <% end %>
       </table>
