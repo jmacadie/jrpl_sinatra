@@ -70,10 +70,11 @@ class App < Sinatra::Application
 
   def render_match(match_id)
     load_ring
+    admin = user_is_admin?
     page = settings.match_page_service.call(
       match_id:,
       user_id: session[:user_id],
-      admin: user_is_admin?
+      admin:
     )
     erb :match,
         locals: {
@@ -84,7 +85,9 @@ class App < Sinatra::Application
           broadcasters: page.broadcasters,
           ring: @ring,
           prev_match: @prev_match,
-          next_match: @next_match
+          next_match: @next_match,
+          can_post_result: page.match[:locked_down] && admin,
+          current_user_id: session[:user_id]
         }
   end
 

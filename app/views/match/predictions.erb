@@ -5,7 +5,8 @@
   <em>Match not yet locked down. Come back when it is...</em>
 </p>
 <% else %>
-  <%== erb :'match/predictions_graph', locals: { match:, users: } %>
+  <%== erb :'match/predictions_graph',
+           locals: { match:, users:, current_user_id: } %>
   <hr />
   <%== erb :'match/predictions_table', locals: { predictions: } %>
 <% end %>
