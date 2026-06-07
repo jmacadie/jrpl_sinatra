@@ -1,45 +1,45 @@
 <div class="row d-none d-sm-flex align-items-center">
   <div class="col-sm-2 text-center">
-    <span class="<%== home_flag(@match) %>"></span>
+    <span class="<%== home_flag(match) %>"></span>
   </div>
   <div class="col-sm-2 text-end">
-    <span class="lead"><%== home_name(@match) %></span>
-    <% if origin?(@match) %>
+    <span class="lead"><%== home_name(match) %></span>
+    <% if origin?(match) %>
     <br />
     <%== erb :'match/origin_button',
              locals: { id: 'btnHomeOrigin', target: 'homeOrigin' } %>
     <% end %>
   </div>
   <div class="col-sm-1 text-center lead">
-    <strong><span id="homeTeamPoints"><%== home_score(@match) %></span></strong>
+    <strong><span id="homeTeamPoints"><%== home_score(match) %></span></strong>
   </div>
   <div class="col-sm-2 text-center">vs.</div>
   <div class="col-sm-1 text-center lead">
-    <strong><span id="awayTeamPoints"><%== away_score(@match) %></span></strong>
+    <strong><span id="awayTeamPoints"><%== away_score(match) %></span></strong>
   </div>
   <div class="col-sm-2 lead">
-    <span><%== away_name(@match) %></span>
-    <% if origin?(@match) %>
+    <span><%== away_name(match) %></span>
+    <% if origin?(match) %>
     <br />
     <%== erb :'match/origin_button',
              locals: { id: 'btnAwayOrigin', target: 'awayOrigin' } %>
     <% end %>
   </div>
   <div class="col-sm-2 text-center">
-    <span class="<%== away_flag(@match) %>"></span>
+    <span class="<%== away_flag(match) %>"></span>
   </div>
 </div>
-<% if origin?(@match) %>
+<% if origin?(match) %>
 <%== erb :'match/origin_panel',
          locals: {
            row_class: 'row d-none d-sm-flex text-start mt-3',
            panels: [
              { column_class: 'col-sm-5',
                id: 'homeOrigin',
-               origin: origin_details(@origin, 'ht') },
+               origin: origin_details(origin, 'ht') },
              { column_class: 'col-sm-5 offset-sm-2',
                id: 'awayOrigin',
-               origin: origin_details(@origin, 'at') }
+               origin: origin_details(origin, 'at') }
            ]
          } %>
 <% end %>

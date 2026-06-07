@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-6 text-start">
-    <% unless @prev_match.nil? %>
-      <a href="<%== link_for_ring_navigation(@prev_match) %>">&lt; Previous match</a>
+    <% unless prev_match.nil? %>
+      <a href="<%== link_for_ring_navigation(prev_match) %>">&lt; Previous match</a>
     <% end %>
   </div>
   <div class="col-6 text-end">
-    <% unless @next_match.nil? %>
-      <a href="<%== link_for_ring_navigation(@next_match) %>">Next match &gt;</a>
+    <% unless next_match.nil? %>
+      <a href="<%== link_for_ring_navigation(next_match) %>">Next match &gt;</a>
     <% end %>
   </div>
 </div>

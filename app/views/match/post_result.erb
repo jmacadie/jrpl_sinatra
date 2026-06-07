@@ -1,10 +1,10 @@
 <h4 class="form-heading">Post Result</h4>
 
 <form class="d-none d-sm-block" role="form" action="/match/add_result" method="post">
-  <fieldset<%== disabled_if(!@match[:locked_down]) %>>
+  <fieldset<%== disabled_if(!match[:locked_down]) %>>
     <div class="row g-2 align-items-center mb-3">
       <div class="col-sm-4 text-sm-end">
-        <label for="home_score"><%== home_name(@match) %></label>
+        <label for="home_score"><%== home_name(match) %></label>
       </div>
       <div class="col-sm-2">
         <input
@@ -13,7 +13,7 @@
           class="form-control"
           id="home_score"
           name="home_score"
-          value="<%== home_score(@match) %>">
+          value="<%== home_score(match) %>">
       </div>
       <div class="col-sm-2">
         <input
@@ -22,10 +22,10 @@
           class="form-control"
           id="away_score"
           name="away_score"
-          value="<%== away_score(@match) %>">
+          value="<%== away_score(match) %>">
       </div>
       <div class="col-sm-4">
-        <label for="away_score"><%== away_name(@match) %></label>
+        <label for="away_score"><%== away_name(match) %></label>
       </div>
     </div>
     <div class="row">
@@ -34,16 +34,16 @@
       </div>
     </div>
     <%== erb :'forms/authenticity_token' %>
-    <input type="hidden" name="ring" value="<%== @ring %>">
-    <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
+    <input type="hidden" name="ring" value="<%== ring %>">
+    <input type="hidden" name="match_id" value="<%== match[:match_id] %>">
   </fieldset>
 </form>
 
 <form class="d-block d-sm-none" role="form" action="/match/add_result" method="post">
-  <fieldset<%== disabled_if(!@match[:locked_down]) %>>
+  <fieldset<%== disabled_if(!match[:locked_down]) %>>
     <div class="row g-2 align-items-center mb-3">
       <div class="col-8">
-        <label for="home_score_s"><%== home_name(@match) %></label>
+        <label for="home_score_s"><%== home_name(match) %></label>
       </div>
       <div class="col-4">
         <input
@@ -52,12 +52,12 @@
           class="form-control"
           id="home_score_s"
           name="home_score"
-          value="<%== home_score(@match) %>">
+          value="<%== home_score(match) %>">
       </div>
     </div>
     <div class="row g-2 align-items-center mb-3">
       <div class="col-8">
-        <label for="away_score_s"><%== away_name(@match) %></label>
+        <label for="away_score_s"><%== away_name(match) %></label>
       </div>
       <div class="col-4">
         <input
@@ -66,12 +66,12 @@
           class="form-control"
           id="away_score_s"
           name="away_score"
-          value="<%== away_score(@match) %>">
+          value="<%== away_score(match) %>">
       </div>
     </div>
     <button class="btn btn-sm btn-primary w-100" type="submit" id="btn_submit_res_s">Submit</button>
     <%== erb :'forms/authenticity_token' %>
-    <input type="hidden" name="ring" value="<%== @ring %>">
-    <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
+    <input type="hidden" name="ring" value="<%== ring %>">
+    <input type="hidden" name="match_id" value="<%== match[:match_id] %>">
   </fieldset>
 </form>

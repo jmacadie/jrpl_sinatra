@@ -1,13 +1,13 @@
 <h4 class="form-heading">Your Prediction</h4>
-<% if @match[:locked_down] %>
+<% if match[:locked_down] %>
 <p><em>Match locked down. No more updates to predictions possible</em></p>
 <% end %>
 
 <form class="d-none d-sm-block" id="prediction" role="form" action="/match/add_prediction" method="post">
-  <fieldset<%== disabled_if(@match[:locked_down]) %>>
+  <fieldset<%== disabled_if(match[:locked_down]) %>>
     <div class="row g-2 align-items-center mb-3">
       <div class="col-sm-4 text-sm-end">
-        <label for="home_team_prediction"><%== home_name(@match) %></label>
+        <label for="home_team_prediction"><%== home_name(match) %></label>
       </div>
       <div class="col-sm-2">
         <input
@@ -16,7 +16,7 @@
           class="form-control"
           id="home_team_prediction"
           name="home_team_prediction"
-          value="<%== home_prediction(@match) %>">
+          value="<%== home_prediction(match) %>">
       </div>
       <div class="col-sm-2">
         <input
@@ -25,10 +25,10 @@
           class="form-control"
           id="away_team_prediction"
           name="away_team_prediction"
-          value="<%== away_prediction(@match) %>">
+          value="<%== away_prediction(match) %>">
       </div>
       <div class="col-sm-4">
-        <label for="away_team_prediction"><%== away_name(@match) %></label>
+        <label for="away_team_prediction"><%== away_name(match) %></label>
       </div>
     </div>
     <div class="row g-2">
@@ -39,23 +39,23 @@
         <button
           class="btn btn-sm btn-success w-100"
           type="submit"
-          id="btn_submit_pred_next"<%== disabled_if(@next_match.nil?) %>>
+          id="btn_submit_pred_next"<%== disabled_if(next_match.nil?) %>>
           Submit &amp; Move Next
         </button>
       </div>
     </div>
     <%== erb :'forms/authenticity_token' %>
     <input type="hidden" id="next" name="next" value="false">
-    <input type="hidden" name="ring" value="<%== @ring %>">
-    <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
+    <input type="hidden" name="ring" value="<%== ring %>">
+    <input type="hidden" name="match_id" value="<%== match[:match_id] %>">
   </fieldset>
 </form>
 
 <form class="d-block d-sm-none" id="prediction_s" role="form" action="/match/add_prediction" method="post">
-  <fieldset<%== disabled_if(@match[:locked_down]) %>>
+  <fieldset<%== disabled_if(match[:locked_down]) %>>
     <div class="row g-2 align-items-center mb-3">
       <div class="col-8">
-        <label for="home_team_prediction_s"><%== home_name(@match) %></label>
+        <label for="home_team_prediction_s"><%== home_name(match) %></label>
       </div>
       <div class="col-4">
         <input
@@ -64,12 +64,12 @@
           class="form-control"
           id="home_team_prediction_s"
           name="home_team_prediction"
-          value="<%== home_prediction(@match) %>">
+          value="<%== home_prediction(match) %>">
       </div>
     </div>
     <div class="row g-2 align-items-center mb-3">
       <div class="col-8">
-        <label for="away_team_prediction_s"><%== away_name(@match) %></label>
+        <label for="away_team_prediction_s"><%== away_name(match) %></label>
       </div>
       <div class="col-4">
         <input
@@ -78,7 +78,7 @@
           class="form-control"
           id="away_team_prediction_s"
           name="away_team_prediction"
-          value="<%== away_prediction(@match) %>">
+          value="<%== away_prediction(match) %>">
       </div>
     </div>
     <div class="d-grid gap-2">
@@ -86,13 +86,13 @@
       <button
         class="btn btn-sm btn-success"
         type="submit"
-        id="btn_submit_pred_next_s"<%== disabled_if(@next_match.nil?) %>>
+        id="btn_submit_pred_next_s"<%== disabled_if(next_match.nil?) %>>
         Submit &amp; Move Next
       </button>
     </div>
     <%== erb :'forms/authenticity_token' %>
     <input type="hidden" id="next_s" name="next" value="false">
-    <input type="hidden" name="ring" value="<%== @ring %>">
-    <input type="hidden" name="match_id" value="<%== @match[:match_id] %>">
+    <input type="hidden" name="ring" value="<%== ring %>">
+    <input type="hidden" name="match_id" value="<%== match[:match_id] %>">
   </fieldset>
 </form>
