@@ -20,6 +20,13 @@ class FixturesIntegrationTest < Minitest::Test
     assert_equal 'You must be signed in to do that.', session[:message]
   end
 
+  def test_nil_user_name_does_not_count_as_signed_in
+    get '/fixtures', {}, nil_session
+
+    assert_equal 302, last_response.status
+    assert_equal 'You must be signed in to do that.', session[:message]
+  end
+
   def test_locked_down_displayed_matches_list
     get '/fixtures', {}, non_admin_session
 
