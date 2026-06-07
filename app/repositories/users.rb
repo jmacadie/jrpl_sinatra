@@ -1,9 +1,4 @@
 module DBUsers
-  def assign_admin(user_id)
-    sql = 'INSERT INTO user_role VALUES ($1::int, $2::int);'
-    run_query(sql, user_id, admin_role_id())
-  end
-
   def load_all_users_details
     sql = select_query_all_users()
     result = run_query(sql)
@@ -21,27 +16,7 @@ module DBUsers
     end.first
   end
 
-  def unassign_admin(user_id)
-    sql = 'DELETE FROM user_role WHERE user_id = $1::int AND role_id = $2::int;'
-    run_query(sql, user_id, admin_role_id())
-  end
-
-  def user_admin?(user_id)
-    sql = <<~SQL
-    SELECT * FROM user_role
-    WHERE user_id = $1::int AND role_id = $2::int;
-    SQL
-    result = run_query(sql, user_id, admin_role_id())
-    !(result.ntuples == 0)
-  end
-
   private
-
-  def admin_role_id
-    sql = 'SELECT role_id FROM role WHERE name = $1::text;'
-    result = run_query(sql, 'Admin')
-    result.first['role_id'].to_i
-  end
 
   def select_query_all_users
     <<~SQL

@@ -139,7 +139,34 @@ class UserRepository
     @query_runner.run_query(sql, user_id)
   end
 
+  def admin?(user_id)
+    sql = <<~SQL
+      SELECT * FROM user_role
+      WHERE user_id = $1::int AND role_id = $2::int;
+    SQL
+    result = @query_runner.run_query(sql, user_id, admin_role_id)
+    !result.ntuples.zero?
+  end
+
+  def grant_admin(user_id)
+    sql = 'INSERT INTO user_role VALUES ($1::int, $2::int);'
+    @query_runner.run_query(sql, user_id, admin_role_id)
+  end
+
+  def revoke_admin(user_id)
+    sql = <<~SQL
+      DELETE FROM user_role
+      WHERE user_id = $1::int AND role_id = $2::int;
+    SQL
+    @query_runner.run_query(sql, user_id, admin_role_id)
+  end
+
   private
+
+  def admin_role_id
+    sql = 'SELECT role_id FROM role WHERE name = $1::text;'
+    @query_runner.run_query(sql, 'Admin').first['role_id'].to_i
+  end
 
   def select_query_all_users
     <<~SQL
