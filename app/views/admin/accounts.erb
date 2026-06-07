@@ -1,18 +1,18 @@
 <div class="accordion-item">
   <h2 class="accordion-header" id="headingOne">
     <button
-      class="accordion-button<%== ' collapsed' if @show %>"
+      class="accordion-button"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#collapseOne"
-      aria-expanded="<%== !@show %>"
+      aria-expanded="true"
       aria-controls="collapseOne">
       Administer Users
     </button>
   </h2>
   <div
     id="collapseOne"
-    class="accordion-collapse collapse<%== ' show' if !@show %>"
+    class="accordion-collapse collapse show"
     aria-labelledby="headingOne"
     data-bs-parent="#accordion">
     <div class="accordion-body">
@@ -29,7 +29,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @users.each do |user| %>
+            <% users.each do |user| %>
               <%== erb :'admin/account_row', locals: { user: user } %>
             <% end %>
           </tbody>

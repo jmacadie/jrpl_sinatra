@@ -158,8 +158,7 @@ class App < Sinatra::Application
     page = settings.edit_user_page_service.call(
       user_id: session[:user_id]
     )
-    @user = page.user
-    erb :edit_credentials
+    erb :edit_credentials, locals: { user: page.user }
   end
 
   def redirect_user_input
