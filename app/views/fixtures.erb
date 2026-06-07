@@ -1,10 +1,10 @@
-<%== erb :'fixtures/filter_form' %>
-<% unless @matches.empty? %>
+<%== erb :'fixtures/filter_form', locals: { criteria: } %>
+<% unless matches.empty? %>
   <br />
-  <% @matches.map { |m| m[:match_date] }.uniq.sort.each do |d| %>
-    <% @day_matches = @matches.filter { |m| m[:match_date] == d } %>
-    <% @day = d %>
-    <%== erb :'fixtures/day' %>
+  <% matches.map { |match| match[:match_date] }.uniq.sort.each do |day| %>
+    <% day_matches = matches.filter { |match| match[:match_date] == day } %>
+    <%== erb :'fixtures/day',
+             locals: { day:, matches: day_matches, match_ids: } %>
   <% end %>
 <% end %>
 <script type="text/javascript" src="/js/fixtures.js"></script>

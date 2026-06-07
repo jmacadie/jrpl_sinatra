@@ -18,15 +18,13 @@ class App < Sinatra::Application
       submitted_params:
     )
     session[:criteria] = page.criteria
-    assign_fixtures_page(page)
     apply_fixtures_message(page)
-    erb :fixtures
-  end
-
-  def assign_fixtures_page(page)
-    @matches = page.matches
-    @stage_names = page.stage_names
-    @match_ids = page.match_ids
+    erb :fixtures,
+        locals: {
+          matches: page.matches,
+          match_ids: page.match_ids,
+          criteria: page.criteria
+        }
   end
 
   def apply_fixtures_message(page)

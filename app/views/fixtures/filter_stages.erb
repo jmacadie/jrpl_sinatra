@@ -1,5 +1,5 @@
           <h3 class="h5">Select Stages / Groups</h3>
-          <%== erb :'fixtures/filter_groups' %>
+          <%== erb :'fixtures/filter_groups', locals: { criteria: } %>
           <% [
             ['ckbR32', 'st_r32', :round32, 'Round of 32'],
             ['ckbR16', 'st_r16', :round16, 'Round of 16'],
@@ -10,6 +10,6 @@
             <%== erb :'fixtures/filter_checkbox',
                      locals: { id: id,
                                name: name,
-                               checked: session[:criteria][:stages][stage],
+                               checked: criteria[:stages][stage],
                                label: label } %>
           <% end %>
