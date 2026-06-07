@@ -12,6 +12,15 @@ class GraphsIntegrationTest < Minitest::Test
     assert_includes body_text, 'Maccas'
   end
 
+  def test_graphs_page_requires_sign_in
+    get '/graphs'
+
+    assert_equal 302, last_response.status
+    assert_equal '/users/signin', URI(last_response['Location']).path
+    assert_equal 'You must be signed in to do that.', session[:message]
+    assert_equal '/graphs', session[:intended_route]
+  end
+
   # rubocop: disable Metrics/AbcSize
   def test_graphs_data
     get '/graphs/data', {}, non_admin_session
@@ -29,6 +38,15 @@ class GraphsIntegrationTest < Minitest::Test
                  points.first['users'].map { |user| user['rel_points'] })
     assert_equal(Array.new(34, 1),
                  points.first['users'].map { |user| user['rank'] })
+  end
+
+  def test_graphs_data_requires_sign_in
+    get '/graphs/data'
+
+    assert_equal 302, last_response.status
+    assert_equal '/users/signin', URI(last_response['Location']).path
+    assert_equal 'You must be signed in to do that.', session[:message]
+    assert_equal '/graphs/data', session[:intended_route]
   end
 
   def test_graphs_data_after_post_result

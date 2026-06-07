@@ -43,6 +43,8 @@ module Loginable
   end
 
   def user_signed_in?
-    session.key?(:user_name) || signin_with_cookie()
+    return true if session[:user_name]
+
+    !!signin_with_cookie()
   end
 end
