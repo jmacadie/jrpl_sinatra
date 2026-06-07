@@ -77,6 +77,45 @@ class UserRepository
     }
   end
 
+  def username_taken?(user_name)
+    sql = <<~SQL
+      SELECT EXISTS (
+        SELECT 1 FROM users WHERE user_name = $1::text
+      ) AS exists;
+    SQL
+    @query_runner.run_query(sql, user_name).first['exists'] == 't'
+  end
+
+  def email_taken?(email)
+    sql = <<~SQL
+      SELECT EXISTS (
+        SELECT 1 FROM users WHERE lower(email) = lower($1::text)
+      ) AS exists;
+    SQL
+    @query_runner.run_query(sql, email).first['exists'] == 't'
+  end
+
+  def create_user(user_name:, email:, password:)
+    hashed_password = BCrypt::Password.create(password).to_s
+    sql = <<~SQL
+      INSERT INTO users (user_name, email, pword)
+      VALUES ($1::text, $2::text, $3::text)
+      RETURNING user_id, user_name, email;
+    SQL
+    row = @query_runner.run_query(
+      sql,
+      user_name,
+      email,
+      hashed_password
+    ).first
+    {
+      user_id: row['user_id'].to_i,
+      user_name: row['user_name'],
+      email: row['email'],
+      roles: nil
+    }
+  end
+
   private
 
   def select_query_all_users

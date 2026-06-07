@@ -71,22 +71,21 @@ class App < Sinatra::Application
   post '/users/signup' do
     require_signed_out_user
     session[:intended_route] ||= params['intended_route'] || '/'
-    new_user_details = extract_user_details(params)
-    session[:message] = signup_input_error(new_user_details)
-    if session[:message].empty?
-      upload_new_user_credentials(new_user_details)
-      user_id = user_id(new_user_details[:user_name])
-      setup_user_session_data(user_id)
-      if params.keys.include?('remember_me')
-        implement_cookies()
-      end
-      session[:message] = 'Your account has been created.'
-      redirect_user_input()
-    else
-      session[:message_level] = 'danger'
-      status 422
-      erb :signup
-    end
+    result = settings.sign_up_service.call(
+      details: {
+        user_name: params[:user_name],
+        email: params[:email],
+        password: params[:pword],
+        password_confirmation: params[:reenter_pword],
+        bot_check: params[:bot_check]
+      }
+    )
+    return apply_sign_up_result(result) if result.success?
+
+    session[:message] = result.message
+    session[:message_level] = 'danger'
+    status 422
+    erb :signup
   end
 
   # Admin functions
@@ -144,6 +143,13 @@ class App < Sinatra::Application
   end
 
   private
+
+  def apply_sign_up_result(result)
+    assign_signed_in_session(result)
+    implement_cookies() if params.key?('remember_me')
+    session[:message] = result.message
+    redirect_user_input
+  end
 
   def apply_sign_in_result(result)
     assign_signed_in_session(result)

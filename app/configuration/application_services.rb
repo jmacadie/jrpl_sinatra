@@ -22,6 +22,7 @@ module ApplicationServices
     register_tournament_role_services(app)
     register_edit_user_services(app)
     register_sign_in_service(app)
+    register_sign_up_service(app)
   end
 
   def self.register_shared_services(app)
@@ -154,6 +155,12 @@ module ApplicationServices
 
   def self.register_sign_in_service(app)
     app.set :sign_in_service, SignInService.new(
+      user_repository: app.settings.user_repository
+    )
+  end
+
+  def self.register_sign_up_service(app)
+    app.set :sign_up_service, SignUpService.new(
       user_repository: app.settings.user_repository
     )
   end
