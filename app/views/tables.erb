@@ -1,6 +1,6 @@
 <h1>Tables</h1>
 <h2>Overall</h2>
-<%== erb :'tables/table', locals: { table: @tables[:overall_table] } %>
+<%== erb :'tables/table', locals: { table: tables[:overall_table] } %>
 <div class="accordion" id="tablesAccordion">
   <div class="accordion-item">
     <h2 class="accordion-header" id="headingGroup">
@@ -20,7 +20,9 @@
       aria-labelledby="headingGroup"
       data-bs-parent="#tablesAccordion">
       <div class="accordion-body">
-        <%== erb :'tables/table', locals: { title: 'Group Stage', table: @tables[:group_table] } %>
+        <%== erb :'tables/table',
+                 locals: { title: 'Group Stage',
+                           table: tables[:group_table] } %>
       </div>
     </div>
   </div>
@@ -42,7 +44,9 @@
       aria-labelledby="headingKnockout"
       data-bs-parent="#tablesAccordion">
       <div class="accordion-body">
-        <%== erb :'tables/table', locals: { title: 'Knockout', table: @tables[:knockout_table] } %>
+        <%== erb :'tables/table',
+                 locals: { title: 'Knockout',
+                           table: tables[:knockout_table] } %>
       </div>
     </div>
   </div>

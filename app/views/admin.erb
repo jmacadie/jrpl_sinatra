@@ -1,5 +1,7 @@
 <div class="accordion" id="accordion">
-  <%== erb :'admin/accounts' %>
-  <%== erb :'admin/tournament_roles' %>
+  <%== erb :'admin/accounts',
+           locals: { users: } %>
+  <%== erb :'admin/tournament_roles',
+           locals: { roles: } %>
 </div>
 <script type="text/javascript" src="/js/admin.js"></script>
