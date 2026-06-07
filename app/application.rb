@@ -10,11 +10,7 @@ require 'tilt/erubi'
 require 'yaml'
 
 require_relative 'configuration/application_services'
-
-# Load application services before helpers and controllers
-Dir["#{File.expand_path(__dir__)}/services/**/*.rb"].each do |file|
-  require file
-end
+require_relative 'services/ring'
 
 # Load up all helpers
 Dir["#{File.expand_path(__dir__)}/helpers/**/*.rb"].each do |file|
@@ -84,7 +80,7 @@ class App < Sinatra::Application
   end
 
   configure do
-    ApplicationServices.register(self)
+    ApplicationServices.new(app: self).register
   end
 
   before do
