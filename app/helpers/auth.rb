@@ -1,9 +1,7 @@
 require_relative '../repositories/users'
-require_relative '../repositories/login'
 
 module Loginable
   include DBUsers
-  include DBLogin
 
   def require_signed_in_as_admin
     return if user_signed_in? && user_is_admin?

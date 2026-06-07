@@ -23,6 +23,7 @@ module ApplicationServices
     register_edit_user_services(app)
     register_sign_in_service(app)
     register_sign_up_service(app)
+    register_reset_user_password_service(app)
   end
 
   def self.register_shared_services(app)
@@ -161,6 +162,12 @@ module ApplicationServices
 
   def self.register_sign_up_service(app)
     app.set :sign_up_service, SignUpService.new(
+      user_repository: app.settings.user_repository
+    )
+  end
+
+  def self.register_reset_user_password_service(app)
+    app.set :reset_user_password_service, ResetUserPasswordService.new(
       user_repository: app.settings.user_repository
     )
   end

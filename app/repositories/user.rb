@@ -116,6 +116,16 @@ class UserRepository
     }
   end
 
+  def reset_password(user_name, password)
+    hashed_password = BCrypt::Password.create(password).to_s
+    sql = <<~SQL
+      UPDATE users
+      SET pword = $1::text
+      WHERE user_name = $2::text;
+    SQL
+    @query_runner.run_query(sql, hashed_password, user_name)
+  end
+
   private
 
   def select_query_all_users
