@@ -1,8 +1,6 @@
-require_relative '../repositories/login'
 require_relative '../repositories/users'
 
 class App < Sinatra::Application
-  include DBLogin
   include DBUsers
 
   get '/users/edit_credentials' do
@@ -92,10 +90,10 @@ class App < Sinatra::Application
 
   post '/users/reset_pword' do
     require_signed_in_as_admin
-    user_name = params[:user_name]
-    reset_pword(user_name)
-    session[:message] =
-      "The password has been reset to 'jrpl' for #{user_name}."
+    result = settings.reset_user_password_service.call(
+      user_name: params[:user_name]
+    )
+    session[:message] = result.message
     session[:message_level] = 'info'
     if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
       '/'
