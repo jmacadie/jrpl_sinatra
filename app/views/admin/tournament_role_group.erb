@@ -1,6 +1,5 @@
-<% body_id = locals[:body_id] %>
 <div class="accordion-item">
-  <h2 class="accordion-header" id="<%== locals[:id] %>">
+  <h2 class="accordion-header" id="<%== id %>">
     <button
       class="accordion-button collapsed"
       type="button"
@@ -8,16 +7,16 @@
       data-bs-target="#<%== body_id %>"
       aria-expanded="false"
       aria-controls="<%== body_id %>">
-      <%== locals[:group] %>
+      <%== group %>
     </button>
   </h2>
   <div
     id="<%== body_id %>"
     class="accordion-collapse collapse"
-    aria-labelledby="<%== locals[:id] %>"
+    aria-labelledby="<%== id %>"
     data-bs-parent="#tournamentRolesAccordion">
     <div class="accordion-body">
-      <% locals[:roles].each do |r| %>
+      <% roles.each do |r| %>
         <%== erb :'admin/tournament_role',
           locals: { role: r[:role],
                     id: r[:id],

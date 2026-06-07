@@ -1,5 +1,4 @@
-<% role_camel = camelcase(locals[:role], :upper) %>
-<% selected = locals[:selected] %>
+<% role_camel = camelcase(role, :upper) %>
 <% picked = selected > 0 %>
 <form class="form-tournament-role" method="post" action="/tournament_role">
   <% format_not_picked = "fst-italic fw-light text-body-tertiary" %>
@@ -7,22 +6,22 @@
   <% formatting = picked ? format_picked : format_not_picked %>
   <div class="row mb-3 <%== formatting %>">
     <label class="col-sm-6 col-form-label text-sm-end" for="tournamentRole<%== role_camel %>">
-      <%== locals[:role] %>
+      <%== role %>
     </label>
     <div class="col-sm-6">
       <select class="form-select tournament-role-select" name="team" id="tournamentRole<%== role_camel %>">
         <option value="0" class="<%== format_not_picked %>"<%== selected_if(picked, expected: false) %>>Not yet selected</option>
-        <% locals[:teams].filter{ |t| t[:team_id] > 0 }.each do |t| %>
-        <% id = t[:team_id] %>
+        <% teams.filter{ |t| t[:team_id] > 0 }.each do |t| %>
+        <% team_id = t[:team_id] %>
         <% attributes = "" %>
-        <% attributes += selected_if(id, expected: selected).to_s %>
+        <% attributes += selected_if(team_id, expected: selected).to_s %>
         <% attributes += disabled_if(t[:disabled]).to_s %>
-        <option value="<%== id %>"<%== attributes %>>
+        <option value="<%== team_id %>"<%== attributes %>>
           <%== t[:team_name] %>
         </option>
         <% end %>
       </select>
-      <input type="hidden" name="role" value="<%== locals[:id] %>">
+      <input type="hidden" name="role" value="<%== id %>">
       <%== erb :'forms/authenticity_token' %>
     </div>
   </div>

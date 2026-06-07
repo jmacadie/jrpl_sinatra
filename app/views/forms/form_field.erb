@@ -1,11 +1,13 @@
-<input type="<%== locals[:type] || 'text' %>"
+<% field_type = defined?(type) && type ? type : 'text' %>
+<% field_name = defined?(name) && name ? name : id %>
+<input type="<%== field_type %>"
        class="form-control"
-       id="<%== locals[:id] %>"
-       name="<%== locals[:name] || locals[:id] %>"
-       <% if locals[:placeholder] %>
-       placeholder="<%== locals[:placeholder] %>"
+       id="<%== id %>"
+       name="<%== field_name %>"
+       <% if defined?(placeholder) && placeholder %>
+       placeholder="<%== placeholder %>"
        <% end %>
-       <% if locals.key?(:value) %>
-       value="<%== locals[:value] %>"
+       <% if defined?(value) %>
+       value="<%== value %>"
        <% end %>
-       <%== 'required' if locals[:required] %><%== ' autofocus' if locals[:autofocus] %>>
+       <%== 'required' if defined?(required) && required %><%== ' autofocus' if defined?(autofocus) && autofocus %>>

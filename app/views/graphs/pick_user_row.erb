@@ -1,7 +1,6 @@
 <div class="row">
-  <% (0..(locals[:users].size-1)).each do |i| %>
+  <% (0..(users.size-1)).each do |i| %>
   <%== erb :'graphs/pick_user',
-           locals: { user: locals[:users][i],
-                     current_user_id: locals[:current_user_id] } %>
+           locals: { user: users[i], current_user_id: } %>
   <% end %>
 </div>

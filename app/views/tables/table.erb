@@ -7,7 +7,7 @@
     <th>Total points</th>
   </thead>
   <tbody>
-    <% locals[:table].each do |user_data|%>
+    <% table.each do |user_data|%>
       <%== erb :'tables/table_row', locals: { user_data: user_data } %>
     <% end %>
   </tbody>

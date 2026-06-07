@@ -13,7 +13,7 @@
             align="left"
             class="devicewidth">
         <%== erb :'email/result/match_result/header' %>
-        <% locals[:predictions].each_with_index do |pred, index| %>
+        <% predictions.each_with_index do |pred, index| %>
           <%== erb :'email/result/match_result/row', locals: { prediction: pred, shade: index.odd? } %>
         <% end %>
       </table>

@@ -5,9 +5,9 @@
 </head>
 <body>
   <%== erb :'email/common/separator' %>
-  <%== erb :'email/prediction/heading', locals: { match: locals[:match] } %>
+  <%== erb :'email/prediction/heading', locals: { match: } %>
   <%== erb :'email/common/separator' %>
-  <%== erb :'email/prediction/prediction_table', locals: { predictions: locals[:predictions] } %>
+  <%== erb :'email/prediction/prediction_table', locals: { predictions: } %>
   <%== erb :'email/common/separator' %>
   <%== erb :'email/common/footer' %>
 </body>

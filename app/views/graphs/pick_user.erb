@@ -2,12 +2,11 @@
   <div class="form-check">
     <input class="form-check-input"
            type="checkbox"
-           value="<%== locals[:user][:user_id] %>"
-           id="user_<%== locals[:user][:user_id] %>"
-           <%== checked_if(locals[:user][:user_id],
-                            expected: locals[:current_user_id]) %>>
-    <label class="form-check-label" for="user_<%== locals[:user][:user_id] %>">
-      <%== locals[:user][:user_name] %>
+           value="<%== user[:user_id] %>"
+           id="user_<%== user[:user_id] %>"
+           <%== checked_if(user[:user_id], expected: current_user_id) %>>
+    <label class="form-check-label" for="user_<%== user[:user_id] %>">
+      <%== user[:user_name] %>
     </label>
   </div>
 </div>
