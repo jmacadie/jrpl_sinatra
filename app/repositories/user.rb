@@ -126,6 +126,19 @@ class UserRepository
     @query_runner.run_query(sql, hashed_password, user_name)
   end
 
+  def user_name(user_id)
+    sql = 'SELECT user_name FROM users WHERE user_id = $1::int;'
+    result = @query_runner.run_query(sql, user_id)
+    return nil if result.ntuples.zero?
+
+    result.first['user_name']
+  end
+
+  def delete_user(user_id)
+    sql = 'DELETE FROM users WHERE user_id = $1::int;'
+    @query_runner.run_query(sql, user_id)
+  end
+
   private
 
   def select_query_all_users

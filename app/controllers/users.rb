@@ -120,23 +120,12 @@ class App < Sinatra::Application
 
   post '/users/delete' do
     require_signed_in_as_admin
-    user_id = params[:user_id].to_i
-    if user_id == session[:user_id]
-      session[:message] = "You can't delete yourself, you lemon 🍋"
-      session[:message_level] = 'danger'
-      redirect('/admin')
-    end
-
-    user_name = user_name(user_id)
-    if user_name
-      delete_user(user_id)
-      session[:message] = "#{user_name} is no longer with us 🕳️"
-      session[:message_level] = 'warn'
-    else
-      session[:message] = "#{params[:user_id]} is not a valid user_id"
-      session[:message_level] = 'danger'
-    end
-
+    result = settings.delete_user_service.call(
+      user_id: params[:user_id],
+      current_user_id: session[:user_id]
+    )
+    session[:message] = result.message
+    session[:message_level] = result.message_level
     redirect('/admin')
   end
 

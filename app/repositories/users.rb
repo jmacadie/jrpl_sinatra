@@ -4,11 +4,6 @@ module DBUsers
     run_query(sql, user_id, admin_role_id())
   end
 
-  def delete_user(user_id)
-    sql = 'DELETE FROM users WHERE user_id = $1::int;'
-    run_query(sql, user_id)
-  end
-
   def load_all_users_details
     sql = select_query_all_users()
     result = run_query(sql)
@@ -38,13 +33,6 @@ module DBUsers
     SQL
     result = run_query(sql, user_id, admin_role_id())
     !(result.ntuples == 0)
-  end
-
-  def user_name(user_id)
-    sql = 'SELECT user_name FROM users WHERE user_id = $1::int;'
-    result = run_query(sql, user_id)
-    return nil if result.ntuples == 0
-    result.first['user_name']
   end
 
   private
