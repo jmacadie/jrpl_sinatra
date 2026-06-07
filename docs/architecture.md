@@ -1,6 +1,6 @@
 # Architecture Overview
 
-JRPL is a Sinatra application backed by PostgreSQL. The codebase is organised around a thin web layer, a helper-heavy request lifecycle, and a set of database modules that keep SQL grouped by domain.
+JRPL is a Sinatra application backed by PostgreSQL. The codebase is organised around a thin web layer, explicit application services, and class-based repositories.
 
 ## Boot Sequence
 
@@ -13,10 +13,10 @@ The Rack entrypoint is [`config.ru`](../config.ru), which loads [`app/applicatio
 - loads `config/general.yml` into Sinatra settings
 - creates the PostgreSQL connection pool from `config/database.yml`
 - configures email delivery through Pony
-- extends shared helper modules before every request
+- registers shared services and repositories at the composition root
 - runs the lockdown check in a `before` filter
 
-The app boot path is intentionally simple. Most behaviour is pushed into helper modules and database modules instead of being embedded directly in the route handlers.
+The app boot path is intentionally simple. Most behaviour is pushed into services and repositories instead of being embedded directly in route handlers.
 
 ## Application Layers
 
@@ -42,37 +42,33 @@ Route and view helper behaviour lives under [`app/helpers`](../app/helpers). The
 
 - [`auth.rb`](../app/helpers/auth.rb): login state, account validation, admin checks
 - [`login_cookies.rb`](../app/helpers/login_cookies.rb): remember-me cookies and token rotation
-- [`route_helpers.rb`](../app/helpers/route_helpers.rb): fixture criteria and lockdown timing
-- [`route_errors.rb`](../app/helpers/route_errors.rb): user-facing validation messages
 - [`view_helpers.rb`](../app/helpers/view_helpers.rb): display formatting for ERB
 
 Application services and utilities live under [`app/services`](../app/services):
 
-- [`query.rb`](../app/services/query.rb): PostgreSQL connection and query helpers used by repositories
-- [`scoring.rb`](../app/services/scoring.rb): official points calculation
-- [`lockdown.rb`](../app/services/lockdown.rb): lock-window checks and notifications
-- [`email.rb`](../app/services/email.rb): Pony integration and environment-specific mail config
-- [`mr_men.rb`](../app/services/mr_men.rb): aggregate Mr Mean, Mr Median, and Mr Mode predictions
+- [`query_runner.rb`](../app/services/query_runner.rb): PostgreSQL query execution used by repositories
+- [`lockdown_service.rb`](../app/services/lockdown_service.rb): lock-window checks and notifications
+- [`email_sender.rb`](../app/services/email_sender.rb): Pony integration and environment-specific mail config
+- [`mr_men_service.rb`](../app/services/mr_men_service.rb): aggregate Mr Mean, Mr Median, and Mr Mode predictions
 - [`ring.rb`](../app/services/ring.rb): compact match navigation token
 
 This split keeps controllers focused on orchestration while the reusable rules stay in one place.
 
-### Database Modules
+### Repositories
 
-The files in [`app/repositories`](../app/repositories) are the persistence boundary. Each file groups SQL around one concern:
+The files in [`app/repositories`](../app/repositories) are the persistence boundary. Each class receives a `QueryRunner` and groups SQL around one concern:
 
-- [`users.rb`](../app/repositories/users.rb): users and admin role links
-- [`login.rb`](../app/repositories/login.rb): credential persistence
-- [`cookies.rb`](../app/repositories/cookies.rb): remember-me persistence
-- [`matches.rb`](../app/repositories/matches.rb): match detail queries and writes
-- [`matches_full.rb`](../app/repositories/matches_full.rb): fixture listing queries
-- [`match_predictions.rb`](../app/repositories/match_predictions.rb): per-match prediction views
+- [`user.rb`](../app/repositories/user.rb): users, credentials, and admin role links
+- [`cookie.rb`](../app/repositories/cookie.rb): remember-me persistence
+- [`match.rb`](../app/repositories/match.rb): match detail queries and writes
+- [`fixtures.rb`](../app/repositories/fixtures.rb): fixture listing queries
+- [`prediction.rb`](../app/repositories/prediction.rb): prediction writes and per-match prediction views
 - [`point.rb`](../app/repositories/point.rb): scoreboard persistence and aggregation
 - [`cumulative_points.rb`](../app/repositories/cumulative_points.rb): graph data
-- [`tournament_roles.rb`](../app/repositories/tournament_roles.rb): tournament bracket and role mapping
-- [`emails.rb`](../app/repositories/emails.rb): email sent flags
+- [`tournament_role.rb`](../app/repositories/tournament_role.rb): tournament bracket and role mapping
+- [`email.rb`](../app/repositories/email.rb): email sent flags
 
-The controllers and helpers call these modules directly rather than introducing a separate service layer. That keeps the data access patterns explicit and easy to trace.
+Services receive these repositories explicitly through `ApplicationServices`.
 
 ### Views and Assets
 

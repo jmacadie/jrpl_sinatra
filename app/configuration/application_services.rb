@@ -1,5 +1,7 @@
 require_relative '../services/query_runner'
+require_relative '../repositories/cookie'
 require_relative '../repositories/cumulative_points'
+require_relative '../repositories/email'
 require_relative '../repositories/fixtures'
 require_relative '../repositories/match'
 require_relative '../repositories/point'
@@ -13,6 +15,7 @@ module ApplicationServices
     register_repositories(app)
     register_template_renderer(app)
     register_email_sender(app)
+    register_lockdown_services(app)
     register_match_result_service(app)
     register_match_prediction_service(app)
     register_match_page_service(app)
@@ -44,11 +47,13 @@ module ApplicationServices
   end
 
   def self.register_repositories(app)
+    register_repository(app, :cookie_repository, CookieRepository)
     register_repository(
       app,
       :cumulative_points_repository,
       CumulativePointsRepository
     )
+    register_repository(app, :emails_sent_repository, EmailsSentRepository)
     register_repository(app, :fixtures_repository, FixturesRepository)
     register_repository(app, :match_repository, MatchRepository)
     register_repository(app, :prediction_repository, PredictionRepository)
@@ -79,6 +84,20 @@ module ApplicationServices
     )
   end
 
+  def self.register_lockdown_services(app)
+    mr_men_service = MrMenService.new(
+      prediction_repository: app.settings.prediction_repository
+    )
+    app.set :lockdown_service, LockdownService.new(
+      match_repository: app.settings.match_repository,
+      prediction_repository: app.settings.prediction_repository,
+      emails_sent_repository: app.settings.emails_sent_repository,
+      mr_men_service: mr_men_service,
+      renderer: app.settings.template_renderer,
+      email_sender: app.settings.email_sender
+    )
+  end
+
   def self.register_match_result_service(app)
     scoreboard_service = get_scoreboard_service(app)
     result_mailer = get_result_mailer(app, scoreboard_service)
@@ -104,7 +123,7 @@ module ApplicationServices
       scoreboard_service:,
       renderer: app.settings.template_renderer,
       email_sender: app.settings.email_sender,
-      query_runner: app.settings.query_runner
+      emails_sent_repository: app.settings.email_sent_repository
     )
   end
 

@@ -1,6 +1,0 @@
-module DBEmails
-  def record_predictions_email_sent(match_id)
-    sql = 'UPDATE emails SET predictions_sent = true WHERE match_id = $1::int'
-    run_query(sql, match_id)
-  end
-end

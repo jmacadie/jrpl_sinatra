@@ -30,13 +30,8 @@ class App < Sinatra::Application
   # Constant definitions
   LOCKDOWN_BUFFER = 30 * 60 # 30 minutes
 
-  helpers DatabaseHelpers
-  helpers Email
-  helpers Lockdown
   helpers Loginable
   helpers LoginCookies
-  helpers RouteHelpers
-  helpers MrMen
   helpers ViewHelpers
 
   configure do
@@ -67,7 +62,7 @@ class App < Sinatra::Application
 
     conf = YAML.load_file("#{settings.config}/database.yml")
     set :db_pool, ConnectionPool.new(size: 5, timeout: 5) {
-      DatabaseHelpers.connect(conf[settings.environment])
+      QueryRunner.connect(conf[settings.environment])
     }
   end
 
@@ -76,7 +71,7 @@ class App < Sinatra::Application
 
     conf = YAML.load_file("#{settings.config}/database.yml")
     set :db_pool, ConnectionPool.new(size: 1, timeout: 5) {
-      DatabaseHelpers.connect(conf[settings.environment])
+      QueryRunner.connect(conf[settings.environment])
     }
   end
 
@@ -93,6 +88,6 @@ class App < Sinatra::Application
   end
 
   before do
-    check_lockdown()
+    settings.lockdown_service.call
   end
 end

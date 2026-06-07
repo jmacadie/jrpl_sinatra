@@ -1,8 +1,4 @@
-require_relative '../repositories/users'
-
 module Loginable
-  include DBUsers
-
   def require_signed_in_as_admin
     return if user_signed_in? && user_is_admin?
     session[:message] = 'You must be an administrator to do that.'
@@ -30,7 +26,7 @@ module Loginable
   end
 
   def setup_user_session_data(user_id)
-    user_details = load_user_details(user_id)
+    user_details = settings.user_repository.load_user_details(user_id)
     session[:user_id] = user_id
     session[:user_name] = user_details[:user_name]
     session[:user_email] = user_details[:email].downcase

@@ -1,4 +1,17 @@
+require 'pg'
+
 class QueryRunner
+  # rubocop:disable Metrics/AbcSize
+  def self.connect(config)
+    settings = { dbname: config['database'] }
+    settings[:host] = config['host'] unless config['host'].nil?
+    settings[:port] = config['port'] unless config['port'].nil?
+    settings[:user] = config['username'] unless config['username'].nil?
+    settings[:password] = config['password'] unless config['password'].nil?
+    PG.connect(**settings)
+  end
+  # rubocop:enable Metrics/AbcSize
+
   def initialize(db_pool:, environment:, logger: nil)
     @db_pool = db_pool
     @environment = environment

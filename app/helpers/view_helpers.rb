@@ -101,31 +101,6 @@ module ViewHelpers
     }
   end
 
-  def previous_match(match_id)
-    @match_list ||= load_match_list()
-    current_match_index = @match_list.index { |match| match == match_id }
-    current_match_index ||= 1
-    previous_match_index = current_match_index - 1
-    if previous_match_index < 0
-      nil
-    else
-      @match_list[previous_match_index]
-    end
-  end
-
-  def next_match(match_id)
-    @match_list ||= load_match_list()
-    max_index = @match_list.size - 1
-    current_match_index = @match_list.index { |match| match == match_id }
-    current_match_index ||= 1
-    next_match_index = current_match_index + 1
-    if next_match_index > max_index
-      nil
-    else
-      @match_list[next_match_index]
-    end
-  end
-
   def date_for_print(match)
     dt = Date.parse(match[:match_date])
     suffix =

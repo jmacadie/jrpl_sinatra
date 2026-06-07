@@ -46,6 +46,18 @@ class MatchRepository
     )
   end
 
+  def lockdown_matches
+    result = @query_runner.run_query(lockdown_matches_query)
+    result.map do |row|
+      {
+        match_id: row['match_id'].to_i,
+        match_date: row['date'],
+        kick_off: row['kick_off'],
+        match_datetime: to_datetime(row['date'], row['kick_off'])
+      }
+    end
+  end
+
   private
 
   def convert_str_to_int(str)
@@ -128,6 +140,19 @@ class MatchRepository
 
   def change_broadcaster_query
     'UPDATE match SET broadcaster_id = $1::int WHERE match_id = $2::int;'
+  end
+
+  def lockdown_matches_query
+    <<~SQL
+      SELECT
+        m.match_id,
+        m.date,
+        m.kick_off
+      FROM match m
+      INNER JOIN emails e ON e.match_id = m.match_id
+      WHERE e.predictions_sent = false
+      ORDER BY m.match_id ASC;
+    SQL
   end
 
   def match_origin_query

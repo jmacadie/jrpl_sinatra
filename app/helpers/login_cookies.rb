@@ -1,12 +1,8 @@
-require_relative '../repositories/cookies'
-
 module LoginCookies
-  include DBCookies
-
   def implement_cookies
     set_series_id_cookie()
     set_token_cookie()
-    save_new_cookie(
+    settings.cookie_repository.save_new_cookie(
       session[:user_id],
       cookies[:series_id],
       cookies[:token]
@@ -14,14 +10,14 @@ module LoginCookies
   end
 
   def clear_cookies
-    delete_cookie_data(cookies[:series_id])
+    settings.cookie_repository.delete_cookie_data(cookies[:series_id])
     cookies.delete(:series_id)
     cookies.delete(:token)
   end
 
   def signin_with_cookie
     return false unless cookies[:series_id] && cookies[:token]
-    user = user_from_series(cookies[:series_id])
+    user = settings.cookie_repository.user_from_series(cookies[:series_id])
     return false unless user
     encyrpted_cookie_token = BCrypt::Password.new(user[:token])
     if encyrpted_cookie_token != cookies[:token]
@@ -36,7 +32,7 @@ module LoginCookies
 
   def reset_cookie_token
     set_token_cookie()
-    update_token(
+    settings.cookie_repository.update_token(
       cookies[:series_id],
       cookies[:token]
     )
@@ -64,7 +60,7 @@ module LoginCookies
 
   def unique_random_string
     random_string = SecureRandom.hex(32)
-    while series_id_list.include?(random_string)
+    while settings.cookie_repository.series_id_list.include?(random_string)
       random_string = SecureRandom.hex(32)
     end
     random_string
