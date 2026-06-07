@@ -10,6 +10,9 @@ class GraphsIntegrationTest < Minitest::Test
     assert_equal 200, last_response.status
     assert_includes body_text, 'Graphs'
     assert_includes body_text, 'Maccas'
+    assert_includes body_html,
+                    '<input class="form-check-input" type="checkbox" ' \
+                    'value="11" id="user_11" checked>'
   end
 
   def test_graphs_page_requires_sign_in

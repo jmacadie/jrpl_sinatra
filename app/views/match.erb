@@ -1,6 +1,6 @@
 <%== erb :'match/navigation', locals: { prev_match:, next_match: } %>
 <%== erb :'match/details', locals: { match:, origin:, broadcasters: } %>
-<% if match[:locked_down] && session[:user_roles]&.include?('Admin') %>
+<% if can_post_result %>
   <hr />
   <%== erb :'match/post_result', locals: { match:, ring: } %>
 <% end %>
@@ -9,7 +9,7 @@
 <% if match[:locked_down] %>
   <hr />
   <%== erb :'match/predictions',
-           locals: { match:, users:, predictions: } %>
+           locals: { match:, users:, predictions:, current_user_id: } %>
 <% end %>
 <%== erb :'match/navigation', locals: { prev_match:, next_match: } %>
 <%== erb :'match/js', locals: { match: } %>

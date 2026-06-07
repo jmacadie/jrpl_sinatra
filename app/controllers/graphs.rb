@@ -2,7 +2,11 @@ class App < Sinatra::Application
   get '/graphs' do
     require_signed_in_user
     users = settings.graphs_page_service.page.users
-    erb :graphs, locals: { users: }
+    erb :graphs,
+        locals: {
+          users:,
+          current_user_id: session[:user_id]
+        }
   end
 
   get '/graphs/data' do

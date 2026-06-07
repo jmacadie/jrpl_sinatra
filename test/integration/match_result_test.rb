@@ -35,6 +35,9 @@ class MatchResultIntegrationTest < Minitest::Test
                     '<tr> <td>Maccas</td> ' \
                     '<td><strong>Denmark Win</strong>' \
                     '<br />82&nbsp;-&nbsp;81</td> <td>-</td> </tr>'
+    assert_includes body_html,
+                    '<input class="form-check-input" type="checkbox" ' \
+                    'value="11" id="user_11" checked>'
   end
 
   def test_view_match_lockdown_no_result_admin
