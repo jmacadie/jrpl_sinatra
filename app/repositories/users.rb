@@ -40,23 +40,9 @@ module DBUsers
     !(result.ntuples == 0)
   end
 
-  def user_id(user_name)
-    sql = 'SELECT user_id FROM users WHERE user_name = $1::text;'
-    result = run_query(sql, user_name)
-    return nil if result.ntuples == 0
-    result.first['user_id'].to_i
-  end
-
   def user_name(user_id)
     sql = 'SELECT user_name FROM users WHERE user_id = $1::int;'
     result = run_query(sql, user_id)
-    return nil if result.ntuples == 0
-    result.first['user_name']
-  end
-
-  def user_name_from_email(email)
-    sql = 'SELECT user_name FROM users WHERE lower(email) = lower($1::text);'
-    result = run_query(sql, email)
     return nil if result.ntuples == 0
     result.first['user_name']
   end

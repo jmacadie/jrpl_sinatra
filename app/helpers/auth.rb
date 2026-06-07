@@ -5,51 +5,6 @@ module Loginable
   include DBUsers
   include DBLogin
 
-  def email_list
-    load_user_credentials.values.each_with_object([]) do |hash, arr|
-      arr << hash[:email].downcase
-    end
-  end
-
-  def extract_user_details(params)
-    bot_check = params[:bot_check] || ''
-    {
-      user_name: params[:user_name].strip,
-      email: params[:email].strip.downcase,
-      pword: params[:pword].strip,
-      reenter_pword: params[:reenter_pword].strip,
-      bot_check: bot_check.strip
-    }
-  end
-
-  def input_email_error(email)
-    if email == ''
-      'Email cannot be blank! Please enter an email.'
-    elsif email !~ URI::MailTo::EMAIL_REGEXP
-      'That is not a valid email address.'
-    elsif email_list.include?(email.downcase) &&
-          session[:user_email] != email.downcase
-      'That email address already exists.'
-    end
-  end
-
-  def input_username_error(user_name)
-    if load_user_credentials.keys.include?(user_name) &&
-       session[:user_name] != user_name
-      'That username already exists. Please choose a different username.'
-    elsif user_name == ''
-      'Username cannot be blank! Please enter a username.'
-    end
-  end
-
-  def input_botcheck_error(bot_check)
-    return if bot_check.downcase == 'jrpl'
-    'You did not enter the magic four letters correctly. ' \
-      'Either you are a bot, ' \
-      'or your intelligence level is not sufficient to play here. ' \
-      'Goodbye'
-  end
-
   def require_signed_in_as_admin
     return if user_signed_in? && user_is_admin?
     session[:message] = 'You must be an administrator to do that.'
@@ -82,25 +37,6 @@ module Loginable
     session[:user_name] = user_details[:user_name]
     session[:user_email] = user_details[:email].downcase
     session[:user_roles] = user_details[:roles]
-  end
-
-  def signup_input_error(user_details)
-    error = []
-    error << input_username_error(user_details[:user_name])
-    error << signup_pword_error(user_details)
-    error << input_email_error(user_details[:email])
-    error << input_botcheck_error(user_details[:bot_check])
-    error.delete(nil)
-    error.empty? ? '' : error.join(' ')
-  end
-
-  def signup_pword_error(user_details)
-    if user_details[:pword] != user_details[:reenter_pword] &&
-       user_details[:pword] != ''
-      'The passwords do not match.'
-    elsif user_details[:pword] == ''
-      'Password cannot be blank! Please enter a password.'
-    end
   end
 
   def user_is_admin?
