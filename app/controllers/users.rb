@@ -1,8 +1,4 @@
-require_relative '../repositories/users'
-
 class App < Sinatra::Application
-  include DBUsers
-
   get '/users/edit_credentials' do
     require_signed_in_user
     render_edit_user_page
@@ -104,13 +100,10 @@ class App < Sinatra::Application
 
   post '/users/toggle_admin' do
     require_signed_in_as_admin
-    user_id = params[:user_id].to_i
-    button = params[:button]
-    if button == 'grant_admin' && !user_admin?(user_id)
-      assign_admin(user_id)
-    elsif button == 'revoke_admin' && user_admin?(user_id)
-      unassign_admin(user_id)
-    end
+    settings.toggle_user_admin_service.call(
+      user_id: params[:user_id],
+      action: params[:button]
+    )
     if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
       '/admin'
     else
