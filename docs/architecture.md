@@ -67,7 +67,7 @@ The files in [`app/repositories`](../app/repositories) are the persistence bound
 - [`matches.rb`](../app/repositories/matches.rb): match detail queries and writes
 - [`matches_full.rb`](../app/repositories/matches_full.rb): fixture listing queries
 - [`match_predictions.rb`](../app/repositories/match_predictions.rb): per-match prediction views
-- [`points.rb`](../app/repositories/points.rb): scoreboard persistence and aggregation
+- [`point.rb`](../app/repositories/point.rb): scoreboard persistence and aggregation
 - [`cumulative_points.rb`](../app/repositories/cumulative_points.rb): graph data
 - [`tournament_roles.rb`](../app/repositories/tournament_roles.rb): tournament bracket and role mapping
 - [`emails.rb`](../app/repositories/emails.rb): email sent flags

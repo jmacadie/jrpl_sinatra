@@ -17,9 +17,7 @@ module ApplicationServices
     register_match_prediction_service(app)
     register_match_page_service(app)
     register_match_broadcaster_service(app)
-    register_fixtures_page_service(app)
-    register_graphs_page_service(app)
-    register_admin_page_service(app)
+    register_page_services(app)
     register_tournament_role_service(app)
     register_edit_user_services(app)
     register_sign_in_service(app)
@@ -27,6 +25,13 @@ module ApplicationServices
     register_reset_user_password_service(app)
     register_delete_user_service(app)
     register_toggle_user_admin_service(app)
+  end
+
+  def self.register_page_services(app)
+    register_fixtures_page_service(app)
+    register_graphs_page_service(app)
+    register_tables_page_service(app)
+    register_admin_page_service(app)
   end
 
   def self.register_shared_services(app)
@@ -135,6 +140,12 @@ module ApplicationServices
       cumulative_points_repository:
         app.settings.cumulative_points_repository,
       user_repository: app.settings.user_repository
+    )
+  end
+
+  def self.register_tables_page_service(app)
+    app.set :tables_page_service, TablesPageService.new(
+      point_repository: app.settings.point_repository
     )
   end
 

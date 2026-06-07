@@ -1,11 +1,6 @@
-require_relative '../repositories/points'
-
 class App < Sinatra::Application
-  include DBPoints
-
   get '/tables' do
-    scoring_system = 'Official'
-    @tables = load_scoreboard_data(scoring_system)
+    @tables = settings.tables_page_service.call.tables
     erb :tables
   end
 end
