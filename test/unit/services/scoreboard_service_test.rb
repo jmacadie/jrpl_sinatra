@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class ScoreboardServiceTest < Minitest::Test
   def test_updates_official_scoring_for_predictions

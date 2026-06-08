@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class MatchResultMailerTest < Minitest::Test
   def test_sends_result_email_with_explicit_collaborators

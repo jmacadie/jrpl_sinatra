@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class MrMenServiceTest < Minitest::Test
   def test_adds_mean_median_and_mode_predictions

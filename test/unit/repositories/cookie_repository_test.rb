@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class CookieRepositoryTest < Minitest::Test
   def test_saves_hashed_cookie_token

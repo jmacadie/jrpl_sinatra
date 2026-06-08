@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class TablesPageServiceTest < Minitest::Test
   def test_builds_page_with_official_scoreboard_tables

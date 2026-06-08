@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class DeleteUserServiceTest < Minitest::Test
   def test_deletes_existing_user

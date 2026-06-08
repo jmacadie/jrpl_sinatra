@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class FixturesPageServiceTest < Minitest::Test
   def test_builds_page_with_default_criteria

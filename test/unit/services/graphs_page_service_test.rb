@@ -1,5 +1,5 @@
-require_relative '../helpers/test_helpers'
-require_relative '../../app/services/graphs_page'
+require_relative '../../helpers/test_helpers'
+require_relative '../../../app/services/graphs_page'
 
 class GraphsPageServiceTest < Minitest::Test
   def test_builds_page_with_users

@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class ToggleUserAdminServiceTest < Minitest::Test
   def test_grants_admin_role_when_user_is_not_an_admin

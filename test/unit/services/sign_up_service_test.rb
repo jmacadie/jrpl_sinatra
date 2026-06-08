@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class SignUpServiceTest < Minitest::Test
   def test_creates_user_and_returns_session_data

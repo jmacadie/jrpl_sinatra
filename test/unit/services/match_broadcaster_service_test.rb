@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class MatchBroadcasterServiceTest < Minitest::Test
   def test_changes_match_broadcaster

@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class LockdownServiceTest < Minitest::Test
   def test_processes_matches_inside_the_lockdown_window

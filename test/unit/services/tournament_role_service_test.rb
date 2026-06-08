@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class TournamentRoleServiceTest < Minitest::Test
   def test_sets_tournament_role

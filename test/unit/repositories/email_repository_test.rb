@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class EmailsSentRepositoryTest < Minitest::Test
   def test_records_prediction_emails

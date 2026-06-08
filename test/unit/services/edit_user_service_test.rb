@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class EditUserServiceTest < Minitest::Test
   def test_updates_username_password_and_email

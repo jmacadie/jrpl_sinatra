@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class AdminPageServiceTest < Minitest::Test
   def test_loads_users_and_tournament_roles

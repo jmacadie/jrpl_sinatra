@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class ResetUserPasswordServiceTest < Minitest::Test
   def test_resets_password_and_returns_message

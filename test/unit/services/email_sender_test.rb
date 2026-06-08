@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class EmailSenderTest < Minitest::Test
   # rubocop: disable Metrics/AbcSize

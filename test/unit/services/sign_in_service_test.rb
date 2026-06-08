@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class SignInServiceTest < Minitest::Test
   def test_returns_session_data_for_valid_credentials

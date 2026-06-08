@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class MatchResultServiceTest < Minitest::Test
   def test_records_a_result

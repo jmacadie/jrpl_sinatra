@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require_relative '../../helpers/test_helpers'
 
 class MatchPageServiceTest < Minitest::Test
   def test_builds_page_data_for_unlocked_match
