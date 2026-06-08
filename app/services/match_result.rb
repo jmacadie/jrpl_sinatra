@@ -3,7 +3,6 @@ module Services
     Result = Struct.new(
       :success,
       :message,
-      :match_id,
       :home_score,
       :away_score,
       keyword_init: true
@@ -35,7 +34,6 @@ module Services
 
       Result.new(
         success: true,
-        match_id: @match_id,
         home_score:,
         away_score:
       )
@@ -74,7 +72,6 @@ module Services
       Result.new(
         success: false,
         message:,
-        match_id: @match_id,
         home_score:,
         away_score:
       )
