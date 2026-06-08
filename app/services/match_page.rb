@@ -38,10 +38,11 @@ module Services
       match = @match_repository.load_match(match_id)
       return nil unless @lockdown_policy.locked_down?(match)
 
+      teams = Presenters::MatchTeams.new(match)
       {
         match: {
-          home_name: home_name(match),
-          away_name: away_name(match),
+          home_name: teams.home_name,
+          away_name: teams.away_name,
           home_score: match[:home_score],
           away_score: match[:away_score]
         },
@@ -60,14 +61,6 @@ module Services
           away: prediction[:away_prediction]
         }
       end
-    end
-
-    def home_name(match)
-      match[:home_name] || match[:home_tournament_role]
-    end
-
-    def away_name(match)
-      match[:away_name] || match[:away_tournament_role]
     end
 
     def users(match)

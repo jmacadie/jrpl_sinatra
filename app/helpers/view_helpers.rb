@@ -1,10 +1,12 @@
+require_relative '../presenters/match_teams'
+
 module ViewHelpers
   def home_name(match)
-    match[:home_name] || match[:home_tournament_role]
+    Presenters::MatchTeams.new(match).home_name
   end
 
   def away_name(match)
-    match[:away_name] || match[:away_tournament_role]
+    Presenters::MatchTeams.new(match).away_name
   end
 
   def predicted?(match)

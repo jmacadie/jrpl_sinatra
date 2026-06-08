@@ -36,7 +36,8 @@ module Services
     end
 
     def email_subject(match)
-      "Predictions for #{home_name(match)} vs. #{away_name(match)}"
+      teams = Presenters::MatchTeams.new(match)
+      "Predictions for #{teams.home_name} vs. #{teams.away_name}"
     end
 
     def email_body(match, predictions)
@@ -44,14 +45,6 @@ module Services
         :'email/prediction',
         locals: { match:, predictions: }
       )
-    end
-
-    def home_name(match)
-      match[:home_name] || match[:home_tournament_role]
-    end
-
-    def away_name(match)
-      match[:away_name] || match[:away_tournament_role]
     end
   end
 end

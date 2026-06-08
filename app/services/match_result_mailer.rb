@@ -24,20 +24,13 @@ module Services
     private
 
     def result_email_subject(match)
-      "Results for #{home_name(match)} vs. #{away_name(match)}"
+      teams = Presenters::MatchTeams.new(match)
+      "Results for #{teams.home_name} vs. #{teams.away_name}"
     end
 
     def result_email_body(match, predictions, table)
       @renderer.render(:'email/result',
                        locals: { match:, predictions:, table: })
-    end
-
-    def home_name(match)
-      match[:home_name] || match[:home_tournament_role]
-    end
-
-    def away_name(match)
-      match[:away_name] || match[:away_tournament_role]
     end
 
     def record_results_email_sent(match_id)
