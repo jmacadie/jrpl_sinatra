@@ -7,19 +7,16 @@ module Services
       @mr_men_service = dependencies.fetch(:mr_men_service)
       @renderer = dependencies.fetch(:renderer)
       @email_sender = dependencies.fetch(:email_sender)
+      @lockdown_policy = dependencies.fetch(:lockdown_policy)
     end
 
     def call
-      @match_repository.lockdown_matches.each do |match|
-        process_match(match) if locked_down?(match)
+      @match_repository.no_predictions_email_sent_matches.each do |match|
+        process_match(match) if @lockdown_policy.locked_down?(match)
       end
     end
 
     private
-
-    def locked_down?(match)
-      match[:match_datetime] < Time.now + App::LOCKDOWN_BUFFER
-    end
 
     def process_match(match)
       match_id = match[:match_id]

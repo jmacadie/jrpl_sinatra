@@ -30,6 +30,7 @@ require_relative '../services/sinatra_template_renderer'
 require_relative '../services/tables_page'
 require_relative '../services/toggle_user_admin'
 require_relative '../services/tournament_role'
+require_relative '../policies/lockdown'
 
 class ApplicationServices
   def initialize(app:)
@@ -122,7 +123,8 @@ class ApplicationServices
       emails_sent_repository: @emails_sent_repository,
       mr_men_service: mr_men_service,
       renderer: @template_renderer,
-      email_sender: @email_sender
+      email_sender: @email_sender,
+      lockdown_policy: Policies::Lockdown.new
     )
   end
 
@@ -132,7 +134,8 @@ class ApplicationServices
     @app.set :match_result_service, Services::MatchResult.new(
       match_repository: @match_repository,
       scoreboard_service:,
-      result_mailer:
+      result_mailer:,
+      lockdown_policy: Policies::Lockdown.new
     )
   end
 
@@ -158,7 +161,8 @@ class ApplicationServices
   def register_match_prediction_service
     @app.set :match_prediction_service, Services::MatchPrediction.new(
       match_repository: @match_repository,
-      prediction_repository: @prediction_repository
+      prediction_repository: @prediction_repository,
+      lockdown_policy: Policies::Lockdown.new
     )
   end
 
@@ -166,7 +170,8 @@ class ApplicationServices
     @app.set :match_page_service, Services::MatchPage.new(
       match_repository: @match_repository,
       prediction_repository: @prediction_repository,
-      user_repository: @user_repository
+      user_repository: @user_repository,
+      lockdown_policy: Policies::Lockdown.new
     )
   end
 

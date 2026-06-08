@@ -3,7 +3,7 @@ require_relative '../helpers/test_helpers'
 class LockdownServiceTest < Minitest::Test
   def test_processes_matches_inside_the_lockdown_window
     collaborators = build_collaborators(
-      matches: [{ match_id: 6, match_datetime: Time.now }]
+      matches: [{ match_id: 6 }]
     )
     service = build_service(collaborators)
 
@@ -16,24 +16,23 @@ class LockdownServiceTest < Minitest::Test
 
   def test_ignores_matches_outside_the_lockdown_window
     collaborators = build_collaborators(
-      matches: [{
-        match_id: 7,
-        match_datetime: Time.now + App::LOCKDOWN_BUFFER + 60
-      }]
+      matches: [{ match_id: 7 }], locked_down: false
     )
     service = build_service(collaborators)
 
     service.call
 
-    assert_equal [[:lockdown_matches]], collaborators[:match].calls
+    assert_equal [[:no_predictions_email_sent_matches]],
+                 collaborators[:match].calls
     assert_unprocessed(collaborators)
+    assert_equal [[:locked_down, 7]], collaborators[:lockdown_policy].calls
   end
 
   private
 
   def assert_processed_calls(collaborators)
     assert_equal [
-      [:lockdown_matches],
+      [:no_predictions_email_sent_matches],
       [:load_match, 6]
     ], collaborators[:match].calls
     assert_equal [[:get_predictions_results, 6]],
@@ -41,6 +40,7 @@ class LockdownServiceTest < Minitest::Test
     assert_equal [[:call, 6]], collaborators[:mr_men].calls
     assert_equal [[:record_predictions_sent, 6]],
                  collaborators[:emails_sent_repository].calls
+    assert_equal [[:locked_down, 6]], collaborators[:lockdown_policy].calls
   end
 
   def assert_unprocessed(collaborators)
@@ -51,14 +51,15 @@ class LockdownServiceTest < Minitest::Test
     assert_empty collaborators[:email_sender].calls
   end
 
-  def build_collaborators(matches:)
+  def build_collaborators(matches:, locked_down: true)
     {
       match: FakeMatchRepository.new(matches:),
       prediction: FakePredictionRepository.new,
       emails_sent_repository: FakeEmailsSentRepository.new,
       mr_men: FakeMrMenService.new,
       renderer: FakeRenderer.new,
-      email_sender: FakeEmailSender.new
+      email_sender: FakeEmailSender.new,
+      lockdown_policy: FakeLockdownPolicy.new(locked_down:)
     }
   end
 
@@ -69,7 +70,8 @@ class LockdownServiceTest < Minitest::Test
       emails_sent_repository: collaborators[:emails_sent_repository],
       mr_men_service: collaborators[:mr_men],
       renderer: collaborators[:renderer],
-      email_sender: collaborators[:email_sender]
+      email_sender: collaborators[:email_sender],
+      lockdown_policy: collaborators[:lockdown_policy]
     )
   end
 
@@ -112,8 +114,8 @@ class LockdownServiceTest < Minitest::Test
       @calls = []
     end
 
-    def lockdown_matches
-      calls << [:lockdown_matches]
+    def no_predictions_email_sent_matches
+      calls << [:no_predictions_email_sent_matches]
       @matches
     end
 
@@ -182,6 +184,20 @@ class LockdownServiceTest < Minitest::Test
 
     def send_email_all(subject:, body:)
       calls << [:send_email_all, { subject:, body: }]
+    end
+  end
+
+  class FakeLockdownPolicy
+    attr_reader :calls
+
+    def initialize(locked_down:)
+      @calls = []
+      @locked_down = locked_down
+    end
+
+    def locked_down?(match)
+      calls << [:locked_down, match[:match_id]]
+      @locked_down
     end
   end
 end

@@ -47,7 +47,8 @@ class ApplicationServicesTest < Minitest::Test
       emails_sent_repository: Repositories::EmailsSent,
       mr_men_service: Services::MrMen,
       renderer: Services::SinatraTemplateRenderer,
-      email_sender: Services::EmailSender
+      email_sender: Services::EmailSender,
+      lockdown_policy: Policies::Lockdown
     },
     Services::Scoreboard => {
       match_repository: Repositories::Match,
@@ -65,16 +66,19 @@ class ApplicationServicesTest < Minitest::Test
     Services::MatchResult => {
       match_repository: Repositories::Match,
       scoreboard_service: Services::Scoreboard,
-      result_mailer: Services::MatchResultMailer
+      result_mailer: Services::MatchResultMailer,
+      lockdown_policy: Policies::Lockdown
     },
     Services::MatchPrediction => {
       match_repository: Repositories::Match,
-      prediction_repository: Repositories::Prediction
+      prediction_repository: Repositories::Prediction,
+      lockdown_policy: Policies::Lockdown
     },
     Services::MatchPage => {
       match_repository: Repositories::Match,
       prediction_repository: Repositories::Prediction,
-      user_repository: Repositories::User
+      user_repository: Repositories::User,
+      lockdown_policy: Policies::Lockdown
     },
     Services::MatchBroadcaster => {
       match_repository: Repositories::Match

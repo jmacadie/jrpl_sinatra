@@ -2,7 +2,11 @@ require_relative '../helpers/test_helpers'
 
 class MatchResultServiceTest < Minitest::Test
   def test_records_a_result
-    match_repository, scoreboard_service, result_mailer, service = build_service
+    match_repository,
+      scoreboard_service,
+      result_mailer,
+      lockdown_policy,
+      service = build_service
     result = service.call(match_id: 6,
                           home_score: '101',
                           away_score: '102',
@@ -11,20 +15,14 @@ class MatchResultServiceTest < Minitest::Test
     assert_predicate result, :success?
     assert_equal 101, result.home_score
     assert_equal 102, result.away_score
-    assert_equal [
-      [:load_match, 6],
-      [:add_result, 6, 101, 102, 4]
-    ], match_repository.calls
-    assert_equal [
-      [:update_scoreboard, 6, 101, 102]
-    ], scoreboard_service.calls
-    assert_equal [
-      [:send_result_email, 6]
-    ], result_mailer.calls
+    assert_recorded_result_calls(match_repository,
+                                 scoreboard_service,
+                                 result_mailer,
+                                 lockdown_policy)
   end
 
   def test_updates_an_existing_result
-    _, _, _, service = build_service
+    _, _, _, _, service = build_service
     result = service.call(match_id: 6,
                           home_score: '81',
                           away_score: '82',
@@ -43,7 +41,7 @@ class MatchResultServiceTest < Minitest::Test
   end
 
   def test_decimal_result_returns_failure_without_applying_result
-    match_repository, _, _, service = build_service
+    match_repository, _, _, _, service = build_service
     result = service.call(match_id: 6,
                           home_score: '2.3',
                           away_score: '3',
@@ -59,7 +57,7 @@ class MatchResultServiceTest < Minitest::Test
   end
 
   def test_negative_result_returns_failure_without_applying_result
-    match_repository, _, _, service = build_service
+    match_repository, _, _, _, service = build_service
     result = service.call(match_id: 6,
                           home_score: '-2',
                           away_score: '3',
@@ -73,9 +71,7 @@ class MatchResultServiceTest < Minitest::Test
   end
 
   def test_unplayed_match_returns_failure_without_applying_result
-    match_repository, _, _, service = build_service(
-      match: { match_datetime: Time.now + App::LOCKDOWN_BUFFER + 60 }
-    )
+    match_repository, _, _, _, service = build_service(locked_down: false)
     result = service.call(match_id: 6,
                           home_score: '81',
                           away_score: '82',
@@ -94,29 +90,51 @@ class MatchResultServiceTest < Minitest::Test
 
   private
 
-  def build_service(match: { match_datetime: Time.now - 60 })
-    match_repository = FakeMatchRepository.new(match:)
+  def assert_recorded_result_calls(match_repository, scoreboard_service,
+                                   result_mailer, lockdown_policy)
+    assert_equal [
+      [:load_match, 6],
+      [:add_result, 6, 101, 102, 4]
+    ], match_repository.calls
+    assert_equal [
+      [:update_scoreboard, 6, 101, 102]
+    ], scoreboard_service.calls
+    assert_equal [
+      [:send_result_email, 6]
+    ], result_mailer.calls
+    assert_equal [
+      [:locked_down, 6]
+    ], lockdown_policy.calls
+  end
+
+  def build_service(locked_down: true)
+    match_repository = FakeMatchRepository.new()
     scoreboard_service = FakeScoreboardService.new()
     result_mailer = FakeResultMailer.new()
+    lockdown_policy = FakeLockdownPolicy.new(locked_down:)
     service = Services::MatchResult.new(
       match_repository:,
       scoreboard_service:,
-      result_mailer:
+      result_mailer:,
+      lockdown_policy:
     )
-    return match_repository, scoreboard_service, result_mailer, service
+    return match_repository,
+      scoreboard_service,
+      result_mailer,
+      lockdown_policy,
+      service
   end
 
   class FakeMatchRepository
     attr_reader :calls
 
-    def initialize(match:)
-      @match = match
+    def initialize
       @calls = []
     end
 
     def load_match(match_id)
       calls << [:load_match, match_id]
-      @match
+      { match_id: }
     end
 
     def add_result(match_id, home_score, away_score, user_id)
@@ -145,6 +163,20 @@ class MatchResultServiceTest < Minitest::Test
 
     def send_result_email(match_id)
       calls << [:send_result_email, match_id]
+    end
+  end
+
+  class FakeLockdownPolicy
+    attr_reader :calls
+
+    def initialize(locked_down:)
+      @calls = []
+      @locked_down = locked_down
+    end
+
+    def locked_down?(match)
+      calls << [:locked_down, match[:match_id]]
+      @locked_down
     end
   end
 end

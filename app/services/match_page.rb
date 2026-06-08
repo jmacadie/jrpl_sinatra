@@ -12,15 +12,17 @@ module Services
 
     def initialize(match_repository:,
                    prediction_repository:,
-                   user_repository:)
+                   user_repository:,
+                   lockdown_policy:)
       @match_repository = match_repository
       @prediction_repository = prediction_repository
       @user_repository = user_repository
+      @lockdown_policy = lockdown_policy
     end
 
     def call(match_id:, user_id:, admin:)
       match = @match_repository.load_match_with_user(user_id, match_id)
-      match[:locked_down] = match_locked_down?(match)
+      match[:locked_down] = @lockdown_policy.locked_down?(match)
 
       Result.new(
         match:,
@@ -34,7 +36,7 @@ module Services
 
     def predictions_payload(match_id)
       match = @match_repository.load_match(match_id)
-      return nil unless match_locked_down?(match)
+      return nil unless @lockdown_policy.locked_down?(match)
 
       {
         match: {
@@ -90,10 +92,6 @@ module Services
       return nil unless admin
 
       @match_repository.broadcasters
-    end
-
-    def match_locked_down?(match)
-      match[:match_datetime] < Time.now + App::LOCKDOWN_BUFFER
     end
 
     def origin?(match)

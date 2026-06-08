@@ -47,8 +47,8 @@ module Repositories
       )
     end
 
-    def lockdown_matches
-      result = @query_runner.run_query(lockdown_matches_query)
+    def no_predictions_email_sent_matches
+      result = @query_runner.run_query(no_predictions_email_sent_matches_query)
       result.map do |row|
         {
           match_id: row['match_id'].to_i,
@@ -143,7 +143,7 @@ module Repositories
       'UPDATE match SET broadcaster_id = $1::int WHERE match_id = $2::int;'
     end
 
-    def lockdown_matches_query
+    def no_predictions_email_sent_matches_query
       <<~SQL
         SELECT
           m.match_id,

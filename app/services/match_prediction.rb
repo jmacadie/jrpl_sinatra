@@ -13,9 +13,10 @@ module Services
       end
     end
 
-    def initialize(match_repository:, prediction_repository:)
+    def initialize(match_repository:, prediction_repository:, lockdown_policy:)
       @match_repository = match_repository
       @prediction_repository = prediction_repository
+      @lockdown_policy = lockdown_policy
     end
 
     def call(match_id:, home_prediction:, away_prediction:, user_id:)
@@ -47,12 +48,11 @@ module Services
 
     def prediction_error(match_id, home_prediction, away_prediction)
       match = @match_repository.load_match(match_id)
-      if match_locked_down?(match)
-        'You cannot add or change your prediction because ' \
-          'this match is already locked down!'
-      else
-        prediction_type_error(home_prediction, away_prediction)
+      if @lockdown_policy.locked_down?(match)
+        return 'You cannot add or change your prediction because ' \
+               'this match is already locked down!'
       end
+      prediction_type_error(home_prediction, away_prediction)
     end
 
     def prediction_type_error(home_prediction, away_prediction)
@@ -66,10 +66,6 @@ module Services
       return nil if error.empty?
 
       "Your predictions must be #{error.join(' and ')}."
-    end
-
-    def match_locked_down?(match)
-      match[:match_datetime] < Time.now + App::LOCKDOWN_BUFFER
     end
 
     def not_integer?(num)
