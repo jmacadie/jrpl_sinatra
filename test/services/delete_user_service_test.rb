@@ -47,7 +47,7 @@ class DeleteUserServiceTest < Minitest::Test
 
   def build_service(user_name:)
     repository = FakeUserRepository.new(user_name:)
-    service = DeleteUserService.new(user_repository: repository)
+    service = Services::DeleteUser.new(user_repository: repository)
     return repository, service
   end
 

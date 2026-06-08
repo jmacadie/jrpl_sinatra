@@ -56,7 +56,7 @@ class ToggleUserAdminServiceTest < Minitest::Test
 
   def build_service(admin:)
     repository = FakeUserRepository.new(admin:)
-    service = ToggleUserAdminService.new(user_repository: repository)
+    service = Services::ToggleUserAdmin.new(user_repository: repository)
     return repository, service
   end
 

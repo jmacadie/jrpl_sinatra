@@ -82,7 +82,7 @@ class TournamentRoleServiceTest < Minitest::Test
       selected:,
       unique_violation:
     )
-    service = TournamentRoleService.new(
+    service = Services::TournamentRole.new(
       tournament_role_repository: repository
     )
     return repository, service

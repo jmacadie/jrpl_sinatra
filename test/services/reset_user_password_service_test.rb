@@ -3,7 +3,7 @@ require_relative '../helpers/test_helpers'
 class ResetUserPasswordServiceTest < Minitest::Test
   def test_resets_password_and_returns_message
     repository = FakeUserRepository.new
-    service = ResetUserPasswordService.new(user_repository: repository)
+    service = Services::ResetUserPassword.new(user_repository: repository)
 
     result = service.call(user_name: 'Clare Mac')
 

@@ -79,7 +79,7 @@ class MatchPredictionServiceTest < Minitest::Test
   )
     match_repository = FakeMatchRepository.new(match:)
     prediction_repository = FakePredictionRepository.new()
-    service = MatchPredictionService.new(
+    service = Services::MatchPrediction.new(
       match_repository:,
       prediction_repository:
     )

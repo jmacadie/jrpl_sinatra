@@ -58,7 +58,7 @@ class App < Sinatra::Application
 
     conf = YAML.load_file("#{settings.config}/database.yml")
     set :db_pool, ConnectionPool.new(size: 5, timeout: 5) {
-      QueryRunner.connect(conf[settings.environment])
+      Services::QueryRunner.connect(conf[settings.environment])
     }
   end
 
@@ -67,7 +67,7 @@ class App < Sinatra::Application
 
     conf = YAML.load_file("#{settings.config}/database.yml")
     set :db_pool, ConnectionPool.new(size: 1, timeout: 5) {
-      QueryRunner.connect(conf[settings.environment])
+      Services::QueryRunner.connect(conf[settings.environment])
     }
   end
 

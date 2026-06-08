@@ -3,7 +3,7 @@ require_relative '../helpers/test_helpers'
 class MatchBroadcasterServiceTest < Minitest::Test
   def test_changes_match_broadcaster
     match_repository = FakeMatchRepository.new
-    result = MatchBroadcasterService.new(match_repository:).call(
+    result = Services::MatchBroadcaster.new(match_repository:).call(
       match_id: 6,
       broadcaster_id: 2
     )

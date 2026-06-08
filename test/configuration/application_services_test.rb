@@ -14,107 +14,107 @@ class ApplicationServicesTest < Minitest::Test
   ].freeze
 
   REGISTERED_COMPONENTS = {
-    query_runner: QueryRunner,
+    query_runner: Services::QueryRunner,
     cookie_repository: CookieRepository,
     user_repository: UserRepository,
-    email_sender: EmailSender,
-    lockdown_service: LockdownService,
-    match_result_service: MatchResultService,
-    match_prediction_service: MatchPredictionService,
-    match_page_service: MatchPageService,
-    match_broadcaster_service: MatchBroadcasterService,
-    fixtures_page_service: FixturesPageService,
-    graphs_page_service: GraphsPageService,
-    tables_page_service: TablesPageService,
-    admin_page_service: AdminPageService,
-    tournament_role_service: TournamentRoleService,
-    edit_user_page_service: EditUserPageService,
-    edit_user_service: EditUserService,
-    sign_in_service: SignInService,
-    sign_up_service: SignUpService,
-    reset_user_password_service: ResetUserPasswordService,
-    delete_user_service: DeleteUserService,
-    toggle_user_admin_service: ToggleUserAdminService
+    email_sender: Services::EmailSender,
+    lockdown_service: Services::Lockdown,
+    match_result_service: Services::MatchResult,
+    match_prediction_service: Services::MatchPrediction,
+    match_page_service: Services::MatchPage,
+    match_broadcaster_service: Services::MatchBroadcaster,
+    fixtures_page_service: Services::FixturesPage,
+    graphs_page_service: Services::GraphsPage,
+    tables_page_service: Services::TablesPage,
+    admin_page_service: Services::AdminPage,
+    tournament_role_service: Services::TournamentRole,
+    edit_user_page_service: Services::EditUserPage,
+    edit_user_service: Services::EditUser,
+    sign_in_service: Services::SignIn,
+    sign_up_service: Services::SignUp,
+    reset_user_password_service: Services::ResetUserPassword,
+    delete_user_service: Services::DeleteUser,
+    toggle_user_admin_service: Services::ToggleUserAdmin
   }.freeze
 
   SERVICE_DEPENDENCIES = {
-    MrMenService => {
+    Services::MrMen => {
       prediction_repository: PredictionRepository
     },
-    LockdownService => {
+    Services::Lockdown => {
       match_repository: MatchRepository,
       prediction_repository: PredictionRepository,
       emails_sent_repository: EmailsSentRepository,
-      mr_men_service: MrMenService,
-      renderer: SinatraTemplateRenderer,
-      email_sender: EmailSender
+      mr_men_service: Services::MrMen,
+      renderer: Services::SinatraTemplateRenderer,
+      email_sender: Services::EmailSender
     },
-    ScoreboardService => {
+    Services::Scoreboard => {
       match_repository: MatchRepository,
       prediction_repository: PredictionRepository,
       point_repository: PointRepository
     },
-    MatchResultMailer => {
+    Services::MatchResultMailer => {
       match_repository: MatchRepository,
       prediction_repository: PredictionRepository,
-      scoreboard_service: ScoreboardService,
-      renderer: SinatraTemplateRenderer,
-      email_sender: EmailSender,
+      scoreboard_service: Services::Scoreboard,
+      renderer: Services::SinatraTemplateRenderer,
+      email_sender: Services::EmailSender,
       emails_sent_repository: EmailsSentRepository
     },
-    MatchResultService => {
+    Services::MatchResult => {
       match_repository: MatchRepository,
-      scoreboard_service: ScoreboardService,
-      result_mailer: MatchResultMailer
+      scoreboard_service: Services::Scoreboard,
+      result_mailer: Services::MatchResultMailer
     },
-    MatchPredictionService => {
+    Services::MatchPrediction => {
       match_repository: MatchRepository,
       prediction_repository: PredictionRepository
     },
-    MatchPageService => {
+    Services::MatchPage => {
       match_repository: MatchRepository,
       prediction_repository: PredictionRepository,
       user_repository: UserRepository
     },
-    MatchBroadcasterService => {
+    Services::MatchBroadcaster => {
       match_repository: MatchRepository
     },
-    FixturesPageService => {
+    Services::FixturesPage => {
       fixtures_repository: FixturesRepository
     },
-    GraphsPageService => {
+    Services::GraphsPage => {
       cumulative_points_repository: CumulativePointsRepository,
       user_repository: UserRepository
     },
-    TablesPageService => {
+    Services::TablesPage => {
       point_repository: PointRepository
     },
-    AdminPageService => {
+    Services::AdminPage => {
       user_repository: UserRepository,
       tournament_role_repository: TournamentRoleRepository
     },
-    TournamentRoleService => {
+    Services::TournamentRole => {
       tournament_role_repository: TournamentRoleRepository
     },
-    EditUserPageService => {
+    Services::EditUserPage => {
       user_repository: UserRepository
     },
-    EditUserService => {
+    Services::EditUser => {
       user_repository: UserRepository
     },
-    SignInService => {
+    Services::SignIn => {
       user_repository: UserRepository
     },
-    SignUpService => {
+    Services::SignUp => {
       user_repository: UserRepository
     },
-    ResetUserPasswordService => {
+    Services::ResetUserPassword => {
       user_repository: UserRepository
     },
-    DeleteUserService => {
+    Services::DeleteUser => {
       user_repository: UserRepository
     },
-    ToggleUserAdminService => {
+    Services::ToggleUserAdmin => {
       user_repository: UserRepository
     }
   }.freeze
@@ -131,7 +131,9 @@ class ApplicationServicesTest < Minitest::Test
 
   def test_wires_shared_infrastructure_and_repositories
     app = FakeApp.new
-    classes = [QueryRunner, EmailSender, *REPOSITORY_CLASSES]
+    classes = [Services::QueryRunner,
+               Services::EmailSender,
+               *REPOSITORY_CLASSES]
 
     with_constructor_spies(classes) do |calls|
       ApplicationServices.new(app:).register
@@ -158,7 +160,7 @@ class ApplicationServicesTest < Minitest::Test
   private
 
   def assert_query_runner_wiring(app, calls)
-    dependencies = constructor_keywords(calls, QueryRunner)
+    dependencies = constructor_keywords(calls, Services::QueryRunner)
 
     assert_same app.settings.db_pool, dependencies.fetch(:db_pool)
     assert_same app.environment, dependencies.fetch(:environment)
@@ -176,7 +178,7 @@ class ApplicationServicesTest < Minitest::Test
   end
 
   def assert_email_sender_wiring(app, calls)
-    dependencies = constructor_keywords(calls, EmailSender)
+    dependencies = constructor_keywords(calls, Services::EmailSender)
 
     assert_same app.settings.query_runner, dependencies.fetch(:query_runner)
     assert_same app.settings.email, dependencies.fetch(:config)

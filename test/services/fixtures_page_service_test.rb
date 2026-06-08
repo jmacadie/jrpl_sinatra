@@ -38,7 +38,7 @@ class FixturesPageServiceTest < Minitest::Test
       submitted_params: {}
     )
 
-    assert_equal FixturesPageService::WARNING_MESSAGE, page.message
+    assert_equal Services::FixturesPage::WARNING_MESSAGE, page.message
     assert_equal 'warning', page.message_level
   end
 
@@ -54,7 +54,7 @@ class FixturesPageServiceTest < Minitest::Test
 
   def build_service(matches:)
     repository = FakeFixturesRepository.new(matches:)
-    service = FixturesPageService.new(fixtures_repository: repository)
+    service = Services::FixturesPage.new(fixtures_repository: repository)
     return repository, service
   end
 

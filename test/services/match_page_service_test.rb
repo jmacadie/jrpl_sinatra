@@ -90,7 +90,7 @@ class MatchPageServiceTest < Minitest::Test
     match_repository = FakeMatchRepository.new(match:)
     user_repository = FakeUserRepository.new()
     prediction_repository = FakePredictionsRepository.new()
-    service = MatchPageService.new(
+    service = Services::MatchPage.new(
       match_repository:,
       prediction_repository:,
       user_repository:

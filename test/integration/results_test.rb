@@ -41,7 +41,7 @@ class ResultsIntegrationTest < Minitest::Test
   end
 
   def test_add_result_keeps_ring_navigation
-    ring = Ring.new(match_ids: [1, 3, 4], match_id: 3).to_s
+    ring = Services::Ring.new(match_ids: [1, 3, 4], match_id: 3).to_s
     get "/match/3?ring=#{ring}", {}, admin_session
     post '/match/add_result',
          { match_id: '3',

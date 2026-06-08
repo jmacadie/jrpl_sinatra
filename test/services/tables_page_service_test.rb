@@ -3,7 +3,7 @@ require_relative '../helpers/test_helpers'
 class TablesPageServiceTest < Minitest::Test
   def test_builds_page_with_official_scoreboard_tables
     repository = FakePointRepository.new
-    service = TablesPageService.new(point_repository: repository)
+    service = Services::TablesPage.new(point_repository: repository)
 
     page = service.call
 

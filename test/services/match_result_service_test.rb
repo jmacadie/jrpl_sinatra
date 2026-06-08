@@ -98,7 +98,7 @@ class MatchResultServiceTest < Minitest::Test
     match_repository = FakeMatchRepository.new(match:)
     scoreboard_service = FakeScoreboardService.new()
     result_mailer = FakeResultMailer.new()
-    service = MatchResultService.new(
+    service = Services::MatchResult.new(
       match_repository:,
       scoreboard_service:,
       result_mailer:

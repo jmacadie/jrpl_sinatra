@@ -107,7 +107,7 @@ class App < Sinatra::Application
 
   def load_ring
     return if params[:ring].nil? || params[:ring] == ""
-    @ring = Ring.new({ ring: params[:ring] })
+    @ring = Services::Ring.new({ ring: params[:ring] })
     @prev_match = @ring.prev_match
     @next_match = @ring.next_match
   end

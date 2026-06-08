@@ -35,7 +35,7 @@ class MatchResultMailerTest < Minitest::Test
   end
 
   def build_mailer(collaborators)
-    MatchResultMailer.new(
+    Services::MatchResultMailer.new(
       match_repository: collaborators[:match],
       prediction_repository: collaborators[:predictions],
       scoreboard_service: collaborators[:scoreboard],

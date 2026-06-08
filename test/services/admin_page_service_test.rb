@@ -4,7 +4,7 @@ class AdminPageServiceTest < Minitest::Test
   def test_loads_users_and_tournament_roles
     user_repository = FakeUserRepository.new
     tournament_role_repository = FakeTournamentRoleRepository.new
-    service = AdminPageService.new(
+    service = Services::AdminPage.new(
       user_repository:,
       tournament_role_repository:
     )

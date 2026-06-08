@@ -105,7 +105,7 @@ class EditUserServiceTest < Minitest::Test
       username_exists:,
       email_exists:
     )
-    service = EditUserService.new(user_repository: repository)
+    service = Services::EditUser.new(user_repository: repository)
     return repository, service
   end
 

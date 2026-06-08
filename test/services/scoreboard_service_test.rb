@@ -10,7 +10,7 @@ class ScoreboardServiceTest < Minitest::Test
       ]
     )
     point_repository = FakePointRepository.new
-    service = ScoreboardService.new(
+    service = Services::Scoreboard.new(
       match_repository: FakeMatchRepository.new,
       prediction_repository:,
       point_repository:
@@ -36,7 +36,7 @@ class ScoreboardServiceTest < Minitest::Test
       ]
     )
     point_repository = FakePointRepository.new
-    service = ScoreboardService.new(
+    service = Services::Scoreboard.new(
       match_repository:,
       prediction_repository:,
       point_repository:
@@ -54,7 +54,7 @@ class ScoreboardServiceTest < Minitest::Test
     point_repository = FakePointRepository.new(
       scoreboard_data: { overall_table: [{ user_name: 'Maccas' }] }
     )
-    service = ScoreboardService.new(
+    service = Services::Scoreboard.new(
       match_repository: FakeMatchRepository.new,
       prediction_repository: FakePredictionRepository.new,
       point_repository:

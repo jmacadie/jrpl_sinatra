@@ -1,4 +1,5 @@
 require_relative '../helpers/test_helpers'
+require_relative '../../app/services/graphs_page'
 
 class GraphsPageServiceTest < Minitest::Test
   def test_builds_page_with_users
@@ -40,7 +41,7 @@ class GraphsPageServiceTest < Minitest::Test
   def build_service(points:, users: [])
     cumulative_points_repository = FakeCumulativePointsRepository.new(points:)
     user_repository = FakeUserRepository.new(users:)
-    service = GraphsPageService.new(
+    service = Services::GraphsPage.new(
       cumulative_points_repository:,
       user_repository:
     )

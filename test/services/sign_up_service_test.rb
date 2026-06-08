@@ -3,7 +3,7 @@ require_relative '../helpers/test_helpers'
 class SignUpServiceTest < Minitest::Test
   def test_creates_user_and_returns_session_data
     repository = FakeUserRepository.new
-    service = SignUpService.new(user_repository: repository)
+    service = Services::SignUp.new(user_repository: repository)
 
     result = call_service(
       service,
@@ -28,7 +28,7 @@ class SignUpServiceTest < Minitest::Test
       username_taken: true,
       email_taken: true
     )
-    service = SignUpService.new(user_repository: repository)
+    service = Services::SignUp.new(user_repository: repository)
 
     result = call_service(service)
 
@@ -42,7 +42,7 @@ class SignUpServiceTest < Minitest::Test
 
   def test_rejects_blank_username_password_and_email
     repository = FakeUserRepository.new
-    service = SignUpService.new(user_repository: repository)
+    service = Services::SignUp.new(user_repository: repository)
 
     result = call_service(
       service,
@@ -62,7 +62,7 @@ class SignUpServiceTest < Minitest::Test
 
   def test_rejects_mismatched_password_and_invalid_email
     repository = FakeUserRepository.new
-    service = SignUpService.new(user_repository: repository)
+    service = Services::SignUp.new(user_repository: repository)
 
     result = call_service(
       service,
@@ -78,11 +78,11 @@ class SignUpServiceTest < Minitest::Test
 
   def test_rejects_missing_bot_check
     repository = FakeUserRepository.new
-    service = SignUpService.new(user_repository: repository)
+    service = Services::SignUp.new(user_repository: repository)
 
     result = call_service(service, bot_check: nil)
 
-    assert_failure(result, SignUpService::BOT_CHECK_MESSAGE)
+    assert_failure(result, Services::SignUp::BOT_CHECK_MESSAGE)
   end
 
   private

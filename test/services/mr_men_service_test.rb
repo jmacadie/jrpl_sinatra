@@ -10,7 +10,7 @@ class MrMenServiceTest < Minitest::Test
         { home_prediction: nil, away_prediction: nil }
       ]
     )
-    service = MrMenService.new(prediction_repository: repository)
+    service = Services::MrMen.new(prediction_repository: repository)
 
     service.call(7)
 
@@ -24,7 +24,7 @@ class MrMenServiceTest < Minitest::Test
 
   def test_uses_zero_when_there_are_no_predictions
     repository = FakePredictionRepository.new(predictions: [])
-    service = MrMenService.new(prediction_repository: repository)
+    service = Services::MrMen.new(prediction_repository: repository)
 
     service.call(8)
 

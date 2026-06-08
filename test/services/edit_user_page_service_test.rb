@@ -3,7 +3,7 @@ require_relative '../helpers/test_helpers'
 class EditUserPageServiceTest < Minitest::Test
   def test_loads_current_user_for_editing
     repository = FakeUserRepository.new
-    service = EditUserPageService.new(user_repository: repository)
+    service = Services::EditUserPage.new(user_repository: repository)
 
     page = service.call(user_id: 11)
 

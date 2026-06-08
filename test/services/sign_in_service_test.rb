@@ -3,7 +3,7 @@ require_relative '../helpers/test_helpers'
 class SignInServiceTest < Minitest::Test
   def test_returns_session_data_for_valid_credentials
     repository = FakeUserRepository.new(user: user_fixture)
-    service = SignInService.new(user_repository: repository)
+    service = Services::SignIn.new(user_repository: repository)
 
     result = service.call(login: '  Maccas ', password: ' a ')
 
@@ -17,7 +17,7 @@ class SignInServiceTest < Minitest::Test
 
   def test_rejects_invalid_password
     repository = FakeUserRepository.new(user: user_fixture)
-    service = SignInService.new(user_repository: repository)
+    service = Services::SignIn.new(user_repository: repository)
 
     result = service.call(login: 'Maccas', password: 'wrong')
 
@@ -27,7 +27,7 @@ class SignInServiceTest < Minitest::Test
 
   def test_rejects_unknown_login
     repository = FakeUserRepository.new(user: nil)
-    service = SignInService.new(user_repository: repository)
+    service = Services::SignIn.new(user_repository: repository)
 
     result = service.call(login: 'unknown', password: 'a')
 

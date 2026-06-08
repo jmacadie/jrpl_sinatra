@@ -63,7 +63,7 @@ class LockdownServiceTest < Minitest::Test
   end
 
   def build_service(collaborators)
-    LockdownService.new(
+    Services::Lockdown.new(
       match_repository: collaborators[:match],
       prediction_repository: collaborators[:prediction],
       emails_sent_repository: collaborators[:emails_sent_repository],
