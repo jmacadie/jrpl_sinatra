@@ -2,21 +2,21 @@ require_relative '../helpers/test_helpers'
 
 class ApplicationServicesTest < Minitest::Test
   REPOSITORY_CLASSES = [
-    CookieRepository,
-    CumulativePointsRepository,
-    EmailsSentRepository,
-    FixturesRepository,
-    MatchRepository,
-    PredictionRepository,
-    TournamentRoleRepository,
-    UserRepository,
-    PointRepository
+    Repositories::Cookie,
+    Repositories::CumulativePoints,
+    Repositories::EmailsSent,
+    Repositories::Fixtures,
+    Repositories::Match,
+    Repositories::Prediction,
+    Repositories::TournamentRole,
+    Repositories::User,
+    Repositories::Point
   ].freeze
 
   REGISTERED_COMPONENTS = {
     query_runner: Services::QueryRunner,
-    cookie_repository: CookieRepository,
-    user_repository: UserRepository,
+    cookie_repository: Repositories::Cookie,
+    user_repository: Repositories::User,
     email_sender: Services::EmailSender,
     lockdown_service: Services::Lockdown,
     match_result_service: Services::MatchResult,
@@ -39,83 +39,83 @@ class ApplicationServicesTest < Minitest::Test
 
   SERVICE_DEPENDENCIES = {
     Services::MrMen => {
-      prediction_repository: PredictionRepository
+      prediction_repository: Repositories::Prediction
     },
     Services::Lockdown => {
-      match_repository: MatchRepository,
-      prediction_repository: PredictionRepository,
-      emails_sent_repository: EmailsSentRepository,
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
+      emails_sent_repository: Repositories::EmailsSent,
       mr_men_service: Services::MrMen,
       renderer: Services::SinatraTemplateRenderer,
       email_sender: Services::EmailSender
     },
     Services::Scoreboard => {
-      match_repository: MatchRepository,
-      prediction_repository: PredictionRepository,
-      point_repository: PointRepository
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
+      point_repository: Repositories::Point
     },
     Services::MatchResultMailer => {
-      match_repository: MatchRepository,
-      prediction_repository: PredictionRepository,
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
       scoreboard_service: Services::Scoreboard,
       renderer: Services::SinatraTemplateRenderer,
       email_sender: Services::EmailSender,
-      emails_sent_repository: EmailsSentRepository
+      emails_sent_repository: Repositories::EmailsSent
     },
     Services::MatchResult => {
-      match_repository: MatchRepository,
+      match_repository: Repositories::Match,
       scoreboard_service: Services::Scoreboard,
       result_mailer: Services::MatchResultMailer
     },
     Services::MatchPrediction => {
-      match_repository: MatchRepository,
-      prediction_repository: PredictionRepository
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction
     },
     Services::MatchPage => {
-      match_repository: MatchRepository,
-      prediction_repository: PredictionRepository,
-      user_repository: UserRepository
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
+      user_repository: Repositories::User
     },
     Services::MatchBroadcaster => {
-      match_repository: MatchRepository
+      match_repository: Repositories::Match
     },
     Services::FixturesPage => {
-      fixtures_repository: FixturesRepository
+      fixtures_repository: Repositories::Fixtures
     },
     Services::GraphsPage => {
-      cumulative_points_repository: CumulativePointsRepository,
-      user_repository: UserRepository
+      cumulative_points_repository: Repositories::CumulativePoints,
+      user_repository: Repositories::User
     },
     Services::TablesPage => {
-      point_repository: PointRepository
+      point_repository: Repositories::Point
     },
     Services::AdminPage => {
-      user_repository: UserRepository,
-      tournament_role_repository: TournamentRoleRepository
+      user_repository: Repositories::User,
+      tournament_role_repository: Repositories::TournamentRole
     },
     Services::TournamentRole => {
-      tournament_role_repository: TournamentRoleRepository
+      tournament_role_repository: Repositories::TournamentRole
     },
     Services::EditUserPage => {
-      user_repository: UserRepository
+      user_repository: Repositories::User
     },
     Services::EditUser => {
-      user_repository: UserRepository
+      user_repository: Repositories::User
     },
     Services::SignIn => {
-      user_repository: UserRepository
+      user_repository: Repositories::User
     },
     Services::SignUp => {
-      user_repository: UserRepository
+      user_repository: Repositories::User
     },
     Services::ResetUserPassword => {
-      user_repository: UserRepository
+      user_repository: Repositories::User
     },
     Services::DeleteUser => {
-      user_repository: UserRepository
+      user_repository: Repositories::User
     },
     Services::ToggleUserAdmin => {
-      user_repository: UserRepository
+      user_repository: Repositories::User
     }
   }.freeze
 

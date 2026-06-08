@@ -1,108 +1,110 @@
-class CumulativePointsRepository
-  def initialize(query_runner:)
-    @query_runner = query_runner
-  end
-
-  def load_cumulative_points
-    result = @query_runner.run_query(cumulative_points_query)
-    transform_cumulative_points(map_cumulative_points(result))
-  end
-
-  private
-
-  def map_cumulative_points(result)
-    result.map do |row|
-      { match_id: row['match_id'].to_i,
-        match: row['match_desc'],
-        user_id: row['user_id'].to_i,
-        user_name: row['user_name'],
-        cum_points: row['cum_points'].to_i }
+module Repositories
+  class CumulativePoints
+    def initialize(query_runner:)
+      @query_runner = query_runner
     end
-  end
 
-  def transform_cumulative_points(result)
-    unique_matches(result).each do |match|
-      match[:users] = match_users(result, match[:match_id])
+    def load_cumulative_points
+      result = @query_runner.run_query(cumulative_points_query)
+      transform_cumulative_points(map_cumulative_points(result))
     end
-  end
 
-  def unique_matches(result)
-    result.map do |row|
-      {
-        match_id: row[:match_id],
-        match: row[:match]
-      }
-    end.uniq
-  end
+    private
 
-  def match_users(result, match_id)
-    result.filter { |user| user[:match_id] == match_id }
-          .map do |user|
-            {
-              user_id: user[:user_id],
-              user_name: user[:user_name],
-              cum_points: user[:cum_points]
-            }
-          end
-  end
+    def map_cumulative_points(result)
+      result.map do |row|
+        { match_id: row['match_id'].to_i,
+          match: row['match_desc'],
+          user_id: row['user_id'].to_i,
+          user_name: row['user_name'],
+          cum_points: row['cum_points'].to_i }
+      end
+    end
 
-  def cumulative_points_query
-    <<~SQL
-      WITH all_users AS
-        (SELECT user_id FROM users)
+    def transform_cumulative_points(result)
+      unique_matches(result).each do |match|
+        match[:users] = match_users(result, match[:match_id])
+      end
+    end
 
-      ,sorted_matches AS
-        (SELECT
-          match_id,
-          ROW_NUMBER() OVER
-            (ORDER BY date, kick_off) AS match_sort
-        FROM match)
+    def unique_matches(result)
+      result.map do |row|
+        {
+          match_id: row[:match_id],
+          match: row[:match]
+        }
+      end.uniq
+    end
 
-      ,points_by_match AS
-        (SELECT
-          m.match_id,
-          u.user_id,
-          COALESCE(po.total_points, 0) AS total_points
+    def match_users(result, match_id)
+      result.filter { |user| user[:match_id] == match_id }
+            .map do |user|
+              {
+                user_id: user[:user_id],
+                user_name: user[:user_name],
+                cum_points: user[:cum_points]
+              }
+            end
+    end
 
-        FROM match m
-          CROSS JOIN all_users u
-          LEFT JOIN prediction pred ON
-            pred.match_id = m.match_id
-            AND pred.user_id = u.user_id
-          LEFT JOIN points po ON
-            po.prediction_id = pred.prediction_id
+    def cumulative_points_query
+      <<~SQL
+        WITH all_users AS
+          (SELECT user_id FROM users)
 
-        WHERE
-          m.home_team_points IS NOT NULL
-          AND m.away_team_points IS NOT NULL
-          AND COALESCE(po.scoring_system_id, 1) = 1)
+        ,sorted_matches AS
+          (SELECT
+            match_id,
+            ROW_NUMBER() OVER
+              (ORDER BY date, kick_off) AS match_sort
+          FROM match)
 
-      SELECT
-        pbm.match_id,
-        CONCAT(COALESCE(hot.name, htr.name), ' vs ', COALESCE(awt.name, atr.name)) AS match_desc,
-        pbm.user_id,
-        u.user_name,
-        SUM(pbm.total_points) OVER
-          (PARTITION BY pbm.user_id
-           ORDER BY sm.match_sort) AS cum_points
+        ,points_by_match AS
+          (SELECT
+            m.match_id,
+            u.user_id,
+            COALESCE(po.total_points, 0) AS total_points
 
-      FROM points_by_match pbm
-        INNER JOIN sorted_matches sm ON
-          sm.match_id = pbm.match_id
-        INNER JOIN match m ON
-          m.match_id = pbm.match_id
-        INNER JOIN tournament_role htr ON
-          htr.tournament_role_id = m.home_team_id
-        LEFT JOIN team hot ON
-          hot.team_id = htr.team_id
-        INNER JOIN tournament_role atr ON
-          atr.tournament_role_id = m.away_team_id
-        LEFT JOIN team awt ON
-          awt.team_id = atr.team_id
-        INNER JOIN users u ON
-          pbm.user_id = u.user_id
+          FROM match m
+            CROSS JOIN all_users u
+            LEFT JOIN prediction pred ON
+              pred.match_id = m.match_id
+              AND pred.user_id = u.user_id
+            LEFT JOIN points po ON
+              po.prediction_id = pred.prediction_id
 
-      ORDER BY sm.match_sort, UPPER(u.user_name);
-    SQL
+          WHERE
+            m.home_team_points IS NOT NULL
+            AND m.away_team_points IS NOT NULL
+            AND COALESCE(po.scoring_system_id, 1) = 1)
+
+        SELECT
+          pbm.match_id,
+          CONCAT(COALESCE(hot.name, htr.name), ' vs ', COALESCE(awt.name, atr.name)) AS match_desc,
+          pbm.user_id,
+          u.user_name,
+          SUM(pbm.total_points) OVER
+            (PARTITION BY pbm.user_id
+             ORDER BY sm.match_sort) AS cum_points
+
+        FROM points_by_match pbm
+          INNER JOIN sorted_matches sm ON
+            sm.match_id = pbm.match_id
+          INNER JOIN match m ON
+            m.match_id = pbm.match_id
+          INNER JOIN tournament_role htr ON
+            htr.tournament_role_id = m.home_team_id
+          LEFT JOIN team hot ON
+            hot.team_id = htr.team_id
+          INNER JOIN tournament_role atr ON
+            atr.tournament_role_id = m.away_team_id
+          LEFT JOIN team awt ON
+            awt.team_id = atr.team_id
+          INNER JOIN users u ON
+            pbm.user_id = u.user_id
+
+        ORDER BY sm.match_sort, UPPER(u.user_name);
+      SQL
+    end
   end
 end

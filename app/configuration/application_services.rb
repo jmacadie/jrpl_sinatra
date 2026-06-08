@@ -75,17 +75,17 @@ class ApplicationServices
   end
 
   def create_repositories
-    @cookie_repository = create_repository(CookieRepository)
+    @cookie_repository = create_repository(Repositories::Cookie)
     @cumulative_points_repository = create_repository(
-      CumulativePointsRepository
+      Repositories::CumulativePoints
     )
-    @emails_sent_repository = create_repository(EmailsSentRepository)
-    @fixtures_repository = create_repository(FixturesRepository)
-    @match_repository = create_repository(MatchRepository)
-    @prediction_repository = create_repository(PredictionRepository)
-    @tournament_role_repository = create_repository(TournamentRoleRepository)
-    @user_repository = create_repository(UserRepository)
-    @point_repository = create_repository(PointRepository)
+    @emails_sent_repository = create_repository(Repositories::EmailsSent)
+    @fixtures_repository = create_repository(Repositories::Fixtures)
+    @match_repository = create_repository(Repositories::Match)
+    @prediction_repository = create_repository(Repositories::Prediction)
+    @tournament_role_repository = create_repository(Repositories::TournamentRole)
+    @user_repository = create_repository(Repositories::User)
+    @point_repository = create_repository(Repositories::Point)
   end
 
   def create_repository(repository_class)

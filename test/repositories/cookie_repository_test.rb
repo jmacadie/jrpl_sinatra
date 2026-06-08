@@ -3,7 +3,7 @@ require_relative '../helpers/test_helpers'
 class CookieRepositoryTest < Minitest::Test
   def test_saves_hashed_cookie_token
     query_runner = FakeQueryRunner.new
-    repository = CookieRepository.new(query_runner:)
+    repository = Repositories::Cookie.new(query_runner:)
 
     repository.save_new_cookie(4, 'series', 'plain-token')
 
@@ -19,7 +19,7 @@ class CookieRepositoryTest < Minitest::Test
       [{ 'user_id' => '4', 'token' => 'hashed-token' }]
     )
     query_runner = FakeQueryRunner.new(results: [result])
-    repository = CookieRepository.new(query_runner:)
+    repository = Repositories::Cookie.new(query_runner:)
 
     assert_equal(
       { user_id: 4, token: 'hashed-token' },
@@ -29,7 +29,7 @@ class CookieRepositoryTest < Minitest::Test
 
   def test_returns_nil_for_unknown_series
     query_runner = FakeQueryRunner.new(results: [FakeResult.new])
-    repository = CookieRepository.new(query_runner:)
+    repository = Repositories::Cookie.new(query_runner:)
 
     assert_nil repository.user_from_series('missing')
   end

@@ -3,7 +3,7 @@ require_relative '../helpers/test_helpers'
 class EmailsSentRepositoryTest < Minitest::Test
   def test_records_prediction_emails
     query_runner = FakeQueryRunner.new
-    repository = EmailsSentRepository.new(query_runner:)
+    repository = Repositories::EmailsSent.new(query_runner:)
 
     repository.record_predictions_sent(6)
 
@@ -13,7 +13,7 @@ class EmailsSentRepositoryTest < Minitest::Test
 
   def test_records_result_emails
     query_runner = FakeQueryRunner.new
-    repository = EmailsSentRepository.new(query_runner:)
+    repository = Repositories::EmailsSent.new(query_runner:)
 
     repository.record_results_sent(7)
 
