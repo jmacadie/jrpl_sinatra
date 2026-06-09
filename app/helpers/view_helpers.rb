@@ -107,7 +107,7 @@ module ViewHelpers
     dt = Date.parse(match[:match_date])
     suffix =
       case dt.mday
-      when 1, 11, 21
+      when 1, 21
         'st'
       when 2, 22
         'nd'
