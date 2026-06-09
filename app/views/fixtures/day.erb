@@ -1,6 +1,6 @@
 <h2><%== date_for_print({ match_date: day }) %></h2>
 <% matches.each do |match| %>
-  <% ring = Services::Ring.new({ match_ids:, match_id: match[:match_id] }) %>
+  <% ring = Models::Ring.new({ match_ids:, match_id: match[:match_id] }) %>
   <%== erb :'fixtures/match', locals: { match:, ring: } %>
 <% end %>
 <hr />

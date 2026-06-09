@@ -1,4 +1,4 @@
-require_relative '../../helpers/test_helpers'
+require "test_helpers"
 
 class MatchTeamsTest < Minitest::Test
   def test_have_team_names

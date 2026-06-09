@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require "test_helpers"
 
 class ResultsIntegrationTest < Minitest::Test
   include TestIntegrationMethods
@@ -41,7 +41,7 @@ class ResultsIntegrationTest < Minitest::Test
   end
 
   def test_add_result_keeps_ring_navigation
-    ring = Services::Ring.new(match_ids: [1, 3, 4], match_id: 3).to_s
+    ring = Models::Ring.new(match_ids: [1, 3, 4], match_id: 3).to_s
     get "/match/3?ring=#{ring}", {}, admin_session
     post '/match/add_result',
          { match_id: '3',

@@ -1,4 +1,4 @@
-require_relative '../../helpers/test_helpers'
+require "test_helpers"
 
 class LockdownPolicyTest < Minitest::Test
   def test_match_before_lockdown

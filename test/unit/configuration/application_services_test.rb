@@ -1,7 +1,8 @@
-require_relative '../../helpers/test_helpers'
+require "test_helpers"
 
 class ApplicationServicesTest < Minitest::Test
   REPOSITORY_CLASSES = [
+    Repositories::QueryRunner,
     Repositories::Cookie,
     Repositories::CumulativePoints,
     Repositories::EmailsSent,
@@ -14,117 +15,117 @@ class ApplicationServicesTest < Minitest::Test
   ].freeze
 
   REGISTERED_COMPONENTS = {
-    query_runner: Services::QueryRunner,
+    query_runner: Repositories::QueryRunner,
     cookie_repository: Repositories::Cookie,
     user_repository: Repositories::User,
-    email_sender: Services::EmailSender,
-    lockdown_service: Services::Lockdown,
-    match_result_service: Services::MatchResult,
-    match_prediction_service: Services::MatchPrediction,
-    match_page_service: Services::MatchPage,
-    match_broadcaster_service: Services::MatchBroadcaster,
-    fixtures_page_service: Services::FixturesPage,
-    graphs_page_service: Services::GraphsPage,
-    tables_page_service: Services::TablesPage,
-    admin_page_service: Services::AdminPage,
-    tournament_role_service: Services::TournamentRole,
-    edit_user_page_service: Services::EditUserPage,
-    edit_user_service: Services::EditUser,
-    sign_in_service: Services::SignIn,
-    remember_me_login_service: Services::RememberMeLogin,
-    sign_up_service: Services::SignUp,
-    reset_user_password_service: Services::ResetUserPassword,
-    delete_user_service: Services::DeleteUser,
-    toggle_user_admin_service: Services::ToggleUserAdmin
+    edit_user_service: Services::Accounts::EditUser,
+    remember_me_login_service: Services::Accounts::RememberMe,
+    sign_in_service: Services::Accounts::SignIn,
+    sign_up_service: Services::Accounts::SignUp,
+    match_broadcaster_service: Services::Admin::Broadcaster,
+    delete_user_service: Services::Admin::DeleteUser,
+    reset_user_password_service: Services::Admin::ResetUserPassword,
+    match_result_service: Services::Admin::Result,
+    tournament_role_service: Services::Admin::TournamentRole,
+    toggle_user_admin_service: Services::Admin::ToggleUserAdmin,
+    lockdown_service: Services::Core::Lockdown,
+    match_prediction_service: Services::Core::Prediction,
+    email_sender: Services::Mailers::EmailSender,
+    admin_page_service: Services::Pages::Admin,
+    edit_user_page_service: Services::Pages::EditUser,
+    fixtures_page_service: Services::Pages::Fixtures,
+    graphs_page_service: Services::Pages::Graphs,
+    match_page_service: Services::Pages::Match,
+    tables_page_service: Services::Pages::Tables
   }.freeze
 
   SERVICE_DEPENDENCIES = {
-    Services::MrMen => {
-      prediction_repository: Repositories::Prediction
-    },
-    Services::Lockdown => {
-      match_repository: Repositories::Match,
-      prediction_repository: Repositories::Prediction,
-      emails_sent_repository: Repositories::EmailsSent,
-      mr_men_service: Services::MrMen,
-      renderer: Services::SinatraTemplateRenderer,
-      email_sender: Services::EmailSender,
-      lockdown_policy: Policies::Lockdown
-    },
-    Services::Scoreboard => {
-      match_repository: Repositories::Match,
-      prediction_repository: Repositories::Prediction,
-      point_repository: Repositories::Point
-    },
-    Services::MatchResultMailer => {
-      match_repository: Repositories::Match,
-      prediction_repository: Repositories::Prediction,
-      scoreboard_service: Services::Scoreboard,
-      renderer: Services::SinatraTemplateRenderer,
-      email_sender: Services::EmailSender,
-      emails_sent_repository: Repositories::EmailsSent
-    },
-    Services::MatchResult => {
-      match_repository: Repositories::Match,
-      scoreboard_service: Services::Scoreboard,
-      result_mailer: Services::MatchResultMailer,
-      lockdown_policy: Policies::Lockdown
-    },
-    Services::MatchPrediction => {
-      match_repository: Repositories::Match,
-      prediction_repository: Repositories::Prediction,
-      lockdown_policy: Policies::Lockdown
-    },
-    Services::MatchPage => {
-      match_repository: Repositories::Match,
-      prediction_repository: Repositories::Prediction,
-      user_repository: Repositories::User,
-      lockdown_policy: Policies::Lockdown
-    },
-    Services::MatchBroadcaster => {
-      match_repository: Repositories::Match
-    },
-    Services::FixturesPage => {
-      fixtures_repository: Repositories::Fixtures
-    },
-    Services::GraphsPage => {
-      cumulative_points_repository: Repositories::CumulativePoints,
+    Services::Accounts::EditUser => {
       user_repository: Repositories::User
     },
-    Services::TablesPage => {
-      point_repository: Repositories::Point
-    },
-    Services::AdminPage => {
-      user_repository: Repositories::User,
-      tournament_role_repository: Repositories::TournamentRole
-    },
-    Services::TournamentRole => {
-      tournament_role_repository: Repositories::TournamentRole
-    },
-    Services::EditUserPage => {
-      user_repository: Repositories::User
-    },
-    Services::EditUser => {
-      user_repository: Repositories::User
-    },
-    Services::SignIn => {
-      user_repository: Repositories::User
-    },
-    Services::RememberMeLogin => {
+    Services::Accounts::RememberMe => {
       cookie_repository: Repositories::Cookie,
       token_generator: Proc
     },
-    Services::SignUp => {
+    Services::Accounts::SignIn => {
       user_repository: Repositories::User
     },
-    Services::ResetUserPassword => {
+    Services::Accounts::SignUp => {
       user_repository: Repositories::User
     },
-    Services::DeleteUser => {
+    Services::Admin::Broadcaster => {
+      match_repository: Repositories::Match
+    },
+    Services::Admin::DeleteUser => {
       user_repository: Repositories::User
     },
-    Services::ToggleUserAdmin => {
+    Services::Admin::ResetUserPassword => {
       user_repository: Repositories::User
+    },
+    Services::Admin::Result => {
+      match_repository: Repositories::Match,
+      scoreboard_service: Services::Core::Scoreboard,
+      result_mailer: Services::Mailers::Result,
+      lockdown_policy: Policies::Lockdown
+    },
+    Services::Admin::ToggleUserAdmin => {
+      user_repository: Repositories::User
+    },
+    Services::Admin::TournamentRole => {
+      tournament_role_repository: Repositories::TournamentRole
+    },
+    Services::Core::Lockdown => {
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
+      emails_sent_repository: Repositories::EmailsSent,
+      mr_men_service: Services::Core::MrMen,
+      renderer: Renderers::SinatraTemplate,
+      email_sender: Services::Mailers::EmailSender,
+      lockdown_policy: Policies::Lockdown
+    },
+    Services::Core::MrMen => {
+      prediction_repository: Repositories::Prediction
+    },
+    Services::Core::Prediction => {
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
+      lockdown_policy: Policies::Lockdown
+    },
+    Services::Mailers::Result => {
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
+      scoreboard_service: Services::Core::Scoreboard,
+      renderer: Renderers::SinatraTemplate,
+      email_sender: Services::Mailers::EmailSender,
+      emails_sent_repository: Repositories::EmailsSent
+    },
+    Services::Core::Scoreboard => {
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
+      point_repository: Repositories::Point
+    },
+    Services::Pages::Admin => {
+      user_repository: Repositories::User,
+      tournament_role_repository: Repositories::TournamentRole
+    },
+    Services::Pages::EditUser => {
+      user_repository: Repositories::User
+    },
+    Services::Pages::Fixtures => {
+      fixtures_repository: Repositories::Fixtures
+    },
+    Services::Pages::Graphs => {
+      cumulative_points_repository: Repositories::CumulativePoints,
+      user_repository: Repositories::User
+    },
+    Services::Pages::Match => {
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
+      user_repository: Repositories::User,
+      lockdown_policy: Policies::Lockdown
+    },
+    Services::Pages::Tables => {
+      point_repository: Repositories::Point
     }
   }.freeze
 
@@ -140,8 +141,7 @@ class ApplicationServicesTest < Minitest::Test
 
   def test_wires_shared_infrastructure_and_repositories
     app = FakeApp.new
-    classes = [Services::QueryRunner,
-               Services::EmailSender,
+    classes = [Services::Mailers::EmailSender,
                *REPOSITORY_CLASSES]
 
     with_constructor_spies(classes) do |calls|
@@ -169,7 +169,7 @@ class ApplicationServicesTest < Minitest::Test
   private
 
   def assert_query_runner_wiring(app, calls)
-    dependencies = constructor_keywords(calls, Services::QueryRunner)
+    dependencies = constructor_keywords(calls, Repositories::QueryRunner)
 
     assert_same app.settings.db_pool, dependencies.fetch(:db_pool)
     assert_same app.environment, dependencies.fetch(:environment)
@@ -180,14 +180,18 @@ class ApplicationServicesTest < Minitest::Test
     REPOSITORY_CLASSES.each do |repository_class|
       dependencies = constructor_keywords(calls, repository_class)
 
-      assert_equal [:query_runner], dependencies.keys
-      assert_same app.settings.query_runner,
-                  dependencies.fetch(:query_runner)
+      if repository_class == Repositories::QueryRunner
+        assert_equal [:db_pool, :logger, :environment], dependencies.keys
+      else
+        assert_equal [:query_runner], dependencies.keys
+        assert_same app.settings.query_runner,
+                    dependencies.fetch(:query_runner)
+      end
     end
   end
 
   def assert_email_sender_wiring(app, calls)
-    dependencies = constructor_keywords(calls, Services::EmailSender)
+    dependencies = constructor_keywords(calls, Services::Mailers::EmailSender)
 
     assert_same app.settings.query_runner, dependencies.fetch(:query_runner)
     assert_same app.settings.email, dependencies.fetch(:config)

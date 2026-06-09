@@ -1,4 +1,4 @@
-require_relative '../helpers/test_helpers'
+require "test_helpers"
 
 class LoginIntegrationTest < Minitest::Test
   include TestIntegrationMethods

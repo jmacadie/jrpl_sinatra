@@ -1,8 +1,8 @@
 email:
-  gmail_username:
-  app_password:
-  app_domain:
+  gmail_username: julian@julianrimet.com
+  app_password: ppdwoxynjsgdiuls
+  app_domain: julianrimet.com
   from: Jules <julian@julianrimet.com>
-  default_to: test@example.com
-  sub_to: test@example.com
+  default_to: james@macadie.co.uk
+  sub_to: j.macadie@ttg.co.uk
 

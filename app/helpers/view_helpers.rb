@@ -1,5 +1,3 @@
-require_relative '../presenters/match_teams'
-
 module ViewHelpers
   def home_name(match)
     Presenters::MatchTeams.new(match).home_name

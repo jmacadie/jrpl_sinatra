@@ -4,10 +4,11 @@ require 'rake/testtask'
 require 'rubocop/rake_task'
 require 'socket'
 
-desc 'Run all tests and Rubocop'
-task default: [:test, :rubocop]
+desc 'Run Rubocop and then all tests'
+task default: [:rubocop, :test]
 
 Rake::TestTask.new do |t|
+  t.libs << "test"
   t.test_files = FileList['test/**/*_test.rb']
 end
 

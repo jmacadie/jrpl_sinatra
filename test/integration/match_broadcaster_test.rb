@@ -1,5 +1,5 @@
 require 'json'
-require_relative '../helpers/test_helpers'
+require "test_helpers"
 
 class MatchBroadcasterIntegrationTest < Minitest::Test
   include TestIntegrationMethods

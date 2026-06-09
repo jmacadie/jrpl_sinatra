@@ -9,17 +9,12 @@ require 'sinatra/cookies'
 require 'tilt/erubi'
 require 'yaml'
 
-require_relative 'configuration/application_services'
-require_relative 'services/ring'
-
-# Load up all helpers
-Dir["#{File.expand_path(__dir__)}/helpers/**/*.rb"].each do |file|
-  require file
-end
-
-# Load up all controllers
-Dir["#{File.expand_path(__dir__)}/controllers/**/*.rb"].each do |file|
-  require file
+folders = ["configuration", "controllers", "helpers", "models", "policies",
+           "presenters", "renderers", "repositories", "services"]
+folders.each do |folder|
+  Dir["#{File.expand_path(__dir__)}/#{folder}/**/*.rb"].each do |file|
+    require file
+  end
 end
 
 class App < Sinatra::Application
@@ -58,7 +53,7 @@ class App < Sinatra::Application
 
     conf = YAML.load_file("#{settings.config}/database.yml")
     set :db_pool, ConnectionPool.new(size: 5, timeout: 5) {
-      Services::QueryRunner.connect(conf[settings.environment])
+      Repositories::QueryRunner.connect(conf[settings.environment])
     }
   end
 
@@ -67,7 +62,7 @@ class App < Sinatra::Application
 
     conf = YAML.load_file("#{settings.config}/database.yml")
     set :db_pool, ConnectionPool.new(size: 1, timeout: 5) {
-      Services::QueryRunner.connect(conf[settings.environment])
+      Repositories::QueryRunner.connect(conf[settings.environment])
     }
   end
 
