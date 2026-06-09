@@ -31,6 +31,7 @@ class ApplicationServicesTest < Minitest::Test
     edit_user_page_service: Services::EditUserPage,
     edit_user_service: Services::EditUser,
     sign_in_service: Services::SignIn,
+    remember_me_login_service: Services::RememberMeLogin,
     sign_up_service: Services::SignUp,
     reset_user_password_service: Services::ResetUserPassword,
     delete_user_service: Services::DeleteUser,
@@ -108,6 +109,10 @@ class ApplicationServicesTest < Minitest::Test
     },
     Services::SignIn => {
       user_repository: Repositories::User
+    },
+    Services::RememberMeLogin => {
+      cookie_repository: Repositories::Cookie,
+      token_generator: Proc
     },
     Services::SignUp => {
       user_repository: Repositories::User

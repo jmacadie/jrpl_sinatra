@@ -11,31 +11,27 @@ module LoginCookies
 
   def clear_cookies
     settings.cookie_repository.delete_cookie_data(cookies[:series_id])
-    cookies.delete(:series_id)
-    cookies.delete(:token)
+    delete_login_cookies
   end
 
-  def signin_with_cookie
-    return false unless cookies[:series_id] && cookies[:token]
-    user = settings.cookie_repository.user_from_series(cookies[:series_id])
-    return false unless user
-    encyrpted_cookie_token = BCrypt::Password.new(user[:token])
-    if encyrpted_cookie_token != cookies[:token]
-      clear_cookies()
-      return false
-    end
-    setup_user_session_data(user[:user_id])
-    reset_cookie_token()
+  def signin_with_cookie?
+    result = settings.remember_me_login_service.call(
+      series_id: cookies[:series_id],
+      token: cookies[:token]
+    )
+    delete_login_cookies if result.invalid_token?
+    return false unless result.success?
+
+    setup_user_session_data(result.user_id)
+    set_token_cookie(token: result.new_token)
+    true
   end
 
   private
 
-  def reset_cookie_token
-    set_token_cookie()
-    settings.cookie_repository.update_token(
-      cookies[:series_id],
-      cookies[:token]
-    )
+  def delete_login_cookies
+    cookies.delete(:series_id)
+    cookies.delete(:token)
   end
 
   def set_series_id_cookie
@@ -48,8 +44,8 @@ module LoginCookies
     )
   end
 
-  def set_token_cookie
-    token_value = SecureRandom.hex(32)
+  def set_token_cookie(token: nil)
+    token_value = token or SecureRandom.hex(32)
     response.set_cookie(
       'token',
       { value: token_value,
@@ -60,7 +56,8 @@ module LoginCookies
 
   def unique_random_string
     random_string = SecureRandom.hex(32)
-    while settings.cookie_repository.series_id_list.include?(random_string)
+    current_series = settings.cookie_repository.series_id_list
+    while current_series.include?(random_string)
       random_string = SecureRandom.hex(32)
     end
     random_string

@@ -22,6 +22,7 @@ require_relative '../services/match_prediction'
 require_relative '../services/match_result_mailer'
 require_relative '../services/match_result'
 require_relative '../services/mr_men'
+require_relative '../services/remember_me_login'
 require_relative '../services/reset_user_password'
 require_relative '../services/scoreboard'
 require_relative '../services/sign_in'
@@ -51,9 +52,7 @@ class ApplicationServices
     register_page_services
     register_tournament_role_service
     register_edit_user_services
-    register_sign_in_service
-    register_sign_up_service
-    register_reset_user_password_service
+    register_authentication_services
     register_delete_user_service
     register_toggle_user_admin_service
   end
@@ -225,6 +224,20 @@ class ApplicationServices
   def register_sign_in_service
     @app.set :sign_in_service, Services::SignIn.new(
       user_repository: @user_repository
+    )
+  end
+
+  def register_authentication_services
+    register_sign_in_service
+    register_remember_me_login_service
+    register_sign_up_service
+    register_reset_user_password_service
+  end
+
+  def register_remember_me_login_service
+    @app.set :remember_me_login_service, Services::RememberMeLogin.new(
+      cookie_repository: @cookie_repository,
+      token_generator: -> { SecureRandom.hex(32) }
     )
   end
 

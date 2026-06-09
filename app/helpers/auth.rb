@@ -41,6 +41,6 @@ module Loginable
   def user_signed_in?
     return true if session[:user_name]
 
-    !!signin_with_cookie()
+    signin_with_cookie?
   end
 end
