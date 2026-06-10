@@ -96,24 +96,32 @@ class ApplicationServices
     mr_men_service = Services::Core::MrMen.new(
       prediction_repository: @prediction_repository
     )
+    mailer = predictions_mailer
     @app.set :lockdown_service, Services::Core::Lockdown.new(
+      match_repository: @match_repository,
+      mr_men_service:,
+      predictions_mailer: mailer,
+      lockdown_policy: Policies::Lockdown.new
+    )
+  end
+
+  def predictions_mailer
+    Services::Mailers::Predictions.new(
       match_repository: @match_repository,
       prediction_repository: @prediction_repository,
       emails_sent_repository: @emails_sent_repository,
-      mr_men_service: mr_men_service,
       renderer: @template_renderer,
-      email_sender: @email_sender,
-      lockdown_policy: Policies::Lockdown.new
+      email_sender: @email_sender
     )
   end
 
   def register_result_service
     scoreboard_service = create_scoreboard_service
-    result_mailer = result_mailer(scoreboard_service)
+    mailer = result_mailer(scoreboard_service)
     @app.set :match_result_service, Services::Admin::Result.new(
       match_repository: @match_repository,
       scoreboard_service:,
-      result_mailer:,
+      result_mailer: mailer,
       lockdown_policy: Policies::Lockdown.new
     )
   end

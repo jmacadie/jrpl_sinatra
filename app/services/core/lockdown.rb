@@ -1,14 +1,14 @@
 module Services
   module Core
     class Lockdown
-      def initialize(dependencies)
-        @match_repository = dependencies.fetch(:match_repository)
-        @prediction_repository = dependencies.fetch(:prediction_repository)
-        @emails_sent_repository = dependencies.fetch(:emails_sent_repository)
-        @mr_men_service = dependencies.fetch(:mr_men_service)
-        @renderer = dependencies.fetch(:renderer)
-        @email_sender = dependencies.fetch(:email_sender)
-        @lockdown_policy = dependencies.fetch(:lockdown_policy)
+      def initialize(match_repository:,
+                     mr_men_service:,
+                     predictions_mailer:,
+                     lockdown_policy:)
+        @match_repository = match_repository
+        @mr_men_service = mr_men_service
+        @predictions_mailer = predictions_mailer
+        @lockdown_policy = lockdown_policy
       end
 
       def call
@@ -22,30 +22,7 @@ module Services
       def process_match(match)
         match_id = match[:match_id]
         @mr_men_service.call(match_id)
-        send_email(match_id)
-        @emails_sent_repository.record_predictions_sent(match_id)
-      end
-
-      def send_email(match_id)
-        match = @match_repository.load_match(match_id)
-        predictions =
-          @prediction_repository.get_predictions_results(match_id)
-        @email_sender.send_email_all(
-          subject: email_subject(match),
-          body: email_body(match, predictions)
-        )
-      end
-
-      def email_subject(match)
-        teams = Presenters::MatchTeams.new(match)
-        "Predictions for #{teams.home_name} vs. #{teams.away_name}"
-      end
-
-      def email_body(match, predictions)
-        @renderer.render(
-          :'email/prediction',
-          locals: { match:, predictions: }
-        )
+        @predictions_mailer.call(match_id)
       end
     end
   end

@@ -76,12 +76,16 @@ class ApplicationServicesTest < Minitest::Test
     },
     Services::Core::Lockdown => {
       match_repository: Repositories::Match,
+      mr_men_service: Services::Core::MrMen,
+      predictions_mailer: Services::Mailers::Predictions,
+      lockdown_policy: Policies::Lockdown
+    },
+    Services::Mailers::Predictions => {
+      match_repository: Repositories::Match,
       prediction_repository: Repositories::Prediction,
       emails_sent_repository: Repositories::EmailsSent,
-      mr_men_service: Services::Core::MrMen,
       renderer: Renderers::SinatraTemplate,
-      email_sender: Services::Mailers::EmailSender,
-      lockdown_policy: Policies::Lockdown
+      email_sender: Services::Mailers::EmailSender
     },
     Services::Core::MrMen => {
       prediction_repository: Repositories::Prediction
