@@ -4,7 +4,9 @@ class ToggleUserAdminServiceTest < Minitest::Test
   def test_grants_admin_role_when_user_is_not_an_admin
     repository, service = build_service(admin: false)
 
-    result = service.call(user_id: '11', action: 'grant_admin')
+    result = service.call(user_id: '11',
+                          action: 'grant_admin',
+                          current_user_id: '4')
 
     assert result.changed
     assert_equal [
@@ -16,7 +18,9 @@ class ToggleUserAdminServiceTest < Minitest::Test
   def test_does_not_grant_admin_role_when_user_is_already_an_admin
     repository, service = build_service(admin: true)
 
-    result = service.call(user_id: '11', action: 'grant_admin')
+    result = service.call(user_id: '11',
+                          action: 'grant_admin',
+                          current_user_id: '4')
 
     refute result.changed
     assert_equal [[:admin?, 11]], repository.calls
@@ -25,7 +29,9 @@ class ToggleUserAdminServiceTest < Minitest::Test
   def test_revokes_admin_role_when_user_is_an_admin
     repository, service = build_service(admin: true)
 
-    result = service.call(user_id: '11', action: 'revoke_admin')
+    result = service.call(user_id: '11',
+                          action: 'revoke_admin',
+                          current_user_id: '4')
 
     assert result.changed
     assert_equal [
@@ -34,10 +40,23 @@ class ToggleUserAdminServiceTest < Minitest::Test
     ], repository.calls
   end
 
+  def test_cannot_revoke_admin_role_for_self
+    repository, service = build_service(admin: true)
+
+    result = service.call(user_id: '4',
+                          action: 'revoke_admin',
+                          current_user_id: '4')
+
+    refute result.changed
+    assert_equal [], repository.calls
+  end
+
   def test_does_not_revoke_admin_role_when_user_is_not_an_admin
     repository, service = build_service(admin: false)
 
-    result = service.call(user_id: '11', action: 'revoke_admin')
+    result = service.call(user_id: '11',
+                          action: 'revoke_admin',
+                          current_user_id: '4')
 
     refute result.changed
     assert_equal [[:admin?, 11]], repository.calls
@@ -46,7 +65,9 @@ class ToggleUserAdminServiceTest < Minitest::Test
   def test_ignores_unknown_action
     repository, service = build_service(admin: false)
 
-    result = service.call(user_id: '11', action: 'unknown')
+    result = service.call(user_id: '11',
+                          action: 'unknown',
+                          current_user_id: '4')
 
     refute result.changed
     assert_empty repository.calls

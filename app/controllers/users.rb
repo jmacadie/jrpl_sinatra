@@ -102,7 +102,8 @@ class App < Sinatra::Application
     require_signed_in_as_admin
     settings.toggle_user_admin_service.call(
       user_id: params[:user_id],
-      action: params[:button]
+      action: params[:button],
+      current_user_id: session[:user_id]
     )
     if env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
       '/admin'

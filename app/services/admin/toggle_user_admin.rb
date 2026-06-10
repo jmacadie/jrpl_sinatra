@@ -7,8 +7,12 @@ module Services
         @user_repository = user_repository
       end
 
-      def call(user_id:, action:)
+      def call(user_id:, action:, current_user_id:)
         user_id = user_id.to_i
+        current_user_id = current_user_id.to_i
+        if user_id == current_user_id
+          return Result.new(changed: false)
+        end
         case action
         when 'grant_admin'
           grant_admin_result(user_id)
