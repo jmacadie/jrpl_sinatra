@@ -37,7 +37,7 @@ class MatchPageServiceTest < Minitest::Test
   end
 
   def test_builds_origin_data_for_origin_match
-    fixture = match_fixture(stage: 'Semi-finals')
+    fixture = match_fixture(stage_id: 3)
     match_repository, _, _, _, service = build_service(match: fixture)
     page = call_service(service:)
 
@@ -48,8 +48,8 @@ class MatchPageServiceTest < Minitest::Test
     ], match_repository.calls
   end
 
-  def test_round_of_32_does_not_load_origin_data
-    fixture = match_fixture(stage: 'Round of 32')
+  def test_second_stage_does_not_load_origin_data
+    fixture = match_fixture(stage_id: 2)
     match_repository, _, _, _, service = build_service(match: fixture)
     page = call_service(service:)
 
@@ -136,7 +136,7 @@ class MatchPageServiceTest < Minitest::Test
     {
       match_id: 6,
       home_score: nil,
-      stage: 'Group Stages'
+      stage_id: 1
     }
   end
 

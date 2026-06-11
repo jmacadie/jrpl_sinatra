@@ -89,7 +89,10 @@ module Services
       end
 
       def origin?(match)
-        match[:stage] != 'Group Stages' && match[:stage] != 'Round of 32'
+        # - The first stage is the group stages, they have no origin
+        # - The second stage is always the first knockout round, and that does
+        #   not have a match for an origin, so we can't show that either
+        match[:stage_id] > 2
       end
     end
   end
