@@ -8,16 +8,17 @@ module Services
         'production' => 'julianrimet.com'
       }.freeze
 
-      def initialize(query_runner:, config:, environment:)
-        @query_runner = query_runner
+      def initialize(config:, environment:, user_repository:)
         @config = config
         @environment = environment.to_s
+        @user_repository = user_repository
       end
 
       def send_email_all(subject: '', body: '', plain_text: false)
-        to = load_all_users_details.reject { |user| mr_men?(user) }
-                                   .map { |user| user_address(user) }
-                                   .join(', ')
+        users = @user_repository.load_all_users_details
+        to = users.reject { |user| mr_men?(user) }
+                  .map { |user| user_address(user) }
+                  .join(', ')
         send_email(subject:, body:, to:, plain_text:)
       end
 
@@ -30,16 +31,6 @@ module Services
       end
 
       private
-
-      def load_all_users_details
-        result = @query_runner.run_query(select_query_all_users)
-        result.map do |row|
-          { user_id: row['user_id'].to_i,
-            user_name: row['user_name'],
-            email: row['email'],
-            roles: row['roles'] }
-        end
-      end
 
       def user_address(user)
         "#{user[:user_name]} <#{user[:email]}>"
@@ -108,18 +99,6 @@ module Services
       def get_to(to)
         return @config['sub_to'] if @environment == 'staging'
         to || @config['default_to']
-      end
-
-      # TODO: move to users repository
-      def select_query_all_users
-        <<~SQL
-          SELECT users.user_id, users.user_name, users.email, string_agg(role.name, ', ') AS roles
-          FROM users
-          FULL OUTER JOIN user_role ON users.user_id = user_role.user_id
-          FULL OUTER JOIN role ON user_role.role_id = role.role_id
-          GROUP BY users.user_id, users.user_name, users.email
-          ORDER BY UPPER(users.user_name);
-        SQL
       end
     end
   end

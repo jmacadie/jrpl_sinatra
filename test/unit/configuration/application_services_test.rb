@@ -87,14 +87,6 @@ class ApplicationServicesTest < Minitest::Test
       renderer: Renderers::SinatraTemplate,
       email_sender: Services::Mailers::EmailSender
     },
-    Services::Core::MrMen => {
-      prediction_repository: Repositories::Prediction
-    },
-    Services::Core::Prediction => {
-      match_repository: Repositories::Match,
-      prediction_repository: Repositories::Prediction,
-      lockdown_policy: Policies::Lockdown
-    },
     Services::Mailers::Result => {
       match_repository: Repositories::Match,
       prediction_repository: Repositories::Prediction,
@@ -102,6 +94,14 @@ class ApplicationServicesTest < Minitest::Test
       renderer: Renderers::SinatraTemplate,
       email_sender: Services::Mailers::EmailSender,
       emails_sent_repository: Repositories::EmailsSent
+    },
+    Services::Core::MrMen => {
+      prediction_repository: Repositories::Prediction
+    },
+    Services::Core::Prediction => {
+      match_repository: Repositories::Match,
+      prediction_repository: Repositories::Prediction,
+      lockdown_policy: Policies::Lockdown
     },
     Services::Core::Scoreboard => {
       match_repository: Repositories::Match,
@@ -197,9 +197,10 @@ class ApplicationServicesTest < Minitest::Test
   def assert_email_sender_wiring(app, calls)
     dependencies = constructor_keywords(calls, Services::Mailers::EmailSender)
 
-    assert_same app.settings.query_runner, dependencies.fetch(:query_runner)
     assert_same app.settings.email, dependencies.fetch(:config)
     assert_same app.environment, dependencies.fetch(:environment)
+    assert_same app.settings.user_repository,
+                dependencies.fetch(:user_repository)
   end
 
   def assert_dependency_types(actual, expected)

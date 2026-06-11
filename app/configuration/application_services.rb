@@ -85,9 +85,9 @@ class ApplicationServices
 
   def register_email_sender
     @email_sender = Services::Mailers::EmailSender.new(
-      query_runner: @app.settings.query_runner,
       config: @app.settings.email,
-      environment: @app.environment
+      environment: @app.environment,
+      user_repository: @app.settings.user_repository
     )
     @app.set :email_sender, @email_sender
   end
