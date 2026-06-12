@@ -50,9 +50,9 @@ class ScoreboardServiceTest < Minitest::Test
     ], point_repository.calls
   end
 
-  def test_delegates_scoreboard_data_to_point_repository
+  def test_ranks_scoreboard_data_from_point_repository
     point_repository = FakePointRepository.new(
-      scoreboard_data: { overall_table: [{ user_name: 'Maccas' }] }
+      scoreboard_data: unranked_scoreboard_data
     )
     service = Services::Core::Scoreboard.new(
       match_repository: FakeMatchRepository.new,
@@ -61,12 +61,27 @@ class ScoreboardServiceTest < Minitest::Test
     )
 
     assert_equal(
-      { overall_table: [{ user_name: 'Maccas' }] },
-      service.scoreboard_data('Official')
+      %w(1 2),
+      service.scoreboard_data('Official')[:overall_table].map do |row|
+        row[:rank]
+      end
     )
     assert_equal [
       [:load_scoreboard_data, 'Official']
     ], point_repository.calls
+  end
+
+  private
+
+  def unranked_scoreboard_data
+    {
+      overall_table: [
+        { user_name: 'Maccas', total_points: 3 },
+        { user_name: 'Clare Mac', total_points: 1 }
+      ],
+      group_table: [],
+      knockout_table: []
+    }
   end
 
   class FakeMatchRepository

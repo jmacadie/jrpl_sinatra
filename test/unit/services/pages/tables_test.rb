@@ -7,7 +7,20 @@ class TablesPageServiceTest < Minitest::Test
 
     page = service.call
 
-    assert_equal repository.scoreboard_data, page.tables
+    assert_equal(
+      {
+        overall_table: [
+          { user_name: 'Clare Mac', total_points: 3, rank: '1' }
+        ],
+        group_table: [
+          { user_name: 'Maccas', total_points: 1, rank: '1' }
+        ],
+        knockout_table: [
+          { user_name: 'Mr. Mean', total_points: 0, rank: '1' }
+        ]
+      },
+      page.tables
+    )
     assert_equal [[:load_scoreboard_data, 'Official']], repository.calls
   end
 
@@ -17,9 +30,9 @@ class TablesPageServiceTest < Minitest::Test
     def initialize
       @calls = []
       @scoreboard_data = {
-        overall_table: [{ user_name: 'Clare Mac' }],
-        group_table: [{ user_name: 'Maccas' }],
-        knockout_table: [{ user_name: 'Mr. Mean' }]
+        overall_table: [{ user_name: 'Clare Mac', total_points: 3 }],
+        group_table: [{ user_name: 'Maccas', total_points: 1 }],
+        knockout_table: [{ user_name: 'Mr. Mean', total_points: 0 }]
       }
     end
 

@@ -16,7 +16,8 @@ module Services
       end
 
       def scoreboard_data(scoring_system)
-        @point_repository.load_scoreboard_data(scoring_system)
+        tables = @point_repository.load_scoreboard_data(scoring_system)
+        Presenters::Scoreboard.new(tables).ranked_tables
       end
 
       private
