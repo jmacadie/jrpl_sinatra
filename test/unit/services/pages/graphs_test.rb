@@ -14,11 +14,11 @@ class GraphsPageServiceTest < Minitest::Test
   end
 
   def test_builds_relative_points_and_competition_rankings
-    repository, _, service = build_service(points: cumulative_points_fixture)
+    repository, _, service = build_service(points: cumulative_point_rows)
     points = service.points
 
     assert_graph_values(points.first)
-    assert_equal [[:load_cumulative_points]], repository.calls
+    assert_equal [[:load_cumulative_point_rows]], repository.calls
   end
 
   def test_builds_default_points_when_no_results_exist
@@ -47,21 +47,19 @@ class GraphsPageServiceTest < Minitest::Test
     return cumulative_points_repository, user_repository, service
   end
 
-  def cumulative_points_fixture
-    [{
-      match_id: 2,
-      match: 'Hungary vs Switzerland',
-      users: [
-        user_fixture(1, 'Alice', 3),
-        user_fixture(2, 'Bob', 1),
-        user_fixture(3, 'Cara', 1),
-        user_fixture(4, 'Dan', 0)
-      ]
-    }]
+  def cumulative_point_rows
+    [
+      point_fixture(1, 'Alice', 3),
+      point_fixture(2, 'Bob', 1),
+      point_fixture(3, 'Cara', 1),
+      point_fixture(4, 'Dan', 0)
+    ]
   end
 
-  def user_fixture(user_id, user_name, cumulative_points)
+  def point_fixture(user_id, user_name, cumulative_points)
     {
+      match_id: 2,
+      match: 'Hungary vs Switzerland',
       user_id:,
       user_name:,
       cum_points: cumulative_points
@@ -83,8 +81,8 @@ class GraphsPageServiceTest < Minitest::Test
       @calls = []
     end
 
-    def load_cumulative_points
-      calls << [:load_cumulative_points]
+    def load_cumulative_point_rows
+      calls << [:load_cumulative_point_rows]
       @points
     end
   end
