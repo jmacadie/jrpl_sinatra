@@ -4,9 +4,9 @@ module Repositories
       @query_runner = query_runner
     end
 
-    def load_roles
+    def load_role_rows
       result = @query_runner.run_query(tournament_roles_query)
-      transform_tournament_roles(map_tournament_roles(result))
+      result.map { |row| map_tournament_role(row) }
     end
 
     def set_team(role_id, team_id)
@@ -77,60 +77,15 @@ module Repositories
 
     private
 
-    def map_tournament_roles(result)
-      result.map do |row|
-        {
-          stage: row['stage'],
-          role: row['tournament_role'],
-          id: row['tournament_role_id'],
-          selected_team_id: row['selected_team_id'].to_i,
-          team_id: row['team_id'].to_i,
-          team: row['team']
-        }
-      end
-    end
-
-    def transform_tournament_roles(result)
-      unique_stages(result).each do |stage|
-        roles = tournament_roles_for_stage(result, stage[:stage])
-        stage[:group_roles] = add_teams_to_role(result, roles)
-      end
-    end
-
-    def unique_stages(result)
-      result.map { |row| { stage: row[:stage] } }.uniq
-    end
-
-    def tournament_roles_for_stage(result, stage)
-      result.filter { |row| row[:stage] == stage }
-            .map do |row|
-              {
-                role: row[:role],
-                id: row[:id],
-                selected: row[:selected_team_id]
-              }
-            end.uniq
-    end
-
-    def add_teams_to_role(result, roles)
-      roles.each do |role|
-        selected = roles.filter { |other| other[:id] != role[:id] }
-                        .filter { |other| other[:selected].positive? }
-                        .map { |other| other[:selected] }
-                        .uniq
-        role[:teams] = teams_for_role(result, role[:id], selected)
-      end
-    end
-
-    def teams_for_role(result, role_id, selected)
-      result.filter { |row| row[:id] == role_id }
-            .map do |row|
-              {
-                team_id: row[:team_id],
-                team_name: row[:team],
-                disabled: selected.include?(row[:team_id])
-              }
-            end
+    def map_tournament_role(row)
+      {
+        stage: row['stage'],
+        role: row['tournament_role'],
+        id: row['tournament_role_id'],
+        selected_team_id: row['selected_team_id'],
+        team_id: row['team_id'],
+        team: row['team']
+      }
     end
 
     def tournament_roles_query
