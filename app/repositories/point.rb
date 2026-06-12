@@ -40,24 +40,7 @@ module Repositories
     def load_one_scoreboard_data(scoring_system_id, stage)
       result = @query_runner.run_query(select_users_points_query(stage),
                                        scoring_system_id)
-      result = row_to_table_hash(result)
-      add_rank(result)
-    end
-
-    def add_rank(table)
-      rank_str = ''
-      last_points = -1
-      table.each_with_index do |user, index|
-        if user[:total_points] != last_points
-          rank_str = (index + 1).to_s
-          # rubocop:disable Layout/LineLength
-          rank_str += '=' if index < (table.size - 1) &&
-                             user[:total_points] == table[index + 1][:total_points]
-          # rubocop:enable Layout/LineLength
-          last_points = user[:total_points]
-        end
-        user[:rank] = rank_str
-      end
+      row_to_table_hash(result)
     end
 
     def row_to_table_hash(result)
@@ -66,7 +49,7 @@ module Repositories
           user_name: row['user_name'],
           result_points: row['result_points'].to_i,
           score_points: row['score_points'].to_i,
-          total_points: row['result_points'].to_i + row['score_points'].to_i }
+          total_points: row['total_points'].to_i }
       end
     end
 
