@@ -2,9 +2,8 @@
 
 JRPL is a spectator sports prediction league.
 
-JRPL was developed using the ruby web application library 'Sinatra'.
-This uses the Rack server interface.
-PostgreSQL is used to store the database behind the application.
+JRPL was developed using the ruby web application library 'Sinatra'. This uses the Rack server interface. PostgreSQL is
+used to store the database behind the application.
 
 ## Documentation
 
@@ -14,10 +13,12 @@ PostgreSQL is used to store the database behind the application.
 
 To run this application locally on your machine:
   - Copy the files into their own project directory
-  - Install [Ruby and Bundler](https://www.jetbrains.com/help/ruby/set-up-a-ruby-development-environment.html), if needed
+  - Install [Ruby and Bundler](https://www.jetbrains.com/help/ruby/set-up-a-ruby-development-environment.html), if
+    needed
   - Install [Postgres](https://www.postgresql.org/docs/14/install-binaries.html), if needed
   - Start the Postgres server: `sudo service postgresql start`
-  - Set up yourself as a postgres superuser: `sudo -u postgres createuser --superuser $USER && sudo -u postgres createdb $USER`
+  - Set up yourself as a postgres superuser:
+    `sudo -u postgres createuser --superuser $USER && sudo -u postgres createdb $USER`
   - Update the gems with `bundle update`
   - Run the project with rake: `bundle exec rake run\[true\]`
     - On subsequent runs only need `bundle exec rake run`: the true parameter tells rake to recreate the database
@@ -40,19 +41,45 @@ To run both tests and Rubocop, run the default rake task:
 
 ## Deploy
 
-To deploy, it is assumed that you will be following [this bootstrap process](https://github.com/jmacadie/bootstrap-server/tree/main/ruby).
+To deploy, it is assumed that you will be following [this bootstrap
+process](https://github.com/jmacadie/bootstrap-server/tree/main/ruby).
   - Once all dependencies are installed / set-up, run `./create_new_app.sh` to get the skeleton set up
     - To reset & start again `./wipe_app.sh` can be run
     - You can verify this worked by using any browser to navigate to the app domain. You should get a "You rock..." page
   - Navigate to `/var/www/{APP_NAME}`
   - Run the `./deploy.sh` script to pull in the latest version of the code and to create a release from it
   - The first time an app is deployed:
-    - You need to set up the database. Run the script `scripts/reset_db.sh {APP_NAME}` to deploy a fresh copy from the source script
-    - You need to provide the system settings in `sudo vim current/config/database.yml` and `sudo vim current/config/general.yml`
+    - You need to set up the database. Run the script `scripts/reset_db.sh {APP_NAME}` to deploy a fresh copy from the
+      source script
+    - You need to provide the system settings in `sudo vim current/config/database.yml` and `sudo vim
+      current/config/general.yml`
       - This must be done by hand for security
       - It has to be done with super user permissions, as it is not your file and is locked for editing
       - The database passwords are provided in the text output of `./create_new_app.sh`
       - On subsequent deploys, you can elect to keep the config settings to avoid having to re-input
-    - Finally we need to restart the puma instance `sudo service puma-{APP_NAME} restart`. This is so the updated database connection settings can be flushed through. It should only be necessary on the first deploy as the connection settings won't change after that
+    - Finally we need to restart the puma instance `sudo service puma-{APP_NAME} restart`. This is so the updated
+      database connection settings can be flushed through. It should only be necessary on the first deploy as the
+      connection settings won't change after that
 
 With all this the website should be good to go in production / staging on the webserver
+
+## Automatic prediction checking
+
+The way the app is written, it will check for lockdown state on each request. We are therefore subject to someone
+interacting with the website shortly after lockdown in order to get the prediction emails sent out at the right time. To
+address this, I am using a cron job on the server to automatically send a request at every hour and half-hour (plus a
+safety check 5 mins later). The code to do that must be manually deployed on the server as follows:
+
+```bash
+crontab -e
+```
+
+Add the line `0,5,30,35 * * * * [ "$(date +\%F)" \< "2026-07-20" ] && curl -fsS "https://julianrimet.com" >/dev/null` to
+the file. Save and quit. The date part means the cron job _should_ stop at the end of the tournament, we will see if it
+does...
+
+You can check cron is running after with:
+
+```bash
+systemctl is-enabled cron
+```
