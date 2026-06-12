@@ -13,7 +13,8 @@ module Services
       end
 
       def points
-        points = @cumulative_points_repository.load_cumulative_points
+        rows = @cumulative_points_repository.load_cumulative_point_rows
+        points = Presenters::CumulativePoints.new(rows).grouped_points
         points = default_points if points.empty?
         add_relative_points(points)
         add_rankings(points)

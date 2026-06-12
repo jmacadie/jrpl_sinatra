@@ -4,47 +4,21 @@ module Repositories
       @query_runner = query_runner
     end
 
-    def load_cumulative_points
+    def load_cumulative_point_rows
       result = @query_runner.run_query(cumulative_points_query)
-      transform_cumulative_points(map_cumulative_points(result))
+      result.map { |row| map_cumulative_point(row) }
     end
 
     private
 
-    def map_cumulative_points(result)
-      result.map do |row|
-        { match_id: row['match_id'].to_i,
-          match: row['match_desc'],
-          user_id: row['user_id'].to_i,
-          user_name: row['user_name'],
-          cum_points: row['cum_points'].to_i }
-      end
-    end
-
-    def transform_cumulative_points(result)
-      unique_matches(result).each do |match|
-        match[:users] = match_users(result, match[:match_id])
-      end
-    end
-
-    def unique_matches(result)
-      result.map do |row|
-        {
-          match_id: row[:match_id],
-          match: row[:match]
-        }
-      end.uniq
-    end
-
-    def match_users(result, match_id)
-      result.filter { |user| user[:match_id] == match_id }
-            .map do |user|
-              {
-                user_id: user[:user_id],
-                user_name: user[:user_name],
-                cum_points: user[:cum_points]
-              }
-            end
+    def map_cumulative_point(row)
+      {
+        match_id: row['match_id'],
+        match: row['match_desc'],
+        user_id: row['user_id'],
+        user_name: row['user_name'],
+        cum_points: row['cum_points']
+      }
     end
 
     def cumulative_points_query
