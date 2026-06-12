@@ -2,7 +2,7 @@ require "test_helpers"
 
 class EditUserServiceTest < Minitest::Test
   def test_updates_username_password_and_email
-    repository, service = build_service
+    repository, hasher, service = build_service
 
     result = call_service(
       service,
@@ -19,12 +19,14 @@ class EditUserServiceTest < Minitest::Test
       email: 'new@email.com'
     )
     assert_equal update_all_calls, repository.calls
+    assert_equal [[:matches, 'a', 'a'], [:hash, 'new-password']], hasher.calls
   end
 
   def test_rejects_invalid_fields_and_current_password
-    repository, service = build_service(
+    repository, hasher, service = build_service(
       username_exists: true,
-      email_exists: true
+      email_exists: true,
+      matches: false
     )
 
     result = call_service(
@@ -35,19 +37,11 @@ class EditUserServiceTest < Minitest::Test
       password: 'one',
       password_confirmation: 'two'
     )
-
-    assert_failure(
-      result,
-      'That username already exists. Please choose a different username. ' \
-      'The passwords do not match. ' \
-      'That email address already exists. ' \
-      'That is not the correct current password. Try again!'
-    )
-    assert_equal expected_validation_calls, repository.calls
+    assert_total_failure(result, message, repository, hasher)
   end
 
   def test_rejects_blank_username_and_email
-    _, service = build_service
+    _, _, service = build_service
 
     result = call_service(service, user_name: ' ', email: ' ')
 
@@ -59,7 +53,7 @@ class EditUserServiceTest < Minitest::Test
   end
 
   def test_rejects_invalid_email
-    _, service = build_service
+    _, _, service = build_service
 
     result = call_service(service, email: 'invalid')
 
@@ -67,7 +61,7 @@ class EditUserServiceTest < Minitest::Test
   end
 
   def test_rejects_when_nothing_changed
-    repository, service = build_service
+    repository, _, service = build_service
 
     result = call_service(service)
 
@@ -76,7 +70,7 @@ class EditUserServiceTest < Minitest::Test
   end
 
   def test_treats_current_password_as_unchanged_new_password
-    _, service = build_service
+    _, _, service = build_service
 
     result = call_service(
       service,
@@ -95,18 +89,22 @@ class EditUserServiceTest < Minitest::Test
       [:username_exists?, 'joe', 11],
       [:email_exists?, 'new@email.com', 11],
       [:change_username, 11, 'joe'],
-      [:change_password, 11, 'new-password'],
-      [:change_email, 11, 'new@email.com']
+      [:change_email, 11, 'new@email.com'],
+      [:change_password, 11, 'scrambled']
     ]
   end
 
-  def build_service(username_exists: false, email_exists: false)
+  def build_service(username_exists: false, email_exists: false, digest: 'a',
+                    matches: true)
     repository = FakeUserRepository.new(
       username_exists:,
-      email_exists:
+      email_exists:,
+      digest:
     )
-    service = Services::Accounts::EditUser.new(user_repository: repository)
-    return repository, service
+    hasher = FakeHasher.new(matches:)
+    service = Services::Accounts::EditUser.new(user_repository: repository,
+                                               hasher:)
+    return repository, hasher, service
   end
 
   def call_service(service, overrides = {})
@@ -146,12 +144,25 @@ class EditUserServiceTest < Minitest::Test
     assert_nil result.email
   end
 
+  def assert_total_failure(result, _message, repository, hasher)
+    assert_failure(
+      result,
+      'That username already exists. Please choose a different username. ' \
+      'The passwords do not match. ' \
+      'That email address already exists. ' \
+      'That is not the correct current password. Try again!'
+    )
+    assert_equal expected_validation_calls, repository.calls
+    assert_equal [[:matches, 'wrong', 'a']], hasher.calls
+  end
+
   class FakeUserRepository
     attr_reader :calls
 
-    def initialize(username_exists: false, email_exists: false)
+    def initialize(username_exists:, email_exists:, digest:)
       @username_exists = username_exists
       @email_exists = email_exists
+      @digest = digest
       @calls = []
     end
 
@@ -160,7 +171,7 @@ class EditUserServiceTest < Minitest::Test
       {
         user_name: 'Clare Mac',
         email: 'clare@macadie.co.uk',
-        pword: BCrypt::Password.create('a').to_s
+        pword: @digest
       }
     end
 
@@ -184,6 +195,25 @@ class EditUserServiceTest < Minitest::Test
 
     def change_email(user_id, email)
       calls << [:change_email, user_id, email]
+    end
+  end
+
+  class FakeHasher
+    attr_reader :calls
+
+    def initialize(matches:)
+      @calls = []
+      @matches = matches
+    end
+
+    def matches?(password, digest)
+      calls << [:matches, password, digest]
+      @matches
+    end
+
+    def hash(password)
+      calls << [:hash, password]
+      'scrambled'
     end
   end
 end

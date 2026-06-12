@@ -13,8 +13,9 @@ module Services
         end
       end
 
-      def initialize(user_repository:)
+      def initialize(user_repository:, hasher:)
         @user_repository = user_repository
+        @hasher = hasher
       end
 
       def call(user_id:, current_password:, details:)
@@ -84,8 +85,7 @@ module Services
       end
 
       def credentials_error(current, current_password)
-        password = BCrypt::Password.new(current[:pword])
-        return if password == current_password
+        return if @hasher.matches?(current_password, current[:pword])
 
         'That is not the correct current password. Try again!'
       end
@@ -114,10 +114,11 @@ module Services
       def apply_changes(user_id, details, changes)
         @user_repository.change_username(user_id, details[:user_name]) if
           changes.include?('username')
-        @user_repository.change_password(user_id, details[:password]) if
-          changes.include?('password')
         @user_repository.change_email(user_id, details[:email]) if
           changes.include?('email')
+        return unless changes.include?('password')
+        digest = @hasher.hash(details[:password])
+        @user_repository.change_password(user_id, digest)
       end
 
       def success(details, changes)

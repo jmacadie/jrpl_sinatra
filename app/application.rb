@@ -10,7 +10,7 @@ require 'tilt/erubi'
 require 'yaml'
 
 folders = ["configuration", "controllers", "helpers", "models", "policies",
-           "presenters", "renderers", "repositories", "services"]
+           "presenters", "renderers", "repositories", "security", "services"]
 folders.each do |folder|
   Dir["#{File.expand_path(__dir__)}/#{folder}/**/*.rb"].each do |file|
     require file
@@ -22,7 +22,7 @@ class App < Sinatra::Application
   LOCKDOWN_BUFFER = 30 * 60 # 30 minutes
 
   helpers Loginable
-  helpers LoginCookies
+  helpers LoginRememberMe
   helpers ViewHelpers
 
   configure do

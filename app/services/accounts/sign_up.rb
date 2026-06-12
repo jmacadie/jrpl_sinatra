@@ -21,8 +21,9 @@ module Services
         end
       end
 
-      def initialize(user_repository:)
+      def initialize(user_repository:, hasher:)
         @user_repository = user_repository
+        @hasher = hasher
       end
 
       def call(details:)
@@ -30,10 +31,11 @@ module Services
         errors = validation_errors(details)
         return failure(errors.join(' ')) unless errors.empty?
 
+        password_digest = @hasher.hash(details[:password])
         user = @user_repository.create_user(
           user_name: details[:user_name],
           email: details[:email],
-          password: details[:password]
+          password_digest:
         )
         success(user)
       end

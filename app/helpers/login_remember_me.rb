@@ -1,8 +1,8 @@
-module LoginCookies
+module LoginRememberMe
   def implement_cookies
     set_series_id_cookie()
     set_token_cookie()
-    settings.cookie_repository.save_new_cookie(
+    settings.remember_me_service.save_new(
       session[:user_id],
       cookies[:series_id],
       cookies[:token]
@@ -10,12 +10,12 @@ module LoginCookies
   end
 
   def clear_cookies
-    settings.cookie_repository.delete_cookie_data(cookies[:series_id])
+    settings.remember_me_repository.delete_cookie_data(cookies[:series_id])
     delete_login_cookies
   end
 
   def signin_with_cookie?
-    result = settings.remember_me_login_service.call(
+    result = settings.remember_me_service.call(
       series_id: cookies[:series_id],
       token: cookies[:token]
     )
@@ -56,7 +56,7 @@ module LoginCookies
 
   def unique_random_string
     random_string = SecureRandom.hex(32)
-    current_series = settings.cookie_repository.series_id_list
+    current_series = settings.remember_me_repository.series_id_list
     while current_series.include?(random_string)
       random_string = SecureRandom.hex(32)
     end

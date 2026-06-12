@@ -1,16 +1,16 @@
 require "test_helpers"
 
-class CookieRepositoryTest < Minitest::Test
+class RememberMeRepositoryTest < Minitest::Test
   def test_saves_hashed_cookie_token
     query_runner = FakeQueryRunner.new
-    repository = Repositories::Cookie.new(query_runner:)
+    repository = Repositories::RememberMe.new(query_runner:)
 
-    repository.save_new_cookie(4, 'series', 'plain-token')
+    repository.save_new_cookie(4, 'series', 'hashed-token')
 
     _, user_id, series_id, token, timestamp = query_runner.calls.first
     assert_equal 4, user_id
     assert_equal 'series', series_id
-    assert BCrypt::Password.new(token) == 'plain-token'
+    assert token == 'hashed-token'
     assert_instance_of Time, timestamp
   end
 
@@ -19,7 +19,7 @@ class CookieRepositoryTest < Minitest::Test
       [{ 'user_id' => '4', 'token' => 'hashed-token' }]
     )
     query_runner = FakeQueryRunner.new(results: [result])
-    repository = Repositories::Cookie.new(query_runner:)
+    repository = Repositories::RememberMe.new(query_runner:)
 
     assert_equal(
       { user_id: 4, token: 'hashed-token' },
@@ -29,7 +29,7 @@ class CookieRepositoryTest < Minitest::Test
 
   def test_returns_nil_for_unknown_series
     query_runner = FakeQueryRunner.new(results: [FakeResult.new])
-    repository = Repositories::Cookie.new(query_runner:)
+    repository = Repositories::RememberMe.new(query_runner:)
 
     assert_nil repository.user_from_series('missing')
   end

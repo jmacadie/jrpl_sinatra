@@ -3,7 +3,9 @@ require "test_helpers"
 class SignUpServiceTest < Minitest::Test
   def test_creates_user_and_returns_session_data
     repository = FakeUserRepository.new
-    service = Services::Accounts::SignUp.new(user_repository: repository)
+    hasher = FakeHasher.new
+    service = Services::Accounts::SignUp.new(user_repository: repository,
+                                             hasher:)
 
     result = call_service(
       service,
@@ -14,13 +16,7 @@ class SignUpServiceTest < Minitest::Test
       bot_check: ' JrPl '
     )
 
-    assert_predicate result, :success?
-    assert_equal 'Your account has been created.', result.message
-    assert_equal 35, result.user_id
-    assert_equal 'joe', result.user_name
-    assert_equal 'joe@example.com', result.email
-    assert_nil result.roles
-    assert_equal successful_calls, repository.calls
+    assert_success(result, repository, hasher)
   end
 
   def test_rejects_duplicate_username_and_email
@@ -28,7 +24,9 @@ class SignUpServiceTest < Minitest::Test
       username_taken: true,
       email_taken: true
     )
-    service = Services::Accounts::SignUp.new(user_repository: repository)
+    hasher = FakeHasher.new
+    service = Services::Accounts::SignUp.new(user_repository: repository,
+                                             hasher:)
 
     result = call_service(service)
 
@@ -42,7 +40,9 @@ class SignUpServiceTest < Minitest::Test
 
   def test_rejects_blank_username_password_and_email
     repository = FakeUserRepository.new
-    service = Services::Accounts::SignUp.new(user_repository: repository)
+    hasher = FakeHasher.new
+    service = Services::Accounts::SignUp.new(user_repository: repository,
+                                             hasher:)
 
     result = call_service(
       service,
@@ -62,7 +62,9 @@ class SignUpServiceTest < Minitest::Test
 
   def test_rejects_mismatched_password_and_invalid_email
     repository = FakeUserRepository.new
-    service = Services::Accounts::SignUp.new(user_repository: repository)
+    hasher = FakeHasher.new
+    service = Services::Accounts::SignUp.new(user_repository: repository,
+                                             hasher:)
 
     result = call_service(
       service,
@@ -78,7 +80,9 @@ class SignUpServiceTest < Minitest::Test
 
   def test_rejects_missing_bot_check
     repository = FakeUserRepository.new
-    service = Services::Accounts::SignUp.new(user_repository: repository)
+    hasher = FakeHasher.new
+    service = Services::Accounts::SignUp.new(user_repository: repository,
+                                             hasher:)
 
     result = call_service(service, bot_check: nil)
 
@@ -87,11 +91,22 @@ class SignUpServiceTest < Minitest::Test
 
   private
 
+  def assert_success(result, repository, hasher)
+    assert_predicate result, :success?
+    assert_equal 'Your account has been created.', result.message
+    assert_equal 35, result.user_id
+    assert_equal 'joe', result.user_name
+    assert_equal 'joe@example.com', result.email
+    assert_nil result.roles
+    assert_equal successful_calls, repository.calls
+    assert_equal [[:hash, 'secret']], hasher.calls
+  end
+
   def successful_calls
     [
       [:username_taken?, 'joe'],
       [:email_taken?, 'joe@example.com'],
-      [:create_user, 'joe', 'joe@example.com', 'secret']
+      [:create_user, 'joe', 'joe@example.com', 'scrambled']
     ]
   end
 
@@ -138,14 +153,27 @@ class SignUpServiceTest < Minitest::Test
       @email_taken
     end
 
-    def create_user(user_name:, email:, password:)
-      calls << [:create_user, user_name, email, password]
+    def create_user(user_name:, email:, password_digest:)
+      calls << [:create_user, user_name, email, password_digest]
       {
         user_id: 35,
         user_name:,
         email:,
         roles: nil
       }
+    end
+  end
+
+  class FakeHasher
+    attr_reader :calls
+
+    def initialize
+      @calls = []
+    end
+
+    def hash(password)
+      calls << [:hash, password]
+      'scrambled'
     end
   end
 end

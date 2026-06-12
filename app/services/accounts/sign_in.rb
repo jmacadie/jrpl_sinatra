@@ -14,14 +14,15 @@ module Services
         end
       end
 
-      def initialize(user_repository:)
+      def initialize(user_repository:, hasher:)
         @user_repository = user_repository
+        @hasher = hasher
       end
 
       def call(login:, password:)
         user = @user_repository.find_sign_in_user(login.strip)
         return failure if user.nil?
-        return failure unless valid_password?(user, password.strip)
+        return failure unless @hasher.matches?(password.strip, user[:pword])
 
         Result.new(
           success: true,
@@ -33,10 +34,6 @@ module Services
       end
 
       private
-
-      def valid_password?(user, password)
-        BCrypt::Password.new(user[:pword]) == password
-      end
 
       def failure
         Result.new(success: false)

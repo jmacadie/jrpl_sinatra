@@ -53,10 +53,9 @@ module Repositories
       @query_runner.run_query(sql, user_name, user_id)
     end
 
-    def change_password(user_id, password)
-      hashed_password = BCrypt::Password.create(password).to_s
+    def change_password(user_id, password_digest)
       sql = 'UPDATE users SET pword = $1::text WHERE user_id = $2::int;'
-      @query_runner.run_query(sql, hashed_password, user_id)
+      @query_runner.run_query(sql, password_digest, user_id)
     end
 
     def change_email(user_id, email)
@@ -96,8 +95,7 @@ module Repositories
       @query_runner.run_query(sql, email).first['exists'] == 't'
     end
 
-    def create_user(user_name:, email:, password:)
-      hashed_password = BCrypt::Password.create(password).to_s
+    def create_user(user_name:, email:, password_digest:)
       sql = <<~SQL
         INSERT INTO users (user_name, email, pword)
         VALUES ($1::text, $2::text, $3::text)
@@ -107,7 +105,7 @@ module Repositories
         sql,
         user_name,
         email,
-        hashed_password
+        password_digest
       ).first
       {
         user_id: row['user_id'].to_i,
@@ -117,14 +115,13 @@ module Repositories
       }
     end
 
-    def reset_password(user_name, password)
-      hashed_password = BCrypt::Password.create(password).to_s
+    def reset_password(user_name, digest)
       sql = <<~SQL
         UPDATE users
         SET pword = $1::text
         WHERE user_name = $2::text;
       SQL
-      @query_runner.run_query(sql, hashed_password, user_name)
+      @query_runner.run_query(sql, digest, user_name)
     end
 
     def user_name(user_id)

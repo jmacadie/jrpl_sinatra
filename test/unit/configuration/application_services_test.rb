@@ -3,7 +3,7 @@ require "test_helpers"
 class ApplicationServicesTest < Minitest::Test
   REPOSITORY_CLASSES = [
     Repositories::QueryRunner,
-    Repositories::Cookie,
+    Repositories::RememberMe,
     Repositories::CumulativePoints,
     Repositories::EmailsSent,
     Repositories::Fixtures,
@@ -16,10 +16,10 @@ class ApplicationServicesTest < Minitest::Test
 
   REGISTERED_COMPONENTS = {
     query_runner: Repositories::QueryRunner,
-    cookie_repository: Repositories::Cookie,
+    remember_me_repository: Repositories::RememberMe,
     user_repository: Repositories::User,
     edit_user_service: Services::Accounts::EditUser,
-    remember_me_login_service: Services::Accounts::RememberMe,
+    remember_me_service: Services::Accounts::RememberMe,
     sign_in_service: Services::Accounts::SignIn,
     sign_up_service: Services::Accounts::SignUp,
     match_broadcaster_service: Services::Admin::Broadcaster,
@@ -41,17 +41,21 @@ class ApplicationServicesTest < Minitest::Test
 
   SERVICE_DEPENDENCIES = {
     Services::Accounts::EditUser => {
-      user_repository: Repositories::User
+      user_repository: Repositories::User,
+      hasher: Security::Hasher
     },
     Services::Accounts::RememberMe => {
-      cookie_repository: Repositories::Cookie,
-      token_generator: Proc
+      remember_me_repository: Repositories::RememberMe,
+      token_generator: Proc,
+      hasher: Security::Hasher
     },
     Services::Accounts::SignIn => {
-      user_repository: Repositories::User
+      user_repository: Repositories::User,
+      hasher: Security::Hasher
     },
     Services::Accounts::SignUp => {
-      user_repository: Repositories::User
+      user_repository: Repositories::User,
+      hasher: Security::Hasher
     },
     Services::Admin::Broadcaster => {
       match_repository: Repositories::Match
@@ -60,7 +64,8 @@ class ApplicationServicesTest < Minitest::Test
       user_repository: Repositories::User
     },
     Services::Admin::ResetUserPassword => {
-      user_repository: Repositories::User
+      user_repository: Repositories::User,
+      hasher: Security::Hasher
     },
     Services::Admin::Result => {
       match_repository: Repositories::Match,

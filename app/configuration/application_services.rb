@@ -8,6 +8,7 @@ class ApplicationServices
     create_repositories
     register_repositories
     create_template_renderer
+    create_hasher
     register_email_sender
     register_account_services
     register_admin_services
@@ -55,7 +56,7 @@ class ApplicationServices
   end
 
   def create_repositories
-    @cookie_repository = create_repository(Repositories::Cookie)
+    @remember_me_repository = create_repository(Repositories::RememberMe)
     @cumulative_points_repository = create_repository(
       Repositories::CumulativePoints
     )
@@ -75,12 +76,16 @@ class ApplicationServices
   end
 
   def register_repositories
-    @app.set :cookie_repository, @cookie_repository
+    @app.set :remember_me_repository, @remember_me_repository
     @app.set :user_repository, @user_repository
   end
 
   def create_template_renderer
     @template_renderer = Renderers::SinatraTemplate.new(app: @app.new!)
+  end
+
+  def create_hasher
+    @hasher = Security::Hasher.new
   end
 
   def register_email_sender
@@ -205,32 +210,37 @@ class ApplicationServices
       user_repository: @user_repository
     )
     @app.set :edit_user_service, Services::Accounts::EditUser.new(
-      user_repository: @user_repository
+      user_repository: @user_repository,
+      hasher: @hasher
     )
   end
 
   def register_sign_in_service
     @app.set :sign_in_service, Services::Accounts::SignIn.new(
-      user_repository: @user_repository
+      user_repository: @user_repository,
+      hasher: @hasher
     )
   end
 
   def register_remember_me_service
-    @app.set :remember_me_login_service, Services::Accounts::RememberMe.new(
-      cookie_repository: @cookie_repository,
-      token_generator: -> { SecureRandom.hex(32) }
+    @app.set :remember_me_service, Services::Accounts::RememberMe.new(
+      remember_me_repository: @remember_me_repository,
+      token_generator: -> { SecureRandom.hex(33) },
+      hasher: @hasher
     )
   end
 
   def register_sign_up_service
     @app.set :sign_up_service, Services::Accounts::SignUp.new(
-      user_repository: @user_repository
+      user_repository: @user_repository,
+      hasher: @hasher
     )
   end
 
   def register_reset_user_password_service
     @app.set :reset_user_password_service, Services::Admin::ResetUserPassword.new(
-      user_repository: @user_repository
+      user_repository: @user_repository,
+      hasher: @hasher
     )
   end
 

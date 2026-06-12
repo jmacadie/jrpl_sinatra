@@ -1,5 +1,5 @@
 module Repositories
-  class Cookie
+  class RememberMe
     def initialize(query_runner:)
       @query_runner = query_runner
     end
@@ -14,7 +14,7 @@ module Repositories
       @query_runner.run_query(sql, series_id)
     end
 
-    def save_new_cookie(user_id, series_id, token)
+    def save_new_cookie(user_id, series_id, token_digest)
       sql = <<~SQL
         INSERT INTO remember_me
         VALUES ($1::int, $2::text, $3::text, $4::timestamp);
@@ -23,18 +23,18 @@ module Repositories
         sql,
         user_id,
         series_id,
-        hash(token),
+        token_digest,
         Time.now
       )
     end
 
-    def update_token(series_id, token)
+    def update_token(series_id, token_digest)
       sql = <<~SQL
         UPDATE remember_me
         SET token = $1::text, date_added = $2::timestamp
         WHERE series_id = $3::text;
       SQL
-      @query_runner.run_query(sql, hash(token), Time.now, series_id)
+      @query_runner.run_query(sql, token_digest, Time.now, series_id)
     end
 
     def series_id_list
@@ -55,12 +55,6 @@ module Repositories
 
       row = result.first
       { user_id: row['user_id'].to_i, token: row['token'] }
-    end
-
-    private
-
-    def hash(token)
-      BCrypt::Password.create(token).to_s
     end
   end
 end
