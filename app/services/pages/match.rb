@@ -58,6 +58,7 @@ module Services
                               .map do |prediction|
           {
             name: prediction[:user],
+            user_id: prediction[:user_id],
             home: prediction[:home_prediction],
             away: prediction[:away_prediction]
           }

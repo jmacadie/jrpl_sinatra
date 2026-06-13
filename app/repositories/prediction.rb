@@ -67,9 +67,11 @@ module Repositories
       str&.to_i
     end
 
+    # rubocop: disable Metrics/AbcSize
     def map_results(result)
       result.map do |row|
         { user: row['user_name'],
+          user_id: row['user_id'].to_i,
           home_name: row['home_team_name'],
           home_tournament_role: row['home_tournament_role'],
           away_name: row['away_team_name'],
@@ -81,6 +83,7 @@ module Repositories
           total_points: convert_str_to_int(row['total_points']) }
       end
     end
+    # rubocop: enable Metrics/AbcSize
 
     def match_predictions_query
       <<~SQL
@@ -122,6 +125,7 @@ module Repositories
 
       SELECT
         u.user_name,
+        u.user_id,
         mpr.home_team_points,
         mpr.away_team_points,
         mpr.home_team_name,

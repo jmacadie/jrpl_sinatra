@@ -25,6 +25,12 @@ function buildMatchGraphData(payload) {
     : null;
   const l = predictions.length;
 
+  const predictionSeriesByUserId = new Map();
+
+  predictions.forEach(function(prediction, index) {
+    predictionSeriesByUserId.set(String(prediction.user_id), index);
+  });
+
   data.addColumn('number');
   predictions.forEach(function(prediction) {
     data.addColumn('number', prediction.name);
@@ -82,14 +88,14 @@ function buildMatchGraphData(payload) {
     data.setCell(l + 1, l + 2, '');
   }
 
-  return { data: data, maxScale: maxScore };
+  return { data: data, maxScale: maxScore, seriesLookup: predictionSeriesByUserId };
 }
 
-function getSeries() {
+function getSeries(seriesLookup) {
   let series = [];
   let max = 0;
   document.querySelectorAll('#collapseUsers [type=checkbox]').forEach(function(checkbox) {
-    const index = Number(checkbox.value) - 1;
+    const index = seriesLookup.get(checkbox.value);
     max = (index > max) ? index : max;
     if (checkbox.checked) {
       series[index] = { visibleInLegend: true, pointSize: 6 };
@@ -113,7 +119,7 @@ function getSeries() {
   return series;
 }
 
-function drawChart(dataTable, scale, id) {
+function drawChart(dataTable, scale, id, seriesLookup) {
   let h = window.innerHeight;
   let w = window.innerWidth;
 
@@ -153,7 +159,7 @@ function drawChart(dataTable, scale, id) {
       minValue: 0
     },
     crosshair: { trigger: 'both', orientation: 'both' },
-    series: getSeries()
+    series: getSeries(seriesLookup)
   };
 
   const chart = new google.visualization.LineChart(document.getElementById(id));
@@ -165,7 +171,7 @@ function draw() {
     return;
   }
   const chartData = buildMatchGraphData(matchGraphPayload);
-  drawChart(chartData.data, chartData.maxScale, 'chartMatch');
+  drawChart(chartData.data, chartData.maxScale, 'chartMatch', chartData.seriesLookup);
 }
 
 function loadMatchGraphData() {
