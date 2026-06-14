@@ -1,4 +1,4 @@
-let matchGraphPayload = null;
+let chartData = null;
 
 function getMatchGraphUrl() {
   const root = document.getElementById('chartMatch');
@@ -20,13 +20,13 @@ function haveResult(payload) {
 function buildMatchGraphData(payload) {
   let data = new google.visualization.DataTable();
   const predictions = payload.predictions || [];
-  const result = haveResult(payload)
+  const isResult = haveResult(payload)
+  const result = isResult
     ? { home: payload.match.home_score, away: payload.match.away_score }
     : null;
   const l = predictions.length;
 
   const predictionSeriesByUserId = new Map();
-
   predictions.forEach(function(prediction, index) {
     predictionSeriesByUserId.set(String(prediction.user_id), index);
   });
@@ -35,7 +35,7 @@ function buildMatchGraphData(payload) {
   predictions.forEach(function(prediction) {
     data.addColumn('number', prediction.name);
   });
-  if (result) {
+  if (isResult) {
     data.addColumn('number', 'Result');
   }
   data.addColumn('number', 'Win Line');
@@ -46,7 +46,7 @@ function buildMatchGraphData(payload) {
     data.addRow();
     data.setCell(index, 0, prediction.home);
     data.setCell(index, index + 1, prediction.away);
-    if (result) {
+    if (isResult) {
       data.setCell(index, l + 3, prediction.name);
     } else {
       data.setCell(index, l + 2, prediction.name);
@@ -55,47 +55,42 @@ function buildMatchGraphData(payload) {
     maxScore = (prediction.away > maxScore) ? prediction.away : maxScore;
   });
 
-  if (result) {
-    maxScore = (result.home > maxScore) ? result.home : maxScore;
-    maxScore = (result.away > maxScore) ? result.away : maxScore;
-  }
-
-  maxScore = roundUpToFive(maxScore);
-
-  if (result) {
+  if (isResult) {
     data.addRow();
     data.setCell(l, 0, result.home);
     data.setCell(l, l + 1, result.away);
     data.setCell(l, l + 3, 'Result');
-  }
 
+    maxScore = (result.home > maxScore) ? result.home : maxScore;
+    maxScore = (result.away > maxScore) ? result.away : maxScore;
+  }
+  const maxScale = roundUpToFive(maxScore);
+
+  const winOffset = isResult ? l + 1 : l;
   data.addRow();
-  if (result) {
-    data.setCell(l + 1, 0, 0);
-    data.setCell(l + 1, l + 2, 0);
-    data.setCell(l + 1, l + 3, '');
-    data.addRow();
-    data.setCell(l + 2, 0, maxScore);
-    data.setCell(l + 2, l + 2, maxScore);
-    data.setCell(l + 2, l + 3, '');
-  } else {
-    data.setCell(l, 0, 0);
-    data.setCell(l, l + 1, 0);
-    data.setCell(l, l + 2, '');
-    data.addRow();
-    data.setCell(l + 1, 0, maxScore);
-    data.setCell(l + 1, l + 1, maxScore);
-    data.setCell(l + 1, l + 2, '');
-  }
+  data.setCell(winOffset, 0, 0);
+  data.setCell(winOffset, winOffset + 1, 0);
+  data.setCell(winOffset, winOffset + 2, '');
+  data.addRow();
+  data.setCell(winOffset + 1, 0, maxScale);
+  data.setCell(winOffset + 1, winOffset + 1, maxScale);
+  data.setCell(winOffset + 1, winOffset + 2, '');
 
-  return { data: data, maxScale: maxScore, seriesLookup: predictionSeriesByUserId };
+  chartData = {
+    data: data,
+    homeName: payload.match.home_name,
+    awayName: payload.match.away_name,
+    haveResult: isResult,
+    maxScale: maxScale,
+    seriesLookup: predictionSeriesByUserId
+  };
 }
 
-function getSeries(seriesLookup) {
+function getSeries() {
   let series = [];
   let max = 0;
   document.querySelectorAll('#collapseUsers [type=checkbox]').forEach(function(checkbox) {
-    const index = seriesLookup.get(checkbox.value);
+    const index = chartData.seriesLookup.get(checkbox.value);
     max = (index > max) ? index : max;
     if (checkbox.checked) {
       series[index] = { visibleInLegend: true, pointSize: 6 };
@@ -104,7 +99,7 @@ function getSeries(seriesLookup) {
     }
   });
 
-  if (haveResult(matchGraphPayload)) {
+  if (chartData.haveResult) {
     series[max + 1] = {
       color: '#bd162d',
       visibleInLegend: true,
@@ -119,7 +114,12 @@ function getSeries(seriesLookup) {
   return series;
 }
 
-function drawChart(dataTable, scale, id, seriesLookup) {
+function drawChart() {
+  if (!chartData) {
+    return;
+  }
+  const scale = chartData.maxScale;
+
   let h = window.innerHeight;
   let w = window.innerWidth;
 
@@ -139,7 +139,7 @@ function drawChart(dataTable, scale, id, seriesLookup) {
     pointSize: 4,
     legend: { position: 'top' },
     hAxis: {
-      title: matchGraphPayload.match.home_name,
+      title: chartData.homeName,
       textPosition: 'out',
       baselineColor: 'transparent',
       gridlines: { color: '#f4f4f4', interval: [1, 5] },
@@ -149,7 +149,7 @@ function drawChart(dataTable, scale, id, seriesLookup) {
       minValue: 0
     },
     vAxis: {
-      title: matchGraphPayload.match.away_name,
+      title: chartData.awayName,
       textPosition: 'out',
       baselineColor: 'transparent',
       gridlines: { color: '#f4f4f4', interval: [1, 5] },
@@ -159,19 +159,11 @@ function drawChart(dataTable, scale, id, seriesLookup) {
       minValue: 0
     },
     crosshair: { trigger: 'both', orientation: 'both' },
-    series: getSeries(seriesLookup)
+    series: getSeries()
   };
 
-  const chart = new google.visualization.LineChart(document.getElementById(id));
-  chart.draw(dataTable, options);
-}
-
-function draw() {
-  if (!matchGraphPayload) {
-    return;
-  }
-  const chartData = buildMatchGraphData(matchGraphPayload);
-  drawChart(chartData.data, chartData.maxScale, 'chartMatch', chartData.seriesLookup);
+  const chart = new google.visualization.LineChart(document.getElementById('chartMatch'));
+  chart.draw(chartData.data, options);
 }
 
 function loadMatchGraphData() {
@@ -188,8 +180,8 @@ function loadMatchGraphData() {
       return response.json();
     })
     .then(function(payload) {
-      matchGraphPayload = payload;
-      draw();
+      buildMatchGraphData(payload);
+      drawChart();
     })
     .catch(function(error) {
       showAlertMessage(error, 'danger');
@@ -203,7 +195,7 @@ function addMatchGraphListeners() {
       clearTimeout(resizeTimer);
     }
     resizeTimer = setTimeout(function() {
-      draw();
+      drawChart();
     }, 500);
   });
 
@@ -211,7 +203,7 @@ function addMatchGraphListeners() {
   if (usersPanel) {
     usersPanel.querySelectorAll('[type=checkbox]').forEach(function(checkbox) {
       checkbox.addEventListener('click', function() {
-        draw();
+        drawChart();
       });
     });
   }
