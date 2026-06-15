@@ -3,9 +3,9 @@ module LoginRememberMe
     set_series_id_cookie()
     set_token_cookie()
     settings.remember_me_service.save_new(
-      session[:user_id],
-      cookies[:series_id],
-      cookies[:token]
+      user_id: session[:user_id],
+      series_id: cookies[:series_id],
+      token: cookies[:token]
     )
   end
 
