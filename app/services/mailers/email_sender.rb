@@ -23,6 +23,7 @@ module Services
       end
 
       def send_email(subject: '', body: '', to: nil, plain_text: false)
+        return if @environment == 'staging'
         transport = transport_options
         to = get_to(to)
         body = replace_urls(body)
