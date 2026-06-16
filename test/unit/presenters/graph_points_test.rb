@@ -1,10 +1,10 @@
 require 'test_helpers'
 
-class CumulativePointsPresenterTest < Minitest::Test
+class GraphPointsPresenterTest < Minitest::Test
   def test_handles_empty_input
-    points = Presenters::CumulativePoints.new([]).grouped_points
+    points = Presenters::GraphPoints.new(points: []).call
 
-    assert_empty points
+    assert_equal(empty_result, points)
   end
 
   def test_groups_one_match
@@ -21,7 +21,9 @@ class CumulativePointsPresenterTest < Minitest::Test
         users: [{
           user_id: 11,
           user_name: 'Maccas',
-          cum_points: 3
+          cum_points: 3,
+          rel_points: 0,
+          rank: 1
         }]
       }],
       points
@@ -31,10 +33,7 @@ class CumulativePointsPresenterTest < Minitest::Test
   def test_groups_multiple_matches_and_users
     points = present(multiple_point_rows)
 
-    assert_equal(
-      multiple_points_summary,
-      points_summary(points)
-    )
+    assert_equal(multiple_results, points)
   end
 
   def test_preserves_match_and_user_ordering
@@ -59,25 +58,85 @@ class CumulativePointsPresenterTest < Minitest::Test
     ]
     points = present(rows)
 
-    assert_equal(
-      [{
-        match_id: 0,
-        match: nil,
-        users: [{
-          user_id: 0,
-          user_name: nil,
-          cum_points: 0
-        }]
-      }],
-      points
-    )
+    assert_equal(nil_result, points)
   end
 
   private
 
-  def present(rows)
-    Presenters::CumulativePoints.new(rows).grouped_points
+  def present(points)
+    Presenters::GraphPoints.new(points:).call
   end
+
+  def empty_result
+    [{
+      match: "None",
+      users: [{
+        user_name: "None",
+        cum_points: 0,
+        rel_points: 0,
+        rank: 1
+      }]
+    }]
+  end
+
+  def nil_result
+    [{
+      match_id: 0,
+      match: nil,
+      users: [{
+        user_id: 0,
+        user_name: nil,
+        cum_points: 0,
+        rel_points: 0,
+        rank: 1
+      }]
+    }]
+  end
+
+  # rubocop: disable Metrics/MethodLength
+  def multiple_results
+    [{
+      match_id: 1,
+      match: 'Germany vs Scotland',
+      users: [
+        {
+          user_id: 11,
+          user_name: 'Maccas',
+          cum_points: 1,
+          rel_points: 2,
+          rank: 2
+        },
+        {
+          user_id: 12,
+          user_name: 'Clare Mac',
+          cum_points: 3,
+          rel_points: 0,
+          rank: 1
+        }
+      ]
+    },
+     {
+       match_id: 2,
+       match: 'Hungary vs Switzerland',
+       users: [
+         {
+           user_id: 11,
+           user_name: 'Maccas',
+           cum_points: 4,
+           rel_points: 0,
+           rank: 1
+         },
+         {
+           user_id: 12,
+           user_name: 'Clare Mac',
+           cum_points: 3,
+           rel_points: 1,
+           rank: 2
+         }
+       ]
+     }]
+  end
+  # rubocop: enable Metrics/MethodLength
 
   def point_row(attributes)
     {
@@ -96,27 +155,9 @@ class CumulativePointsPresenterTest < Minitest::Test
       point_row(match_id: '1', match: 'Germany vs Scotland',
                 user_id: '12', user_name: 'Clare Mac', cum_points: '3'),
       point_row(match_id: '2', match: 'Hungary vs Switzerland',
-                user_id: '11', user_name: 'Maccas', cum_points: '2')
-    ]
-  end
-
-  def multiple_points_summary
-    [
-      ['Germany vs Scotland', 'Hungary vs Switzerland'],
-      ['Maccas', 'Clare Mac'],
-      ['Maccas'],
-      [1, 3],
-      [2]
-    ]
-  end
-
-  def points_summary(points)
-    [
-      match_names(points),
-      user_names(points[0]),
-      user_names(points[1]),
-      cumulative_points(points[0]),
-      cumulative_points(points[1])
+                user_id: '11', user_name: 'Maccas', cum_points: '4'),
+      point_row(match_id: '2', match: 'Hungary vs Switzerland',
+                user_id: '12', user_name: 'Clare Mac', cum_points: '3')
     ]
   end
 
@@ -126,9 +167,5 @@ class CumulativePointsPresenterTest < Minitest::Test
 
   def user_names(point)
     point[:users].map { |user| user[:user_name] }
-  end
-
-  def cumulative_points(point)
-    point[:users].map { |user| user[:cum_points] }
   end
 end
