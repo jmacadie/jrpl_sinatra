@@ -19,7 +19,7 @@
       <div class="accordion-body">
         <% while !users.empty? %>
           <%== erb :'graphs/pick_user_row',
-                   locals: { users: users.shift(3), current_user_id: } %>
+                   locals: { users: users.shift(4), current_user_id: } %>
         <% end %>
       </div>
     </div>

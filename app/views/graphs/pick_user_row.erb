@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row row-cols-2 row-cols-sm-4">
   <% (0..(users.size-1)).each do |i| %>
   <%== erb :'graphs/pick_user',
            locals: { user: users[i], current_user_id: } %>
