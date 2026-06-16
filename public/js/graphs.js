@@ -64,17 +64,9 @@ function buildPointsData(kind) {
 }
 
 function drawChart(dataTable, id, rev) {
-  let h = window.innerHeight;
-  let w = window.innerWidth;
-
-  w = Math.min(w, 700);
-  h -= 90;
-  w -= 30;
-  if ((h / 5 * 9) > w) {
-    h = w / 9 * 5;
-  } else {
-    w = h / 5 * 9;
-  }
+  const container = document.getElementById('graphsApp');
+  const w = container.offsetWidth;
+  const h = w / 9 * 5;
 
   const options = {
     chartArea: { width: '100%', height: '100%' },

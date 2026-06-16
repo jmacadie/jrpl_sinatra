@@ -120,17 +120,9 @@ function drawChart() {
   }
   const scale = chartData.maxScale;
 
-  let h = window.innerHeight;
-  let w = window.innerWidth;
-
-  w = Math.min(w, 700);
-  h -= 90;
-  w -= 30;
-  if (h > w) {
-    h = w;
-  } else {
-    w = h;
-  }
+  const container = document.getElementById('chartMatch');
+  const w = container.offsetWidth;
+  const h = w;
 
   const options = {
     height: h,
