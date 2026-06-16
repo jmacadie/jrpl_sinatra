@@ -13,7 +13,7 @@ module Services
 
       def call
         @match_repository.no_predictions_email_sent_matches.each do |match|
-          process_match(match) if @lockdown_policy.locked_down?(match)
+          process_match(match) if @lockdown_policy.locked_down?(match:)
         end
       end
 
@@ -21,8 +21,8 @@ module Services
 
       def process_match(match)
         match_id = match[:match_id]
-        @mr_men_service.call(match_id)
-        @predictions_mailer.call(match_id)
+        @mr_men_service.call(match_id:)
+        @predictions_mailer.call(match_id:)
       end
     end
   end

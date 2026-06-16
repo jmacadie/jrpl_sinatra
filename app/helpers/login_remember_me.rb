@@ -10,7 +10,9 @@ module LoginRememberMe
   end
 
   def clear_cookies
-    settings.remember_me_repository.delete_cookie_data(cookies[:series_id])
+    settings.remember_me_repository.delete_cookie_data(
+      series_id: cookies[:series_id]
+    )
     delete_login_cookies
   end
 

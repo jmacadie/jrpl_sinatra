@@ -4,7 +4,7 @@ module Repositories
       @query_runner = query_runner
     end
 
-    def add_points(pred_id, scoring_system_id, result_pts, score_pts)
+    def add_points(pred_id:, scoring_system_id:, result_pts:, score_pts:)
       delete_existing_points_entry(pred_id, scoring_system_id)
       @query_runner.run_query(
         insert_into_points_table_query,
@@ -16,7 +16,7 @@ module Repositories
       )
     end
 
-    def load_scoreboard_data(scoring_system)
+    def load_scoreboard_data(scoring_system:)
       scoring_system_id = id_for_scoring_system(scoring_system)
       overall_table = load_one_scoreboard_data(scoring_system_id, :all)
       group_table = load_one_scoreboard_data(scoring_system_id, :group)

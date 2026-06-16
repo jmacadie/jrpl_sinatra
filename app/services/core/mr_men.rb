@@ -5,8 +5,8 @@ module Services
         @prediction_repository = prediction_repository
       end
 
-      def call(match_id)
-        predictions = @prediction_repository.get_predictions_results(match_id)
+      def call(match_id:)
+        predictions = @prediction_repository.get_predictions_results(match_id:)
         scores = prediction_scores(predictions)
         add_prediction(1, match_id, mean(scores[:home]), mean(scores[:away]))
         add_prediction(2, match_id,
@@ -30,10 +30,10 @@ module Services
 
       def add_prediction(user_id, match_id, home_score, away_score)
         @prediction_repository.add_prediction(
-          user_id,
-          match_id,
-          home_score,
-          away_score
+          user_id:,
+          match_id:,
+          home_score:,
+          away_score:
         )
       end
 

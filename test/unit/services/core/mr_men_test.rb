@@ -12,7 +12,7 @@ class MrMenServiceTest < Minitest::Test
     )
     service = Services::Core::MrMen.new(prediction_repository: repository)
 
-    service.call(7)
+    service.call(match_id: 7)
 
     assert_equal [
       [:get_predictions_results, 7],
@@ -26,7 +26,7 @@ class MrMenServiceTest < Minitest::Test
     repository = FakePredictionRepository.new(predictions: [])
     service = Services::Core::MrMen.new(prediction_repository: repository)
 
-    service.call(8)
+    service.call(match_id: 8)
 
     assert_equal [
       [:get_predictions_results, 8],
@@ -44,12 +44,12 @@ class MrMenServiceTest < Minitest::Test
       @calls = []
     end
 
-    def get_predictions_results(match_id)
+    def get_predictions_results(match_id:)
       calls << [:get_predictions_results, match_id]
       @predictions
     end
 
-    def add_prediction(user_id, match_id, home_score, away_score)
+    def add_prediction(user_id:, match_id:, home_score:, away_score:)
       calls << [
         :add_prediction,
         user_id,

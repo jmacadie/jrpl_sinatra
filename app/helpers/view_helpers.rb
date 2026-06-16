@@ -1,10 +1,10 @@
 module ViewHelpers
   def home_name(match)
-    Presenters::MatchTeams.new(match).home_name
+    Presenters::MatchTeams.new(match:).home_name
   end
 
   def away_name(match)
-    Presenters::MatchTeams.new(match).away_name
+    Presenters::MatchTeams.new(match:).away_name
   end
 
   def predicted?(match)

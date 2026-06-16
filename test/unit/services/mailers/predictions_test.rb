@@ -8,7 +8,7 @@ class PredictionsMailerTest < Minitest::Test
     )
     service = build_service(collaborators)
 
-    service.call(match_id)
+    service.call(match_id:)
 
     assert_processed_calls(collaborators)
     assert_rendered_email(collaborators)
@@ -90,7 +90,7 @@ class PredictionsMailerTest < Minitest::Test
       @matches
     end
 
-    def load_match(match_id)
+    def load_match(match_id:)
       calls << [:load_match, match_id]
       match
     end
@@ -103,7 +103,7 @@ class PredictionsMailerTest < Minitest::Test
       @calls = []
     end
 
-    def get_predictions_results(match_id)
+    def get_predictions_results(match_id:)
       calls << [:get_predictions_results, match_id]
       [{ user: 'Maccas' }]
     end
@@ -116,7 +116,7 @@ class PredictionsMailerTest < Minitest::Test
       @calls = []
     end
 
-    def record_predictions_sent(match_id)
+    def record_predictions_sent(match_id:)
       calls << [:record_predictions_sent, match_id]
     end
   end

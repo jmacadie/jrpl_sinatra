@@ -4,27 +4,27 @@ module Repositories
       @query_runner = query_runner
     end
 
-    def add_result(match_id, home_team_points, away_team_points, user_id)
+    def add_result(match_id:, home_score:, away_score:, user_id:)
       sql = update_match_table_query()
       @query_runner.run_query(sql,
-                              home_team_points,
-                              away_team_points,
+                              home_score,
+                              away_score,
                               user_id,
                               Time.now,
                               match_id)
     end
 
-    def load_match(match_id)
-      load_match_with_user(1, match_id)
+    def load_match(match_id:)
+      load_match_with_user(user_id: 1, match_id:)
     end
 
-    def load_match_with_user(user_id, match_id)
+    def load_match_with_user(user_id:, match_id:)
       sql = single_match_query()
       result = @query_runner.run_query(sql, user_id, match_id)
       result.map { |row| row_to_matches_details_hash(row) }.first
     end
 
-    def origin(match_id)
+    def origin(match_id:)
       result = @query_runner.run_query(match_origin_query, match_id)
       result.map { |row| row_to_origin_details_hash(row) }.first
     end
@@ -39,7 +39,7 @@ module Repositories
       end
     end
 
-    def change_broadcaster(match_id, broadcaster_id)
+    def change_broadcaster(match_id:, broadcaster_id:)
       @query_runner.run_query(
         change_broadcaster_query,
         broadcaster_id,

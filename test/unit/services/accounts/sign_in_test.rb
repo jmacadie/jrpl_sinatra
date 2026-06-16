@@ -66,7 +66,7 @@ class SignInServiceTest < Minitest::Test
       @calls = []
     end
 
-    def find_sign_in_user(login)
+    def find_sign_in_user(login:)
       calls << [:find_sign_in_user, login]
       @user
     end
@@ -80,7 +80,7 @@ class SignInServiceTest < Minitest::Test
       @matches = matches
     end
 
-    def matches?(password, digest)
+    def matches?(password:, digest:)
       calls << [:matches, password, digest]
       @matches
     end

@@ -102,16 +102,16 @@ class RememberMeLoginServiceTest < Minitest::Test
       @calls = []
     end
 
-    def user_from_series(series_id)
+    def user_from_series(series_id:)
       calls << [:user_from_series, series_id]
       @user
     end
 
-    def update_token(series_id, token)
-      calls << [:update_token, series_id, token]
+    def update_token(series_id:, token_digest:)
+      calls << [:update_token, series_id, token_digest]
     end
 
-    def delete_cookie_data(series_id)
+    def delete_cookie_data(series_id:)
       calls << [:delete_cookie_data, series_id]
     end
   end
@@ -124,12 +124,12 @@ class RememberMeLoginServiceTest < Minitest::Test
       @matches = matches
     end
 
-    def matches?(password, digest)
+    def matches?(password:, digest:)
       calls << [:matches, password, digest]
       @matches
     end
 
-    def hash(password)
+    def hash(password:)
       calls << [:hash, password]
       'scrambled'
     end

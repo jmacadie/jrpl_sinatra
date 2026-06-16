@@ -61,7 +61,7 @@ class LockdownServiceTest < Minitest::Test
   end
 
   class FakeMatchRepository
-    attr_reader :calls, :match
+    attr_reader :calls
 
     def initialize(matches:)
       @matches = matches
@@ -79,9 +79,9 @@ class LockdownServiceTest < Minitest::Test
       @matches
     end
 
-    def load_match(match_id)
+    def load_match(match_id:)
       calls << [:load_match, match_id]
-      match
+      @match
     end
   end
 
@@ -92,7 +92,7 @@ class LockdownServiceTest < Minitest::Test
       @calls = []
     end
 
-    def call(match_id)
+    def call(match_id:)
       calls << [:call, match_id]
     end
   end
@@ -104,7 +104,7 @@ class LockdownServiceTest < Minitest::Test
       @calls = []
     end
 
-    def call(match_id)
+    def call(match_id:)
       calls << [:call, match_id]
     end
   end
@@ -117,7 +117,7 @@ class LockdownServiceTest < Minitest::Test
       @locked_down = locked_down
     end
 
-    def locked_down?(match)
+    def locked_down?(match:)
       calls << [:locked_down, match[:match_id]]
       @locked_down
     end

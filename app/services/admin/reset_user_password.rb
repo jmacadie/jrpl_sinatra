@@ -11,8 +11,8 @@ module Services
       end
 
       def call(user_name:)
-        digest = @hasher.hash(DEFAULT_PASSWORD)
-        @user_repository.reset_password(user_name, digest)
+        digest = @hasher.hash(password: DEFAULT_PASSWORD)
+        @user_repository.reset_password(user_name:, digest:)
         Result.new(
           message: "The password has been reset to '#{DEFAULT_PASSWORD}' " \
                    "for #{user_name}."

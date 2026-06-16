@@ -89,16 +89,16 @@ class ToggleUserAdminServiceTest < Minitest::Test
       @calls = []
     end
 
-    def admin?(user_id)
+    def admin?(user_id:)
       calls << [:admin?, user_id]
       @admin
     end
 
-    def grant_admin(user_id)
+    def grant_admin(user_id:)
       calls << [:grant_admin, user_id]
     end
 
-    def revoke_admin(user_id)
+    def revoke_admin(user_id:)
       calls << [:revoke_admin, user_id]
     end
   end

@@ -5,7 +5,7 @@ module Policies
       @buffer = buffer
     end
 
-    def locked_down?(match)
+    def locked_down?(match:)
       match[:match_datetime] < @clock.now + @buffer
     end
   end

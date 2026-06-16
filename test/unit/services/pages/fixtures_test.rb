@@ -105,7 +105,7 @@ class FixturesPageServiceTest < Minitest::Test
       @calls = []
     end
 
-    def load_matches(criteria, user_id)
+    def load_matches(criteria:, user_id:)
       calls << [:load_matches, criteria, user_id]
       @matches
     end

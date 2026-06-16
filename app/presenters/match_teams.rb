@@ -1,6 +1,6 @@
 module Presenters
   class MatchTeams
-    def initialize(match)
+    def initialize(match:)
       @match = match
     end
 

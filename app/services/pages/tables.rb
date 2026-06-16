@@ -8,9 +8,11 @@ module Services
       end
 
       def call
-        tables = @point_repository.load_scoreboard_data('Official')
+        tables = @point_repository.load_scoreboard_data(
+          scoring_system: 'Official'
+        )
         Page.new(
-          tables: Presenters::Scoreboard.new(tables).ranked_tables
+          tables: Presenters::Scoreboard.new(tables:).call
         )
       end
     end

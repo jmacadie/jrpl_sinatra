@@ -26,16 +26,19 @@ module Services
       def call(match_id:, home_score:, away_score:, user_id:)
         home_score = home_score.to_f
         away_score = away_score.to_f
-        match = @match_repository.load_match(match_id)
+        match = @match_repository.load_match(match_id:)
         message = match_result_error(match, home_score, away_score)
         return failure(message, home_score, away_score) if message
 
         home_score = home_score.to_i
         away_score = away_score.to_i
 
-        @match_repository.add_result(match_id, home_score, away_score, user_id)
-        @scoreboard_service.update_scoreboard(match_id, home_score, away_score)
-        @result_mailer.send_result_email(match_id)
+        @match_repository.add_result(match_id:,
+                                     home_score:,
+                                     away_score:,
+                                     user_id:)
+        @scoreboard_service.update(match_id:, home_score:, away_score:)
+        @result_mailer.call(match_id:)
 
         Result.new(
           success: true,
@@ -47,7 +50,7 @@ module Services
       private
 
       def match_result_error(match, home_score, away_score)
-        if !@lockdown_policy.locked_down?(match)
+        if !@lockdown_policy.locked_down?(match:)
           return 'You cannot add or change the match result because ' \
                  'this match has not yet been played.'
         end

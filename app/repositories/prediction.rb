@@ -4,14 +4,14 @@ module Repositories
       @query_runner = query_runner
     end
 
-    def get_predictions_results(match_id, scoring_system=1)
+    def get_predictions_results(match_id:, scoring_system: 1)
       result = @query_runner.run_query(match_predictions_query,
                                        match_id,
                                        scoring_system)
       map_results(result)
     end
 
-    def predictions_for_match(match_id)
+    def predictions_for_match(match_id:)
       result = @query_runner.run_query(predictions_for_match_query, match_id)
       result.map do |row|
         { pred_id: row['prediction_id'].to_i,
@@ -20,14 +20,17 @@ module Repositories
       end
     end
 
-    def add_prediction(user_id, match_id, home_team_points, away_team_points)
+    def add_prediction(user_id:,
+                       match_id:,
+                       home_score:,
+                       away_score:)
       delete_prediction(user_id, match_id)
       @query_runner.run_query(
         insert_prediction_query,
         user_id,
         match_id,
-        home_team_points,
-        away_team_points
+        home_score,
+        away_score
       )
     end
 

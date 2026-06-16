@@ -5,7 +5,7 @@ class LockdownPolicyTest < Minitest::Test
     clock, policy = build_policy('2026-06-08 18:43')
     match_datetime = Time.parse('2026-06-08 19:13')
     match = { match_datetime: }
-    locked_down = policy.locked_down?(match)
+    locked_down = policy.locked_down?(match:)
     assert !locked_down
     assert_equal [[:now]], clock.calls
   end
@@ -14,7 +14,7 @@ class LockdownPolicyTest < Minitest::Test
     clock, policy = build_policy('2026-06-08 18:43')
     match_datetime = Time.parse('2026-06-08 19:12')
     match = { match_datetime: }
-    locked_down = policy.locked_down?(match)
+    locked_down = policy.locked_down?(match:)
     assert locked_down
     assert_equal [[:now]], clock.calls
   end

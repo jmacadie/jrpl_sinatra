@@ -9,7 +9,7 @@ module Repositories
       result.map { |row| map_tournament_role(row) }
     end
 
-    def set_team(role_id, team_id)
+    def set_team(role_id:, team_id:)
       sql = <<~SQL
         UPDATE tournament_role
         SET team_id = $2::int
@@ -18,7 +18,7 @@ module Repositories
       @query_runner.run_query(sql, role_id, team_id)
     end
 
-    def reset_team(role_id)
+    def reset_team(role_id:)
       sql = <<~SQL
         UPDATE tournament_role
         SET team_id = NULL
@@ -37,7 +37,7 @@ module Repositories
       result.map { |row| row['max'].to_i }
     end
 
-    def role_name(role_id)
+    def role_name(role_id:)
       sql = <<~SQL
         SELECT name
         FROM tournament_role
@@ -47,7 +47,7 @@ module Repositories
       result.map { |row| row['name'] }.first
     end
 
-    def team_name(team_id)
+    def team_name(team_id:)
       sql = <<~SQL
         SELECT name
         FROM team
@@ -57,7 +57,7 @@ module Repositories
       result.map { |row| row['name'] }.first
     end
 
-    def team_selected_in_stage?(role_id, team_id)
+    def team_selected_in_stage?(role_id:, team_id:)
       sql = <<~SQL
         SELECT EXISTS (
           SELECT 1

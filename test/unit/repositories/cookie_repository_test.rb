@@ -5,7 +5,9 @@ class RememberMeRepositoryTest < Minitest::Test
     query_runner = FakeQueryRunner.new
     repository = Repositories::RememberMe.new(query_runner:)
 
-    repository.save_new_cookie(4, 'series', 'hashed-token')
+    repository.save_new_cookie(user_id: 4,
+                               series_id: 'series',
+                               token_digest: 'hashed-token')
 
     _, user_id, series_id, token, timestamp = query_runner.calls.first
     assert_equal 4, user_id
@@ -23,7 +25,7 @@ class RememberMeRepositoryTest < Minitest::Test
 
     assert_equal(
       { user_id: 4, token: 'hashed-token' },
-      repository.user_from_series('series')
+      repository.user_from_series(series_id: 'series')
     )
   end
 
@@ -31,7 +33,7 @@ class RememberMeRepositoryTest < Minitest::Test
     query_runner = FakeQueryRunner.new(results: [FakeResult.new])
     repository = Repositories::RememberMe.new(query_runner:)
 
-    assert_nil repository.user_from_series('missing')
+    assert_nil repository.user_from_series(series_id: 'missing')
   end
 
   class FakeQueryRunner

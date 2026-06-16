@@ -20,9 +20,11 @@ module Services
       end
 
       def call(login:, password:)
-        user = @user_repository.find_sign_in_user(login.strip)
+        login = login.strip
+        password = password.strip
+        user = @user_repository.find_sign_in_user(login:)
         return failure if user.nil?
-        return failure unless @hasher.matches?(password.strip, user[:pword])
+        return failure unless @hasher.matches?(password:, digest: user[:pword])
 
         Result.new(
           success: true,

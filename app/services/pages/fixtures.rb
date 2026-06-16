@@ -34,7 +34,7 @@ module Services
         submitted = !submitted_params.nil?
         criteria = criteria_from(submitted_params) if submitted
         criteria ||= default_criteria
-        matches = @fixtures_repository.load_matches(criteria, user_id)
+        matches = @fixtures_repository.load_matches(criteria:, user_id:)
         message = warning_message(matches, submitted)
 
         Result.new(

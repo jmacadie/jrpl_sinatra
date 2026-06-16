@@ -10,7 +10,7 @@ class ScoreboardPresenterTest < Minitest::Test
       ]
     )
 
-    ranked = Presenters::Scoreboard.new(tables).ranked_tables
+    ranked = Presenters::Scoreboard.new(tables:).call
 
     assert_equal %w(1 2 3), ranks(ranked[:overall_table])
   end
@@ -26,13 +26,13 @@ class ScoreboardPresenterTest < Minitest::Test
       ]
     )
 
-    ranked = Presenters::Scoreboard.new(tables).ranked_tables
+    ranked = Presenters::Scoreboard.new(tables:).call
 
     assert_equal ['1=', '1=', '3=', '3=', '5'], ranks(ranked[:overall_table])
   end
 
   def test_handles_empty_tables
-    ranked = Presenters::Scoreboard.new(scoreboard_tables).ranked_tables
+    ranked = Presenters::Scoreboard.new(tables: scoreboard_tables).call
 
     assert_empty ranked[:overall_table]
     assert_empty ranked[:group_table]
@@ -54,7 +54,7 @@ class ScoreboardPresenterTest < Minitest::Test
       ]
     )
 
-    ranked = Presenters::Scoreboard.new(tables).ranked_tables
+    ranked = Presenters::Scoreboard.new(tables:).call
 
     assert_equal %w(1 2), ranks(ranked[:overall_table])
     assert_equal ['1=', '1='], ranks(ranked[:group_table])

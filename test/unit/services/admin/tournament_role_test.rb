@@ -116,27 +116,27 @@ class TournamentRoleServiceTest < Minitest::Test
       [24, 54]
     end
 
-    def team_selected_in_stage?(role_id, team_id)
+    def team_selected_in_stage?(role_id:, team_id:)
       calls << [:team_selected_in_stage?, role_id, team_id]
       @selected
     end
 
-    def role_name(role_id)
+    def role_name(role_id:)
       calls << [:role_name, role_id]
       'Winner Group A'
     end
 
-    def team_name(team_id)
+    def team_name(team_id:)
       calls << [:team_name, team_id]
       'Switzerland'
     end
 
-    def set_team(role_id, team_id)
+    def set_team(role_id:, team_id:)
       calls << [:set_team, role_id, team_id]
       raise PG::UniqueViolation if @unique_violation
     end
 
-    def reset_team(role_id)
+    def reset_team(role_id:)
       calls << [:reset_team, role_id]
     end
   end

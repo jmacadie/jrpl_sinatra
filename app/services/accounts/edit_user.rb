@@ -21,7 +21,7 @@ module Services
       def call(user_id:, current_password:, details:)
         current_password = current_password.strip
         details = normalize_details(details)
-        current = @user_repository.load_user_credentials(user_id)
+        current = @user_repository.load_user_credentials(user_id:)
         errors = validation_errors(
           user_id:,
           current:,
@@ -60,7 +60,7 @@ module Services
         if user_name.empty?
           'Username cannot be blank! Please enter a username.'
         elsif user_name != current[:user_name] &&
-              @user_repository.username_exists?(user_name,
+              @user_repository.username_exists?(user_name:,
                                                 except_user_id: user_id)
           'That username already exists. Please choose a different username.'
         end
@@ -79,13 +79,14 @@ module Services
         elsif email !~ URI::MailTo::EMAIL_REGEXP
           'That is not a valid email address.'
         elsif email != current[:email].downcase &&
-              @user_repository.email_exists?(email, except_user_id: user_id)
+              @user_repository.email_exists?(email:, except_user_id: user_id)
           'That email address already exists.'
         end
       end
 
       def credentials_error(current, current_password)
-        return if @hasher.matches?(current_password, current[:pword])
+        return if @hasher.matches?(password: current_password,
+                                   digest: current[:pword])
 
         'That is not the correct current password. Try again!'
       end
@@ -112,13 +113,15 @@ module Services
       end
 
       def apply_changes(user_id, details, changes)
-        @user_repository.change_username(user_id, details[:user_name]) if
-          changes.include?('username')
-        @user_repository.change_email(user_id, details[:email]) if
+        if changes.include?('username')
+          @user_repository.change_username(user_id:,
+                                           user_name: details[:user_name])
+        end
+        @user_repository.change_email(user_id:, email: details[:email]) if
           changes.include?('email')
         return unless changes.include?('password')
-        digest = @hasher.hash(details[:password])
-        @user_repository.change_password(user_id, digest)
+        password_digest = @hasher.hash(password: details[:password])
+        @user_repository.change_password(user_id:, password_digest:)
       end
 
       def success(details, changes)

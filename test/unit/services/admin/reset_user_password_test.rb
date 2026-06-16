@@ -30,8 +30,8 @@ class ResetUserPasswordServiceTest < Minitest::Test
       @calls = []
     end
 
-    def reset_password(user_name, password)
-      calls << [:reset_password, user_name, password]
+    def reset_password(user_name:, digest:)
+      calls << [:reset_password, user_name, digest]
     end
   end
 
@@ -43,7 +43,7 @@ class ResetUserPasswordServiceTest < Minitest::Test
       @digest = digest
     end
 
-    def hash(password)
+    def hash(password:)
       calls << [:hash, password]
       @digest
     end

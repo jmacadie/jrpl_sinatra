@@ -9,7 +9,7 @@ class MatchTeamsTest < Minitest::Test
       home_tournament_role: 'Winner Semi-Final 1',
       away_tournament_role: 'Winner Semi-Final 2'
     }
-    teams = Presenters::MatchTeams.new(match)
+    teams = Presenters::MatchTeams.new(match:)
     assert_equal 'Denmark', teams.home_name
     assert_equal 'Sweden', teams.away_name
   end
@@ -22,7 +22,7 @@ class MatchTeamsTest < Minitest::Test
       home_tournament_role: 'Winner Semi-Final 1',
       away_tournament_role: 'Winner Semi-Final 2'
     }
-    teams = Presenters::MatchTeams.new(match)
+    teams = Presenters::MatchTeams.new(match:)
     assert_equal '', teams.home_name
     assert_equal '', teams.away_name
   end
@@ -35,7 +35,7 @@ class MatchTeamsTest < Minitest::Test
       home_tournament_role: 'Winner Semi-Final 1',
       away_tournament_role: 'Winner Semi-Final 2'
     }
-    teams = Presenters::MatchTeams.new(match)
+    teams = Presenters::MatchTeams.new(match:)
     assert_equal 'Winner Semi-Final 1', teams.home_name
     assert_equal 'Winner Semi-Final 2', teams.away_name
   end
@@ -46,7 +46,7 @@ class MatchTeamsTest < Minitest::Test
       home_tournament_role: 'Winner Semi-Final 1',
       away_tournament_role: 'Winner Semi-Final 2'
     }
-    teams = Presenters::MatchTeams.new(match)
+    teams = Presenters::MatchTeams.new(match:)
     assert_equal 'Winner Semi-Final 1', teams.home_name
     assert_equal 'Winner Semi-Final 2', teams.away_name
   end
@@ -57,7 +57,7 @@ class MatchTeamsTest < Minitest::Test
       home_name: 'Denmark',
       away_name: 'Sweden'
     }
-    teams = Presenters::MatchTeams.new(match)
+    teams = Presenters::MatchTeams.new(match:)
     assert_equal 'Denmark', teams.home_name
     assert_equal 'Sweden', teams.away_name
   end
@@ -70,7 +70,7 @@ class MatchTeamsTest < Minitest::Test
       home_tournament_role: 'Winner Semi-Final 1',
       away_tournament_role: 'Winner Semi-Final 2'
     }
-    teams = Presenters::MatchTeams.new(match)
+    teams = Presenters::MatchTeams.new(match:)
     assert_equal 'Denmark', teams.home_name
     assert_equal 'Winner Semi-Final 2', teams.away_name
   end

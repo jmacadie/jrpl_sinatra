@@ -8,7 +8,7 @@ module Services
       end
 
       def call(user_id:)
-        Result.new(user: @user_repository.load_user_details(user_id))
+        Result.new(user: @user_repository.load_user_details(user_id:))
       end
     end
   end

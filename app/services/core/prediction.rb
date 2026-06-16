@@ -33,10 +33,10 @@ module Services
         away_prediction = away_prediction.to_i
 
         @prediction_repository.add_prediction(
-          user_id,
-          match_id,
-          home_prediction,
-          away_prediction
+          user_id:,
+          match_id:,
+          home_score: home_prediction,
+          away_score: away_prediction
         )
 
         Result.new(
@@ -50,8 +50,8 @@ module Services
       private
 
       def prediction_error(match_id, home_prediction, away_prediction)
-        match = @match_repository.load_match(match_id)
-        if @lockdown_policy.locked_down?(match)
+        match = @match_repository.load_match(match_id:)
+        if @lockdown_policy.locked_down?(match:)
           return 'You cannot add or change your prediction because ' \
                  'this match is already locked down!'
         end

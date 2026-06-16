@@ -25,7 +25,7 @@ class MatchBroadcasterServiceTest < Minitest::Test
       @calls = []
     end
 
-    def change_broadcaster(match_id, broadcaster_id)
+    def change_broadcaster(match_id:, broadcaster_id:)
       calls << [:change_broadcaster, match_id, broadcaster_id]
     end
   end

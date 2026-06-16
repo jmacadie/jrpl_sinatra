@@ -97,10 +97,10 @@ class MatchResultServiceTest < Minitest::Test
       [:add_result, 6, 101, 102, 4]
     ], match_repository.calls
     assert_equal [
-      [:update_scoreboard, 6, 101, 102]
+      [:update, 6, 101, 102]
     ], scoreboard_service.calls
     assert_equal [
-      [:send_result_email, 6]
+      [:call, 6]
     ], result_mailer.calls
     assert_equal [
       [:locked_down, 6]
@@ -132,12 +132,12 @@ class MatchResultServiceTest < Minitest::Test
       @calls = []
     end
 
-    def load_match(match_id)
+    def load_match(match_id:)
       calls << [:load_match, match_id]
       { match_id: }
     end
 
-    def add_result(match_id, home_score, away_score, user_id)
+    def add_result(match_id:, home_score:, away_score:, user_id:)
       calls << [:add_result, match_id, home_score, away_score, user_id]
     end
   end
@@ -149,8 +149,8 @@ class MatchResultServiceTest < Minitest::Test
       @calls = []
     end
 
-    def update_scoreboard(match_id, home_score, away_score)
-      calls << [:update_scoreboard, match_id, home_score, away_score]
+    def update(match_id:, home_score:, away_score:)
+      calls << [:update, match_id, home_score, away_score]
     end
   end
 
@@ -161,8 +161,8 @@ class MatchResultServiceTest < Minitest::Test
       @calls = []
     end
 
-    def send_result_email(match_id)
-      calls << [:send_result_email, match_id]
+    def call(match_id:)
+      calls << [:call, match_id]
     end
   end
 
@@ -174,7 +174,7 @@ class MatchResultServiceTest < Minitest::Test
       @locked_down = locked_down
     end
 
-    def locked_down?(match)
+    def locked_down?(match:)
       calls << [:locked_down, match[:match_id]]
       @locked_down
     end

@@ -16,7 +16,7 @@ class ScoreboardServiceTest < Minitest::Test
       point_repository:
     )
 
-    service.update_scoreboard(6, 2, 1)
+    service.update(match_id: 6, home_score: 2, away_score: 1)
 
     assert_equal [[:predictions_for_match, 6]], prediction_repository.calls
     assert_equal [
@@ -42,9 +42,9 @@ class ScoreboardServiceTest < Minitest::Test
       point_repository:
     )
 
-    service.update_scoreboard(6)
+    service.update(match_id: 6)
 
-    assert_equal [[:load_single_match, 1, 6]], match_repository.calls
+    assert_equal [[:load_match, 6]], match_repository.calls
     assert_equal [
       [:add_points, 10, 1, 1, 0]
     ], point_repository.calls
@@ -60,11 +60,10 @@ class ScoreboardServiceTest < Minitest::Test
       point_repository:
     )
 
+    overall_table = service.data(scoring_system: 'Official')[:overall_table]
     assert_equal(
       %w(1 2),
-      service.scoreboard_data('Official')[:overall_table].map do |row|
-        row[:rank]
-      end
+      overall_table.map { |row| row[:rank] }
     )
     assert_equal [
       [:load_scoreboard_data, 'Official']
@@ -92,8 +91,8 @@ class ScoreboardServiceTest < Minitest::Test
       @calls = []
     end
 
-    def load_single_match(user_id, match_id)
-      calls << [:load_single_match, user_id, match_id]
+    def load_match(match_id:)
+      calls << [:load_match, match_id]
       @match
     end
   end
@@ -106,7 +105,7 @@ class ScoreboardServiceTest < Minitest::Test
       @calls = []
     end
 
-    def predictions_for_match(match_id)
+    def predictions_for_match(match_id:)
       calls << [:predictions_for_match, match_id]
       @predictions
     end
@@ -120,11 +119,11 @@ class ScoreboardServiceTest < Minitest::Test
       @calls = []
     end
 
-    def add_points(pred_id, scoring_system_id, result_pts, score_pts)
+    def add_points(pred_id:, scoring_system_id:, result_pts:, score_pts:)
       calls << [:add_points, pred_id, scoring_system_id, result_pts, score_pts]
     end
 
-    def load_scoreboard_data(scoring_system)
+    def load_scoreboard_data(scoring_system:)
       calls << [:load_scoreboard_data, scoring_system]
       @scoreboard_data
     end

@@ -1,10 +1,10 @@
 module Presenters
   class TournamentRoles
-    def initialize(rows)
+    def initialize(rows:)
       @rows = normalize_ids(rows)
     end
 
-    def grouped_roles
+    def call
       unique_stages.each do |stage|
         roles = roles_for_stage(stage[:stage])
         stage[:group_roles] = add_teams_to_roles(roles)

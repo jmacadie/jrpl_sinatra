@@ -26,17 +26,17 @@ module Services
       private
 
       def grant_admin_result(user_id)
-        return Result.new(changed: false) if @user_repository.admin?(user_id)
+        return Result.new(changed: false) if @user_repository.admin?(user_id:)
 
-        @user_repository.grant_admin(user_id)
+        @user_repository.grant_admin(user_id:)
         Result.new(changed: true)
       end
 
       def revoke_admin_result(user_id)
         return Result.new(changed: false) unless
-          @user_repository.admin?(user_id)
+          @user_repository.admin?(user_id:)
 
-        @user_repository.revoke_admin(user_id)
+        @user_repository.revoke_admin(user_id:)
         Result.new(changed: true)
       end
     end

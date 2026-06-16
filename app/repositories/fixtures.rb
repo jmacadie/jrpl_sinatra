@@ -4,7 +4,7 @@ module Repositories
       @query_runner = query_runner
     end
 
-    def load_matches(criteria, user_id)
+    def load_matches(criteria:, user_id:)
       result = @query_runner.run_query(matches_query(criteria), user_id)
       result.map { |row| row_to_match(row) }
     end

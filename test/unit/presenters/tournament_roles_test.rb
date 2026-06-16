@@ -2,7 +2,7 @@ require 'test_helpers'
 
 class TournamentRolesPresenterTest < Minitest::Test
   def test_handles_empty_input
-    roles = Presenters::TournamentRoles.new([]).grouped_roles
+    roles = Presenters::TournamentRoles.new(rows: []).call
 
     assert_empty roles
   end
@@ -109,7 +109,7 @@ class TournamentRolesPresenterTest < Minitest::Test
   end
 
   def present(rows)
-    Presenters::TournamentRoles.new(rows).grouped_roles
+    Presenters::TournamentRoles.new(rows:).call
   end
 
   def role_row(attributes)

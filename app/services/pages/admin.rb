@@ -9,10 +9,10 @@ module Services
       end
 
       def call
-        role_rows = @tournament_role_repository.load_role_rows
+        rows = @tournament_role_repository.load_role_rows
         Page.new(
           users: @user_repository.load_all_users_details,
-          roles: Presenters::TournamentRoles.new(role_rows).grouped_roles
+          roles: Presenters::TournamentRoles.new(rows:).call
         )
       end
     end

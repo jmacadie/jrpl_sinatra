@@ -26,7 +26,7 @@ class EditUserPageServiceTest < Minitest::Test
       @calls = []
     end
 
-    def load_user_details(user_id)
+    def load_user_details(user_id:)
       calls << [:load_user_details, user_id]
       {
         user_id:,

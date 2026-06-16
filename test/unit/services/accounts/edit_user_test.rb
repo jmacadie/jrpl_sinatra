@@ -166,7 +166,7 @@ class EditUserServiceTest < Minitest::Test
       @calls = []
     end
 
-    def load_user_credentials(user_id)
+    def load_user_credentials(user_id:)
       calls << [:load_user_credentials, user_id]
       {
         user_name: 'Clare Mac',
@@ -175,25 +175,25 @@ class EditUserServiceTest < Minitest::Test
       }
     end
 
-    def username_exists?(user_name, except_user_id:)
+    def username_exists?(user_name:, except_user_id:)
       calls << [:username_exists?, user_name, except_user_id]
       @username_exists
     end
 
-    def email_exists?(email, except_user_id:)
+    def email_exists?(email:, except_user_id:)
       calls << [:email_exists?, email, except_user_id]
       @email_exists
     end
 
-    def change_username(user_id, user_name)
+    def change_username(user_id:, user_name:)
       calls << [:change_username, user_id, user_name]
     end
 
-    def change_password(user_id, password)
-      calls << [:change_password, user_id, password]
+    def change_password(user_id:, password_digest:)
+      calls << [:change_password, user_id, password_digest]
     end
 
-    def change_email(user_id, email)
+    def change_email(user_id:, email:)
       calls << [:change_email, user_id, email]
     end
   end
@@ -206,12 +206,12 @@ class EditUserServiceTest < Minitest::Test
       @matches = matches
     end
 
-    def matches?(password, digest)
+    def matches?(password:, digest:)
       calls << [:matches, password, digest]
       @matches
     end
 
-    def hash(password)
+    def hash(password:)
       calls << [:hash, password]
       'scrambled'
     end

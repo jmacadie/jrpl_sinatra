@@ -19,7 +19,7 @@ module Services
       end
 
       def call(match_id:, broadcaster_id:)
-        @match_repository.change_broadcaster(match_id, broadcaster_id)
+        @match_repository.change_broadcaster(match_id:, broadcaster_id:)
 
         Result.new(
           success: true,

@@ -11,12 +11,12 @@ module Repositories
       end
     end
 
-    def load_user_details(user_id)
+    def load_user_details(user_id:)
       result = @query_runner.run_query(select_query_single_user, user_id)
       result.map { |row| row_to_users_details_hash(row) }.first
     end
 
-    def load_user_credentials(user_id)
+    def load_user_credentials(user_id:)
       sql = 'SELECT user_name, email, pword FROM users WHERE user_id = $1::int;'
       row = @query_runner.run_query(sql, user_id).first
       {
@@ -26,7 +26,7 @@ module Repositories
       }
     end
 
-    def username_exists?(user_name, except_user_id:)
+    def username_exists?(user_name:, except_user_id:)
       sql = <<~SQL
         SELECT EXISTS (
           SELECT 1 FROM users
@@ -37,7 +37,7 @@ module Repositories
                    .first['exists'] == 't'
     end
 
-    def email_exists?(email, except_user_id:)
+    def email_exists?(email:, except_user_id:)
       sql = <<~SQL
         SELECT EXISTS (
           SELECT 1 FROM users
@@ -48,22 +48,22 @@ module Repositories
                    .first['exists'] == 't'
     end
 
-    def change_username(user_id, user_name)
+    def change_username(user_id:, user_name:)
       sql = 'UPDATE users SET user_name = $1::text WHERE user_id = $2::int;'
       @query_runner.run_query(sql, user_name, user_id)
     end
 
-    def change_password(user_id, password_digest)
+    def change_password(user_id:, password_digest:)
       sql = 'UPDATE users SET pword = $1::text WHERE user_id = $2::int;'
       @query_runner.run_query(sql, password_digest, user_id)
     end
 
-    def change_email(user_id, email)
+    def change_email(user_id:, email:)
       sql = 'UPDATE users SET email = $1::text WHERE user_id = $2::int;'
       @query_runner.run_query(sql, email, user_id)
     end
 
-    def find_sign_in_user(login)
+    def find_sign_in_user(login:)
       result = @query_runner.run_query(sign_in_user_query, login)
       return nil if result.ntuples.zero?
 
@@ -77,7 +77,7 @@ module Repositories
       }
     end
 
-    def username_taken?(user_name)
+    def username_taken?(user_name:)
       sql = <<~SQL
         SELECT EXISTS (
           SELECT 1 FROM users WHERE user_name = $1::text
@@ -86,7 +86,7 @@ module Repositories
       @query_runner.run_query(sql, user_name).first['exists'] == 't'
     end
 
-    def email_taken?(email)
+    def email_taken?(email:)
       sql = <<~SQL
         SELECT EXISTS (
           SELECT 1 FROM users WHERE lower(email) = lower($1::text)
@@ -115,7 +115,7 @@ module Repositories
       }
     end
 
-    def reset_password(user_name, digest)
+    def reset_password(user_name:, digest:)
       sql = <<~SQL
         UPDATE users
         SET pword = $1::text
@@ -124,7 +124,7 @@ module Repositories
       @query_runner.run_query(sql, digest, user_name)
     end
 
-    def user_name(user_id)
+    def user_name(user_id:)
       sql = 'SELECT user_name FROM users WHERE user_id = $1::int;'
       result = @query_runner.run_query(sql, user_id)
       return nil if result.ntuples.zero?
@@ -132,12 +132,12 @@ module Repositories
       result.first['user_name']
     end
 
-    def delete_user(user_id)
+    def delete_user(user_id:)
       sql = 'DELETE FROM users WHERE user_id = $1::int;'
       @query_runner.run_query(sql, user_id)
     end
 
-    def admin?(user_id)
+    def admin?(user_id:)
       sql = <<~SQL
         SELECT * FROM user_role
         WHERE user_id = $1::int AND role_id = $2::int;
@@ -146,12 +146,12 @@ module Repositories
       !result.ntuples.zero?
     end
 
-    def grant_admin(user_id)
+    def grant_admin(user_id:)
       sql = 'INSERT INTO user_role VALUES ($1::int, $2::int);'
       @query_runner.run_query(sql, user_id, admin_role_id)
     end
 
-    def revoke_admin(user_id)
+    def revoke_admin(user_id:)
       sql = <<~SQL
         DELETE FROM user_role
         WHERE user_id = $1::int AND role_id = $2::int;

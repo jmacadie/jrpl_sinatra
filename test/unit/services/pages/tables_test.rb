@@ -25,7 +25,7 @@ class TablesPageServiceTest < Minitest::Test
   end
 
   class FakePointRepository
-    attr_reader :calls, :scoreboard_data
+    attr_reader :calls
 
     def initialize
       @calls = []
@@ -36,9 +36,9 @@ class TablesPageServiceTest < Minitest::Test
       }
     end
 
-    def load_scoreboard_data(scoring_system)
+    def load_scoreboard_data(scoring_system:)
       calls << [:load_scoreboard_data, scoring_system]
-      scoreboard_data
+      @scoreboard_data
     end
   end
 end

@@ -4,7 +4,7 @@ class PointRepositoryTest < Minitest::Test
   def setup
     @query_runner = FakeQueryRunner.new(results: scoreboard_results)
     repository = Repositories::Point.new(query_runner: @query_runner)
-    @tables = repository.load_scoreboard_data('Official')
+    @tables = repository.load_scoreboard_data(scoring_system: 'Official')
   end
 
   def test_loads_unranked_scoreboard_tables

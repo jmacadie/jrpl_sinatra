@@ -59,12 +59,12 @@ class DeleteUserServiceTest < Minitest::Test
       @calls = []
     end
 
-    def user_name(user_id)
+    def user_name(user_id:)
       calls << [:user_name, user_id]
       @user_name
     end
 
-    def delete_user(user_id)
+    def delete_user(user_id:)
       calls << [:delete_user, user_id]
     end
   end

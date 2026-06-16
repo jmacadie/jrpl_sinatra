@@ -105,7 +105,7 @@ class MatchPredictionServiceTest < Minitest::Test
       @calls = []
     end
 
-    def load_match(match_id)
+    def load_match(match_id:)
       calls << [:load_match, match_id]
       { match_id: }
     end
@@ -118,13 +118,13 @@ class MatchPredictionServiceTest < Minitest::Test
       @calls = []
     end
 
-    def add_prediction(user_id, match_id, home_prediction, away_prediction)
+    def add_prediction(user_id:, match_id:, home_score:, away_score:)
       calls << [
         :add_prediction,
         user_id,
         match_id,
-        home_prediction,
-        away_prediction
+        home_score,
+        away_score
       ]
     end
   end
@@ -137,7 +137,7 @@ class MatchPredictionServiceTest < Minitest::Test
       @locked_down = locked_down
     end
 
-    def locked_down?(match)
+    def locked_down?(match:)
       calls << [:locked_down, match[:match_id]]
       @locked_down
     end

@@ -31,7 +31,7 @@ module Services
         errors = validation_errors(details)
         return failure(errors.join(' ')) unless errors.empty?
 
-        password_digest = @hasher.hash(details[:password])
+        password_digest = @hasher.hash(password: details[:password])
         user = @user_repository.create_user(
           user_name: details[:user_name],
           email: details[:email],
@@ -62,7 +62,7 @@ module Services
       end
 
       def username_error(user_name)
-        if @user_repository.username_taken?(user_name)
+        if @user_repository.username_taken?(user_name:)
           'That username already exists. Please choose a different username.'
         elsif user_name.empty?
           'Username cannot be blank! Please enter a username.'
@@ -83,7 +83,7 @@ module Services
           'Email cannot be blank! Please enter an email.'
         elsif email !~ URI::MailTo::EMAIL_REGEXP
           'That is not a valid email address.'
-        elsif @user_repository.email_taken?(email)
+        elsif @user_repository.email_taken?(email:)
           'That email address already exists.'
         end
       end

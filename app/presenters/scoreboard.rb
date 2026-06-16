@@ -1,10 +1,10 @@
 module Presenters
   class Scoreboard
-    def initialize(tables)
+    def initialize(tables:)
       @tables = tables
     end
 
-    def ranked_tables
+    def call
       @tables.transform_values { |table| add_ranks(table) }
     end
 

@@ -152,12 +152,12 @@ class MatchPageServiceTest < Minitest::Test
       @calls = []
     end
 
-    def load_match_with_user(user_id, match_id)
+    def load_match_with_user(user_id:, match_id:)
       calls << [:load_match, user_id, match_id]
       @match
     end
 
-    def origin(match_id)
+    def origin(match_id:)
       calls << [:load_origin, match_id]
       { ht_home_team: 'England' }
     end
@@ -188,7 +188,7 @@ class MatchPageServiceTest < Minitest::Test
       @calls = []
     end
 
-    def get_predictions_results(match_id)
+    def get_predictions_results(match_id:)
       calls << [:load_predictions, match_id]
       [{ user: 'Alice', home_prediction: 2 }]
     end
@@ -202,7 +202,7 @@ class MatchPageServiceTest < Minitest::Test
       @locked_down = locked_down
     end
 
-    def locked_down?(match)
+    def locked_down?(match:)
       calls << [:locked_down, match[:match_id]]
       @locked_down
     end

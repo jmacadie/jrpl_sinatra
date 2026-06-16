@@ -38,25 +38,26 @@ module Services
           role_id <= maximum_team_id || role_id > maximum_role_id
         team_already_selected_message(team_id) if
           team_id.positive? &&
-          @tournament_role_repository.team_selected_in_stage?(role_id, team_id)
+          @tournament_role_repository.team_selected_in_stage?(role_id:,
+                                                              team_id:)
       end
 
       def update_role(role_id, team_id)
-        role_name = @tournament_role_repository.role_name(role_id)
+        role_name = @tournament_role_repository.role_name(role_id:)
         return reset_role(role_id, role_name) if team_id.zero?
 
-        @tournament_role_repository.set_team(role_id, team_id)
-        team_name = @tournament_role_repository.team_name(team_id)
+        @tournament_role_repository.set_team(role_id:, team_id:)
+        team_name = @tournament_role_repository.team_name(team_id:)
         success("#{role_name} set to #{team_name}", reset: false)
       end
 
       def reset_role(role_id, role_name)
-        @tournament_role_repository.reset_team(role_id)
+        @tournament_role_repository.reset_team(role_id:)
         success("#{role_name} reset", reset: true)
       end
 
       def team_already_selected_message(team_id)
-        team_name = @tournament_role_repository.team_name(team_id)
+        team_name = @tournament_role_repository.team_name(team_id:)
         "#{team_name} is already selected for this stage"
       end
 

@@ -26,7 +26,7 @@ module Loginable
   end
 
   def setup_user_session_data(user_id)
-    user_details = settings.user_repository.load_user_details(user_id)
+    user_details = settings.user_repository.load_user_details(user_id:)
     session[:user_id] = user_id
     session[:user_name] = user_details[:user_name]
     session[:user_email] = user_details[:email].downcase

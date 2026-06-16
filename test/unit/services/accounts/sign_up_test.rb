@@ -143,12 +143,12 @@ class SignUpServiceTest < Minitest::Test
       @calls = []
     end
 
-    def username_taken?(user_name)
+    def username_taken?(user_name:)
       calls << [:username_taken?, user_name]
       @username_taken
     end
 
-    def email_taken?(email)
+    def email_taken?(email:)
       calls << [:email_taken?, email]
       @email_taken
     end
@@ -171,7 +171,7 @@ class SignUpServiceTest < Minitest::Test
       @calls = []
     end
 
-    def hash(password)
+    def hash(password:)
       calls << [:hash, password]
       'scrambled'
     end

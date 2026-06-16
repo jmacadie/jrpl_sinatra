@@ -5,7 +5,7 @@ class EmailsSentRepositoryTest < Minitest::Test
     query_runner = FakeQueryRunner.new
     repository = Repositories::EmailsSent.new(query_runner:)
 
-    repository.record_predictions_sent(6)
+    repository.record_predictions_sent(match_id: 6)
 
     assert_includes query_runner.calls[0][0], 'predictions_sent = true'
     assert_equal 6, query_runner.calls[0][1]
@@ -15,7 +15,7 @@ class EmailsSentRepositoryTest < Minitest::Test
     query_runner = FakeQueryRunner.new
     repository = Repositories::EmailsSent.new(query_runner:)
 
-    repository.record_results_sent(7)
+    repository.record_results_sent(match_id: 7)
 
     assert_includes query_runner.calls[0][0], 'results_sent = true'
     assert_equal 7, query_runner.calls[0][1]
