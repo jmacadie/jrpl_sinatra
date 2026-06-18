@@ -7,9 +7,14 @@ require 'socket'
 desc 'Run Rubocop and then all tests'
 task default: [:rubocop, :test]
 
-Rake::TestTask.new do |t|
+Rake::TestTask.new(:test) do |t|
   t.libs << "test"
   t.test_files = FileList['test/**/*_test.rb']
+end
+
+Rake::TestTask.new(:unit) do |t|
+  t.libs << "test"
+  t.test_files = FileList['test/unit/**/*_test.rb']
 end
 
 RuboCop::RakeTask.new(:rubocop) do |t|
