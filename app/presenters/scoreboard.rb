@@ -5,10 +5,41 @@ module Presenters
     end
 
     def call
+      add_extra_tables
       @tables.transform_values { |table| add_ranks(table) }
     end
 
     private
+
+    def add_extra_tables
+      no_women_no_children_table
+      tom_table
+      peck_table
+    end
+
+    def no_women_no_children_table
+      men = %w(4 6 7 8 9 10 11 12 13 14 17 18 19 20 27 28 29 30 31)
+      all_table = @tables[:overall_table]
+      table = all_table.map(&:clone)
+                       .filter { |u| men.include?(u[:user_id]) }
+      @tables[:nwnc_table] = table
+    end
+
+    def tom_table
+      toms = %w(20 30)
+      all_table = @tables[:overall_table]
+      table = all_table.map(&:clone)
+                       .filter { |u| toms.include?(u[:user_id]) }
+      @tables[:tom_table] = table
+    end
+
+    def peck_table
+      pecks = %w(15 16 26 29 30)
+      all_table = @tables[:overall_table]
+      table = all_table.map(&:clone)
+                       .filter { |u| pecks.include?(u[:user_id]) }
+      @tables[:peck_table] = table
+    end
 
     def add_ranks(table)
       rank = ''

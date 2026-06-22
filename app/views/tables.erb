@@ -21,8 +21,7 @@
       data-bs-parent="#tablesAccordion">
       <div class="accordion-body">
         <%== erb :'tables/table',
-                 locals: { title: 'Group Stage',
-                           table: tables[:group_table] } %>
+                 locals: { table: tables[:group_table] } %>
       </div>
     </div>
   </div>
@@ -45,8 +44,76 @@
       data-bs-parent="#tablesAccordion">
       <div class="accordion-body">
         <%== erb :'tables/table',
-                 locals: { title: 'Knockout',
-                           table: tables[:knockout_table] } %>
+                 locals: { table: tables[:knockout_table] } %>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingNoWomenNoChild">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseNoWomenNoChild"
+        aria-expanded="false"
+        aria-controls="collapseNoWomenNoChild">
+        No Women, No Children
+      </button>
+    </h2>
+    <div
+      id="collapseNoWomenNoChild"
+      class="accordion-collapse collapse"
+      aria-labelledby="headingNoWomenNoChild"
+      data-bs-parent="#tablesAccordion">
+      <div class="accordion-body">
+        <%== erb :'tables/table',
+                 locals: { table: tables[:nwnc_table] } %>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingToms">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseToms"
+        aria-expanded="false"
+        aria-controls="collapseToms">
+        Toms
+      </button>
+    </h2>
+    <div
+      id="collapseToms"
+      class="accordion-collapse collapse"
+      aria-labelledby="headingToms"
+      data-bs-parent="#tablesAccordion">
+      <div class="accordion-body">
+        <%== erb :'tables/table',
+                 locals: { table: tables[:tom_table] } %>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingPecks">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapsePecks"
+        aria-expanded="false"
+        aria-controls="collapsePecks">
+        Pecks
+      </button>
+    </h2>
+    <div
+      id="collapsePecks"
+      class="accordion-collapse collapse"
+      aria-labelledby="headingPecks"
+      data-bs-parent="#tablesAccordion">
+      <div class="accordion-body">
+        <%== erb :'tables/table',
+                 locals: { table: tables[:peck_table] } %>
       </div>
     </div>
   </div>
