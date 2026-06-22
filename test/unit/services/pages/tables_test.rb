@@ -17,7 +17,9 @@ class TablesPageServiceTest < Minitest::Test
         ],
         knockout_table: [
           { user_name: 'Mr. Mean', total_points: 0, rank: '1' }
-        ]
+        ],
+        tom_table: [],
+        peck_table: []
       },
       page.tables
     )

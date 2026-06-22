@@ -12,7 +12,7 @@ module Presenters
     private
 
     def add_extra_tables
-      no_women_no_children_table
+      # no_women_no_children_table
       tom_table
       peck_table
     end
