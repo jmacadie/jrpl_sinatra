@@ -5,7 +5,15 @@ module Repositories
     end
 
     def record_predictions_sent(match_id:)
-      sql = 'UPDATE emails SET predictions_sent = true WHERE match_id = $1::int'
+      sql =
+        <<~SQL
+        INSERT INTO emails (match_id, predictions_sent, results_sent)
+        VALUES ($1::int, true, false)
+        ON CONFLICT (match_id)
+        DO UPDATE
+        SET
+          predictions_sent = true;
+        SQL
       @query_runner.run_query(sql, match_id)
     end
 

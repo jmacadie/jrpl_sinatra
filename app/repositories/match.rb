@@ -151,8 +151,8 @@ module Repositories
           m.date,
           m.kick_off
         FROM match m
-        INNER JOIN emails e ON e.match_id = m.match_id
-        WHERE e.predictions_sent = false
+        LEFT JOIN emails e ON e.match_id = m.match_id
+        WHERE e.predictions_sent IS NULL OR e.predictions_sent = false
         ORDER BY m.match_id ASC;
       SQL
     end
